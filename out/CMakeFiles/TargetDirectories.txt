@@ -1,3 +1,0 @@
-C:/Users/Gebruiker/Source/Repos/SWA/out/CMakeFiles/SWA.dir
-C:/Users/Gebruiker/Source/Repos/SWA/out/CMakeFiles/ALL_BUILD.dir
-C:/Users/Gebruiker/Source/Repos/SWA/out/CMakeFiles/ZERO_CHECK.dir
