@@ -2,14 +2,37 @@ cmake_minimum_required(VERSION 3.14)
 
 project(SWA)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+add_executable(SWA 
+	SWA/main.cpp
+	SWA/Core.cpp
+	SWA/System.cpp
+	SWA/Entity.cpp
+	SWA/Component.cpp
+	)
 
-set (SDL2_DIR "${CMAKE_SOURCE_DIR}/vendor/SDL2-2.0.10")
 
-file(GLOB SOURCES "SWA/*.cpp")
+if(CMAKE_TOOLCHAIN_FILE)
+    message("Using SDL2 toolchain file")
+    message(${CMAKE_TOOLCHAIN_FILE})
+    find_package(SDL2 CONFIG REQUIRED)
+    target_link_libraries(SWA 
+        PRIVATE
+        SDL2::SDL2
+        SDL2::SDL2main
+    )
+else()
+    message("Finding SDL2")
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+    find_package(SDL2 REQUIRED)
 
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
+    target_include_directories(SWA
+        PRIVATE
+        "${SDL2_INCLUDE_DIR}"
+    )
+    target_link_libraries(SWA
+        PRIVATE
+        "${SDL2_LIBRARY}"
+    )
+endif()
 
-add_executable(SWA SWA/main.cpp)
-target_link_libraries(SWA ${SDL2_LIBRARIES})
+
