@@ -72,12 +72,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\SDL2_image-2.0.5\include;C:\SDL2-2.0.10\include;C:\SDL2\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\SDL2_image-2.0.5\lib\x64;C:\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\SDL2_image-2.0.5\include;C:\SDL2-2.0.10\include;C:\SDL2\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\SDL2_image-2.0.5\lib\x64;C:\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

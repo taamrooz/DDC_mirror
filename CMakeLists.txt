@@ -34,5 +34,3 @@ else()
         "${SDL2_LIBRARY}"
     )
 endif()
-
-
