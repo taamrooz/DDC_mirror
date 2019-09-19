@@ -1,13 +1,12 @@
 #include "SDL.h"
-
-
+#include "SDL_image.h"
+#undef main
 #ifdef __cplusplus
 extern "C"
 #endif
 int main(int argc, char* argv[])
 {
 	SDL_Init(SDL_INIT_VIDEO);
-
 	SDL_Window* window = SDL_CreateWindow(
 		"SDL2Test",
 		SDL_WINDOWPOS_UNDEFINED,
