@@ -4,8 +4,9 @@
 #ifdef __cplusplus
 extern "C"
 #endif
-int main(int argc, char* argv[])
+int something()
 {
+
 	SDL_Init(SDL_INIT_VIDEO);
 
 	SDL_Window* window = SDL_CreateWindow(
