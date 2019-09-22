@@ -1,6 +1,5 @@
-#include "SDL.h"
-
-
+#include "Core.h"
+#undef main
 #ifdef __cplusplus
 extern "C"
 #endif
