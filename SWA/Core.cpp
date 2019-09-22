@@ -1,35 +1,34 @@
 #include "Core.h"
 
 Core Core::Instance;
-Core::Core()
-= default;
+Core::Core() = default;
 
 bool Core::init(const char* title, int width, int height, bool fullscreen)
 {
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		std::cout << "Unable to initialize SDL" << std::endl;
 		return false;
 	}
 	auto flags = 0;
-	if(fullscreen)
+	if (fullscreen)
 	{
 		flags = SDL_WINDOW_FULLSCREEN;
 	}
-	if((window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags)) == nullptr)
+	if ((window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags)) == nullptr)
 	{
 		std::cout << "Unable to initialize Window" << std::endl;
 		return false;
 	}
 	surf = SDL_GetWindowSurface(window);
-	if((renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
+	if ((renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
 	{
 		std::cout << "Unable to initialize renderer" << std::endl;
 		return false;
 	}
 
-	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-	if(!(IMG_Init(IMG_INIT_PNG) == IMG_INIT_PNG))
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	if (!(IMG_Init(IMG_INIT_PNG) == IMG_INIT_PNG))
 	{
 		std::cout << IMG_GetError() << std::endl;
 		std::cout << "Unable to initialize Image" << std::endl;
@@ -38,14 +37,21 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	return true;
 }
 
-void Core::input(const SDL_Event &event)
+void Core::input(SDL_Event& event)
 {
-	
+	while (SDL_PollEvent(&event) != 0)
+	{
+		if (event.type == SDL_QUIT)
+		{
+			isRunning = false;
+		}
+	}
+
 }
 
 void Core::update()
 {
-	
+
 }
 
 void Core::render()
@@ -56,21 +62,14 @@ void Core::render()
 
 int Core::execute(int argc, char* argv[])
 {
-	if(!init("Playground", 800, 600, false))
+	if (!init("Playground", 800, 600, false))
 	{
 		return 0;
 	}
 	SDL_Event event;
-	while(isRunning)
+	while (isRunning)
 	{
-		while(SDL_PollEvent(&event) != 0)
-		{
-			input(event);
-			if(event.type == SDL_QUIT)
-			{
-				isRunning = false;
-			}
-		}
+		input(event);
 		update();
 		render();
 		SDL_Delay(1);
@@ -93,12 +92,12 @@ Core* Core::getInstance()
 
 void Core::cleanup()
 {
-	if(renderer)
+	if (renderer)
 	{
 		SDL_DestroyRenderer(renderer);
 		renderer = nullptr;
 	}
-	if(window)
+	if (window)
 	{
 		SDL_DestroyWindow(window);
 		window = nullptr;

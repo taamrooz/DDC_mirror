@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "SDL_image.h"
 class Core
 {
@@ -14,7 +14,7 @@ private:
 	Core();
 	
 	bool init(const char*, int, int, bool);
-	void input(const SDL_Event&);
+	void input(SDL_Event &event);
 	void update();
 	void render();
 	void cleanup();
