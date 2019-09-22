@@ -4,8 +4,12 @@
 #ifdef __cplusplus
 extern "C"
 #endif
+#include "AnimationFacade.cpp"
 int main(int argc, char* argv[])
 {
+	AnimationFacade a = AnimationFacade();
+	a.startAnimation(4, "wizard_move_m.png");
+	/*
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_Window* window = SDL_CreateWindow(
 		"SDL2Test",
@@ -20,6 +24,7 @@ int main(int argc, char* argv[])
 	SDL_SetRenderDrawColor(renderer, 0, 100, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(renderer);
 	SDL_RenderPresent(renderer);
+	
 	auto quit = false;
 	SDL_Event e;
 	while (!quit)
@@ -34,6 +39,6 @@ int main(int argc, char* argv[])
 		SDL_UpdateWindowSurface(window);
 	}
 	SDL_DestroyWindow(window);
-	SDL_Quit();
+	SDL_Quit();*/
 	return 0;
 }
