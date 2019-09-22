@@ -2,13 +2,10 @@
 #include "BaseMenu.h"
 #include "MenuManager.h"
 class MainMenu :
-	public BaseMenu
+	virtual public BaseMenu
 {
 public:
+	~MainMenu();
 	MainMenu();
-	void render() override;
-	void input() override;
-	void onMouseMove(int x, int y) override;
-	void onMouseButton(int button, bool pressed) override;
 };
 

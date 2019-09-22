@@ -1,22 +1,22 @@
 #include "MainMenu.h"
 
-MainMenu::MainMenu()
+MainMenu::~MainMenu() = default;
+
+MainMenu::MainMenu() = default;
+
+void BaseMenu::render()
+{
+
+}
+
+void BaseMenu::input()
 {
 }
 
-void MainMenu::render()
-{
-	
-}
-
-void MainMenu::input()
+void BaseMenu::onMouseMove(int x, int y)
 {
 }
 
-void MainMenu::onMouseMove(int x, int y)
-{
-}
-
-void MainMenu::onMouseButton(int button, bool pressed)
+void BaseMenu::onMouseButton(int button, bool pressed)
 {
 }

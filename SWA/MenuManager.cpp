@@ -1,10 +1,11 @@
 #include "MenuManager.h"
+#include <utility>
 MenuManager::MenuManager() = default;
-MenuManager::MenuManager(std::vector<std::unique_ptr<BaseMenu>>& menus) : menus{ menus } {}
+MenuManager::MenuManager(std::vector<std::unique_ptr<BaseMenu>> menus) : menus{std::move(menus)} {}
 
 void MenuManager::addMenu(BaseMenu& menu)
 {
-	menus.push_back(std::make_unique<BaseMenu>(menu));
+	//menus.emplace_back(std::make_unique<BaseMenu>(menu));
 }
 void MenuManager::deleteMenu(const std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<std::unique_ptr<BaseMenu>>>> index)
 {
@@ -12,7 +13,7 @@ void MenuManager::deleteMenu(const std::_Vector_const_iterator<std::_Vector_val<
 }
 void MenuManager::pushMenu(BaseMenu& menu)
 {
-	activeMenus.push(std::make_unique<BaseMenu>(menu));
+	//activeMenus.push(std::make_unique<BaseMenu>(menu));
 }
 void MenuManager::popMenu()
 {
