@@ -4,6 +4,9 @@
     <ClCompile Include="C:\Users\renat\source\repos\Software Architecture Project\SWA\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\renat\source\repos\Software Architecture Project\SWA\Core.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\renat\source\repos\Software Architecture Project\SWA\System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -3,38 +3,50 @@
 #ifdef __cplusplus
 extern "C"
 #endif
-int something()
+int main()
 {
+	SDL_Surface* imageSurface = NULL;
+	SDL_Surface* windowSurface = NULL;
 
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_EVERYTHING);
 
-	SDL_Window* window = SDL_CreateWindow(
-		"SDL2Test",
-		SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED,
-		640,
-		480,
-		0
-	);
+	SDL_Window *window = SDL_CreateWindow("Hello SDL Image world!",
+		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, 0);
+	windowSurface = SDL_GetWindowSurface(window);
 
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	SDL_SetRenderDrawColor(renderer, 0, 100, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
-	auto quit = false;
-	SDL_Event e;
-	while (!quit)
+	if (window == NULL) {
+		std::cout << "Could not create window: " << SDL_GetError() << std::endl;
+		return 1;
+	}
+
+	SDL_Event windowEvent;
+	imageSurface = SDL_LoadBMP("dot.bmp");
+
+	if (imageSurface == NULL) {
+		std::cout << "SDL could not load image! SDL Error: " << SDL_GetError() << std::endl;
+		return 1;
+	}
+	while (true)
 	{
-		while (SDL_PollEvent(&e) != 0)
-		{
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
+		if (SDL_PollEvent(&windowEvent)) {
+			if (windowEvent.type == SDL_QUIT) {
+				break;
 			}
 		}
+
+		SDL_BlitSurface(imageSurface, NULL, windowSurface, NULL);
 		SDL_UpdateWindowSurface(window);
+
 	}
+
+	SDL_FreeSurface(imageSurface);
+	SDL_FreeSurface(windowSurface);
+
+	imageSurface = NULL;
+	windowSurface = NULL;
+
 	SDL_DestroyWindow(window);
 	SDL_Quit();
-	return 0;
+
+	return EXIT_SUCCESS;
 }

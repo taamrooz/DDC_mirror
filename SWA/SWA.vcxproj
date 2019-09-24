@@ -146,8 +146,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="39_tiling.cpp" />
-    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="main.cpp" />
@@ -158,13 +156,6 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="System.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="dot.bmp" />
-    <Image Include="tiles.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lazy.map" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

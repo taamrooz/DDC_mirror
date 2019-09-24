@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Components">
-      <UniqueIdentifier>{9f602cfd-4871-4e09-be61-06478739211a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tiles">
-      <UniqueIdentifier>{86b645f6-2f5a-4c3e-9cff-acf7f8c73c09}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -30,14 +24,8 @@
     <ClCompile Include="System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Core.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="39_tiling.cpp">
-      <Filter>Source Files\Tiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,18 +41,5 @@
     <ClInclude Include="Core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="dot.bmp">
-      <Filter>Source Files\Tiles</Filter>
-    </Image>
-    <Image Include="tiles.png">
-      <Filter>Source Files\Tiles</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lazy.map">
-      <Filter>Source Files\Tiles</Filter>
-    </None>
   </ItemGroup>
 </Project>

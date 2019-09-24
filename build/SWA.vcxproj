@@ -317,6 +317,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\Users\renat\source\repos\Software Architecture Project\SWA\main.cpp" />
+    <ClCompile Include="C:\Users\renat\source\repos\Software Architecture Project\SWA\Core.cpp" />
     <ClCompile Include="C:\Users\renat\source\repos\Software Architecture Project\SWA\System.cpp" />
     <ClCompile Include="C:\Users\renat\source\repos\Software Architecture Project\SWA\Entity.cpp" />
     <ClCompile Include="C:\Users\renat\source\repos\Software Architecture Project\SWA\Component.cpp" />
