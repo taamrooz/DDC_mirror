@@ -1,10 +1,10 @@
 #pragma once
 #include "Component.h"
 
-struct velocity_component : component
+struct VelocityComponent : Component
 {
-	velocity_component() = default;
-	velocity_component(double dx, double dy) : dx{ dx }, dy{ dy } {}
+	VelocityComponent() = default;
+	VelocityComponent(double dx, double dy) : dx{ dx }, dy{ dy } {}
 	double dx{};
 	double dy{};
 };

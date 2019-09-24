@@ -1,6 +1,7 @@
 #include "Core.h"
+#include "MoveSystem.h"
 
-Core Core::Instance;
+Core Core::instance_;
 Core::Core() = default;
 
 bool Core::init(const char* title, int width, int height, bool fullscreen)
@@ -15,25 +16,27 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	{
 		flags = SDL_WINDOW_FULLSCREEN;
 	}
-	if ((window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags)) == nullptr)
+	if ((window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags)) == nullptr)
 	{
 		std::cout << "Unable to initialize Window" << std::endl;
 		return false;
 	}
-	surf = SDL_GetWindowSurface(window);
-	if ((renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
+	surf_ = SDL_GetWindowSurface(window_);
+	if ((renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
 	{
 		std::cout << "Unable to initialize renderer" << std::endl;
 		return false;
 	}
 
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
 	if (!(IMG_Init(IMG_INIT_PNG) == IMG_INIT_PNG))
 	{
 		std::cout << IMG_GetError() << std::endl;
 		std::cout << "Unable to initialize Image" << std::endl;
 		return false;
 	}
+	manager_ = std::make_unique<EntityManager>();
+	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	return true;
 }
 
@@ -43,7 +46,7 @@ void Core::input(SDL_Event& event)
 	{
 		if (event.type == SDL_QUIT)
 		{
-			isRunning = false;
+			is_running_ = false;
 		}
 	}
 
@@ -51,13 +54,16 @@ void Core::input(SDL_Event& event)
 
 void Core::update()
 {
-
+	for (auto& system : systems_)
+	{
+		system->update(1);
+	}
 }
 
 void Core::render()
 {
-	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
+	SDL_RenderClear(renderer_);
+	SDL_RenderPresent(renderer_);
 }
 
 int Core::execute(int argc, char* argv[])
@@ -67,7 +73,7 @@ int Core::execute(int argc, char* argv[])
 		return 0;
 	}
 	SDL_Event event;
-	while (isRunning)
+	while (is_running_)
 	{
 		input(event);
 		update();
@@ -82,25 +88,29 @@ int Core::execute(int argc, char* argv[])
 
 SDL_Renderer* Core::get_renderer() const
 {
-	return renderer;
+	return renderer_;
 }
 
 Core* Core::get_instance()
 {
-	return &Core::Instance;
+	return &Core::instance_;
 }
 
 void Core::cleanup()
 {
-	if (renderer)
+	if (renderer_)
 	{
-		SDL_DestroyRenderer(renderer);
-		renderer = nullptr;
+		SDL_DestroyRenderer(renderer_);
+		renderer_ = nullptr;
 	}
-	if (window)
+	if (window_)
 	{
-		SDL_DestroyWindow(window);
-		window = nullptr;
+		SDL_DestroyWindow(window_);
+		window_ = nullptr;
+	}
+	if(manager_)
+	{
+		
 	}
 	IMG_Quit();
 	SDL_Quit();

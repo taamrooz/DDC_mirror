@@ -4,17 +4,17 @@
 #include "BaseScene.h"
 #include <vector>
 
-class menu_manager
+class MenuManager
 {
 private:
-	std::vector<std::shared_ptr<base_scene>> menus;
-	std::stack<std::shared_ptr<base_scene>> activeMenus;
+	std::vector<std::shared_ptr<BaseScene>> menus;
+	std::stack<std::shared_ptr<BaseScene>> activeMenus;
 public:
-	menu_manager();
-	menu_manager(std::vector<std::shared_ptr<base_scene>> menus);
-	void add_menu(base_scene& menu);
-	void delete_menu(std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<std::shared_ptr<base_scene>>>> index);
-	void push_menu(base_scene& menu);
+	MenuManager();
+	MenuManager(std::vector<std::shared_ptr<BaseScene>> menus);
+	void add_menu(BaseScene& menu);
+	void delete_menu(std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<std::shared_ptr<BaseScene>>>> index);
+	void push_menu(BaseScene& menu);
 	void pop_menu();
 	void draw();
 	void input();

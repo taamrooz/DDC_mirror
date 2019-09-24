@@ -1,21 +1,21 @@
 #include "MainMenu.h"
 
-main_menu::~main_menu() = default;
+MainMenu::~MainMenu() = default;
 
-main_menu::main_menu() = default;
-void base_scene::render()
+MainMenu::MainMenu() = default;
+void BaseScene::render()
 {
 
 }
 
-void base_scene::input()
+void BaseScene::input()
 {
 }
 
-void base_scene::on_mouse_move(int x, int y)
+void BaseScene::on_mouse_move(int x, int y)
 {
 }
 
-void base_scene::on_mouse_button(int button, bool pressed)
+void BaseScene::on_mouse_button(int button, bool pressed)
 {
 }

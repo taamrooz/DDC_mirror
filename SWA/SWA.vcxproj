@@ -153,6 +153,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="MoveSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseSystem.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>

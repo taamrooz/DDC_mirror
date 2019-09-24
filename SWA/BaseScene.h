@@ -1,8 +1,8 @@
 #pragma once
-class base_scene
+class BaseScene
 {
 public:
-	virtual ~base_scene() = 0;
+	virtual ~BaseScene() = 0;
 	virtual void render() = 0;
 	virtual void input() = 0;
 	virtual void on_mouse_move(int x, int y) = 0;

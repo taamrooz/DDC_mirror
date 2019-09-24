@@ -1,8 +1,9 @@
 #pragma once
-struct position_component : component
+#include "Component.h"
+struct PositionComponent : Component
 {
-	position_component() = default;
-	position_component(int x, int y) : x{ x }, y{ y } {}
+	PositionComponent() = default;
+	PositionComponent(int x, int y) : x{ x }, y{ y } {}
 	int x{};
 	int y{};
 };
