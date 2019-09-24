@@ -84,7 +84,4 @@
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="NewFile.txt" />
-  </ItemGroup>
 </Project>

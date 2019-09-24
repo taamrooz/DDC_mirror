@@ -165,9 +165,6 @@
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="NewFile.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

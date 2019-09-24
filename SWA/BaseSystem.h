@@ -1,5 +1,5 @@
 #pragma once
-class BaseSystem
+class base_system
 {
 };
 
