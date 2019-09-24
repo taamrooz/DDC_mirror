@@ -18,12 +18,19 @@ int main(int argc, char* argv[])
 	std::vector<component*> components;
 	components.push_back(&c);
 	int id = manager.create_entity(components);
-	int id2 = manager.create_entity(components);
-	auto createdComponent = manager.get_component<position_component>(id);
+	std::vector<component*> components2;
+	int id2 = manager.create_entity(components2);
+	
 	manager.add_component_to_entity(id, v);
 	manager.add_component_to_entity(id2, v2);
+
+
+	auto createdComponent = manager.get_component<position_component>(id);
 	std::cout << createdComponent.x << std::endl;
 	std::cout << createdComponent.y << std::endl;
+	auto createdComponent2 = manager.get_component<velocity_component>(id);
+	std::cout << createdComponent2.dx << std::endl;
+	std::cout << createdComponent2.dy << std::endl;
 	auto list = manager.get_all_entities<velocity_component>();
 	for(auto l : list)
 	{

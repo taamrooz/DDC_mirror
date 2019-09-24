@@ -5,24 +5,27 @@
 #include <string>
 #include "Component.h"
 #include <memory>
+#include <iostream>
 
 class EntityManager
 {
 private:
 	uint32_t _id = 0;
 	std::vector<uint32_t> _entities;
-	std::map < std::string, std::vector<component*>> _componentsByClassName;
+	std::map < std::string, std::map<uint32_t, component*>> _componentsByClassName;
 
 public:
 	uint32_t create_entity(const std::vector<component*>&);
 	void add_component_to_entity(uint32_t, component&);
 	void remove_entity(uint32_t id);
+
+	
 	template<class T>
 	void remove_component_from_entity(const uint32_t id)
 	{
 		const auto type = typeid(T).name();
-		auto index = _componentsByClassName[type].begin()+ id;
-		_componentsByClassName[type].erase(index);
+		//auto index = _componentsByClassName[type].begin()+ id;
+		_componentsByClassName[type].erase(id);
 	}
 	template<class T>
 	T& get_component(uint32_t id)
@@ -35,16 +38,14 @@ public:
 	{
 		std::vector<uint32_t> list;
 		const auto type = typeid(T).name();
-		for (std::map<std::string, std::vector<component*>>::iterator it = _componentsByClassName.begin(); it != _componentsByClassName.end(); ++it)
+		if(_componentsByClassName.find(type) != _componentsByClassName.end())
 		{
-			if(type == it->first)
+			for (auto i = _componentsByClassName[type].begin(); i != _componentsByClassName[type].end(); ++i)
 			{
-				for(auto& c : it->second)
-				{
-					list.push_back(static_cast<int32_t>(&c - &it->second[0]));
-				}
+				list.push_back(i->first);
 			}
 		}
+		
 		return list;
 	}
 

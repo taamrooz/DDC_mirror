@@ -4,9 +4,11 @@ project(SWA)
 
 add_executable(SWA 
 	SWA/main.cpp
+	SWA/EntityManager.cpp
+	SWA/MainMenu.cpp
+	SWA/MenuManager.cpp
 	SWA/Core.cpp
 	SWA/System.cpp
-	SWA/Entity.cpp
 	SWA/Component.cpp
 	)
 

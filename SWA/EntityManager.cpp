@@ -13,11 +13,11 @@ uint32_t EntityManager::create_entity(const std::vector<component*>& components)
 void EntityManager::add_component_to_entity(uint32_t id, component& comp)
 {
 	const std::string type = typeid(comp).name();
-	if (!_componentsByClassName.count(type))
-	{
-		_componentsByClassName[type] = std::vector<component*>{ &comp };
+	printf("added %s\n", type.c_str());
+	auto exists = _componentsByClassName[type].emplace(id, &comp);
+	if(!exists.second){
+		_componentsByClassName[type][id] = &comp;
 	}
-	_componentsByClassName[type].emplace(_componentsByClassName[type].begin() + id, &comp);
 }
 
 void EntityManager::remove_entity(uint32_t id)
