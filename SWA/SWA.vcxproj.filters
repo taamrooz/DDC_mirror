@@ -27,9 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -48,11 +45,11 @@
     <ClCompile Include="MenuManager.cpp">
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -68,8 +65,17 @@
     <ClInclude Include="MenuManager.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
-    <ClInclude Include="BaseMenu.h">
+    <ClInclude Include="BaseScene.h">
       <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="VelocityComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

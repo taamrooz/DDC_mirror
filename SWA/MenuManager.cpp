@@ -1,32 +1,32 @@
 #include "MenuManager.h"
 #include <utility>
-MenuManager::MenuManager() = default;
-MenuManager::MenuManager(std::vector<std::unique_ptr<BaseMenu>> menus) : menus{std::move(menus)} {}
+menu_manager::menu_manager() = default;
+menu_manager::menu_manager(std::vector<std::shared_ptr<base_scene>> menus) : menus{std::move(menus)} {}
 
-void MenuManager::addMenu(BaseMenu& menu)
+void menu_manager::add_menu(base_scene& menu)
 {
-	//menus.emplace_back(std::make_unique<BaseMenu>(menu));
+	menus.emplace_back(std::shared_ptr<base_scene>(&menu));
 }
-void MenuManager::deleteMenu(const std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<std::unique_ptr<BaseMenu>>>> index)
+void menu_manager::delete_menu(const std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<std::shared_ptr<base_scene>>>> index)
 {
 	menus.erase(index);
 }
-void MenuManager::pushMenu(BaseMenu& menu)
+void menu_manager::push_menu(base_scene& menu)
 {
-	//activeMenus.push(std::make_unique<BaseMenu>(menu));
+	activeMenus.push(std::shared_ptr<base_scene>(&menu));
 }
-void MenuManager::popMenu()
+void menu_manager::pop_menu()
 {
 	activeMenus.pop();
 }
 
-void MenuManager::draw()
+void menu_manager::draw()
 {
 	const auto currentMenu = &activeMenus.top();
 	currentMenu->get()->render();
 }
 
-void MenuManager::input()
+void menu_manager::input()
 {
 	const auto currentMenu = &activeMenus.top();
 	currentMenu->get()->input();

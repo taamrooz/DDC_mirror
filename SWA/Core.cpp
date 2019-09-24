@@ -85,7 +85,7 @@ SDL_Renderer* Core::get_renderer() const
 	return renderer;
 }
 
-Core* Core::getInstance()
+Core* Core::get_instance()
 {
 	return &Core::Instance;
 }

@@ -1,21 +1,21 @@
 #pragma once
 #include <stack>
 #include <memory>
-#include "BaseMenu.h"
+#include "BaseScene.h"
 #include <vector>
 
-class MenuManager
+class menu_manager
 {
 private:
-	std::vector<std::unique_ptr<BaseMenu>> menus;
-	std::stack<std::unique_ptr<BaseMenu>> activeMenus;
+	std::vector<std::shared_ptr<base_scene>> menus;
+	std::stack<std::shared_ptr<base_scene>> activeMenus;
 public:
-	MenuManager();
-	MenuManager(std::vector<std::unique_ptr<BaseMenu>> menus);
-	void addMenu(BaseMenu& menu);
-	void deleteMenu(std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<std::unique_ptr<BaseMenu>>>> index);
-	void pushMenu(BaseMenu& menu);
-	void popMenu();
+	menu_manager();
+	menu_manager(std::vector<std::shared_ptr<base_scene>> menus);
+	void add_menu(base_scene& menu);
+	void delete_menu(std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<std::shared_ptr<base_scene>>>> index);
+	void push_menu(base_scene& menu);
+	void pop_menu();
 	void draw();
 	void input();
 };

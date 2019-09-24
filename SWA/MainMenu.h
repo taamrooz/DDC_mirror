@@ -1,11 +1,11 @@
 #pragma once
-#include "BaseMenu.h"
+#include "BaseScene.h"
 #include "MenuManager.h"
-class MainMenu :
-	virtual public BaseMenu
+class main_menu :
+	virtual public base_scene
 {
 public:
-	~MainMenu();
-	MainMenu();
+	~main_menu();
+	main_menu();
 };
 
