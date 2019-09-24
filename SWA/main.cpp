@@ -36,5 +36,12 @@ int main(int argc, char* argv[])
 	{
 		std::cout << l << std::endl;
 	}
+
+
+	const int SCREEN_WIDTH = 640;
+	const int SCREEN_HEIGHT = 480;
+
+
+
 	return 0;
 }

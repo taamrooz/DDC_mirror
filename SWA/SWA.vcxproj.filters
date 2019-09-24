@@ -114,4 +114,21 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\scratch.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\beat.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\high.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\low.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\medium.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
 </Project>
