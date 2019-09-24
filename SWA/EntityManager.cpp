@@ -2,21 +2,20 @@
 
 uint32_t EntityManager::create_entity(const std::vector<Component*>& components)
 {
-	_entities.push_back(_id);
+	_entities.push_back(++_id);
 	for (Component* component : components)
 	{
 		add_component_to_entity(_id, *component);
 	}
-	return _id++;
+	return _id;
 }
 
 void EntityManager::add_component_to_entity(uint32_t id, Component& comp)
 {
-	const std::string type = typeid(comp).name();
-	printf("added %s\n", type.c_str());
+	const auto type = typeid(comp).name();
 	auto exists = _componentsByClassName[type].emplace(id, &comp);
 	if(!exists.second){
-		_componentsByClassName[type][id] = &comp;
+		_componentsByClassName[type].at(id) = &comp;
 	}
 }
 

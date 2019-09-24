@@ -9,13 +9,13 @@
 class EntityManager
 {
 private:
-	uint32_t _id = 0;
+	int _id = -1;
 	std::vector<uint32_t> _entities;
 	std::map < std::string, std::map<uint32_t, Component*>> _componentsByClassName;
 
 public:
 	uint32_t create_entity(const std::vector<Component*>&);
-	void add_component_to_entity(uint32_t, Component&);
+	void add_component_to_entity(uint32_t, Component &comp);
 	void remove_entity(uint32_t id);
 
 	
@@ -43,7 +43,6 @@ public:
 				list.push_back(i->first);
 			}
 		}
-		
 		return list;
 	}
 

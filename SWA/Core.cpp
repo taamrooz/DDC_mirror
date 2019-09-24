@@ -1,6 +1,8 @@
 #include "Core.h"
 #include "MoveSystem.h"
-
+#include "VelocityComponent.h"
+#include "PositionComponent.h"
+#include <Windows.h>
 Core Core::instance_;
 Core::Core() = default;
 
@@ -45,6 +47,32 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	loadMedia();
 	manager_ = std::make_unique<EntityManager>();
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
+	auto c = PositionComponent(50, 25);
+	auto c2 = PositionComponent(100, 250);
+	auto v = VelocityComponent(25.14, -51);
+	auto v2 = VelocityComponent(10.99, 0);
+	std::vector<Component*> components;
+	components.push_back(&c);
+	auto id = manager_->create_entity(components);
+	std::vector<Component*> components2;
+	auto id2 = manager_->create_entity(components2);
+
+	manager_->add_component_to_entity(id, v);
+	manager_->add_component_to_entity(id2, v2);
+	manager_->add_component_to_entity(id2, c2);
+
+
+	auto createdComponent = manager_->get_component<PositionComponent>(id);
+	std::cout << createdComponent.x << std::endl;
+	std::cout << createdComponent.y << std::endl;
+	auto createdComponent2 = manager_->get_component<VelocityComponent>(id);
+	std::cout << createdComponent2.dx << std::endl;
+	std::cout << createdComponent2.dy << std::endl;
+	auto list = manager_->get_all_entities<VelocityComponent>();
+	for (auto l : list)
+	{
+		std::cout << l << std::endl;
+	}
 	return true;
 }
 
@@ -63,22 +91,22 @@ void Core::input(SDL_Event& event)
 			{
 				//Play high sound effect
 			case SDLK_1:
-				Mix_PlayChannel(-1, gHigh, 0);
+				Mix_PlayChannel(0, gHigh, 0);
 				break;
 
 				//Play medium sound effect
 			case SDLK_2:
-				Mix_PlayChannel(-1, gMedium, 0);
+				Mix_PlayChannel(0, gMedium, 0);
 				break;
 
 				//Play low sound effect
 			case SDLK_3:
-				Mix_PlayChannel(-1, gLow, 0);
+				Mix_PlayChannel(0, gLow, 0);
 				break;
 
 				//Play scratch sound effect
 			case SDLK_4:
-				Mix_PlayChannel(-1, gScratch, 0);
+				Mix_PlayChannel(0, gScratch, 0);
 				break;
 
 			case SDLK_9:
@@ -86,7 +114,7 @@ void Core::input(SDL_Event& event)
 				if (Mix_PlayingMusic() == 0)
 				{
 					//Play the music
-					Mix_PlayMusic(gMusic, -1);
+					Mix_PlayMusic(gMusic, 0);
 				}
 				//If music is being played
 				else
@@ -110,6 +138,7 @@ void Core::input(SDL_Event& event)
 				//Stop the music
 				Mix_HaltMusic();
 				break;
+			default: break;
 			}
 		}
 	}
@@ -173,8 +202,9 @@ void Core::cleanup()
 	}
 	if (manager_)
 	{
-
+		manager_ = nullptr;
 	}
+	systems_.clear();
 
 	//Free the sound effects
 	Mix_FreeChunk(gScratch);
@@ -193,6 +223,7 @@ void Core::cleanup()
 	Mix_Quit();
 	IMG_Quit();
 	SDL_Quit();
+	Sleep(5000);
 }
 
 bool Core::loadMedia()

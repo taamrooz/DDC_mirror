@@ -1,14 +1,13 @@
 #pragma once
 #include <iostream>
 
-#include "SDL.h"
-#include "SDL_image.h"
-#include "EntityManager.h"
-#include "BaseSystem.h"
+
 #include <SDL.h>
 #include <SDL_image.h>
+#include "EntityManager.h"
+#include "BaseSystem.h"
 #include <SDL_mixer.h>
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 
 class Core
@@ -22,13 +21,13 @@ private:
 	SDL_Renderer* renderer_ = nullptr;
 	SDL_Surface* surf_ = nullptr;
 	//The music that will be played
-	Mix_Music* gMusic = NULL;
+	Mix_Music* gMusic = nullptr;
 
 	//The sound effects that will be used
-	Mix_Chunk* gScratch = NULL;
-	Mix_Chunk* gHigh = NULL;
-	Mix_Chunk* gMedium = NULL;
-	Mix_Chunk* gLow = NULL;
+	Mix_Chunk* gScratch = nullptr;
+	Mix_Chunk* gHigh = nullptr;
+	Mix_Chunk* gMedium = nullptr;
+	Mix_Chunk* gLow = nullptr;
 	Core();
 	
 	bool init(const char*, int, int, bool);
