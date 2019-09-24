@@ -5,6 +5,12 @@ extern "C"
 #endif
 int main()
 {
+	const int FPS = 60;
+	const int frameDelay = 1000 / FPS;
+
+	Uint32 frameStart;
+	int frameTime;
+
 	SDL_Surface* imageSurface = NULL;
 	SDL_Surface* windowSurface = NULL;
 
@@ -20,7 +26,7 @@ int main()
 	}
 
 	SDL_Event windowEvent;
-	imageSurface = SDL_LoadBMP("dot.bmp");
+	imageSurface = SDL_LoadBMP("Land.bmp");
 
 	if (imageSurface == NULL) {
 		std::cout << "SDL could not load image! SDL Error: " << SDL_GetError() << std::endl;
@@ -34,8 +40,19 @@ int main()
 			}
 		}
 
+		frameStart = SDL_GetTicks();
+
 		SDL_BlitSurface(imageSurface, NULL, windowSurface, NULL);
 		SDL_UpdateWindowSurface(window);
+
+		frameTime = SDL_GetTicks() - frameStart;
+
+		std::cout << "FrameTime: " << frameTime << std::endl;
+		std::cout << "FrameDelay: " << frameDelay << std::endl;
+
+		if (frameDelay > frameTime) {
+			SDL_Delay(frameDelay - frameTime);
+		}
 
 	}
 
