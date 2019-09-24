@@ -156,13 +156,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseSystem.h" />
+    <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ControllableComponent.h" />
+    <ClInclude Include="DamagingComponent.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
+    <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="PositionComponent.h" />
+    <ClInclude Include="ShootingComponent.h" />
     <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

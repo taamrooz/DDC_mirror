@@ -1,7 +1,7 @@
 #pragma once
-class component
+class Component
 {
 public:
-	virtual ~component() {};
+	virtual ~Component() {};
 };
 
