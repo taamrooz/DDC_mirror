@@ -2,72 +2,17 @@
 and may not be redistributed without written permission.*/
 
 //Using SDL, SDL_image, standard IO, and strings
-#include <SDL.h>
-#include <SDL_image.h>
-#include <stdio.h>
-#include <string>
+#include "AnimationFacade.h"
 
-//Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
 
 //Texture wrapper class
-class LTexture
-{
-public:
-	//Initializes variables
-	LTexture();
-
-	//Deallocates memory
-	~LTexture();
-
-	//Loads image at specified path
-	bool loadFromFile(std::string path);
-
-	//Deallocates texture
-	void free();
-
-	//Set color modulation
-	void setColor(Uint8 red, Uint8 green, Uint8 blue);
-
-	//Set blending
-	void setBlendMode(SDL_BlendMode blending);
-
-	//Set alpha modulation
-	void setAlpha(Uint8 alpha);
-
-	//Renders texture at given point
-	void render(int x, int y, SDL_Rect* clip = NULL);
-
-	//Gets image dimensions
-	int getWidth();
-	int getHeight();
-
-private:
-	//The actual hardware texture
-	SDL_Texture* mTexture;
-
-	//Image dimensions
-	int mWidth;
-	int mHeight;
-};
-
-//Starts up SDL and creates window
-bool init();
-
-//Loads media
-bool loadMedia(std::string path);
 
 
-//The window we'll be rendering to
+	//The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
-
-//Walking animation
-
-
 
 LTexture::LTexture()
 {
@@ -110,7 +55,7 @@ bool LTexture::loadFromFile(std::string path)
 		else
 		{
 			//Get image dimensions
-			
+
 			mWidth = loadedSurface->w;
 			mHeight = loadedSurface->h;
 		}
@@ -162,8 +107,8 @@ void LTexture::render(int x, int y, SDL_Rect* clip)
 	//Set clip rendering dimensions
 	if (clip != NULL)
 	{
-		renderQuad.w = clip->w;
-		renderQuad.h = clip->h;
+		renderQuad.w = clip->w * 4;
+		renderQuad.h = clip->h * 4;
 	}
 
 	//Render to screen
@@ -180,85 +125,17 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
-bool init()
-{
-	//Initialization flag
-	bool success = true;
-
-	//Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
-		success = false;
-	}
-	else
-	{
-		//Set texture filtering to linear
-		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
-		{
-			printf("Warning: Linear texture filtering not enabled!");
-		}
-
-		//Create window
-		gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (gWindow == NULL)
-		{
-			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
-			success = false;
-		}
-		else
-		{
-			//Create vsynced renderer for window
-			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-			if (gRenderer == NULL)
-			{
-				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-				success = false;
-			}
-			else
-			{
-				//Initialize renderer color
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-				//Initialize PNG loading
-				int imgFlags = IMG_INIT_PNG;
-				if (!(IMG_Init(imgFlags) & imgFlags))
-				{
-					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-					success = false;
-				}
-			}
-		}
-	}
-
-	return success;
-}
-
-
-
-class AnimationFacade {
-public:
-	AnimationFacade(int frames, std::string path);
-	void updateAnimation();
-	bool loadMedia(std::string path);
-	int CURRENT_FRAME = 0;
-
-	int WALKING_ANIMATION_FRAMES = 4;
-	SDL_Rect gSpriteClips[4];
-	LTexture gSpriteSheetTexture;
-};
-
-AnimationFacade::AnimationFacade(int frames, std::string path) {
-
+AnimationFacade::AnimationFacade(int frames, std::string path, SDL_Window* window, SDL_Renderer* renderer) {
 	WALKING_ANIMATION_FRAMES = frames;
 	//Start up SDL and create window
-
-		//Load media
-		if (!loadMedia(path))
-		{
-			printf("Failed to load media!\n");
-		}
-
+	gWindow = window;
+	gRenderer = SDL_GetRenderer(window);
+	gSpriteClips = std::vector<SDL_Rect>(frames);
+	//Load media
+	if (!loadMedia(path))
+	{
+		printf("Failed to load media!\n");
+	}
 }
 
 bool AnimationFacade::loadMedia(std::string path)
@@ -289,31 +166,19 @@ bool AnimationFacade::loadMedia(std::string path)
 
 void AnimationFacade::updateAnimation()
 {
+	//Render current frame
+	SDL_Rect* currentClip = &gSpriteClips[CURRENT_FRAME / 4];
 
-			//Event handler
-			SDL_Event e;
+	gSpriteSheetTexture.render((640 - currentClip->w) / 2, (480 - currentClip->h) / 2, currentClip);
+	//SDL_RenderPresent(gRenderer);
 
-			//While application is running
+	//Go to next frame
+	CURRENT_FRAME++;
 
-
-				//Clear screen
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-				SDL_RenderClear(gRenderer);
-
-				//Render current frame
-				SDL_Rect* currentClip = &gSpriteClips[CURRENT_FRAME / 4];
-				gSpriteSheetTexture.render((SCREEN_WIDTH - currentClip->w) / 2, (SCREEN_HEIGHT - currentClip->h) / 2, currentClip);
-
-				//Update screen
-				SDL_RenderPresent(gRenderer);
-
-				//Go to next frame
-				CURRENT_FRAME++;
-
-				//Cycle animation
-				if (CURRENT_FRAME / 4 >= WALKING_ANIMATION_FRAMES)
-				{
-					CURRENT_FRAME = 0;
-				}
+	//Cycle animation
+	if (CURRENT_FRAME / 4 >= WALKING_ANIMATION_FRAMES)
+	{
+		CURRENT_FRAME = 0;
+	}
 
 }
