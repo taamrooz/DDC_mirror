@@ -58,8 +58,6 @@ bool init();
 //Loads media
 bool loadMedia(std::string path);
 
-//Frees media and shuts down SDL
-void close();
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -68,9 +66,7 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 //Walking animation
-int WALKING_ANIMATION_FRAMES = 4;
-SDL_Rect gSpriteClips[4];
-LTexture gSpriteSheetTexture;
+
 
 
 LTexture::LTexture()
@@ -166,8 +162,8 @@ void LTexture::render(int x, int y, SDL_Rect* clip)
 	//Set clip rendering dimensions
 	if (clip != NULL)
 	{
-		renderQuad.w = clip->w*4;
-		renderQuad.h = clip->h*4;
+		renderQuad.w = clip->w;
+		renderQuad.h = clip->h;
 	}
 
 	//Render to screen
@@ -238,7 +234,34 @@ bool init()
 	return success;
 }
 
-bool loadMedia(std::string path)
+
+
+class AnimationFacade {
+public:
+	AnimationFacade(int frames, std::string path);
+	void updateAnimation();
+	bool loadMedia(std::string path);
+	int CURRENT_FRAME = 0;
+
+	int WALKING_ANIMATION_FRAMES = 4;
+	SDL_Rect gSpriteClips[4];
+	LTexture gSpriteSheetTexture;
+};
+
+AnimationFacade::AnimationFacade(int frames, std::string path) {
+
+	WALKING_ANIMATION_FRAMES = frames;
+	//Start up SDL and create window
+
+		//Load media
+		if (!loadMedia(path))
+		{
+			printf("Failed to load media!\n");
+		}
+
+}
+
+bool AnimationFacade::loadMedia(std::string path)
 {
 	//Loading success flag
 	bool success = true;
@@ -264,89 +287,33 @@ bool loadMedia(std::string path)
 	return success;
 }
 
-void close()
+void AnimationFacade::updateAnimation()
 {
-	//Free loaded images
-	gSpriteSheetTexture.free();
-
-	//Destroy window	
-	SDL_DestroyRenderer(gRenderer);
-	SDL_DestroyWindow(gWindow);
-	gWindow = NULL;
-	gRenderer = NULL;
-
-	//Quit SDL subsystems
-	IMG_Quit();
-	SDL_Quit();
-}
-
-class AnimationFacade {
-public:
-	void startAnimation(int frames, std::string path);
-};
-void AnimationFacade::startAnimation(int frames, std::string path)
-{
-	WALKING_ANIMATION_FRAMES = frames;
-	//Start up SDL and create window
-	if (!init())
-	{
-		printf("Failed to initialize!\n");
-	}
-	else
-	{
-		//Load media
-		if (!loadMedia(path))
-		{
-			printf("Failed to load media!\n");
-		}
-		else
-		{
-			//Main loop flag
-			bool quit = false;
 
 			//Event handler
 			SDL_Event e;
 
-			//Current animation frame
-			int frame = 0;
-
 			//While application is running
-			while (!quit)
-			{
-				//Handle events on queue
-				while (SDL_PollEvent(&e) != 0)
-				{
-					//User requests quit
-					if (e.type == SDL_QUIT)
-					{
-						quit = true;
-					}
-				}
+
 
 				//Clear screen
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gRenderer);
 
 				//Render current frame
-				SDL_Rect* currentClip = &gSpriteClips[frame / 4];
+				SDL_Rect* currentClip = &gSpriteClips[CURRENT_FRAME / 4];
 				gSpriteSheetTexture.render((SCREEN_WIDTH - currentClip->w) / 2, (SCREEN_HEIGHT - currentClip->h) / 2, currentClip);
 
 				//Update screen
 				SDL_RenderPresent(gRenderer);
 
 				//Go to next frame
-				++frame;
+				CURRENT_FRAME++;
 
 				//Cycle animation
-				if (frame / 4 >= WALKING_ANIMATION_FRAMES)
+				if (CURRENT_FRAME / 4 >= WALKING_ANIMATION_FRAMES)
 				{
-					frame = 0;
+					CURRENT_FRAME = 0;
 				}
-			}
-		}
-	}
-
-	//Free resources and close SDL
-	close();
 
 }
