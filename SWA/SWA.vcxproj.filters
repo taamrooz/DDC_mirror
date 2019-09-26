@@ -37,6 +37,9 @@
     <Filter Include="Header Files\Entities">
       <UniqueIdentifier>{1e96fa31-586c-4de0-b912-344c49e2c8e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{a5541091-05d7-469c-a7c0-d2534bf0c81c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -130,5 +133,8 @@
     <Media Include="assets\medium.wav">
       <Filter>Resource Files</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

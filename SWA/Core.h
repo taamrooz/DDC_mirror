@@ -4,16 +4,18 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include "EntityManager.h"
-#include "BaseSystem.h"
-#include <SDL_mixer.h>
+//#include <SDL_mixer.h>
 #include <cstdio>
 #include <string>
+#include "EntityManager.h"
+#include "BaseSystem.h"
+#include "Audio.h"
 
 class Core
 {
 private:
 	static Core instance_;
+	//AudioManager* audio_manager;
 	std::vector<std::unique_ptr<BaseSystem>> systems_;
 	std::unique_ptr<EntityManager> manager_ = nullptr;
 	bool is_running_ = true;
@@ -24,7 +26,7 @@ private:
 	Mix_Music* gMusic = nullptr;
 
 	//The sound effects that will be used
-	Mix_Chunk* gScratch = nullptr;
+	std::string gScratch;
 	Mix_Chunk* gHigh = nullptr;
 	Mix_Chunk* gMedium = nullptr;
 	Mix_Chunk* gLow = nullptr;

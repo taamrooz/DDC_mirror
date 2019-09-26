@@ -38,13 +38,13 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 		return false;
 	}
 
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-	{
-		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+	if (!InitAudio()) {
 		return false;
 	}
-
+	    
 	loadMedia();
+
+
 	manager_ = std::make_unique<EntityManager>();
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	auto c = PositionComponent(50, 25);
@@ -106,7 +106,7 @@ void Core::input(SDL_Event& event)
 
 				//Play scratch sound effect
 			case SDLK_4:
-				Mix_PlayChannel(0, gScratch, 0);
+				PlayAudio(gScratch);
 				break;
 
 			case SDLK_9:
@@ -207,11 +207,11 @@ void Core::cleanup()
 	systems_.clear();
 
 	//Free the sound effects
-	Mix_FreeChunk(gScratch);
+	//Mix_FreeChunk(gScratch);
 	Mix_FreeChunk(gHigh);
 	Mix_FreeChunk(gMedium);
 	Mix_FreeChunk(gLow);
-	gScratch = NULL;
+	//gScratch = NULL;
 	gHigh = NULL;
 	gMedium = NULL;
 	gLow = NULL;
@@ -240,12 +240,12 @@ bool Core::loadMedia()
 	}
 
 	//Load sound effects
-	gScratch = Mix_LoadWAV("assets/scratch.wav");
-	if (gScratch == NULL)
-	{
-		printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
-		success = false;
-	}
+	gScratch = "scratch.wav";
+	//if (gScratch == NULL)
+	//{
+	//	printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+	//	success = false;
+	//}
 
 	gHigh = Mix_LoadWAV("assets/high.wav");
 	if (gHigh == NULL)
