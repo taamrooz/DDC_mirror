@@ -23,13 +23,13 @@ private:
 	SDL_Renderer* renderer_ = nullptr;
 	SDL_Surface* surf_ = nullptr;
 	//The music that will be played
-	Mix_Music* gMusic = nullptr;
+	std::string gMusic;
 
 	//The sound effects that will be used
 	std::string gScratch;
-	Mix_Chunk* gHigh = nullptr;
-	Mix_Chunk* gMedium = nullptr;
-	Mix_Chunk* gLow = nullptr;
+	std::string gHigh;
+	std::string gMedium;
+	std::string gLow;
 	Core();
 	
 	bool init(const char*, int, int, bool);
@@ -37,7 +37,7 @@ private:
 	void update();
 	void render();
 	void cleanup();
-	bool loadMedia();
+	void loadMedia();
 public:
 	int execute(int argc, char* argv[]);
 	SDL_Renderer* get_renderer() const;

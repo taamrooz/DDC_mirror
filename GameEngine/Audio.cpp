@@ -1,5 +1,8 @@
 #include "Audio.h"
 
+std::map<std::string, Mix_Chunk*> sound_effects;
+std::map<std::string, Mix_Music*> music;
+
 bool InitAudio() {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 	{
@@ -10,14 +13,30 @@ bool InitAudio() {
 }
 
 void PlayAudio(std::string filename) {
-	Mix_PlayChannel(0, FindAudio("./assets/" + filename), 0);
+	auto exists = sound_effects.find(filename);
+	if (exists != sound_effects.end()) {
+		Mix_PlayChannel(-1, sound_effects[filename], 0);
+	}
+	else {
+		auto audiofile = FindAudio("./assets/" + filename);
+		Mix_PlayChannel(-1, audiofile, 0);
+		sound_effects.emplace(filename, audiofile);
+	}
 }
 
 void PlayMusic(std::string filename) {
+	//Play music
 	if (Mix_PlayingMusic() == 0)
 	{
-		//Play the music
-		Mix_PlayMusic(FindMusic(filename), 0);
+		auto exists = music.find(filename);
+		if (exists != music.end()) {
+			Mix_PlayMusic(music[filename], 0);
+		}
+		else {
+			auto audiofile = FindMusic("./assets/" + filename);
+			Mix_PlayMusic(audiofile, 0);
+			music.emplace(filename, audiofile);
+		}
 	}
 	//If music is being played
 	else
@@ -57,4 +76,16 @@ Mix_Music* FindMusic(std::string filename) {
 		printf("Failed to load sound effect! SDL_mixer Error: %s\n", Mix_GetError());
 	}
 	return music;
+}
+
+void CloseAudio() {
+	for (auto i = sound_effects.begin(); i != sound_effects.end(); ++i)
+	{
+		Mix_FreeChunk(i->second);
+	}
+	for (auto i = music.begin(); i != music.end(); ++i)
+	{
+		Mix_FreeMusic(i->second);
+	}
+	Mix_Quit();
 }
