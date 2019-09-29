@@ -1,7 +1,5 @@
 #include "Core.h"
-#include "EntityManager.h"
-#include "PositionComponent.h"
-#include "VelocityComponent.h"
+#include "crtdbg.h"
 #undef main
 #ifdef __cplusplus
 extern "C"
@@ -9,4 +7,6 @@ extern "C"
 int main(int argc, char* argv[])
 {
 	Core::get_instance()->execute(argc, argv);
+	_CrtDumpMemoryLeaks();
+	return 0;
 }

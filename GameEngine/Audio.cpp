@@ -12,28 +12,28 @@ bool InitAudio() {
 	return true;
 }
 
-void PlayAudio(std::string filename) {
-	auto exists = sound_effects.find(filename);
+void PlayAudio(const std::string filename) {
+	const auto exists = sound_effects.find(filename);
 	if (exists != sound_effects.end()) {
 		Mix_PlayChannel(-1, sound_effects[filename], 0);
 	}
 	else {
-		auto audiofile = FindAudio("./assets/" + filename);
+		const auto audiofile = FindAudio("./assets/" + filename);
 		Mix_PlayChannel(-1, audiofile, 0);
 		sound_effects.emplace(filename, audiofile);
 	}
 }
 
-void PlayMusic(std::string filename) {
+void PlayMusic(const std::string filename) {
 	//Play music
 	if (Mix_PlayingMusic() == 0)
 	{
-		auto exists = music.find(filename);
+		const auto exists = music.find(filename);
 		if (exists != music.end()) {
 			Mix_PlayMusic(music[filename], 0);
 		}
 		else {
-			auto audiofile = FindMusic("./assets/" + filename);
+			const auto audiofile = FindMusic("./assets/" + filename);
 			Mix_PlayMusic(audiofile, 0);
 			music.emplace(filename, audiofile);
 		}
@@ -60,18 +60,18 @@ void StopMusic() {
 	Mix_HaltMusic();
 }
 
-Mix_Chunk* FindAudio(std::string filename) {
-	auto sound_effect = Mix_LoadWAV(filename.c_str());
-	if (sound_effect == NULL)
+Mix_Chunk* FindAudio(const std::string filename) {
+	const auto sound_effect = Mix_LoadWAV(filename.c_str());
+	if (sound_effect == nullptr)
 	{
 		printf("Failed to load sound effect! SDL_mixer Error: %s\n", Mix_GetError());
 	}
 	return sound_effect;
 }
 
-Mix_Music* FindMusic(std::string filename) {
-	auto music = Mix_LoadMUS(filename.c_str());
-	if (music == NULL)
+Mix_Music* FindMusic(const std::string filename) {
+	const auto music = Mix_LoadMUS(filename.c_str());
+	if (music == nullptr)
 	{
 		printf("Failed to load sound effect! SDL_mixer Error: %s\n", Mix_GetError());
 	}

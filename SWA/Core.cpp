@@ -46,25 +46,20 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 
 	manager_ = std::make_unique<EntityManager>();
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
-	auto c = PositionComponent(50, 25);
-	auto c2 = PositionComponent(100, 250);
-	auto v = VelocityComponent(25.14, -51);
-	auto v2 = VelocityComponent(10.99, 0);
-	std::vector<Component*> components;
-	components.push_back(&c);
-	auto id = manager_->create_entity(components);
-	std::vector<Component*> components2;
-	auto id2 = manager_->create_entity(components2);
+	std::vector<std::shared_ptr<Component>> components;
+	components.push_back(std::make_shared<PositionComponent>(50, 25));
+	const auto id = manager_->create_entity(components);
+	const auto id2 = manager_->create_entity();
 
-	manager_->add_component_to_entity(id, v);
-	manager_->add_component_to_entity(id2, v2);
-	manager_->add_component_to_entity(id2, c2);
+	manager_->add_component_to_entity(id, std::make_shared<VelocityComponent>(14, -51));
+	manager_->add_component_to_entity(id2, std::make_shared<VelocityComponent>(10.99, 0));
+	manager_->add_component_to_entity(id2, std::make_shared<PositionComponent>(100, 250));
 
 
-	auto createdComponent = manager_->get_component<PositionComponent>(id);
+	const auto createdComponent = manager_->get_component<PositionComponent>(id);
 	std::cout << createdComponent.x << std::endl;
 	std::cout << createdComponent.y << std::endl;
-	auto createdComponent2 = manager_->get_component<VelocityComponent>(id);
+	const auto createdComponent2 = manager_->get_component<VelocityComponent>(id);
 	std::cout << createdComponent2.dx << std::endl;
 	std::cout << createdComponent2.dy << std::endl;
 	auto list = manager_->get_all_entities<VelocityComponent>();
@@ -189,7 +184,6 @@ void Core::cleanup()
 
 	IMG_Quit();
 	SDL_Quit();
-	Sleep(5000);
 }
 
 void Core::loadMedia()
@@ -197,8 +191,8 @@ void Core::loadMedia()
 	//Load music
 	gMusic = "beat.wav";
 	gScratch = "scratch.wav";
-	gHigh = "high.wav";	
-	gMedium = "medium.wav";	
+	gHigh = "high.wav";
+	gMedium = "medium.wav";
 	gLow = "low.wav";
 }
 
