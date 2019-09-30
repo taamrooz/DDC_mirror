@@ -156,8 +156,10 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
+    <ClCompile Include="RenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="CollisionComponent.h" />
@@ -175,6 +177,7 @@
     <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="PositionComponent.h" />
+    <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ShootingComponent.h" />
     <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
@@ -192,6 +195,10 @@
     <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
       <Project>{31372a22-a0ca-4a66-92bb-b1c9a3f24eaf}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\wizard_move_f.png" />
+    <Image Include="assets\wizard_move_m.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
