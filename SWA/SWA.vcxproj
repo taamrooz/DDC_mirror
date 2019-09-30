@@ -146,16 +146,19 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="BaseSystem.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="Component.h" />
@@ -164,6 +167,8 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="InputComponent.h" />
+    <ClInclude Include="InputSystem.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="MenuManager.h" />

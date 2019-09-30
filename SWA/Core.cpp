@@ -1,9 +1,12 @@
 #include "Core.h"
 #include "MoveSystem.h"
+#include "InputSystem.h"
 #include "VelocityComponent.h"
 #include "PositionComponent.h"
 #include <Windows.h>
 #include "UserInput.h"
+#include "AudioSystem.h"
+
 Core Core::instance_;
 Core::Core() = default;
 
@@ -46,6 +49,9 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 
 
 	manager_ = std::make_unique<EntityManager>();
+	inputcomponent_ = std::make_unique<InputComponent>();
+	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), inputcomponent_.get(), *this));
+	systems_.push_back(std::make_unique<AudioSystem>(manager_.get(), inputcomponent_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	std::vector<std::shared_ptr<Component>> components;
 	components.push_back(std::make_shared<PositionComponent>(50, 25));
@@ -139,7 +145,8 @@ int Core::execute(int argc, char* argv[])
 	SDL_Event event;
 	while (is_running_)
 	{
-		input();
+		//input();
+
 		update();
 		render();
 		SDL_Delay(1);
@@ -194,3 +201,6 @@ void Core::loadMedia()
 	gLow = "low.wav";
 }
 
+void Core::StopGameLoop() {
+	is_running_ = false;
+}

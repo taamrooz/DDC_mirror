@@ -7,6 +7,7 @@
 #include "EntityManager.h"
 #include "BaseSystem.h"
 #include "Audio.h"
+#include "InputComponent.h"
 
 class Core
 {
@@ -14,6 +15,7 @@ private:
 	static Core instance_;
 	std::vector<std::unique_ptr<BaseSystem>> systems_;
 	std::unique_ptr<EntityManager> manager_ = nullptr;
+	std::unique_ptr<InputComponent> inputcomponent_ = nullptr;
 	bool is_running_ = true;
 	SDL_Window* window_ = nullptr;
 	SDL_Renderer* renderer_ = nullptr;
@@ -38,5 +40,6 @@ public:
 	int execute(int argc, char* argv[]);
 	SDL_Renderer* get_renderer() const;
 	static Core* get_instance();
+	void StopGameLoop();
 };
 
