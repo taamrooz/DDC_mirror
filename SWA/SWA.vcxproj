@@ -188,6 +188,9 @@
       <Project>{31372a22-a0ca-4a66-92bb-b1c9a3f24eaf}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\floor_ladder.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

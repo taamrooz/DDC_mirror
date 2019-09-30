@@ -129,6 +129,7 @@ void Core::update()
 void Core::render()
 {
 	SDL_RenderClear(renderer_);
+	loadTexture("./assets/floor_ladder.png", window_, 300, 200, 150, 150);
 	SDL_RenderPresent(renderer_);
 }
 

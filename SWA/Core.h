@@ -7,6 +7,7 @@
 #include "EntityManager.h"
 #include "BaseSystem.h"
 #include "Audio.h"
+#include "TextureRenderer.h"
 
 class Core
 {
