@@ -9,10 +9,14 @@
 #define ENGINE_API __declspec(dllimport)
 #endif
 
-extern "C" ENGINE_API bool InitAudio();
-extern "C" ENGINE_API Mix_Chunk* FindAudio(std::string);
-extern "C" ENGINE_API Mix_Music* FindMusic(std::string);
-extern "C" ENGINE_API void PlayAudio(std::string);
-extern "C" ENGINE_API void PlayMusic(std::string);
-extern "C" ENGINE_API void StopMusic();
-extern "C" ENGINE_API void CloseAudio(); 
+namespace Engine {
+
+	extern "C" ENGINE_API bool InitAudio();
+	extern "C" ENGINE_API Mix_Chunk* FindAudio(std::string);
+	extern "C" ENGINE_API Mix_Music* FindMusic(std::string);
+	extern "C" ENGINE_API void PlayAudio(std::string);
+	extern "C" ENGINE_API void PlayMusic(std::string);
+	extern "C" ENGINE_API void StopMusic();
+	extern "C" ENGINE_API void CloseAudio();
+
+}

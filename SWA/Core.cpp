@@ -38,7 +38,7 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 		return false;
 	}
 
-	if (!InitAudio()) {
+	if (!Engine::InitAudio()) {
 		return false;
 	}
 	loadMedia();
@@ -85,32 +85,32 @@ void Core::input(SDL_Event& event)
 			{
 				//Play high sound effect
 			case SDLK_1:
-				PlayAudio(gHigh);
+				Engine::PlayAudio(gHigh);
 				break;
 
 				//Play medium sound effect
 			case SDLK_2:
-				PlayAudio(gMedium);
+				Engine::PlayAudio(gMedium);
 				break;
 
 				//Play low sound effect
 			case SDLK_3:
-				PlayAudio(gLow);
+				Engine::PlayAudio(gLow);
 				break;
 
 				//Play scratch sound effect
 			case SDLK_4:
-				PlayAudio(gScratch);
+				Engine::PlayAudio(gScratch);
 				break;
 
 			case SDLK_9:
 				//Play the music
-				PlayMusic(gMusic);
+				Engine::PlayMusic(gMusic);
 				break;
 
 			case SDLK_0:
 				//Stop the music
-				StopMusic();
+				Engine::StopMusic();
 				break;
 			default: break;
 			}
@@ -180,7 +180,7 @@ void Core::cleanup()
 	}
 	systems_.clear();
 
-	CloseAudio(); //Free up audio chunks and execute MIX_Quit()
+	Engine::CloseAudio(); //Free up audio chunks and execute MIX_Quit()
 
 	IMG_Quit();
 	SDL_Quit();

@@ -3,7 +3,7 @@
 std::map<std::string, Mix_Chunk*> sound_effects;
 std::map<std::string, Mix_Music*> music;
 
-bool InitAudio() {
+bool Engine::InitAudio() {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 	{
 		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
@@ -12,7 +12,7 @@ bool InitAudio() {
 	return true;
 }
 
-void PlayAudio(const std::string filename) {
+void Engine::PlayAudio(const std::string filename) {
 	const auto exists = sound_effects.find(filename);
 	if (exists != sound_effects.end()) {
 		Mix_PlayChannel(-1, sound_effects[filename], 0);
@@ -24,7 +24,7 @@ void PlayAudio(const std::string filename) {
 	}
 }
 
-void PlayMusic(const std::string filename) {
+void Engine::PlayMusic(const std::string filename) {
 	//Play music
 	if (Mix_PlayingMusic() == 0)
 	{
@@ -56,11 +56,11 @@ void PlayMusic(const std::string filename) {
 	}
 }
 
-void StopMusic() {
+void Engine::StopMusic() {
 	Mix_HaltMusic();
 }
 
-Mix_Chunk* FindAudio(const std::string filename) {
+Mix_Chunk* Engine::FindAudio(const std::string filename) {
 	const auto sound_effect = Mix_LoadWAV(filename.c_str());
 	if (sound_effect == nullptr)
 	{
@@ -69,7 +69,7 @@ Mix_Chunk* FindAudio(const std::string filename) {
 	return sound_effect;
 }
 
-Mix_Music* FindMusic(const std::string filename) {
+Mix_Music* Engine::FindMusic(const std::string filename) {
 	const auto music = Mix_LoadMUS(filename.c_str());
 	if (music == nullptr)
 	{
@@ -78,7 +78,7 @@ Mix_Music* FindMusic(const std::string filename) {
 	return music;
 }
 
-void CloseAudio() {
+void Engine::CloseAudio() {
 	for (auto i = sound_effects.begin(); i != sound_effects.end(); ++i)
 	{
 		Mix_FreeChunk(i->second);
