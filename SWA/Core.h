@@ -29,7 +29,7 @@ private:
 	Core();
 	
 	bool init(const char*, int, int, bool);
-	void input(SDL_Event& event);
+	void input();
 	void update();
 	void render();
 	void cleanup();

@@ -11,12 +11,12 @@
 
 namespace Engine {
 
-	extern "C" ENGINE_API bool InitAudio();
-	extern "C" ENGINE_API Mix_Chunk* FindAudio(std::string);
-	extern "C" ENGINE_API Mix_Music* FindMusic(std::string);
-	extern "C" ENGINE_API void PlayAudio(std::string);
-	extern "C" ENGINE_API void PlayMusic(std::string);
-	extern "C" ENGINE_API void StopMusic();
-	extern "C" ENGINE_API void CloseAudio();
+	ENGINE_API bool InitAudio();
+	ENGINE_API Mix_Chunk* FindAudio(std::string);
+	ENGINE_API Mix_Music* FindMusic(std::string);
+	ENGINE_API void PlayAudio(std::string);
+	ENGINE_API void PlayMusic(std::string);
+	ENGINE_API void StopMusic();
+	ENGINE_API void CloseAudio();
 
 }

@@ -3,6 +3,7 @@
 #include "VelocityComponent.h"
 #include "PositionComponent.h"
 #include <Windows.h>
+#include "UserInput.h"
 Core Core::instance_;
 Core::Core() = default;
 
@@ -70,50 +71,47 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	return true;
 }
 
-void Core::input(SDL_Event& event)
+void Core::input()
 {
-	while (SDL_PollEvent(&event) != 0)
+	auto user_inputs = Engine::GetInputs();
+	if (!user_inputs.second) {
+		is_running_ = false;
+		return;
+	}
+	for (const auto& keycode : user_inputs.first)
 	{
-		if (event.type == SDL_QUIT)
+		switch (keycode)
 		{
-			is_running_ = false;
-		}
-		//Handle key press
-		else if (event.type == SDL_KEYDOWN)
-		{
-			switch (event.key.keysym.sym)
-			{
-				//Play high sound effect
-			case SDLK_1:
-				Engine::PlayAudio(gHigh);
-				break;
+			//Play high sound effect
+		case SDLK_1:
+			Engine::PlayAudio(gHigh);
+			break;
 
-				//Play medium sound effect
-			case SDLK_2:
-				Engine::PlayAudio(gMedium);
-				break;
+			//Play medium sound effect
+		case SDLK_2:
+			Engine::PlayAudio(gMedium);
+			break;
 
-				//Play low sound effect
-			case SDLK_3:
-				Engine::PlayAudio(gLow);
-				break;
+			//Play low sound effect
+		case SDLK_3:
+			Engine::PlayAudio(gLow);
+			break;
 
-				//Play scratch sound effect
-			case SDLK_4:
-				Engine::PlayAudio(gScratch);
-				break;
+			//Play scratch sound effect
+		case SDLK_4:
+			Engine::PlayAudio(gScratch);
+			break;
 
-			case SDLK_9:
-				//Play the music
-				Engine::PlayMusic(gMusic);
-				break;
+		case SDLK_9:
+			//Play the music
+			Engine::PlayMusic(gMusic);
+			break;
 
-			case SDLK_0:
-				//Stop the music
-				Engine::StopMusic();
-				break;
-			default: break;
-			}
+		case SDLK_0:
+			//Stop the music
+			Engine::StopMusic();
+			break;
+		default: break;
 		}
 	}
 }
@@ -141,7 +139,7 @@ int Core::execute(int argc, char* argv[])
 	SDL_Event event;
 	while (is_running_)
 	{
-		input(event);
+		input();
 		update();
 		render();
 		SDL_Delay(1);
