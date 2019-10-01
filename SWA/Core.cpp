@@ -92,11 +92,6 @@ int Core::execute(int argc, char* argv[])
 	return 1;
 }
 
-SDL_Renderer* Core::get_renderer() const
-{
-	return renderer_;
-}
-
 Core* Core::get_instance()
 {
 	return &Core::instance_;
