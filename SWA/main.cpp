@@ -1,6 +1,8 @@
 #include "Core.h"
 #include "crtdbg.h"
+#ifdef _DEBUG
 #undef main
+#endif
 #ifdef __cplusplus
 extern "C"
 #endif
