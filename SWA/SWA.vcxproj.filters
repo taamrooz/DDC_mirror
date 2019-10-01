@@ -16,15 +16,33 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{9f602cfd-4871-4e09-be61-06478739211a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Menus">
+      <UniqueIdentifier>{45984645-aeee-4098-81ac-001b1a8be087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{e3e9bcb8-139d-42fd-9287-7d7386bf26e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Menus">
+      <UniqueIdentifier>{c8c1ceb3-ef53-4cf0-952e-a583211bd853}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{5e6080ad-8792-4da7-a769-ffbdc314b703}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Systems">
+      <UniqueIdentifier>{f85b48c3-fde4-40a7-8ad6-6f6a27e80059}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{da461466-a043-41d7-8862-d665fd8099a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{1e96fa31-586c-4de0-b912-344c49e2c8e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{a5541091-05d7-469c-a7c0-d2534bf0c81c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
@@ -33,19 +51,122 @@
     <ClCompile Include="Core.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuManager.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="System.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuManager.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScene.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="VelocityComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllableComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DamagingComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MoneyComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootingComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="InputComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\scratch.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\beat.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\high.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\low.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\medium.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\wizard_move_f.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\wizard_move_m.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

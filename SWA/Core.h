@@ -1,26 +1,35 @@
 #pragma once
 #include <iostream>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <cstdio>
+#include <string>
+#include "EntityManager.h"
+#include "BaseSystem.h"
+#include "Audio.h"
+#include "InputComponent.h"
+#include "AnimationComponent.h"
+#include "VelocityComponent.h"
+#include "PositionComponent.h"
 
-#include "SDL2/SDL.h"
-#include "SDL_image.h"
 class Core
 {
 private:
-	static Core Instance;
-	bool isRunning = true;
-	SDL_Window* window = nullptr;
-	SDL_Renderer* renderer = nullptr;
-	SDL_Surface* surf = nullptr;
+	static Core instance_;
+	std::vector<std::unique_ptr<BaseSystem>> systems_;
+	std::unique_ptr<EntityManager> manager_ = nullptr;
+	std::unique_ptr<InputComponent> input_component_ = nullptr;
+	bool is_running_ = true;
+
 	Core();
-	
 	bool init(const char*, int, int, bool);
-	void input(const SDL_Event&);
 	void update();
-	void render();
 	void cleanup();
 public:
 	int execute(int argc, char* argv[]);
-	SDL_Renderer* get_renderer() const;
-	static Core* getInstance();
+
+
+	static Core* get_instance();
+	void StopGameLoop();
 };
 

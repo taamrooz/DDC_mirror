@@ -1,79 +1,84 @@
 #include "Core.h"
+#include "MoveSystem.h"
+#include "InputSystem.h"
+#include "VelocityComponent.h"
+#include "PositionComponent.h"
+#include <Windows.h>
+#include "UserInput.h"
+#include "AudioSystem.h"
+#include <Renderer.h>
+#include "RenderSystem.h"
+#include "AnimationComponent.h"
 
-Core Core::Instance;
-Core::Core()
-= default;
+Core Core::instance_;
+Core::Core() = default;
 
 bool Core::init(const char* title, int width, int height, bool fullscreen)
 {
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		std::cout << "Unable to initialize SDL" << std::endl;
+	if (!Engine::InitRenderer("PoC", false, 800, 600)) {
 		return false;
 	}
-	auto flags = 0;
-	if(fullscreen)
-	{
-		flags = SDL_WINDOW_FULLSCREEN;
-	}
-	if((window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags)) == nullptr)
-	{
-		std::cout << "Unable to initialize Window" << std::endl;
-		return false;
-	}
-	surf = SDL_GetWindowSurface(window);
-	if((renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
-	{
-		std::cout << "Unable to initialize renderer" << std::endl;
+	if (!Engine::InitAudio()) {
 		return false;
 	}
 
-	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-	if(!(IMG_Init(IMG_INIT_PNG) == IMG_INIT_PNG))
+	manager_ = std::make_unique<EntityManager>();
+	input_component_ = std::make_unique<InputComponent>();
+	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), input_component_.get(), *this));
+	systems_.push_back(std::make_unique<AudioSystem>(manager_.get(), input_component_.get()));
+	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
+
+	std::vector<Component*> components;
+	//components.push_back();
+	const auto id = manager_->create_entity(components);
+	const auto id2 = manager_->create_entity();
+	
+	auto v1 = std::make_shared<VelocityComponent>(14, -51);
+	auto p1 = std::make_shared<PositionComponent>(50, 25);
+	auto v2 = std::make_shared<VelocityComponent>(10.99, 0);
+	auto p2 = std::make_shared<PositionComponent>(100, 250);
+	auto a1 = std::make_shared<AnimationComponent>("wizard_move_m.png", 4);
+	manager_->add_component_to_entity(id, v1);
+	manager_->add_component_to_entity(id, p1);
+	manager_->add_component_to_entity(id2, v2);
+	manager_->add_component_to_entity(id2, p2);
+	manager_->add_component_to_entity(id, a1);
+
+	const auto createdComponent = manager_->get_component<PositionComponent>(id2);
+	std::cout << createdComponent.x << std::endl;
+	std::cout << createdComponent.y << std::endl;
+	const auto createdComponent2 = manager_->get_component<VelocityComponent>(id2);
+	std::cout << createdComponent2.dx << std::endl;
+	std::cout << createdComponent2.dy << std::endl;
+	auto list = manager_->get_all_entities<VelocityComponent>();
+	for (auto l : list)
 	{
-		std::cout << IMG_GetError() << std::endl;
-		std::cout << "Unable to initialize Image" << std::endl;
-		return false;
+		std::cout << l << std::endl;
 	}
 	return true;
 }
 
-void Core::input(const SDL_Event &event)
-{
-	
-}
-
 void Core::update()
 {
-	
-}
-
-void Core::render()
-{
-	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
+	for (auto& system : systems_)
+	{
+		system->update(1);
+	}
 }
 
 int Core::execute(int argc, char* argv[])
 {
-	if(!init("Playground", 800, 600, false))
+	if (!init("Playground", 800, 600, false))
 	{
 		return 0;
 	}
-	SDL_Event event;
-	while(isRunning)
+
+	while (is_running_)
 	{
-		while(SDL_PollEvent(&event) != 0)
-		{
-			input(event);
-			if(event.type == SDL_QUIT)
-			{
-				isRunning = false;
-			}
-		}
+		Engine::RenderClear();
 		update();
-		render();
-		SDL_Delay(1);
+		Engine::Render();
 	}
 
 	cleanup();
@@ -81,29 +86,23 @@ int Core::execute(int argc, char* argv[])
 	return 1;
 }
 
-SDL_Renderer* Core::get_renderer() const
+Core* Core::get_instance()
 {
-	return renderer;
-}
-
-Core* Core::getInstance()
-{
-	return &Core::Instance;
+	return &Core::instance_;
 }
 
 void Core::cleanup()
 {
-	if(renderer)
+	Engine::DestroyRenderer();
+	if (manager_)
 	{
-		SDL_DestroyRenderer(renderer);
-		renderer = nullptr;
+		manager_ = nullptr;
 	}
-	if(window)
-	{
-		SDL_DestroyWindow(window);
-		window = nullptr;
-	}
-	IMG_Quit();
-	SDL_Quit();
+	systems_.clear();
+
+	Engine::CloseAudio();
 }
 
+void Core::StopGameLoop() {
+	is_running_ = false;
+}
