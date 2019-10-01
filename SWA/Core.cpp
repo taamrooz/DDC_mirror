@@ -23,26 +23,32 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	}
 
 	manager_ = std::make_unique<EntityManager>();
-	inputcomponent_ = std::make_unique<InputComponent>();
-	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), inputcomponent_.get(), *this));
-	systems_.push_back(std::make_unique<AudioSystem>(manager_.get(), inputcomponent_.get()));
+	input_component_ = std::make_unique<InputComponent>();
+	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), input_component_.get(), *this));
+	systems_.push_back(std::make_unique<AudioSystem>(manager_.get(), input_component_.get()));
 	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 
-	std::vector<std::shared_ptr<Component>> components;
-	components.push_back(std::make_shared<PositionComponent>(50, 25));
+	std::vector<Component*> components;
+	//components.push_back();
 	const auto id = manager_->create_entity(components);
 	const auto id2 = manager_->create_entity();
+	
+	auto v1 = std::make_shared<VelocityComponent>(14, -51);
+	auto p1 = std::make_shared<PositionComponent>(50, 25);
+	auto v2 = std::make_shared<VelocityComponent>(10.99, 0);
+	auto p2 = std::make_shared<PositionComponent>(100, 250);
+	auto a1 = std::make_shared<AnimationComponent>("wizard_move_m.png", 4);
+	manager_->add_component_to_entity(id, v1);
+	manager_->add_component_to_entity(id, p1);
+	manager_->add_component_to_entity(id2, v2);
+	manager_->add_component_to_entity(id2, p2);
+	manager_->add_component_to_entity(id, a1);
 
-	manager_->add_component_to_entity(id, std::make_shared<VelocityComponent>(14, -51));
-	manager_->add_component_to_entity(id2, std::make_shared<VelocityComponent>(10.99, 0));
-	manager_->add_component_to_entity(id2, std::make_shared<PositionComponent>(100, 250));
-	manager_->add_component_to_entity(id2, std::make_shared<AnimationComponent>("wizard_move_m.png",4));
-
-	const auto createdComponent = manager_->get_component<PositionComponent>(id);
+	const auto createdComponent = manager_->get_component<PositionComponent>(id2);
 	std::cout << createdComponent.x << std::endl;
 	std::cout << createdComponent.y << std::endl;
-	const auto createdComponent2 = manager_->get_component<VelocityComponent>(id);
+	const auto createdComponent2 = manager_->get_component<VelocityComponent>(id2);
 	std::cout << createdComponent2.dx << std::endl;
 	std::cout << createdComponent2.dy << std::endl;
 	auto list = manager_->get_all_entities<VelocityComponent>();
