@@ -33,7 +33,6 @@ private:
 public:
 	int execute(int argc, char* argv[]);
 
-	SDL_Renderer* get_renderer() const;
 
 	static Core* get_instance();
 	void StopGameLoop();
