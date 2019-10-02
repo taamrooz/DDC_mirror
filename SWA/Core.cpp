@@ -67,12 +67,6 @@ void Core::update()
 	}
 }
 
-void Core::render()
-{
-	SDL_RenderClear(renderer_);
-	SDL_RenderPresent(renderer_);
-}
-
 int Core::execute(int argc, char* argv[])
 {
 	if (!init("Playground", 800, 600, false))
@@ -106,10 +100,7 @@ void Core::cleanup()
 	}
 	systems_.clear();
 
-	Engine::CloseAudio(); //Free up audio chunks and execute MIX_Quit()
-
-	IMG_Quit();
-	SDL_Quit();
+	Engine::CloseAudio();
 }
 
 void Core::StopGameLoop() {

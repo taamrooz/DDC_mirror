@@ -123,4 +123,6 @@ void Engine::DestroyRenderer() {
 		SDL_DestroyWindow(window);
 		window = nullptr;
 	}
+	IMG_Quit();
+	SDL_Quit();
 }

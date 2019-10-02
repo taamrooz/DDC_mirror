@@ -21,14 +21,9 @@ private:
 	std::unique_ptr<InputComponent> input_component_ = nullptr;
 	bool is_running_ = true;
 
-	SDL_Window* window_ = nullptr;
-	SDL_Renderer* renderer_ = nullptr;
-	SDL_Surface* surf_ = nullptr;
-
 	Core();
 	bool init(const char*, int, int, bool);
 	void update();
-	void render();
 	void cleanup();
 public:
 	int execute(int argc, char* argv[]);
