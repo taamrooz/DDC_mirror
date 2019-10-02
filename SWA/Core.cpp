@@ -34,23 +34,23 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	const auto id = manager_->create_entity(components);
 	const auto id2 = manager_->create_entity();
 	
-	auto v1 = std::make_shared<VelocityComponent>(14, -51);
-	auto p1 = std::make_shared<PositionComponent>(50, 25);
-	auto v2 = std::make_shared<VelocityComponent>(10.99, 0);
-	auto p2 = std::make_shared<PositionComponent>(100, 250);
-	auto a1 = std::make_shared<AnimationComponent>("wizard_move_m.png", 4);
-	manager_->add_component_to_entity(id, v1);
-	manager_->add_component_to_entity(id, p1);
-	manager_->add_component_to_entity(id2, v2);
-	manager_->add_component_to_entity(id2, p2);
-	manager_->add_component_to_entity(id, a1);
+	auto v1 = std::make_unique<VelocityComponent>(14, -51);
+	auto p1 = std::make_unique<PositionComponent>(50, 25);
+	auto v2 = std::make_unique<VelocityComponent>(10.99, 0);
+	auto p2 = std::make_unique<PositionComponent>(100, 250);
+	auto a1 = std::make_unique<AnimationComponent>("wizard_move_m.png", 4);
+	manager_->add_component_to_entity(id, std::move(v1));
+	manager_->add_component_to_entity(id, std::move(p1));
+	manager_->add_component_to_entity(id2, std::move(v2));
+	manager_->add_component_to_entity(id2, std::move(p2));
+	manager_->add_component_to_entity(id, std::move(a1));
 
 	const auto createdComponent = manager_->get_component<PositionComponent>(id2);
-	std::cout << createdComponent.x << std::endl;
-	std::cout << createdComponent.y << std::endl;
+	std::cout << createdComponent->x << std::endl;
+	std::cout << createdComponent->y << std::endl;
 	const auto createdComponent2 = manager_->get_component<VelocityComponent>(id2);
-	std::cout << createdComponent2.dx << std::endl;
-	std::cout << createdComponent2.dy << std::endl;
+	std::cout << createdComponent2->dx << std::endl;
+	std::cout << createdComponent2->dy << std::endl;
 	auto list = manager_->get_all_entities<VelocityComponent>();
 	for (auto l : list)
 	{
