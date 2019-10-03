@@ -6,7 +6,7 @@
 struct AnimationComponent : Component
 {
 	AnimationComponent() = default;
-	AnimationComponent(const std::string& filename, const int frames) : filename{ filename }, animation{ Engine::LoadAnimation(filename) }, frames{ frames } {
+	AnimationComponent(const std::string& filename, const int frames) : filename{ filename }, animation{ Engine::LoadAnimation(filename, frames) }, frames{ frames } {
 		is_active = false; 
 		//animation = Engine::LoadAnimation(filename);
 	}
