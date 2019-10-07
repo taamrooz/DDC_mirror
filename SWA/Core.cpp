@@ -9,6 +9,7 @@
 #include <Renderer.h>
 #include "RenderSystem.h"
 #include "AnimationComponent.h"
+#include "TileComponent.h"
 
 Core Core::instance_;
 Core::Core() = default;
@@ -24,9 +25,10 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 
 	manager_ = std::make_unique<EntityManager>();
 	input_component_ = std::make_unique<InputComponent>();
+	tilemap_component_ = std::make_unique<TilemapComponent>();
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), input_component_.get(), *this));
 	systems_.push_back(std::make_unique<AudioSystem>(manager_.get(), input_component_.get()));
-	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<RenderSystem>(manager_.get(), tilemap_component_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 
 	std::vector<Component*> components;
@@ -52,6 +54,11 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	std::cout << createdComponent2.dx << std::endl;
 	std::cout << createdComponent2.dy << std::endl;
 	auto list = manager_->get_all_entities<VelocityComponent>();
+
+	const auto id3 = manager_->create_entity();
+	auto t1 = std::make_shared<TileComponent>(0, 0, 80, 80, 4);
+	manager_->add_component_to_entity(id3, t1);
+
 	for (auto l : list)
 	{
 		std::cout << l << std::endl;

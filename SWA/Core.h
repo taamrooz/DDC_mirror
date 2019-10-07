@@ -11,6 +11,7 @@
 #include "AnimationComponent.h"
 #include "VelocityComponent.h"
 #include "PositionComponent.h"
+#include "TilemapComponent.h"
 
 class Core
 {
@@ -19,6 +20,7 @@ private:
 	std::vector<std::unique_ptr<BaseSystem>> systems_;
 	std::unique_ptr<EntityManager> manager_ = nullptr;
 	std::unique_ptr<InputComponent> input_component_ = nullptr;
+	std::unique_ptr<TilemapComponent> tilemap_component_ = nullptr;
 	bool is_running_ = true;
 
 	Core();

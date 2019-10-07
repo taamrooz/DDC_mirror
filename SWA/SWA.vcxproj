@@ -179,6 +179,8 @@
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ShootingComponent.h" />
+    <ClInclude Include="TileComponent.h" />
+    <ClInclude Include="TilemapComponent.h" />
     <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
   <ItemGroup>
