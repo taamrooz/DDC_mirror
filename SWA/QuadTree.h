@@ -33,6 +33,7 @@ private:
 	QuadTree* botRightTree;
 public:
 	QuadTree(Point, Point);
+	~QuadTree();
 
 	void insert(Node*);
 	void divide(Node*);

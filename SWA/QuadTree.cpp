@@ -16,6 +16,13 @@ QuadTree::QuadTree(Point topL, Point botR) :
 	topLeft(topL), botRight(botR) {
 }
 
+QuadTree::~QuadTree() {
+	delete topLeftTree;
+	delete topRightTree;
+	delete botLeftTree;
+	delete botRightTree;
+}
+
 void QuadTree::insert(Node* node) {
 	if (!node) {
 		return;
