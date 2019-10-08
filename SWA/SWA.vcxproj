@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="BaseSystem.cpp" />
+    <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Core.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +165,7 @@
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ControllableComponent.h" />
     <ClInclude Include="DamagingComponent.h" />
@@ -177,6 +180,7 @@
     <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="PositionComponent.h" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ShootingComponent.h" />
     <ClInclude Include="VelocityComponent.h" />
