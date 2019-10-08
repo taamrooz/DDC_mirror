@@ -1,4 +1,6 @@
 #include "QuadTree.h";
+#include <vector>
+#include <tuple>
 
 Point::Point(int _x, int _y) {
 	x = _x;
@@ -105,6 +107,34 @@ void QuadTree::divide(Node* node) {
 			botRightTree->insert(node);
 		}
 	}
+}
+
+std::vector<std::tuple<Point, Point>> QuadTree::get_bounds() {
+	std::vector<std::tuple<Point, Point>> boundsList{};
+	std::tuple<Point, Point> coordinates{ topLeft, botRight };
+	boundsList.push_back(coordinates);
+
+	if (topLeftTree != nullptr) {
+		auto sourceMap = topLeftTree->get_bounds();
+		boundsList.insert(boundsList.end(), sourceMap.begin(), sourceMap.end());
+	}
+
+	if (topRightTree != nullptr) {
+		auto sourceMap = topRightTree->get_bounds();
+		boundsList.insert(boundsList.end(), sourceMap.begin(), sourceMap.end());
+	}
+
+	if (botLeftTree != nullptr) {
+		auto sourceMap = botLeftTree->get_bounds();
+		boundsList.insert(boundsList.end(), sourceMap.begin(), sourceMap.end());
+	}
+
+	if (botRightTree != nullptr) {
+		auto sourceMap = botRightTree->get_bounds();
+		boundsList.insert(boundsList.end(), sourceMap.begin(), sourceMap.end());
+	}
+
+	return boundsList;
 }
 
 bool QuadTree::in_boundary(Point p) {

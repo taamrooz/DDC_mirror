@@ -22,4 +22,7 @@ namespace Engine {
 	ENGINE_API void DestroyRenderer();
 	ENGINE_API void Render();
 	ENGINE_API void RenderClear();
+
+	ENGINE_API void AddRectangle(int x, int y, int w, int h);
+	ENGINE_API void RenderRectangles();
 }

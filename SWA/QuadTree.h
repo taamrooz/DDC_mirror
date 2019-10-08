@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 struct Point
 {
 	int x;
@@ -34,6 +36,7 @@ public:
 
 	void insert(Node*);
 	void divide(Node*);
-	Node* search(Point);
+	//Node* search(Point);
 	bool in_boundary(Point);
+	std::vector<std::tuple<Point, Point>> get_bounds();
 };
