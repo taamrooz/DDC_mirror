@@ -95,8 +95,8 @@ void Texture::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* cent
 	//Set clip rendering dimensions
 	if (clip != NULL)
 	{
-		renderQuad.w = clip->w * 4;
-		renderQuad.h = clip->h * 4;
+		renderQuad.w = clip->w;
+		renderQuad.h = clip->h;
 	}
 
 	//Render to screen

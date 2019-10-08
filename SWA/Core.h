@@ -12,7 +12,7 @@
 #include "VelocityComponent.h"
 #include "PositionComponent.h"
 #include "TilemapComponent.h"
-
+#include "RoomComponent.h"
 class Core
 {
 private:
@@ -21,6 +21,7 @@ private:
 	std::unique_ptr<EntityManager> manager_ = nullptr;
 	std::unique_ptr<InputComponent> input_component_ = nullptr;
 	std::unique_ptr<TilemapComponent> tilemap_component_ = nullptr;
+	std::unique_ptr<RoomComponent> room_component_ = nullptr;
 	bool is_running_ = true;
 
 	Core();

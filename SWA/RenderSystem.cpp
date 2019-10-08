@@ -31,7 +31,8 @@ void RenderSystem::update(double dt)
 			tile_component.y_pos,
 			tile_component.width,
 			tile_component.height,
-			tile_component.tiletype,
+			tilemap_component->tiletypes[tile_component.tiletype][0],
+			tilemap_component->tiletypes[tile_component.tiletype][1],
 			tilemap_component->tilemap
 		);
 	}

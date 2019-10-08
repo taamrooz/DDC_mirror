@@ -15,21 +15,21 @@ struct TilemapComponent : Component
 		for (int i = 0; i < 12; ++i) {
 			std::vector<int> myRow(4);
 			tiletypes.push_back(myRow);
-			tiletypes[i].push_back(x);
-			tiletypes[i].push_back(y);
-			tiletypes[i].push_back(80);
-			tiletypes[i].push_back(80);
+			tiletypes[i][0] = x;
+			tiletypes[i][1] = y;
+			tiletypes[i][2] = 80;
+			tiletypes[i][3] = 80;
 
-			x += 80;
+			y += 80;
 
 			//If we've gone too far
-			if (x >= 320)
+			if (y >= 240)
 			{
 				//Move back
-				x = 0;
+				y = 0;
 
 				//Move to the next row
-				y += 80;
+				x += 80;
 			}
 		}
 

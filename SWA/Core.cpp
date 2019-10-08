@@ -3,6 +3,7 @@
 #include "InputSystem.h"
 #include "VelocityComponent.h"
 #include "PositionComponent.h"
+#include "RoomSystem.h"
 #include <Windows.h>
 #include "UserInput.h"
 #include "AudioSystem.h"
@@ -16,7 +17,7 @@ Core::Core() = default;
 
 bool Core::init(const char* title, int width, int height, bool fullscreen)
 {
-	if (!Engine::InitRenderer("PoC", false, 800, 600)) {
+	if (!Engine::InitRenderer("PoC", false, 1280, 960)) {
 		return false;
 	}
 	if (!Engine::InitAudio()) {
@@ -26,10 +27,13 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	manager_ = std::make_unique<EntityManager>();
 	input_component_ = std::make_unique<InputComponent>();
 	tilemap_component_ = std::make_unique<TilemapComponent>();
+	room_component_ = std::make_unique<RoomComponent>();
+
+	systems_.push_back(std::make_unique<RoomSystem>(manager_.get(), room_component_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), input_component_.get(), *this));
 	systems_.push_back(std::make_unique<AudioSystem>(manager_.get(), input_component_.get()));
-	systems_.push_back(std::make_unique<RenderSystem>(manager_.get(), tilemap_component_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<RenderSystem>(manager_.get(), tilemap_component_.get()));
 
 	std::vector<Component*> components;
 	//components.push_back();
@@ -55,9 +59,9 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	std::cout << createdComponent2.dy << std::endl;
 	auto list = manager_->get_all_entities<VelocityComponent>();
 
-	const auto id3 = manager_->create_entity();
+	/*const auto id3 = manager_->create_entity();
 	auto t1 = std::make_shared<TileComponent>(0, 0, 80, 80, 4);
-	manager_->add_component_to_entity(id3, t1);
+	manager_->add_component_to_entity(id3, t1);*/
 
 	for (auto l : list)
 	{

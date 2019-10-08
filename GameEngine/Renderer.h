@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
-#include <fstream>
 #include "Texture.h"
 #include "Animation.h"
 
@@ -20,9 +19,8 @@ namespace Engine {
 	ENGINE_API void UpdateAnimation(Animation* a);
 	ENGINE_API bool LoadSpriteSheet(std::string path, Animation*);
 	ENGINE_API Animation& LoadAnimation(std::string path, int frames);
-	ENGINE_API void LoadTiles(std::string path, int total_tiles, int total_sprites, int tile_width, int level_width, int tile_height);
 	ENGINE_API Texture* LoadTileset(std::string path);
-	ENGINE_API void RenderTile(int xpos, int ypos, int width, int height, int tiletype, Texture* texture);
+	ENGINE_API void RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture);
 	ENGINE_API void DestroyRenderer();
 	ENGINE_API void Render();
 	ENGINE_API void RenderClear();
