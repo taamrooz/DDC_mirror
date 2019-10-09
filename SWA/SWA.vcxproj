@@ -156,6 +156,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseSystem.h" />
+    <ClInclude Include="CharacterComponent.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
@@ -178,6 +180,7 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="MoneyComponent.h" />
+    <ClInclude Include="MoveCharacterSystem.h" />
     <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="QuadTree.h" />

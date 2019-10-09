@@ -11,6 +11,8 @@ void MoveSystem::update(double dt)
 		auto position = manager_->get_component<PositionComponent>(entity);
 		std::cout << position.x << std::endl;
 		auto velocity = manager_->get_component<VelocityComponent>(entity);
+		position.x = position.x + velocity.dx;
+		position.y = position.y + velocity.dy;
 		
 	}
 }
