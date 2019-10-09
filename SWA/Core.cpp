@@ -44,7 +44,7 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	auto v2 = std::make_shared<VelocityComponent>(10.99, 0);
 	auto p2 = std::make_shared<PositionComponent>(100, 250);
 	auto a1 = std::make_shared<AnimationComponent>("Animations/wizard_m_run.png", 4);
-	auto c1 = std::make_shared<CharacterComponent>();
+	auto c1 = std::make_shared<CharacterComponent>(10, 10);
 	manager_->add_component_to_entity(id, v1);
 	manager_->add_component_to_entity(id, p1);
 	manager_->add_component_to_entity(id2, v2);
