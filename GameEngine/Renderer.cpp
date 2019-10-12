@@ -107,9 +107,9 @@ void Engine::Render() {
 	}
 }
 
-void Engine::UpdateAnimation(Animation* a)
+void Engine::UpdateAnimation(Animation* a, int x, int y)
 {
-	a->UpdateAnimation();	
+	a->UpdateAnimation(x, y);	
 }
 
 void Engine::DestroyRenderer() {

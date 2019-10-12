@@ -157,6 +157,7 @@
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="ShootSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationComponent.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ShootingComponent.h" />
+    <ClInclude Include="ShootSystem.h" />
     <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
   <ItemGroup>

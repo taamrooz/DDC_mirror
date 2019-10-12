@@ -9,6 +9,8 @@
 #include <Renderer.h>
 #include "RenderSystem.h"
 #include "AnimationComponent.h"
+#include "ShootSystem.h"
+#include "ControllableComponent.h"
 
 Core Core::instance_;
 Core::Core() = default;
@@ -26,24 +28,28 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	input_component_ = std::make_unique<InputComponent>();
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), input_component_.get(), *this));
 	systems_.push_back(std::make_unique<AudioSystem>(manager_.get(), input_component_.get()));
+	systems_.push_back(std::make_unique<ShootSystem>(manager_.get(), input_component_.get()));
 	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
+	
 
 	std::vector<Component*> components;
 	//components.push_back();
 	const auto id = manager_->create_entity(components);
 	const auto id2 = manager_->create_entity();
 	
-	auto v1 = std::make_shared<VelocityComponent>(14, -51);
-	auto p1 = std::make_shared<PositionComponent>(50, 25);
+	auto v1 = std::make_shared<VelocityComponent>(0, 0);
+	auto p1 = std::make_shared<PositionComponent>(250, 250);
 	auto v2 = std::make_shared<VelocityComponent>(10.99, 0);
 	auto p2 = std::make_shared<PositionComponent>(100, 250);
 	auto a1 = std::make_shared<AnimationComponent>("Animations/wizard_m_run.png", 4);
+	auto c1 = std::make_shared<ControllableComponent>();
 	manager_->add_component_to_entity(id, v1);
 	manager_->add_component_to_entity(id, p1);
 	manager_->add_component_to_entity(id2, v2);
 	manager_->add_component_to_entity(id2, p2);
 	manager_->add_component_to_entity(id, a1);
+	manager_->add_component_to_entity(id, c1);
 
 	const auto createdComponent = manager_->get_component<PositionComponent>(id2);
 	std::cout << createdComponent.x << std::endl;

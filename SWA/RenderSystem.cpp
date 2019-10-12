@@ -1,6 +1,7 @@
 #include "RenderSystem.h"
 #include "Renderer.h"
 #include "AnimationComponent.h"
+#include "PositionComponent.h"
 RenderSystem::RenderSystem(EntityManager* manager) : BaseSystem(manager) {
 
 }
@@ -13,6 +14,7 @@ void RenderSystem::update(double dt)
 			//animation_component.animation = Engine::LoadAnimation(animation_component.filename);
 			animation_component.is_active = true;
 		}
-		Engine::UpdateAnimation(&animation_component.animation);
+		auto position = manager_->get_component<PositionComponent>(entityid);
+		Engine::UpdateAnimation(&animation_component.animation, position.x, position.y);
 	}
 }
