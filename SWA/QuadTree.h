@@ -12,8 +12,9 @@ struct Point
 struct Node
 {
 	Point position;
-	int radius;
 	int id;
+	int width;
+	int height;
 	Node(Point, int, int);
 };
 
@@ -36,8 +37,10 @@ public:
 	~QuadTree();
 
 	void insert(Node*);
-	void divide(Node*);
+	void divide(Node*, Point*);
+	void divideNode(Node*);
 	//Node* search(Point);
-	bool in_boundary(Point);
+	bool in_boundary(Node*);
 	std::vector<std::tuple<Point, Point>> get_bounds();
+	std::vector<std::tuple<Node*, Node*>> get_collisions();
 };

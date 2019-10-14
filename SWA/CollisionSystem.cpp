@@ -16,22 +16,38 @@ void CollisionSystem::update(double dt)
 	Point botRight{ 800, 600 };
 	QuadTree quadTree{ leftTop, botRight };
 
-	Node leftTopNode{ Point{150, 200}, 10, 1 };
-	Node leftBotNode{ Point{ 450, 200 }, 10, 1 };
-	Node rightTopNode{ Point{ 150, 600 }, 10, 1 };
-	Node rightBotNode{ Point{ 450, 600 }, 10, 1 };
+	Node leftTopNode{ Point{130, 200}, 1, 10 };
+	Node leftBotNode{ Point{ 450, 200 }, 2, 10 };
+	Node rightTopNode{ Point{ 150, 600 }, 3, 10 };
+	Node rightBotNode{ Point{ 450, 600 }, 4, 10 };
 
 	quadTree.insert(&leftTopNode);
 	quadTree.insert(&leftBotNode);
 	quadTree.insert(&rightTopNode);
 	quadTree.insert(&rightBotNode);
 
-	quadTree.insert(&Node{ Point{160, 200}, 10, 1 });
-	quadTree.insert(&Node{ Point{170, 200}, 10, 1 });
-	quadTree.insert(&Node{ Point{180, 200}, 10, 1 });
-	quadTree.insert(&Node{ Point{175, 200}, 10, 1 });
+	//quadTree.insert(&Node{ Point{160, 200}, 5, 10 });
+	//quadTree.insert(&Node{ Point{170, 200}, 6, 10 });
+	//quadTree.insert(&Node{ Point{180, 200}, 7, 10 });
+	//quadTree.insert(&Node{ Point{175, 200}, 8, 10 });
+	
+	quadTree.insert(&Node{ Point{395, 295}, 8, 10 });
+
+	// linksboven
+	quadTree.insert(&Node{ Point{386, 286}, 9, 10 });
+
+	// rechtsonder
+	quadTree.insert(&Node{ Point{405, 305}, 10, 10 });
+
+	// linskonder
+	quadTree.insert(&Node{ Point{385, 305}, 11, 10 });
+
+	// Rechstonder
+	quadTree.insert(&Node{ Point{405, 285}, 12, 10 });
 
 
+	// get outputs
+	std::vector<std::tuple<Node*, Node*>> collisions = quadTree.get_collisions();
 	std::vector<std::tuple<Point, Point>> bounds = quadTree.get_bounds();
 	int i = 0;
 	for (auto const& point_tuple : bounds) {
@@ -47,13 +63,15 @@ void CollisionSystem::update(double dt)
 	Engine::RenderRectangles();
 
 	/*
-	for (auto entity : manager_->get_all_entities<VelocityComponent>())
+	for (auto entity : manager_->get_all_entities<CollisionComponent>())
 	{
+		auto positionComponent = manager_->get_component<PositionComponent>(entity);
+		auto collisionComponent = entity;
 
+		// Create Node based on position
+		// Get CollisionBox based on collisionComponent
 
-		auto position = manager_->get_component<PositionComponent>(entity);
 		std::cout << position.x << std::endl;
-		auto velocity = manager_->get_component<VelocityComponent>(entity);
 	}
 	*/
 }
