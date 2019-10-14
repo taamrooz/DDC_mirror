@@ -37,9 +37,6 @@
     <Filter Include="Header Files\Entities">
       <UniqueIdentifier>{1e96fa31-586c-4de0-b912-344c49e2c8e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Engine">
-      <UniqueIdentifier>{a5541091-05d7-469c-a7c0-d2534bf0c81c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Animations">
       <UniqueIdentifier>{c4b7a96e-5da2-4793-8a15-e441bbf6498f}</UniqueIdentifier>
     </Filter>

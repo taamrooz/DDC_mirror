@@ -70,7 +70,7 @@ void Engine::RenderTile(int xpos, int ypos, int width, int height, int xclip, in
 {
 	SDL_Rect* clip = new SDL_Rect{ xclip, yclip, width, height };
 	texture->render(xpos, ypos, clip);
-	clip = nullptr;
+	delete clip;
 }
 
 bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
@@ -105,16 +105,18 @@ const int frameDelay = 1000 / FPS;
 Uint32 frameStart;
 int frameTime;
 
-void Engine::RenderClear() {
+int Engine::PreUpdate() {
+	auto frameStart = SDL_GetTicks();
 	SDL_RenderClear(renderer);
+	return frameStart;
 }
 
-void Engine::Render() {
+void Engine::Render(int framestart) {
+	//SDL_RenderClear(renderer);
 	SDL_UpdateWindowSurface(window);
 	SDL_RenderPresent(renderer);
 	
-	frameStart = SDL_GetTicks();
-	frameTime = SDL_GetTicks() - frameStart;
+	frameTime = SDL_GetTicks() - framestart;
 
 	if (frameDelay > frameTime) {
 		SDL_Delay(frameDelay - frameTime);

@@ -87,9 +87,9 @@ int Core::execute(int argc, char* argv[])
 
 	while (is_running_)
 	{
-		Engine::RenderClear();
+		auto timer = Engine::PreUpdate();
 		update();
-		Engine::Render();
+		Engine::Render(timer);
 	}
 
 	cleanup();

@@ -16,7 +16,7 @@ void Animation::UpdateAnimation()
 	//Render current frame
 	SDL_Rect* currentClip = &gSpriteClips[CURRENT_FRAME / 4];
 
-	gSpriteSheetTexture.render((640 - currentClip->w) / 2, (480 - currentClip->h) / 2, currentClip);
+	gSpriteSheetTexture.render((640 - currentClip->w) / 2, (480 - currentClip->h) / 2, currentClip, 4);
 	//SDL_RenderPresent(gRenderer);
 
 	//Go to next frame

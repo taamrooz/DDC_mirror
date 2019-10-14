@@ -9,6 +9,6 @@ extern "C"
 int main(int argc, char* argv[])
 {
 	Core::get_instance()->execute(argc, argv);
-	_CrtDumpMemoryLeaks();
+	//_CrtDumpMemoryLeaks();
 	return 0;
 }
