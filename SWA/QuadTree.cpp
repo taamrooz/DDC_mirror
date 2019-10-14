@@ -7,7 +7,7 @@ Point::Point(int _x, int _y) {
 	y = _y;
 }
 
-Node::Node(Point _position, int _id, int _radius) : position(_position), id(_id), width(_radius), height(_radius) {
+Node::Node(Point _position, uint32_t _id, int _width, int _height) : position(_position), id(_id), width(_width), height(_height) {
 
 }
 

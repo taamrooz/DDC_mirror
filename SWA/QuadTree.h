@@ -12,10 +12,10 @@ struct Point
 struct Node
 {
 	Point position;
-	int id;
+	uint32_t id;
 	int width;
 	int height;
-	Node(Point, int, int);
+	Node(Point, uint32_t, int, int);
 };
 
 class QuadTree {
