@@ -108,8 +108,13 @@ void Engine::Render() {
 	}
 }
 
-void Engine::UpdateAnimation(Animation* a)
+void Engine::UpdateAnimation(Animation* a, bool flip_left, bool flip_right)
 {
+	if (flip_left)
+	SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL && SDL_FLIP_VERTICAL;
+	SDL_RendererFlip flip1 = SDL_FLIP_VERTICAL;
+
+
 	a->UpdateAnimation();	
 }
 

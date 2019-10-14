@@ -22,6 +22,7 @@ void RenderSystem::update(double dt)
 		if (entityid == character_entity) {
 			if (character_velocity_component.dx < 0) {
 				// is moving left
+				
 			} else if (character_velocity_component.dx > 0) {
 				// is moving right
 			}
