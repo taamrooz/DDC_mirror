@@ -8,23 +8,44 @@ MoveCharacterSystem::MoveCharacterSystem(EntityManager* manager, InputComponent*
 
 void MoveCharacterSystem::update(double dt) {
 	auto entity = manager_->get_all_entities<CharacterComponent>().front();
-	auto position = manager_->get_component<PositionComponent>(entity);
-	std::cout << position.x << std::endl;
 	auto velocity = manager_->get_component<VelocityComponent>(entity);
 		
 	for (auto i = input_component->keys_down.begin(); i != input_component->keys_down.end(); ++i)
 	{
-		if (i->second) {
-			if (i->first.compare("moveUP"))
-				position.y -= velocity.dy;
-			if (i->first.compare("moveLeft"))
-				position.x -= velocity.dx;
-			if (i->first.compare("moveDown"))
-				position.y += velocity.dy;
-			if (i->first.compare("moveRight"))
-				position.x += velocity.dx;
+		if (i->first.compare("moveUP")) {
+			if (i->second) {
+				velocity.dy = -2;
+			}
+			else {
+				velocity.dy = 0;
+			}
+		}
+			
+		if (i->first.compare("moveLeft")) {
+			if (i->second) {
+				velocity.dx = -2;
+			}
+			else {
+				velocity.dx = 0;
+			}
+		}
+
+		if (i->first.compare("moveDown")) {
+			if (i->second) {
+				velocity.dy = 2;
+			}
+			else {
+				velocity.dy = 0;
+			}
+		}
+
+		if (i->first.compare("moveRight")) {
+			if (i->second) {
+				velocity.dx = 2;
+			}
+			else {
+				velocity.dx = 0;
+			}
 		}
 	}
-	position.x = position.x + velocity.dx;
-	position.y = position.y + velocity.dy;
 }
