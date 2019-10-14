@@ -8,8 +8,8 @@ class MoveCharacterSystem :
 
 {
 public:
-	MoveCharacterSystem(EntityManager* manager, InputComponent* inputcomponent);
-	void update(double dt) override;
+	MoveCharacterSystem(EntityManager*, InputComponent*);
+	void update(double) override;
 private:
 	InputComponent* input_component;
 };

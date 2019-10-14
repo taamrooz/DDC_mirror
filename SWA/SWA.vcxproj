@@ -153,6 +153,7 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="KeyBindingSingleton.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="MenuManager.h" />
