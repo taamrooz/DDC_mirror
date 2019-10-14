@@ -16,7 +16,7 @@
 
 namespace Engine {
 	ENGINE_API bool InitRenderer(std::string, bool, Uint32, Uint32);
-	ENGINE_API void UpdateAnimation(Animation* a);
+	ENGINE_API void UpdateAnimation(Animation* a, double, double, bool, bool);
 	ENGINE_API bool LoadSpriteSheet(std::string path, Animation*);
 	ENGINE_API Animation& LoadAnimation(std::string path, int frames);
 	ENGINE_API void DestroyRenderer();

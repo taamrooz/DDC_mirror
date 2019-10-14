@@ -103,6 +103,22 @@ void Texture::render(int x, int y, SDL_Rect* clip)
 	SDL_RenderCopy(renderer_, mTexture, clip, &renderQuad);
 }
 
+void Texture::render(int x, int y, SDL_RendererFlip flip, SDL_Rect* clip)
+{
+	//Set rendering space and render to screen
+	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+
+	//Set clip rendering dimensions
+	if (clip != NULL)
+	{
+		renderQuad.w = clip->w * 4;
+		renderQuad.h = clip->h * 4;
+	}
+
+	//Render to screen
+	SDL_RenderCopy(renderer_, mTexture, clip, &renderQuad);
+}
+
 int Texture::getWidth()
 {
 	return mWidth;
