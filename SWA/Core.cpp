@@ -12,6 +12,7 @@
 #include "CollisionSystem.h"
 #include "CharacterComponent.h"
 #include "MoveCharacterSystem.h"
+#include "CollisionComponent.h"
 
 Core Core::instance_;
 Core::Core() = default;
@@ -39,18 +40,24 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	const auto id = manager_->create_entity(components);
 	const auto id2 = manager_->create_entity();
 	
-	auto v1 = std::make_shared<VelocityComponent>(14, -51);
-	auto p1 = std::make_shared<PositionComponent>(50, 25);
-	auto v2 = std::make_shared<VelocityComponent>(10.99, 0);
+	auto v1 = std::make_shared<VelocityComponent>(0, 0);
+	auto p1 = std::make_shared<PositionComponent>(50, 600);
+	auto v2 = std::make_shared<VelocityComponent>(0, 0);
 	auto p2 = std::make_shared<PositionComponent>(100, 250);
 	auto a1 = std::make_shared<AnimationComponent>("Animations/wizard_m_run.png", 4);
+	auto a2 = std::make_shared<AnimationComponent>("Animations/wizard_m_run.png", 4);
 	auto c1 = std::make_shared<CharacterComponent>();
+	auto q1 = std::make_shared<CollisionComponent>(200, 200);
+	auto q2 = std::make_shared<CollisionComponent>(200, 200);
 	manager_->add_component_to_entity(id, v1);
 	manager_->add_component_to_entity(id, p1);
 	manager_->add_component_to_entity(id2, v2);
 	manager_->add_component_to_entity(id2, p2);
+	manager_->add_component_to_entity(id2, a2);
+	manager_->add_component_to_entity(id2, q2);
 	manager_->add_component_to_entity(id, a1);
 	manager_->add_component_to_entity(id, c1);
+	manager_->add_component_to_entity(id, q1);
 
 	const auto createdComponent = manager_->get_component<PositionComponent>(id2);
 	std::cout << createdComponent.x << std::endl;
@@ -73,6 +80,7 @@ void Core::update()
 		system->update(1);
 		auto entity = manager_->get_all_entities<CharacterComponent>().front();
 		auto position = manager_->get_component<PositionComponent>(entity);
+		auto velocity = manager_->get_component<VelocityComponent>(entity);
 		int x = 0;
 	}
 

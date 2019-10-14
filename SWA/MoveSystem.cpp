@@ -14,11 +14,12 @@ void MoveSystem::update(double dt)
 		auto position = &manager_->get_component<PositionComponent>(entity);
 		std::cout << position->x << std::endl;
 		auto velocity = &manager_->get_component<VelocityComponent>(entity);
-
-		if (characterEntity == entity) {
-			int x = 0;
-		}
 		position->x = position->x + velocity->dx;
 		position->y = position->y + velocity->dy;
+
+		if (characterEntity == entity) {
+			velocity->dx = 0;
+			velocity->dy = 0;
+		}
 	}
 }

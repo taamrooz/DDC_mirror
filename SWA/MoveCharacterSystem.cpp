@@ -22,18 +22,12 @@ void MoveCharacterSystem::update(double dt) {
 				velocity->dy = -1 * move_velocity;
 				i->second = false;
 			}
-			else {
-				velocity->dy = 0;
-			}
 		}
 
 		if (i->first.compare("moveLeft") == 0) {
 			if (i->second) {
 				velocity->dx = -1 * move_velocity;
 				i->second = false;
-			}
-			else {
-				velocity->dx = 0;
 			}
 		}
 
@@ -42,9 +36,6 @@ void MoveCharacterSystem::update(double dt) {
 				velocity->dy = move_velocity;
 				i->second = false;
 			}
-			else {
-				velocity->dy = 0;
-			}
 		}
 
 		if (i->first.compare("moveRight") == 0) {
@@ -52,13 +43,6 @@ void MoveCharacterSystem::update(double dt) {
 				velocity->dx = move_velocity;
 				i->second = false;
 			}
-			else {
-				velocity->dx = 0;
-			}
 		}
 	}
-
-	int x = 0;
-	/*position->x = position->x + velocity->dx;
-	position->y = position->y + velocity->dy;*/
 }
