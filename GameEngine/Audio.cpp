@@ -10,6 +10,7 @@ bool Engine::InitAudio() {
 		return false;
 	}
 	Mix_Volume(-1, 5);
+	Mix_VolumeMusic(5);
 	return true;
 }
 
@@ -31,11 +32,11 @@ void Engine::PlayMusic(const std::string filename) {
 	{
 		const auto exists = music.find(filename);
 		if (exists != music.end()) {
-			Mix_PlayMusic(music[filename], 0);
+			Mix_PlayMusic(music[filename], 1);
 		}
 		else {
 			const auto audiofile = FindMusic("./assets/" + filename);
-			Mix_PlayMusic(audiofile, 0);
+			Mix_PlayMusic(audiofile, -1);
 			music.emplace(filename, audiofile);
 		}
 	}
