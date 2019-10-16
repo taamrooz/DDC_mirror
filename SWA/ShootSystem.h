@@ -12,5 +12,6 @@ public:
 	void update(double dt) override;
 private:
 	InputComponent* input_component;
-	void createBullet(int x, int y, int xV, int yV);
+	void createBullet(int xV, int yV);
+	const double bullet_velocity = 50;
 };

@@ -15,7 +15,7 @@ void AudioSystem::update(double dt)
 				Engine::StopMusic();
 			else
 				Engine::PlayAudio(i->first);
-			//i->second = false;
+			i->second = false;
 		}
 	}
 }
