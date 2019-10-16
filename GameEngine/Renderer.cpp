@@ -108,7 +108,6 @@ void Engine::Render() {
 	}
 }
 
-
 void Engine::UpdateAnimation(Animation* a, double x, double y, bool flip_horizontally, bool flip_vertically)
 {
 	if (flip_horizontally) {

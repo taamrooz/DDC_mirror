@@ -11,14 +11,12 @@ Animation::~Animation() {
 	gSpriteClips.clear();
 }
 
-
 void Animation::UpdateAnimation(double x, double y)
 {
 	//Render current frame
 	SDL_Rect* currentClip = &gSpriteClips[CURRENT_FRAME / 4];
 
 	gSpriteSheetTexture.render((x - currentClip->w) / 2, (y - currentClip->h) / 2, currentClip);
-
 	//SDL_RenderPresent(gRenderer);
 
 	//Go to next frame
