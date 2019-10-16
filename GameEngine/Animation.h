@@ -6,9 +6,12 @@ class Animation
 public:
 	Animation(int, std::vector<SDL_Rect>&, Texture);
 	~Animation();
-	void UpdateAnimation(double, double, SDL_RendererFlip = SDL_FLIP_NONE);
+	/*
+	 * Updates the animation by its specified x and y coordinates, and whether the animation should be flipped.
+	 */
+	void UpdateAnimation(double x, double y, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	int CURRENT_FRAME = 0;
-	int scale = 1;
+	double scale = 1;
 	int total_frames;
 	int WALKING_ANIMATION_FRAMES;
 	std::vector<SDL_Rect> gSpriteClips;

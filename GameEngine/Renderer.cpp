@@ -1,14 +1,12 @@
 #include "Renderer.h"
 #include <iostream>
+#include <SDL_ttf.h>
 
 SDL_Window* window;
 SDL_Renderer* renderer;
 SDL_Surface* surf;
 std::vector<SDL_Rect> rectangles;
 
-//std::vector<Animation*> animations;
-
-//int frames, std::string path, SDL_Window* window, SDL_Renderer* renderer
 bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint32 height) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -37,6 +35,13 @@ bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint
 	{
 		std::cout << IMG_GetError() << std::endl;
 		std::cout << "Unable to initialize Image" << std::endl;
+		return false;
+	}
+
+	if(TTF_Init() < 0)
+	{
+		std::cout << TTF_GetError() << std::endl;
+		std::cout << "Unable to initialize TTF" << std::endl;
 		return false;
 	}
 	return true;
@@ -99,14 +104,21 @@ bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
 	return success;
 }
 
+Texture* Engine::LoadText(std::string path, uint32_t font_size, SDL_Color color, const char* text)
+{
+	auto* texture = new Texture(renderer);
+	texture->loadText(std::move(path), font_size, color, text);
+	return texture;
+}
 
 const int FPS = 60;
 const int frameDelay = 1000 / FPS;
-Uint32 frameStart;
-int frameTime;
+uint32_t frameStart;
+uint32_t frameTime;
 
 int Engine::PreUpdate() {
 	auto frameStart = SDL_GetTicks();
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	return frameStart;
 }
@@ -130,6 +142,11 @@ void Engine::UpdateAnimation(Animation* a, double x, double y, bool flip_horizon
 	a->UpdateAnimation(x, y, flip);
 }
 
+void Engine::RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip)
+{
+	texture->render(x, y, clip);
+}
+
 void Engine::DestroyRenderer() {
 	if (renderer)
 	{
@@ -141,6 +158,7 @@ void Engine::DestroyRenderer() {
 		SDL_DestroyWindow(window);
 		window = nullptr;
 	}
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }

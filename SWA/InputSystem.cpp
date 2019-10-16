@@ -24,6 +24,11 @@ void InputSystem::update(double dt)
 	//Handle all key down events
 	for (const auto& keycode : std::get<k_keydown>(inputs))
 	{
+		if (keycode == SDLK_q)
+		{
+			core->scene_manager_->pop_scene();
+			break;
+		}
 		if (KeyBindingSingleton::get_instance()->keybindings.find(keycode) != KeyBindingSingleton::get_instance()->keybindings.end()) {
 			auto command = KeyBindingSingleton::get_instance()->keybindings.at(keycode);
 			KeyBindingSingleton::get_instance()->keys_down.at(command) = true;

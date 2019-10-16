@@ -60,9 +60,6 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
-    <ClCompile Include="MenuManager.cpp">
-      <Filter>Source Files\Menus</Filter>
-    </ClCompile>
     <ClCompile Include="BaseSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -102,6 +99,9 @@
     <ClCompile Include="RoomSingleton.cpp">
       <Filter>Source Files\Singletons</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -111,9 +111,6 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
-      <Filter>Header Files\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuManager.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
     <ClInclude Include="BaseScene.h">
@@ -191,6 +188,9 @@
     <ClInclude Include="RoomSingleton.h">
       <Filter>Header Files\Singletons</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\scratch.wav">
@@ -211,7 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-    <None Include="assets\lazy.map" />
+    <None Include="assets\lazy.map">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Animations\big_demon_idle.png">
