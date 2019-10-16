@@ -14,6 +14,7 @@ private:
 	Texture* settings_ = nullptr;
 	Texture* quit_ = nullptr;
 	Texture* selector_ = nullptr;
+	Texture* helper = nullptr;
 	uint8_t current_action_ = 0;
 public:
 	~MainMenu();

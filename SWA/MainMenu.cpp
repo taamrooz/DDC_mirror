@@ -88,6 +88,12 @@ void MainMenu::cleanup()
 {
 	Engine::DestroyRenderer();
 	Engine::CloseAudio();
+	/*delete title_;
+	delete background_;
+	delete start_;
+	delete settings_;
+	delete quit_;
+	delete selector_;*/
 }
 
 bool MainMenu::init()
