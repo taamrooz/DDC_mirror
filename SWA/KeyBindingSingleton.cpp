@@ -16,10 +16,14 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keybindings.insert(std::make_pair(SDLK_2, "medium.wav"));
 		instance->keybindings.insert(std::make_pair(SDLK_3, "low.wav"));
 		instance->keybindings.insert(std::make_pair(SDLK_4, "scratch.wav"));
-		instance->keybindings.insert(std::make_pair(SDLK_UP, "moveUP"));
-		instance->keybindings.insert(std::make_pair(SDLK_LEFT, "moveLeft"));
-		instance->keybindings.insert(std::make_pair(SDLK_RIGHT, "moveRight"));
-		instance->keybindings.insert(std::make_pair(SDLK_DOWN, "moveDown"));
+		instance->keybindings.insert(std::make_pair(SDLK_w, "moveUP"));
+		instance->keybindings.insert(std::make_pair(SDLK_a, "moveLeft"));
+		instance->keybindings.insert(std::make_pair(SDLK_d, "moveRight"));
+		instance->keybindings.insert(std::make_pair(SDLK_s, "moveDown"));
+		instance->keybindings.insert(std::make_pair(SDLK_UP, "shootUp"));
+		instance->keybindings.insert(std::make_pair(SDLK_LEFT, "shootLeft"));
+		instance->keybindings.insert(std::make_pair(SDLK_RIGHT, "shootRight"));
+		instance->keybindings.insert(std::make_pair(SDLK_DOWN, "shootDown"));
 
 		instance->keys_down.insert(std::make_pair("high.wav", false));
 		instance->keys_down.insert(std::make_pair("medium.wav", false));
@@ -29,6 +33,10 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keys_down.insert(std::make_pair("moveLeft", false));
 		instance->keys_down.insert(std::make_pair("moveRight", false));
 		instance->keys_down.insert(std::make_pair("moveDown", false));
+		instance->keys_down.insert(std::make_pair("shootUp", false));
+		instance->keys_down.insert(std::make_pair("shootLeft", false));
+		instance->keys_down.insert(std::make_pair("shootRight", false));
+		instance->keys_down.insert(std::make_pair("shootDown", false));
 	}
 
 	return instance;

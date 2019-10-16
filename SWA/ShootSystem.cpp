@@ -1,7 +1,9 @@
 #include "ShootSystem.h"
 #include "UserInput.h"
-#include "ControllableComponent.h"
 #include "ShootingComponent.h"
+#include "KeyBindingSingleton.h"
+#include "CharacterComponent.h"
+#include "CollisionComponent.h"
 
 ShootSystem::ShootSystem(EntityManager* manager, InputComponent* inputcomponent) : BaseSystem(manager) {
 	input_component = inputcomponent;
@@ -9,9 +11,7 @@ ShootSystem::ShootSystem(EntityManager* manager, InputComponent* inputcomponent)
 
 void ShootSystem::update(double dt)
 {
-	
-
-	for (auto i = input_component->keys_down.begin(); i != input_component->keys_down.end(); ++i)
+	for (auto i = KeyBindingSingleton::get_instance()->keys_down.begin(); i != KeyBindingSingleton::get_instance()->keys_down.end(); ++i)
 	{
 		if (i->second) {
 			if (!i->first.compare("shootUp")) {
@@ -38,12 +38,12 @@ void ShootSystem::update(double dt)
 }
 
 void ShootSystem::createBullet(int xV, int yV) {
-	auto entity = manager_->get_all_entities<ControllableComponent>().front();
+	auto entity = manager_->get_all_entities<CharacterComponent>().front();
 	auto position = manager_->get_component<PositionComponent>(entity);
-
+	auto collision = manager_->get_component<CollisionComponent>(entity);
 	const auto id = manager_->create_entity();
 	auto vComponent = std::make_shared<VelocityComponent>(xV, yV);
-	auto pComponent = std::make_shared<PositionComponent>(position.x + 50, position.y + 100);
+	auto pComponent = std::make_shared<PositionComponent>(position.x + collision.width / 2, position.y + collision.height / 2);
 	auto aComponent = std::make_shared<AnimationComponent>("Projectile.png", 1);
 	auto bComponent = std::make_shared<ShootingComponent>(4);
 
