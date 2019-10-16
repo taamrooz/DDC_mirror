@@ -22,7 +22,7 @@ void Animation::UpdateAnimation(double x, double y, SDL_RendererFlip flip)
 	CURRENT_FRAME++;
 
 	//Cycle animation
-	if (CURRENT_FRAME / WALKING_ANIMATION_FRAMES >= WALKING_ANIMATION_FRAMES)
+	if (CURRENT_FRAME / total_frames >= WALKING_ANIMATION_FRAMES)
 	{
 		CURRENT_FRAME = 0;
 	}
