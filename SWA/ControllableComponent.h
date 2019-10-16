@@ -5,6 +5,6 @@
 struct ControllableComponent : Component
 {
 	ControllableComponent() = default;
-	//ControllableComponent() {}
+	ControllableComponent() {}
 	//Probably will have to add keybindings here (read from settings file)
 };
