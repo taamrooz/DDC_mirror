@@ -7,9 +7,6 @@ SDL_Renderer* renderer;
 SDL_Surface* surf;
 std::vector<SDL_Rect> rectangles;
 
-//std::vector<Animation*> animations;
-
-//int frames, std::string path, SDL_Window* window, SDL_Renderer* renderer
 bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint32 height) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{

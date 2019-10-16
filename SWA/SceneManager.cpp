@@ -1,27 +1,28 @@
 #include "SceneManager.h"
-#include <iostream>
 
 SceneManager::SceneManager() = default;
 SceneManager::~SceneManager() = default;
-
 
 void SceneManager::add_scene(BaseScene & menu)
 {
 	active_scenes_.push_back(std::unique_ptr<BaseScene>(&menu));
 }
+
 void SceneManager::delete_scene()
 {
 	active_scenes_.back()->cleanup();
 	active_scenes_.pop_back();
 }
+
 void SceneManager::push_scene()
 {
-	if(active_scenes_.size() > 1 + current_scene_)
+	if(active_scenes_.size() > current_scene_ + 1)
 	{
 		++current_scene_;
 	}
 	
 }
+
 void SceneManager::pop_scene()
 {
 	if(current_scene_ > 0)

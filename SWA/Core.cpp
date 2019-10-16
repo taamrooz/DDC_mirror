@@ -32,9 +32,7 @@ bool Core::init()
 	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<CollisionSystem>(manager_.get()));
 
-	std::vector<Component*> components;
-	//components.push_back();
-	const auto id = manager_->create_entity(components);
+	const auto id = manager_->create_entity();
 	const auto id2 = manager_->create_entity();
 	
 	auto v1 = std::make_unique<VelocityComponent>(0, 0);
@@ -55,8 +53,6 @@ bool Core::init()
 	manager_->add_component_to_entity(id, std::move(a1));
 	manager_->add_component_to_entity(id, std::move(c1));
 	manager_->add_component_to_entity(id, std::move(q1));
-
-	//// <----- PLACEHOLDER FOR ENTITY FACTORY - ENTITIES TO TEST WITH ----->  ////
 
 	return true;
 }

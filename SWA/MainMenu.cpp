@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "Audio.h"
 #include "Renderer.h"
 #include "UserInput.h"
@@ -18,6 +18,7 @@ void MainMenu::render()
 	Engine::RenderTexture(start_, 500, 400, nullptr);
 	Engine::RenderTexture(settings_, 500, 500, nullptr);
 	Engine::RenderTexture(quit_, 500, 600, nullptr);
+	Engine::RenderTexture(helper, 115, 800, nullptr);
 	if (current_action_ == 0)
 	{
 		Engine::RenderTexture(selector_, 480, 400, nullptr);
@@ -88,12 +89,6 @@ void MainMenu::cleanup()
 {
 	Engine::DestroyRenderer();
 	Engine::CloseAudio();
-	/*delete title_;
-	delete background_;
-	delete start_;
-	delete settings_;
-	delete quit_;
-	delete selector_;*/
 }
 
 bool MainMenu::init()
@@ -111,6 +106,8 @@ bool MainMenu::init()
 	settings_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings");
 	quit_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop");
 	selector_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">");
+	helper = Engine::LoadText("manaspc.ttf", 24, {255, 255, 255, 255},
+	                          "Use the arrow keys ^` to navigate the menu and ENTER to confirm");
 	return true;
 }
 
