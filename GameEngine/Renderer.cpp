@@ -49,7 +49,6 @@ Animation& Engine::LoadAnimation(std::string path, int frames) {
 	auto texture = new Texture(renderer);
 	auto animation = new Animation(WALKING_ANIMATION_FRAMES, gSpriteClips, *texture);
 	texture->free();
-	//animations.push_back(animation.get());
 
 	//Load media
 	if (!Engine::LoadSpriteSheet(path, animation))
@@ -58,6 +57,20 @@ Animation& Engine::LoadAnimation(std::string path, int frames) {
 	}
 
 	return *animation;
+}
+
+Texture* Engine::LoadTileset(std::string path)
+{
+	Texture* texture = new Texture(renderer);
+	texture->loadFromFile(path);
+	return texture;
+}
+
+void Engine::RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture)
+{
+	SDL_Rect* clip = new SDL_Rect{ xclip, yclip, width, height };
+	texture->render(xpos, ypos, clip);
+	delete clip;
 }
 
 bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
@@ -92,32 +105,29 @@ const int frameDelay = 1000 / FPS;
 Uint32 frameStart;
 int frameTime;
 
-void Engine::RenderClear() {
+int Engine::PreUpdate() {
+	auto frameStart = SDL_GetTicks();
 	SDL_RenderClear(renderer);
+	return frameStart;
 }
 
-void Engine::Render() {
-	SDL_UpdateWindowSurface(window);
+void Engine::Render(int framestart) {
 	SDL_RenderPresent(renderer);
 	
-	frameStart = SDL_GetTicks();
-	frameTime = SDL_GetTicks() - frameStart;
+	frameTime = SDL_GetTicks() - framestart;
 
 	if (frameDelay > frameTime) {
 		SDL_Delay(frameDelay - frameTime);
 	}
 }
 
-void Engine::UpdateAnimation(Animation* a, double x, double y, bool flip_horizontally, bool flip_vertically)
+void Engine::UpdateAnimation(Animation* a, double x, double y, bool flip_horizontally)
 {
-	if (flip_horizontally) {
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
 
-	}
-	SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
-	SDL_RendererFlip flip1 = SDL_FLIP_VERTICAL;
+	flip = flip_horizontally ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
-
-	a->UpdateAnimation(x, y);
+	a->UpdateAnimation(x, y, flip);
 }
 
 void Engine::DestroyRenderer() {
@@ -154,7 +164,6 @@ void Engine::RenderRectangles()
 	for (auto const rectangle : rectangles)
 	{
 		SDL_RenderDrawRect(renderer, &rectangle);
-		SDL_RenderPresent(renderer);
 	}
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

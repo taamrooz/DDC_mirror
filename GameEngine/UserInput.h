@@ -12,6 +12,6 @@
 
 namespace Engine {
 
-	ENGINE_API std::pair<std::vector<SDL_Keycode>, bool> GetInputs();
+	ENGINE_API std::tuple<std::vector<SDL_Keycode>, std::vector<SDL_Keycode>, bool> GetInputs();
 
 }

@@ -14,7 +14,7 @@ CollisionSystem::CollisionSystem(EntityManager* manager) : BaseSystem(manager) {
 void CollisionSystem::update(double dt)
 {
 	Point leftTop{ 0, 0 };
-	Point botRight{ 800, 600 };
+	Point botRight{ 1280, 960 };
 	QuadTree quadTree{ leftTop, botRight };
 
 	//// <----- TEST SCENARIO ----->  ////

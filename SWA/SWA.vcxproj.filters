@@ -37,11 +37,14 @@
     <Filter Include="Header Files\Entities">
       <UniqueIdentifier>{1e96fa31-586c-4de0-b912-344c49e2c8e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Engine">
-      <UniqueIdentifier>{a5541091-05d7-469c-a7c0-d2534bf0c81c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Animations">
       <UniqueIdentifier>{c4b7a96e-5da2-4793-8a15-e441bbf6498f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Singletons">
+      <UniqueIdentifier>{d5929df7-7e74-49d0-9b53-d0ce0e183cfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Singletons">
+      <UniqueIdentifier>{19246156-bd10-4516-8d72-50eefc590436}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,7 +81,7 @@
     <ClCompile Include="RenderSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionSystem.cpp">
+    <ClCompile Include="RoomSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="QuadTree.cpp">
@@ -87,8 +90,17 @@
     <ClCompile Include="MoveCharacterSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
     <ClCompile Include="KeyBindingSingleton.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="TileSetSingleton.cpp">
+      <Filter>Source Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomSingleton.cpp">
+      <Filter>Source Files\Singletons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,9 +155,6 @@
     <ClInclude Include="InputSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="InputComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="AudioSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
@@ -155,7 +164,10 @@
     <ClInclude Include="AnimationComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionSystem.h">
+    <ClInclude Include="TileComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="QuadTree.h">
@@ -164,11 +176,20 @@
     <ClInclude Include="CharacterComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="KeyBindingSingleton.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CollisionSystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="MoveCharacterSystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyBindingSingleton.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="TileSetSingleton.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomSingleton.h">
+      <Filter>Header Files\Singletons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="assets\lazy.map" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Animations\big_demon_idle.png">
@@ -362,6 +384,9 @@
     </Image>
     <Image Include="assets\Animations\skelet_idle.png">
       <Filter>Resource Files\Animations</Filter>
+    </Image>
+    <Image Include="assets\tiles.png">
+      <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
 </Project>
