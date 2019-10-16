@@ -13,9 +13,9 @@ void MoveSystem::update(double dt)
 	//Resolve velocity
 	for (auto entity : manager_->get_all_entities<VelocityComponent>())
 	{
-		auto position = &manager_->get_component<PositionComponent>(entity);
+		auto position = manager_->get_component<PositionComponent>(entity);
 
-		auto velocity = &manager_->get_component<VelocityComponent>(entity);
+		auto velocity = manager_->get_component<VelocityComponent>(entity);
 		position->x = position->x + velocity->dx;
 		position->y = position->y + velocity->dy;
 

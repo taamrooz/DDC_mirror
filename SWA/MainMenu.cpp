@@ -14,10 +14,22 @@ void MainMenu::render()
 	const auto timer = Engine::PreUpdate();
 	input();
 	Engine::UpdateAnimation(background_, 0, 0);
-	title_->render(250, 200, nullptr);
-	start_->render(400, 300, nullptr);
-	settings_->render(400, 400, nullptr);
-	quit_->render(400, 500, nullptr);
+	Engine::RenderTexture(title_, 250, 200, nullptr);
+	Engine::RenderTexture(start_, 500, 400, nullptr);
+	Engine::RenderTexture(settings_, 500, 500, nullptr);
+	Engine::RenderTexture(quit_, 500, 600, nullptr);
+	if (current_action_ == 0)
+	{
+		Engine::RenderTexture(selector_, 480, 400, nullptr);
+	}
+	else if (current_action_ == 1)
+	{
+		Engine::RenderTexture(selector_, 480, 500, nullptr);
+	}
+	else if (current_action_ == 2)
+	{
+		Engine::RenderTexture(selector_, 480, 600, nullptr);
+	}
 	Engine::Render(timer);
 
 }
@@ -33,32 +45,40 @@ void MainMenu::input()
 	//Quit if user wants to exit
 	if (!std::get<k_stop>(inputs)) {
 		//core->StopGameLoop();
+		is_running = false;
 		return;
 	}
 
 	//Handle all key down events
 	for (const auto& keycode : std::get<k_keydown>(inputs))
 	{
-		if (keycode == SDLK_q)
+		if (keycode == SDLK_UP)
 		{
-			scene_manager_->pop_scene();
-			break;
-		}if (keycode == SDLK_g)
-		{
-			scene_manager_->push_scene();
-		}
-		if (KeyBindingSingleton::get_instance()->keybindings.find(keycode) != KeyBindingSingleton::get_instance()->keybindings.end()) {
-			auto command = KeyBindingSingleton::get_instance()->keybindings.at(keycode);
-			KeyBindingSingleton::get_instance()->keys_down.at(command) = true;
-		}
-	}
+			if (current_action_ > 0)
+			{
+				--current_action_;
+			}
 
-	//Handle all key up events
-	for (const auto& keycode : std::get<k_keyup>(inputs))
-	{
-		if (KeyBindingSingleton::get_instance()->keybindings.find(keycode) != KeyBindingSingleton::get_instance()->keybindings.end()) {
-			auto command = KeyBindingSingleton::get_instance()->keybindings.at(keycode);
-			KeyBindingSingleton::get_instance()->keys_down.at(command) = false;
+		}
+		else if (keycode == SDLK_DOWN)
+		{
+			if (current_action_ < 2)
+			{
+				++current_action_;
+			}
+		}
+		else if (keycode == SDLK_RETURN)
+		{
+			if (current_action_ == 0)
+			{
+				scene_manager_->push_scene();
+			}
+			else if (current_action_ == 2)
+			{
+				is_running = false;
+				scene_manager_->pop_scene();
+				break;
+			}
 		}
 	}
 }
@@ -80,9 +100,11 @@ bool MainMenu::init()
 	}
 	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Crawler");
 	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
+	background_->scale = 1280.0 / 960.0;
 	start_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game");
 	settings_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings");
 	quit_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop");
+	selector_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">");
 	return true;
 }
 

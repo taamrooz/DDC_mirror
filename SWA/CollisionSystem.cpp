@@ -56,7 +56,7 @@ void CollisionSystem::update(double dt)
 	{
 		auto positionComponent = manager_->get_component<PositionComponent>(entity);
 		auto collisionComponent = manager_->get_component<CollisionComponent>(entity);
-		Node node{ Point{ positionComponent.x, positionComponent.y }, entity, collisionComponent.width, collisionComponent.height };
+		Node node{ Point{ positionComponent->x, positionComponent->y }, entity, collisionComponent->width, collisionComponent->height };
 		quadTree.insert(&node);
 	}
 

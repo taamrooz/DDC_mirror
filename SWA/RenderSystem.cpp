@@ -21,12 +21,12 @@ void RenderSystem::update(double dt)
 		auto tile_component = manager_->get_component<TileComponent>(entityid);
 
 		Engine::RenderTile(
-			tile_component.x_pos,
-			tile_component.y_pos,
-			tile_component.width,
-			tile_component.height,
-			TileSetSingleton::get_instance()->tiletypes[tile_component.tiletype][0],
-			TileSetSingleton::get_instance()->tiletypes[tile_component.tiletype][1],
+			tile_component->x_pos,
+			tile_component->y_pos,
+			tile_component->width,
+			tile_component->height,
+			TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][0],
+			TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][1],
 			TileSetSingleton::get_instance()->tilemap
 		);
 	}
@@ -37,7 +37,7 @@ void RenderSystem::update(double dt)
 
 		bool should_flip_horizontally = false;
 
-		Engine::UpdateAnimation(&animation_component.animation, position_component.x, position_component.y, should_flip_horizontally);
+		Engine::UpdateAnimation(&animation_component->animation, position_component->x, position_component->y, should_flip_horizontally);
 	}
 
 	

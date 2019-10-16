@@ -121,6 +121,7 @@ uint32_t frameTime;
 
 int Engine::PreUpdate() {
 	auto frameStart = SDL_GetTicks();
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	return frameStart;
 }
@@ -142,6 +143,11 @@ void Engine::UpdateAnimation(Animation* a, double x, double y, bool flip_horizon
 	flip = flip_horizontally ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
 	a->UpdateAnimation(x, y, flip);
+}
+
+void Engine::RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip)
+{
+	texture->render(x, y, clip);
 }
 
 void Engine::DestroyRenderer() {
