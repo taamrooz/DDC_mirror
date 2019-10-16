@@ -159,6 +159,8 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="ShootSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
     <ClInclude Include="CollisionSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
