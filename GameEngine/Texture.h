@@ -35,7 +35,7 @@ public:
 	ENGINE_API void setAlpha(Uint8 alpha);
 
 	//Renders texture at given point
-	ENGINE_API void render(int x, int y, SDL_Rect* clip = nullptr) const;
+	ENGINE_API void render(int x, int y, SDL_Rect* clip = nullptr, int scale = 1, SDL_RendererFlip flip = SDL_FLIP_NONE) const;
 
 	//Gets image dimensions
 	ENGINE_API int getWidth();

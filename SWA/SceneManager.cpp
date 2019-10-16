@@ -1,33 +1,42 @@
 #include "SceneManager.h"
+#include <iostream>
 
 SceneManager::SceneManager() = default;
 SceneManager::~SceneManager() = default;
 
 
-void SceneManager::add_menu(BaseScene & menu)
+void SceneManager::add_scene(BaseScene & menu)
 {
-	menus.emplace_back(std::unique_ptr<BaseScene>(&menu));
+	active_scenes_.push_back(std::unique_ptr<BaseScene>(&menu));
 }
-void SceneManager::delete_menu(const std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<std::unique_ptr<BaseScene>>>> index)
+void SceneManager::delete_scene()
 {
-	menus.erase(index);
+	active_scenes_.back()->cleanup();
+	active_scenes_.pop_back();
 }
-void SceneManager::push_menu(BaseScene & menu)
+void SceneManager::push_scene()
 {
-	activeMenus.push(std::unique_ptr<BaseScene>(&menu));
+	if(active_scenes_.size() > 1 + current_scene_)
+	{
+		++current_scene_;
+	}
+	
 }
-void SceneManager::pop_menu()
+void SceneManager::pop_scene()
 {
-	activeMenus.pop();
+	if(current_scene_ > 0)
+	{
+		--current_scene_;
+	}
 }
 
 void SceneManager::render()
 {
-	if (!activeMenus.empty()) {
-		auto current_menu = &*activeMenus.top();
+	if (!active_scenes_.empty()) {
+		auto current_menu = &*active_scenes_[current_scene_];
 		while (current_menu->is_running)
 		{
-			current_menu = &*activeMenus.top();
+			current_menu = &*active_scenes_[current_scene_];
 			if(current_menu != nullptr)
 			{
 				current_menu->render();
@@ -40,7 +49,7 @@ void SceneManager::render()
 
 void SceneManager::cleanup()
 {
-	for (auto& scene : menus)
+	for (auto& scene : active_scenes_)
 	{
 		scene->cleanup();
 	}
@@ -48,7 +57,7 @@ void SceneManager::cleanup()
 
 bool SceneManager::init()
 {
-	const auto current_menu = &*activeMenus.top();
+	const auto current_menu = &*active_scenes_.back();
 	return current_menu->init();
 }
 

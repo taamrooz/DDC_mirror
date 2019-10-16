@@ -46,7 +46,14 @@ void Core::update()
 {
 	for (auto& system : systems_)
 	{
-		system->update(1);
+		if(is_running)
+		{
+			system->update(1);
+		}else
+		{
+			break;
+		}
+		
 	}
 }
 

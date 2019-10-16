@@ -15,10 +15,8 @@ int main(int argc, char* argv[])
 	auto core = std::make_unique<Core>(sm.get());
 	mm->init();
 	core->init();
-	sm->add_menu(*mm);
-	sm->add_menu(*core);
-	//sm->push_menu(*core);
-	sm->push_menu(*mm);
+	sm->add_scene(*mm);
+	sm->add_scene(*core);
 	sm->render();
 	sm->cleanup();
 	core.release();

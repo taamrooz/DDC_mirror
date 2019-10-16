@@ -18,7 +18,8 @@ void InputSystem::update(double dt)
 	{
 		if(keycode == SDLK_q)
 		{
-			core->scene_manager_->pop_menu();
+			core->scene_manager_->pop_scene();
+			break;
 		}
 		if (input_component->keybindings.find(keycode) != input_component->keybindings.end()) {
 			auto command = input_component->keybindings.at(keycode);

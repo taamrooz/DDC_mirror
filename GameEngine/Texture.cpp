@@ -21,9 +21,9 @@ Texture::~Texture()
 bool Texture::loadText(std::string font, int font_size, SDL_Color color, std::string text)
 {
 	free();
-	const auto filename = "C:/Windows/Fonts/" + font;
+	const auto filename = "./assets/" + font;
 	const auto ttf_font = TTF_OpenFont(filename.c_str(), font_size);
-	SDL_Surface* surface = TTF_RenderText_Solid(ttf_font, text.c_str(), color);
+	SDL_Surface* surface = TTF_RenderText_Blended(ttf_font, text.c_str(), color);
 	if(surface == nullptr)
 	{
 		std::cout << "Unable to render text: " << TTF_GetError() << std::endl;
@@ -113,7 +113,7 @@ void Texture::setAlpha(Uint8 alpha)
 	SDL_SetTextureAlphaMod(mTexture, alpha);
 }
 
-void Texture::render(int x, int y, SDL_Rect* clip) const
+void Texture::render(int x, int y, SDL_Rect* clip, int scale, SDL_RendererFlip) const
 {
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
@@ -121,8 +121,8 @@ void Texture::render(int x, int y, SDL_Rect* clip) const
 	//Set clip rendering dimensions
 	if (clip != NULL)
 	{
-		renderQuad.w = clip->w * 4;
-		renderQuad.h = clip->h * 4;
+		renderQuad.w = clip->w * 3;
+		renderQuad.h = clip->h * 3;
 	}
 
 	//Render to screen

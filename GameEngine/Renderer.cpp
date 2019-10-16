@@ -49,10 +49,10 @@ bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint
 	return true;
 }
 
-Animation& Engine::LoadAnimation(std::string path) {
+Animation& Engine::LoadAnimation(std::string path, int frames) {
 
-	auto WALKING_ANIMATION_FRAMES = 4;
-	auto gSpriteClips = std::vector<SDL_Rect>(4);
+	auto WALKING_ANIMATION_FRAMES = frames;
+	auto gSpriteClips = std::vector<SDL_Rect>(WALKING_ANIMATION_FRAMES);
 	auto texture = new Texture(renderer);
 	auto animation = new Animation(WALKING_ANIMATION_FRAMES, gSpriteClips, *texture);
 	texture->free();
@@ -106,12 +106,13 @@ uint32_t frameStart;
 uint32_t frameTime;
 
 void Engine::RenderClear() {
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	frameStart = SDL_GetTicks();
 }
 
 void Engine::Render() {
-	SDL_UpdateWindowSurface(window);
+	//SDL_UpdateWindowSurface(window);
 	SDL_RenderPresent(renderer);
 	
 	frameTime = SDL_GetTicks() - frameStart;
@@ -121,9 +122,9 @@ void Engine::Render() {
 	}
 }
 
-void Engine::UpdateAnimation(Animation* a)
+void Engine::UpdateAnimation(Animation* a, double x, double y)
 {
-	a->UpdateAnimation();	
+	a->UpdateAnimation(x, y, SDL_FLIP_NONE);
 }
 
 void Engine::DestroyRenderer() {
