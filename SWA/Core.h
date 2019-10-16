@@ -7,7 +7,6 @@
 #include "EntityManager.h"
 #include "BaseSystem.h"
 #include "Audio.h"
-#include "InputComponent.h"
 #include "AnimationComponent.h"
 #include "VelocityComponent.h"
 #include "PositionComponent.h"
@@ -18,7 +17,6 @@ class Core : virtual public BaseScene
 private:
 	std::vector<std::unique_ptr<BaseSystem>> systems_;
 	std::unique_ptr<EntityManager> manager_ = nullptr;
-	std::unique_ptr<InputComponent> input_component_ = nullptr;
 	void update();
 	
 public:
