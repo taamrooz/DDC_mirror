@@ -154,7 +154,7 @@
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
   </ItemGroup>
@@ -173,7 +173,7 @@
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
-    <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="PositionComponent.h" />

@@ -16,6 +16,10 @@ void InputSystem::update(double dt)
 	}
 	for (const auto& keycode : user_inputs.first)
 	{
+		if(keycode == SDLK_q)
+		{
+			core->scene_manager_->pop_menu();
+		}
 		if (input_component->keybindings.find(keycode) != input_component->keybindings.end()) {
 			auto command = input_component->keybindings.at(keycode);
 			input_component->keys_down.at(command) = true;

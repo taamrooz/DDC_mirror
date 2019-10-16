@@ -54,9 +54,6 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
-    <ClCompile Include="MenuManager.cpp">
-      <Filter>Source Files\Menus</Filter>
-    </ClCompile>
     <ClCompile Include="BaseSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -75,6 +72,9 @@
     <ClCompile Include="RenderSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -84,9 +84,6 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
-      <Filter>Header Files\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuManager.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
     <ClInclude Include="BaseScene.h">
@@ -139,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Menus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

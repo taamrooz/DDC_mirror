@@ -11,25 +11,22 @@
 #include "AnimationComponent.h"
 #include "VelocityComponent.h"
 #include "PositionComponent.h"
+#include "BaseScene.h"
 
-class Core
+class Core : virtual public BaseScene
 {
 private:
-	static Core instance_;
 	std::vector<std::unique_ptr<BaseSystem>> systems_;
 	std::unique_ptr<EntityManager> manager_ = nullptr;
 	std::unique_ptr<InputComponent> input_component_ = nullptr;
-	bool is_running_ = true;
-
-	Core();
-	bool init(const char*, int, int, bool);
 	void update();
-	void cleanup();
+	
 public:
-	int execute(int argc, char* argv[]);
-
-
-	static Core* get_instance();
+	Core(SceneManager* manager);
+	~Core();
+	bool init() override;
+	void render() override;
+	void cleanup() override;
 	void StopGameLoop();
 };
 

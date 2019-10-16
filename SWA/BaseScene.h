@@ -1,10 +1,16 @@
 #pragma once
+class SceneManager;
+#include "SceneManager.h"
+
 class BaseScene
 {
 public:
-	virtual ~BaseScene() = 0;
+	SceneManager* scene_manager_;
+	BaseScene(SceneManager* manager) : scene_manager_(manager) {}
+	virtual ~BaseScene() = default;
+	virtual bool init() = 0;
 	virtual void render() = 0;
-	virtual void input() = 0;
-	virtual void on_mouse_move(int x, int y) = 0;
-	virtual void on_mouse_button(int button, bool pressed) = 0;
+	virtual void cleanup() = 0;
+	bool is_running = true;
+	
 };

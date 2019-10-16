@@ -10,18 +10,12 @@
 #include "RenderSystem.h"
 #include "AnimationComponent.h"
 
-Core Core::instance_;
-Core::Core() = default;
+Core::Core(SceneManager* manager) : BaseScene(manager) {}
+Core::~Core() = default;
 
-bool Core::init(const char* title, int width, int height, bool fullscreen)
+
+bool Core::init()
 {
-	if (!Engine::InitRenderer("PoC", false, 800, 600)) {
-		return false;
-	}
-	if (!Engine::InitAudio()) {
-		return false;
-	}
-
 	manager_ = std::make_unique<EntityManager>();
 	input_component_ = std::make_unique<InputComponent>();
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), input_component_.get(), *this));
@@ -45,17 +39,6 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	manager_->add_component_to_entity(id2, std::move(p2));
 	manager_->add_component_to_entity(id, std::move(a1));
 
-	const auto createdComponent = manager_->get_component<PositionComponent>(id2);
-	std::cout << createdComponent->x << std::endl;
-	std::cout << createdComponent->y << std::endl;
-	const auto createdComponent2 = manager_->get_component<VelocityComponent>(id2);
-	std::cout << createdComponent2->dx << std::endl;
-	std::cout << createdComponent2->dy << std::endl;
-	auto list = manager_->get_all_entities<VelocityComponent>();
-	for (auto l : list)
-	{
-		std::cout << l << std::endl;
-	}
 	return true;
 }
 
@@ -67,42 +50,22 @@ void Core::update()
 	}
 }
 
-int Core::execute(int argc, char* argv[])
+void Core::render()
 {
-	if (!init("Playground", 800, 600, false))
-	{
-		return 0;
-	}
-
-	while (is_running_)
-	{
-		Engine::RenderClear();
-		update();
-		Engine::Render();
-	}
-
-	cleanup();
-
-	return 1;
-}
-
-Core* Core::get_instance()
-{
-	return &Core::instance_;
+	Engine::RenderClear();
+	update();
+	Engine::Render();
 }
 
 void Core::cleanup()
 {
-	Engine::DestroyRenderer();
 	if (manager_)
 	{
 		manager_ = nullptr;
 	}
 	systems_.clear();
-
-	Engine::CloseAudio();
 }
 
 void Core::StopGameLoop() {
-	is_running_ = false;
+	is_running = false;
 }

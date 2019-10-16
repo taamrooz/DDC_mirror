@@ -1,4 +1,6 @@
 #include "Texture.h"
+#include <SDL_ttf.h>
+#include <iostream>
 
 
 Texture::Texture(SDL_Renderer *renderer)
@@ -14,6 +16,30 @@ Texture::~Texture()
 {
 	//Deallocate
 	free();
+}
+
+bool Texture::loadText(std::string font, int font_size, SDL_Color color, std::string text)
+{
+	free();
+	const auto filename = "C:/Windows/Fonts/" + font;
+	const auto ttf_font = TTF_OpenFont(filename.c_str(), font_size);
+	SDL_Surface* surface = TTF_RenderText_Solid(ttf_font, text.c_str(), color);
+	if(surface == nullptr)
+	{
+		std::cout << "Unable to render text: " << TTF_GetError() << std::endl;
+		return false;
+	}
+	mTexture = SDL_CreateTextureFromSurface(renderer_, surface);
+	if(mTexture == nullptr)
+	{
+		std::cout << "Unable to create texture: " << SDL_GetError() << std::endl;
+		return false;
+	}
+	mHeight = surface->h;
+	mWidth = surface->w;
+	TTF_CloseFont(ttf_font);
+	//SDL_FreeSurface(surface);
+	return true;
 }
 
 bool Texture::loadFromFile(std::string path)
@@ -87,7 +113,7 @@ void Texture::setAlpha(Uint8 alpha)
 	SDL_SetTextureAlphaMod(mTexture, alpha);
 }
 
-void Texture::render(int x, int y, SDL_Rect* clip)
+void Texture::render(int x, int y, SDL_Rect* clip) const
 {
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };

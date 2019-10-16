@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include <iostream>
+#include <SDL_ttf.h>
 
 SDL_Window* window;
 SDL_Renderer* renderer;
@@ -36,6 +37,13 @@ bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint
 	{
 		std::cout << IMG_GetError() << std::endl;
 		std::cout << "Unable to initialize Image" << std::endl;
+		return false;
+	}
+
+	if(TTF_Init() < 0)
+	{
+		std::cout << TTF_GetError() << std::endl;
+		std::cout << "Unable to initialize TTF" << std::endl;
 		return false;
 	}
 	return true;
@@ -85,24 +93,30 @@ bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
 	return success;
 }
 
+Texture* Engine::LoadText(std::string path, uint32_t font_size, SDL_Color color, const char* text)
+{
+	auto* texture = new Texture(renderer);
+	texture->loadText(std::move(path), font_size, color, text);
+	return texture;
+}
 
 const int FPS = 60;
 const int frameDelay = 1000 / FPS;
-Uint32 frameStart;
-int frameTime;
+uint32_t frameStart;
+uint32_t frameTime;
 
 void Engine::RenderClear() {
 	SDL_RenderClear(renderer);
+	frameStart = SDL_GetTicks();
 }
 
 void Engine::Render() {
 	SDL_UpdateWindowSurface(window);
 	SDL_RenderPresent(renderer);
 	
-	frameStart = SDL_GetTicks();
 	frameTime = SDL_GetTicks() - frameStart;
-
 	if (frameDelay > frameTime) {
+		
 		SDL_Delay(frameDelay - frameTime);
 	}
 }
@@ -123,6 +137,7 @@ void Engine::DestroyRenderer() {
 		SDL_DestroyWindow(window);
 		window = nullptr;
 	}
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
