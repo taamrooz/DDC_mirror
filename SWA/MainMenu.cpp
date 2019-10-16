@@ -93,13 +93,13 @@ void MainMenu::cleanup()
 
 bool MainMenu::init()
 {
-	if (!Engine::InitRenderer("Demonic Dungeon Crawler", false, 1280, 960)) {
+	if (!Engine::InitRenderer("Demonic Dungeon Castle", false, 1280, 960)) {
 		return false;
 	}
 	if (!Engine::InitAudio()) {
 		return false;
 	}
-	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Crawler");
+	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle");
 	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
 	background_->scale = 1280.0 / 960.0;
 	start_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game");
