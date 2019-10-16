@@ -13,6 +13,7 @@ CollisionSystem::CollisionSystem(EntityManager* manager) : BaseSystem(manager) {
 
 void CollisionSystem::update(double dt)
 {
+	//Starting points of the quadtree
 	Point leftTop{ 0, 0 };
 	Point botRight{ 1280, 960 };
 	QuadTree quadTree{ leftTop, botRight };

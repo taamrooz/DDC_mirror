@@ -8,8 +8,9 @@ RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
 
 void RoomSystem::update(double dt)
 {
+	//Check if a new room needs to be loaded
 	if (RoomSingleton::get_instance()->reload_room) {
-		LoadTiles(RoomSingleton::get_instance()->room_path, 192, 12, 80, 1280, 80);
+		LoadTiles(RoomSingleton::get_instance()->room_path, k_total_tiles_, k_total_sprites_, k_tile_width_, k_level_width_, k_tile_height_);
 		RoomSingleton::get_instance()->reload_room = false;
 	}
 }

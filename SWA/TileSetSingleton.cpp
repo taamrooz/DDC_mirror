@@ -11,11 +11,11 @@ TileSetSingleton::TileSetSingleton() {
 		tiletypes[i][2] = k_tile_width_;
 		tiletypes[i][3] = k_tile_height_;
 
-		y += 80;
+		y += k_tile_height_;
 		if (y >= 240)
 		{
 			y = 0;
-			x += 80;
+			x += k_tile_width_;
 		}
 	}
 
@@ -25,6 +25,7 @@ TileSetSingleton::TileSetSingleton() {
 
 TileSetSingleton* TileSetSingleton::instance = 0;
 
+//Returns an instance of the TileSet
 TileSetSingleton* TileSetSingleton::get_instance()
 {
 	if (instance == 0) {

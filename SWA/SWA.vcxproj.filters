@@ -211,7 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-    <None Include="assets\lazy.map" />
+    <None Include="assets\lazy.map">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Animations\big_demon_idle.png">
