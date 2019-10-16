@@ -148,14 +148,18 @@
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="BaseSystem.cpp" />
+    <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="KeyBindingSingleton.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="RoomSystem.cpp" />
   </ItemGroup>
@@ -163,7 +167,9 @@
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseSystem.h" />
+    <ClInclude Include="CharacterComponent.h" />
     <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ControllableComponent.h" />
     <ClInclude Include="DamagingComponent.h" />
@@ -172,12 +178,15 @@
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="MoneyComponent.h" />
+    <ClInclude Include="MoveCharacterSystem.h" />
     <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="PositionComponent.h" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="RoomComponent.h" />
     <ClInclude Include="RoomSystem.h" />
