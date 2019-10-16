@@ -1,16 +1,16 @@
 #include "RoomSystem.h"
 #include <fstream>
 #include "TileComponent.h"
+#include "RoomSingleton.h"
 
-RoomSystem::RoomSystem(EntityManager* manager, RoomComponent* roomcomponent) : BaseSystem(manager) {
-	room_component = roomcomponent;
-}
+RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
+{}
 
 void RoomSystem::update(double dt)
 {
-	if (room_component->reload_room) {
-		LoadTiles(room_component->room_path, 192, 12, 80, 1280, 80);
-		room_component->reload_room = false;
+	if (RoomSingleton::get_instance()->reload_room) {
+		LoadTiles(RoomSingleton::get_instance()->room_path, 192, 12, 80, 1280, 80);
+		RoomSingleton::get_instance()->reload_room = false;
 	}
 }
 

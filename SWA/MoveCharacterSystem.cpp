@@ -5,8 +5,7 @@
 #include "KeyBindingSingleton.h"
 #include "AnimationComponent.h"
 
-MoveCharacterSystem::MoveCharacterSystem(EntityManager* manager, InputComponent* inputcomponent) : BaseSystem(manager) {
-	input_component = inputcomponent;
+MoveCharacterSystem::MoveCharacterSystem(EntityManager* manager) : BaseSystem(manager) {
 }
 
 void MoveCharacterSystem::update(double dt) {
@@ -20,28 +19,24 @@ void MoveCharacterSystem::update(double dt) {
 		if (i->first.compare("moveUP") == 0) {
 			if (i->second) {
 				velocity->dy = -1 * move_velocity;
-				i->second = false;
 			}
 		}
 
 		if (i->first.compare("moveLeft") == 0) {
 			if (i->second) {
 				velocity->dx = -1 * move_velocity;
-				i->second = false;
 			}
 		}
 
 		if (i->first.compare("moveDown") == 0) {
 			if (i->second) {
 				velocity->dy = move_velocity;
-				i->second = false;
 			}
 		}
 
 		if (i->first.compare("moveRight") == 0) {
 			if (i->second) {
 				velocity->dx = move_velocity;
-				i->second = false;
 			}
 		}
 	}

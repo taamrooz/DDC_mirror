@@ -161,7 +161,9 @@
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="RoomSingleton.cpp" />
     <ClCompile Include="RoomSystem.cpp" />
+    <ClCompile Include="TileSetSingleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationComponent.h" />
@@ -176,7 +178,6 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />
-    <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
@@ -188,11 +189,11 @@
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="RenderSystem.h" />
-    <ClInclude Include="RoomComponent.h" />
+    <ClInclude Include="RoomSingleton.h" />
     <ClInclude Include="RoomSystem.h" />
     <ClInclude Include="ShootingComponent.h" />
     <ClInclude Include="TileComponent.h" />
-    <ClInclude Include="TilemapComponent.h" />
+    <ClInclude Include="TileSetSingleton.h" />
     <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +204,7 @@
     <Media Include="assets\scratch.wav" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\lazy.map" />
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +268,7 @@
     <Image Include="assets\Animations\wogol_run.png" />
     <Image Include="assets\Animations\zombie_idle.png" />
     <Image Include="assets\Animations\zombie_run.png" />
+    <Image Include="assets\tiles.png" />
     <Image Include="assets\wizard_move_f.png" />
     <Image Include="assets\wizard_move_m.png" />
   </ItemGroup>

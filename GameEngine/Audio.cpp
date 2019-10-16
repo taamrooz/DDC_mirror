@@ -9,6 +9,7 @@ bool Engine::InitAudio() {
 		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		return false;
 	}
+	Mix_Volume(-1, 5);
 	return true;
 }
 

@@ -4,17 +4,17 @@
 #include "TileComponent.h"
 #include "CharacterComponent.h"
 #include "PositionComponent.h"
+#include "TileSetSingleton.h"
 
-RenderSystem::RenderSystem(EntityManager* manager, TilemapComponent* tilemapcomponent) 
+RenderSystem::RenderSystem(EntityManager* manager) 
 	: BaseSystem(manager) {
-	tilemap_component = tilemapcomponent;
 }
 
 void RenderSystem::update(double dt)
 {
-	if (tilemap_component->reload) {
-		tilemap_component->tilemap = Engine::LoadTileset(tilemap_component->path);
-		tilemap_component->reload = false;
+	if (TileSetSingleton::get_instance()->reload) {
+		TileSetSingleton::get_instance()->tilemap = Engine::LoadTileset(TileSetSingleton::get_instance()->path);
+		TileSetSingleton::get_instance()->reload = false;
 	}
 
 	for (auto entityid : manager_->get_all_entities<TileComponent>()) {
@@ -25,24 +25,19 @@ void RenderSystem::update(double dt)
 			tile_component.y_pos,
 			tile_component.width,
 			tile_component.height,
-			tilemap_component->tiletypes[tile_component.tiletype][0],
-			tilemap_component->tiletypes[tile_component.tiletype][1],
-			tilemap_component->tilemap
+			TileSetSingleton::get_instance()->tiletypes[tile_component.tiletype][0],
+			TileSetSingleton::get_instance()->tiletypes[tile_component.tiletype][1],
+			TileSetSingleton::get_instance()->tilemap
 		);
 	}
 
 	for (auto entityid : manager_->get_all_entities<AnimationComponent>()) {
 		auto animation_component = manager_->get_component<AnimationComponent>(entityid);
 		auto position_component = manager_->get_component<PositionComponent>(entityid);
-		if (!animation_component.is_active) {
-			//animation_component.animation = Engine::LoadAnimation(animation_component.filename);
-			animation_component.is_active = true;
-		}
 
-		// TO-DO: fix the booleans
 		bool should_flip_horizontally = false;
-		bool should_flip_vertically = false;
-		Engine::UpdateAnimation(&animation_component.animation, position_component.x, position_component.y, should_flip_horizontally, should_flip_vertically);
+
+		Engine::UpdateAnimation(&animation_component.animation, position_component.x, position_component.y, should_flip_horizontally);
 	}
 
 	

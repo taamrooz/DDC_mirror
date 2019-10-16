@@ -48,8 +48,6 @@ bool Texture::loadFromFile(std::string path)
 			mHeight = loadedSurface->h;
 		}
 
-		//Get rid of old loaded surface
-		//SDL_FreeSurface(loadedSurface);
 	}
 
 	//Return success
@@ -100,23 +98,7 @@ void Texture::render(int x, int y, SDL_Rect* clip, int scale, double angle, SDL_
 	}
 
 	//Render to screen
-	SDL_RenderCopy(renderer_, mTexture, clip, &renderQuad);
-}
-
-void Texture::render(int x, int y, SDL_RendererFlip flip, SDL_Rect* clip)
-{
-	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
-
-	//Set clip rendering dimensions
-	if (clip != NULL)
-	{
-		renderQuad.w = clip->w * 4;
-		renderQuad.h = clip->h * 4;
-	}
-
-	//Render to screen
-	SDL_RenderCopy(renderer_, mTexture, clip, &renderQuad);
+	SDL_RenderCopyEx(renderer_, mTexture, clip, &renderQuad, angle, center, flip);
 }
 
 int Texture::getWidth()

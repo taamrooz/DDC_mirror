@@ -28,9 +28,9 @@ public:
 	void setAlpha(Uint8 alpha);
 
 	//Renders texture at given point
-	void render(int x, int y, SDL_Rect* clip = NULL, int scale = 1, double angle = 0.0, SDL_Point * center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
-	void render(int x, int y, SDL_Rect* clip = NULL);
-	void render(int x, int y, SDL_RendererFlip, SDL_Rect* clip = NULL);
+	void render(int x, int y, SDL_Rect* clip, int scale = 1, double angle = 0.0, SDL_Point * center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	//void render(int x, int y, SDL_Rect* clip = NULL);
+	//void render(int x, int y, SDL_RendererFlip, SDL_Rect* clip = NULL);
 
 	//Gets image dimensions
 	int getWidth();
