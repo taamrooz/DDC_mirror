@@ -4,6 +4,7 @@
 SDL_Window* window;
 SDL_Renderer* renderer;
 SDL_Surface* surf;
+std::vector<SDL_Rect> rectangles;
 
 //std::vector<Animation*> animations;
 
@@ -107,9 +108,16 @@ void Engine::Render() {
 	}
 }
 
-void Engine::UpdateAnimation(Animation* a)
+void Engine::UpdateAnimation(Animation* a, double x, double y, bool flip_horizontally, bool flip_vertically)
 {
-	a->UpdateAnimation();	
+	if (flip_horizontally) {
+
+	}
+	SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
+	SDL_RendererFlip flip1 = SDL_FLIP_VERTICAL;
+
+
+	a->UpdateAnimation(x, y);
 }
 
 void Engine::DestroyRenderer() {
@@ -125,4 +133,30 @@ void Engine::DestroyRenderer() {
 	}
 	IMG_Quit();
 	SDL_Quit();
+}
+
+
+
+void Engine::AddRectangle(int x, int y, int w, int h)
+{
+	SDL_Rect rect;
+	rect.x = x;
+	rect.y = y;
+	rect.w = w;
+	rect.h = h;
+	rectangles.push_back(rect);
+}
+
+void Engine::RenderRectangles() 
+{
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
+	for (auto const rectangle : rectangles)
+	{
+		SDL_RenderDrawRect(renderer, &rectangle);
+		SDL_RenderPresent(renderer);
+	}
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	rectangles.clear();
 }
