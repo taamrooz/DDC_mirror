@@ -1,4 +1,6 @@
 #include "Texture.h"
+#include <SDL_ttf.h>
+#include <iostream>
 
 
 Texture::Texture(SDL_Renderer *renderer)
@@ -14,6 +16,30 @@ Texture::~Texture()
 {
 	//Deallocate
 	free();
+}
+
+bool Texture::loadText(std::string font, int font_size, SDL_Color color, std::string text)
+{
+	free();
+	const auto filename = "./assets/" + font;
+	const auto ttf_font = TTF_OpenFont(filename.c_str(), font_size);
+	SDL_Surface* surface = TTF_RenderText_Blended(ttf_font, text.c_str(), color);
+	if(surface == nullptr)
+	{
+		std::cout << "Unable to render text: " << TTF_GetError() << std::endl;
+		return false;
+	}
+	mTexture = SDL_CreateTextureFromSurface(renderer_, surface);
+	if(mTexture == nullptr)
+	{
+		std::cout << "Unable to create texture: " << SDL_GetError() << std::endl;
+		return false;
+	}
+	mHeight = surface->h;
+	mWidth = surface->w;
+	TTF_CloseFont(ttf_font);
+	//SDL_FreeSurface(surface);
+	return true;
 }
 
 bool Texture::loadFromFile(std::string path)
@@ -48,8 +74,6 @@ bool Texture::loadFromFile(std::string path)
 			mHeight = loadedSurface->h;
 		}
 
-		//Get rid of old loaded surface
-		//SDL_FreeSurface(loadedSurface);
 	}
 
 	//Return success
@@ -87,20 +111,19 @@ void Texture::setAlpha(Uint8 alpha)
 	SDL_SetTextureAlphaMod(mTexture, alpha);
 }
 
-void Texture::render(int x, int y, SDL_Rect* clip)
+void Texture::render(int x, int y, SDL_Rect* clip, double scale, double angle, SDL_RendererFlip flip)
 {
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
-
 	//Set clip rendering dimensions
 	if (clip != NULL)
 	{
-		renderQuad.w = clip->w * 4;
-		renderQuad.h = clip->h * 4;
+		renderQuad.w = clip->w * scale;
+		renderQuad.h = clip->h * scale;
 	}
 
 	//Render to screen
-	SDL_RenderCopy(renderer_, mTexture, clip, &renderQuad);
+	SDL_RenderCopyEx(renderer_, mTexture, clip, &renderQuad, angle, nullptr, flip);
 }
 
 int Texture::getWidth()

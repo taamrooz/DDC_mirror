@@ -11,7 +11,9 @@
 #endif
 
 namespace Engine {
-
-	ENGINE_API std::pair<std::vector<SDL_Keycode>, bool> GetInputs();
+	/*
+	 * Returns a tuple of a vector which contains the keys that were pressed, a vector which contains the keys that were released, and if the user is still continuing by not having pressed the quit button.
+	 */
+	ENGINE_API std::tuple<std::vector<SDL_Keycode>, std::vector<SDL_Keycode>, bool> GetInputs();
 
 }

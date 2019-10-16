@@ -6,13 +6,18 @@
 struct AnimationComponent : Component
 {
 	AnimationComponent() = default;
-	AnimationComponent(const std::string& filename, const int frames) : filename{ filename }, animation{ Engine::LoadAnimation(filename) }, frames{ frames } {
-		is_active = false; 
-		//animation = Engine::LoadAnimation(filename);
+	AnimationComponent(const std::string& filename, const int frames, const int scale) : 
+		filename{ filename }, 
+		animation{ Engine::LoadAnimation(filename, frames) }, 
+		frames{ frames }, 
+		scale{ scale } 
+	{
+		animation.scale = scale;
+		animation.total_frames = frames;
 	}
-	bool is_active{};
 	std::string filename;
 	Animation& animation;
 	int frames{};
+	int scale{};
 };
 
