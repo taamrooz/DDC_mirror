@@ -96,6 +96,10 @@ void Engine::RenderClear() {
 	SDL_RenderClear(renderer);
 }
 
+Uint32 Engine::GetTicks() {
+	return SDL_GetTicks();
+}
+
 void Engine::Render() {
 	SDL_UpdateWindowSurface(window);
 	SDL_RenderPresent(renderer);

@@ -15,6 +15,7 @@
 #include "CharacterComponent.h"
 #include "MoveCharacterSystem.h"
 #include "CollisionComponent.h"
+#include "ShootingComponent.h"
 
 Core Core::instance_;
 Core::Core() = default;
@@ -53,6 +54,8 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	auto c1 = std::make_shared<CharacterComponent>();
 	auto q1 = std::make_shared<CollisionComponent>(100, 200);
 	auto q2 = std::make_shared<CollisionComponent>(200, 200);
+	auto s1 = std::make_shared<ShootingComponent>(4, 1000);
+	
 	manager_->add_component_to_entity(id, v1);
 	manager_->add_component_to_entity(id, p1);
 	manager_->add_component_to_entity(id2, v2);
@@ -62,6 +65,7 @@ bool Core::init(const char* title, int width, int height, bool fullscreen)
 	manager_->add_component_to_entity(id, a1);
 	manager_->add_component_to_entity(id, c1);
 	manager_->add_component_to_entity(id, q1);
+	manager_->add_component_to_entity(id, s1);
 
 	const auto createdComponent = manager_->get_component<PositionComponent>(id2);
 	std::cout << createdComponent.x << std::endl;

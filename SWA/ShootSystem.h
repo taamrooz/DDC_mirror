@@ -13,5 +13,5 @@ public:
 private:
 	InputComponent* input_component;
 	void createBullet(int xV, int yV);
-	const double bullet_velocity = 50;
+	const int bullet_velocity = 50;
 };

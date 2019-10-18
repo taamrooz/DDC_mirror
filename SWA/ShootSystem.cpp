@@ -39,17 +39,24 @@ void ShootSystem::update(double dt)
 
 void ShootSystem::createBullet(int xV, int yV) {
 	auto entity = manager_->get_all_entities<CharacterComponent>().front();
-	auto position = manager_->get_component<PositionComponent>(entity);
-	auto collision = manager_->get_component<CollisionComponent>(entity);
-	const auto id = manager_->create_entity();
-	auto vComponent = std::make_shared<VelocityComponent>(xV, yV);
-	auto pComponent = std::make_shared<PositionComponent>(position.x + collision.width / 2, position.y + collision.height / 2);
-	auto aComponent = std::make_shared<AnimationComponent>("Projectile.png", 1);
-	auto bComponent = std::make_shared<ShootingComponent>(4);
+	auto shoot = &manager_->get_component<ShootingComponent>(entity);
+	Uint32 ticks = Engine::GetTicks();
 
-	manager_->add_component_to_entity(id, vComponent);
-	manager_->add_component_to_entity(id, pComponent);
-	manager_->add_component_to_entity(id, aComponent);
-	manager_->add_component_to_entity(id, bComponent);
+	if (ticks - shoot->last_shot >= shoot->fire_rate) {
+		auto position = manager_->get_component<PositionComponent>(entity);
+		auto collision = manager_->get_component<CollisionComponent>(entity);
+
+		const auto id = manager_->create_entity();
+
+		auto vComponent = std::make_shared<VelocityComponent>(xV, yV);
+		auto pComponent = std::make_shared<PositionComponent>(position.x + collision.width / 2, position.y + collision.height / 2);
+		auto aComponent = std::make_shared<AnimationComponent>("Projectile.png", 1);
+
+		manager_->add_component_to_entity(id, vComponent);
+		manager_->add_component_to_entity(id, pComponent);
+		manager_->add_component_to_entity(id, aComponent);
+		shoot->last_shot = Engine::GetTicks();
+	}
+	
 
 }
