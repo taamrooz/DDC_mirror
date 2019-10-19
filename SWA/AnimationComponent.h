@@ -18,7 +18,6 @@ struct AnimationComponent : Component
 	std::string filename;
 	Animation& animation;
 	bool flip_horizontally;
-	bool flip_vertically;
 	int frames{};
 	int scale{};
 };

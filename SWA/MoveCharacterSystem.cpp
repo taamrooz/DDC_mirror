@@ -41,6 +41,7 @@ void MoveCharacterSystem::update(double dt) {
 		if (i.first == "moveRight") {
 			if (i.second) {
 				velocity->dx = move_velocity;
+				animation->flip_horizontally = false;
 			}
 		}
 	}
