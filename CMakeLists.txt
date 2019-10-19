@@ -6,7 +6,7 @@ add_executable(SWA
 	SWA/main.cpp
 	SWA/EntityManager.cpp
 	SWA/MainMenu.cpp
-	SWA/MenuManager.cpp
+	SWA/SceneManager.cpp
 	SWA/Core.cpp
 	SWA/BaseSystem.cpp
 	SWA/MoveSystem.cpp
@@ -23,15 +23,17 @@ if(CMAKE_TOOLCHAIN_FILE)
 	find_package(libpng CONFIG REQUIRED)
 	find_package(SDL2-mixer CONFIG REQUIRED)
 	find_package(ZLIB REQUIRED)
+	find_package(sdl2-ttf CONFIG REQUIRED)
 	
     target_link_libraries(SWA 
         PRIVATE
-        SDL2::SDL2
-        SDL2::SDL2main
-		SDL2::SDL2_image
+        SDL2
+        SDL2main
+		SDL2_image
 		png
-		SDL2::SDL2_mixer
+		SDL2_mixer
 		ZLIB::ZLIB
+		SDL2_ttf
     )
 else()
     message("Finding SDL2")
@@ -39,16 +41,25 @@ else()
     find_package(SDL2 REQUIRED)
 	find_package(SDL2_image REQUIRED)
 	find_package(SDL2_mixer REQUIRED)
+	find_package(SDL2_TTF REQUIRED)
     target_include_directories(SWA
         PRIVATE
         "${SDL2_INCLUDE_DIR}"
 		"${SDL2_IMAGE_INCLUDE_DIRS}"
 		"${SDL2_MIXER_INCLUDE_DIRS}"
+		"${SDL2_TTF_INCLUDE_DIRS}"
     )
     target_link_libraries(SWA
         PRIVATE
         "${SDL2_LIBRARY}"
 		"${SDL2_IMAGE_LIBRARIES}"
 		"${SDL2_MIXER_LIBRARIES}"
+		"${SDL2TTF_LIBRARY}"
     )
 endif()
+#include(FindBoost)
+#message(${CMAKE_MODULE_PATH})
+#find_package(Boost REQUIRED)
+#if(Boost_FOUND)
+#	include_directories(${Boost_INCLUDE_DIRS})
+#endif()

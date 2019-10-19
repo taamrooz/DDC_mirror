@@ -1,21 +1,40 @@
 #include "AudioSystem.h"
 #include "UserInput.h"
+#include "KeyBindingSingleton.h"
 
-AudioSystem::AudioSystem(EntityManager* manager, InputComponent* inputcomponent) : BaseSystem(manager) {
-	input_component = inputcomponent;
-}
+AudioSystem::AudioSystem(EntityManager* manager) : BaseSystem(manager) 
+{}
 
 void AudioSystem::update(double dt)
 {
-	for (auto i = input_component->keys_down.begin(); i != input_component->keys_down.end(); ++i)
-	{		
-		if (i->second) {
-			std::cout << i->second << std::endl;
-			if (!i->first.compare("stop_music"))
-				Engine::StopMusic();
-			else
-				Engine::PlayAudio(i->first);
-			i->second = false;
+	for (auto i = KeyBindingSingleton::get_instance()->keys_down.begin(); i != KeyBindingSingleton::get_instance()->keys_down.end(); ++i)
+	{
+		if (i->first.compare("high.wav") == 0) {
+			if (i->second) {
+				Engine::PlayAudio("high.wav");
+				i->second = false;
+			}
+		}
+
+		if (i->first.compare("medium.wav") == 0) {
+			if (i->second) {
+				Engine::PlayAudio("medium.wav");
+				i->second = false;
+			}
+		}
+
+		if (i->first.compare("low.wav") == 0) {
+			if (i->second) {
+				Engine::PlayAudio("low.wav");
+				i->second = false;
+			}
+		}
+
+		if (i->first.compare("scratch.wav") == 0) {
+			if (i->second) {
+				Engine::PlayAudio("scratch.wav");
+				i->second = false;
+			}
 		}
 	}
 }
