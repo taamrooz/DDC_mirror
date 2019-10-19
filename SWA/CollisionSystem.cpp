@@ -15,11 +15,11 @@ void CollisionSystem::update(double dt)
 {
 	//Starting points of the quadtree
 	Point leftTop{ 0, 0 };
-	Point botRight{ 1280, 960 };
+	Point botRight{ 1280, 960 }; // TODO: make this not hardcoded
 	QuadTree quadTree{ leftTop, botRight };
 
 	//// <----- TEST SCENARIO ----->  ////
-
+	/*
 	Node leftTopNode{ Point{130, 200}, 1, 10, 10 };
 	Node leftBotNode{ Point{ 450, 200 }, 2, 10, 10 };
 	Node rightTopNode{ Point{ 150, 600 }, 3, 10, 10 };
@@ -50,15 +50,15 @@ void CollisionSystem::update(double dt)
 
 	// Rechstonder
 	quadTree.insert(&Node{ Point{405, 285}, 12, 10, 10 });
-
+	*/
 	//// <----- TEST SCENARIO ----->  ////
 
 	for (auto entity : manager_->get_all_entities<CollisionComponent>())
 	{
 		auto positionComponent = manager_->get_component<PositionComponent>(entity);
 		auto collisionComponent = manager_->get_component<CollisionComponent>(entity);
-		Node node{ Point{ positionComponent->x, positionComponent->y }, entity, collisionComponent->width, collisionComponent->height };
-		quadTree.insert(&node);
+		Node* node = new Node{ Point{ positionComponent->x, positionComponent->y }, entity, collisionComponent->width, collisionComponent->height };
+		quadTree.insert(node);
 	}
 
 	std::vector<std::tuple<Node*, Node*>> collisions = quadTree.get_collisions();
@@ -66,6 +66,14 @@ void CollisionSystem::update(double dt)
 	for (auto const& node_tuple : collisions) {
 		Node* first_node = std::get<0>(node_tuple);
 		Node* second_node = std::get<1>(node_tuple);
+
+		auto velocityComponent = manager_->get_component<VelocityComponent>(first_node->id);
+		velocityComponent->dx = 0;
+		velocityComponent->dy = 0;
+
+		auto velocityComponent2 = manager_->get_component<VelocityComponent>(second_node->id);
+		velocityComponent2->dx = 0;
+		velocityComponent2->dy = 0;
 	}
 
 
