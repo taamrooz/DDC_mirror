@@ -28,6 +28,7 @@ void MoveCharacterSystem::update(double dt) {
 		if (i.first == "moveLeft") {
 			if (i.second) {
 				velocity->dx = -1 * move_velocity;
+				animation->flip_horizontally = true;
 			}
 		}
 
