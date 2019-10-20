@@ -1,10 +1,10 @@
 #include "RoomSystem.h"
 #include <fstream>
+#include <sstream>
 #include "TileComponent.h"
 #include "RoomSingleton.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/document.h"
-#include "rapidjson/filereadstream.h"
+#include "PositionComponent.h"
+#include "ComponentFactory.h"
 
 RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
 {}
@@ -20,26 +20,47 @@ void RoomSystem::update(double dt)
 }
 
 void RoomSystem::LoadObjects() {
-	////Get file path for object map
-	//auto object_path = RoomSingleton::get_instance()->room_name + RoomSingleton::get_instance()->object_suffix;
-	//using namespace rapidjson;
+	//Get file path for object map
+	auto object_path = RoomSingleton::get_instance()->room_name + RoomSingleton::get_instance()->object_suffix;
+	std::ifstream objects("./assets/" + object_path);
+	
+	if (objects.fail())
+	{
+		printf("Unable to load map file!\n");
+	}
+	else
+	{
+		std::string name;
+		char data[100];
+		int x = -1, y = -1, count = 0;
 
-	//FILE* fp = fopen_s(object_path.c_str(), "rb");
+		std::stringstream buffer;
+		buffer << objects.rdbuf();
 
-	//char readBuffer[10000];
-	//FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+		while (buffer.peek() >= 0){		
+			if (!(buffer >> name)) {
+				std::cout << "Error!! First value is not a string" << std::endl;
+				return;
+			}
+			if (!(buffer >> x)) {
+				std::cout << "Error!! Second value is not an int" << std::endl;
+				return;
+			}
+			if (!(buffer >> y)) {
+				std::cout << "Error!! Third value is not an int" << std::endl;
+				return;
+			}
 
-	//Document d;
-	//d.ParseStream(is);
-
-	//fclose(fp);
+			auto id = manager_->create_entity();
+			manager_->add_component_to_entity(id, std::make_unique<PositionComponent>(x, y));
+			ComponentFactory::get_instance()->CreateEntity(name, id, manager_);
+		}
+	}
+	objects.close();
 }
 
 void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites, int tile_width, int level_width, int tile_height)
 {
-	//Success flag
-	bool tilesLoaded = true;
-
 	//tiles vector
 	std::vector<std::vector<int>> tiles;
 
@@ -53,7 +74,6 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 	if (map.fail())
 	{
 		printf("Unable to load map file!\n");
-		tilesLoaded = false;
 	}
 	else
 	{
@@ -71,7 +91,6 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 			{
 				//Stop loading map
 				printf("Error loading map: Unexpected end of file!\n");
-				tilesLoaded = false;
 				break;
 			}
 
@@ -89,7 +108,6 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 			{
 				//Stop loading map
 				printf("Error loading map: Invalid tile type at %d!\n", i);
-				tilesLoaded = false;
 				break;
 			}
 
@@ -112,7 +130,7 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 	map.close();
 
 	for (std::vector<int> i : tiles) {
-		auto component = std::make_unique<TileComponent>(i[0],i[1],80,80,i[2]);
+		auto component = std::make_unique<TileComponent>(i[0], i[1], tile_width , tile_height, i[2]);
 		auto id = manager_->create_entity();
 		manager_->add_component_to_entity(id, std::move(component));
 	}

@@ -4,7 +4,7 @@ RoomSingleton::RoomSingleton() {
 	reload_room = true;
 	room_name = "lazy";
 	room_suffix = ".map";
-	object_suffix = ".obj";
+	object_suffix = ".objects";
 }
 
 RoomSingleton* RoomSingleton::instance = 0;
