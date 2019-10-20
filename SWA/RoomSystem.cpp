@@ -3,6 +3,8 @@
 #include "TileComponent.h"
 #include "RoomSingleton.h"
 #include "rapidjson/writer.h"
+#include "rapidjson/document.h"
+#include "rapidjson/filereadstream.h"
 
 RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
 {}
@@ -11,13 +13,26 @@ void RoomSystem::update(double dt)
 {
 	//Check if a new room needs to be loaded
 	if (RoomSingleton::get_instance()->reload_room) {
-		LoadTiles(RoomSingleton::get_instance()->room_path, k_total_tiles_, k_total_sprites_, k_tile_width_, k_level_width_, k_tile_height_);
+		LoadTiles(RoomSingleton::get_instance()->room_name + RoomSingleton::get_instance()->room_suffix, k_total_tiles_, k_total_sprites_, k_tile_width_, k_level_width_, k_tile_height_);
+		LoadObjects();
 		RoomSingleton::get_instance()->reload_room = false;
 	}
 }
 
 void RoomSystem::LoadObjects() {
+	////Get file path for object map
+	//auto object_path = RoomSingleton::get_instance()->room_name + RoomSingleton::get_instance()->object_suffix;
+	//using namespace rapidjson;
 
+	//FILE* fp = fopen_s(object_path.c_str(), "rb");
+
+	//char readBuffer[10000];
+	//FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+
+	//Document d;
+	//d.ParseStream(is);
+
+	//fclose(fp);
 }
 
 void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites, int tile_width, int level_width, int tile_height)

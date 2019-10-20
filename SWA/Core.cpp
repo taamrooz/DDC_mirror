@@ -39,8 +39,8 @@ bool Core::init()
 	auto p1 = std::make_unique<PositionComponent>(50, 600);
 	auto v2 = std::make_unique<VelocityComponent>(0, 0);
 	auto p2 = std::make_unique<PositionComponent>(100, 250);
-	auto a1 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 4);
-	auto a2 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 4);
+	auto a1 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 3);
+	auto a2 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 3);
 	auto c1 = std::make_unique<CharacterComponent>();
 	auto q1 = std::make_unique<CollisionComponent>(200, 200);
 	auto q2 = std::make_unique<CollisionComponent>(200, 200);
