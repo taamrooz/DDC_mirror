@@ -17,6 +17,14 @@ QuadTree::QuadTree(Point topL, Point botR) :
 }
 
 QuadTree::~QuadTree() {
+	for (size_t i = 0; i < capacity; i++)
+	{
+		if (nodes[i]) {
+			delete nodes[i];
+			nodes[i] = nullptr;
+		}
+	}
+
 	delete topLeftTree;
 	delete topRightTree;
 	delete botLeftTree;
@@ -255,11 +263,11 @@ std::vector<std::tuple<Node*, Node*>> QuadTree::get_collisions() {
 							int node_a_y2 = node_a_y1 + nodes[i]->height;
 
 							int node_b_y1 = nodes[x]->position.y;
-							int node_b_y2 = node_a_y2+ nodes[x]->height;
+							int node_b_y2 = node_b_y1+ nodes[x]->height;
 
 
-							if (node_a_x1 <= node_b_x2 && node_a_x2 >= node_b_x1&&
-								node_a_y1 <= node_b_y2 && node_a_y2 >= node_b_y1) {
+							if (node_a_x1 < node_b_x2 && node_a_x2 > node_b_x1&&
+								node_a_y1 < node_b_y2 && node_a_y2 > node_b_y1) {
 								std::tuple<Node*, Node*> collision{ nodes[i], nodes[x] };
 								collisions_list.push_back(collision);
 							}

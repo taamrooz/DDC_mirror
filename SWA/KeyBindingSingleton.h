@@ -6,7 +6,7 @@
 class KeyBindingSingleton
 {
 private:
-	/* Here will be the instance stored. */
+	/* The instance will be stored here. */
 	static KeyBindingSingleton* instance;
 
 	/* Private constructor to prevent instancing. */

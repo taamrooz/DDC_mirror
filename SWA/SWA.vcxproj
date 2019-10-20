@@ -71,12 +71,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>..\GameEngine;C:\SDL2_mixer-2.0.4\include;C:\SDL2_image-2.0.5\include;C:\SDL2-2.0.10\include;C:\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>lib\;C:\SDL2_mixer-2.0.4\lib\x64;C:\SDL2_image-2.0.5\lib\x64;C:\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>.\;lib\;C:\SDL2_mixer-2.0.4\lib\x64;C:\SDL2_image-2.0.5\lib\x64;C:\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>..\GameEngine;C:\SDL2_mixer-2.0.4\include;C:\SDL2_image-2.0.5\include;C:\SDL2-2.0.10\include;C:\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>lib\;C:\SDL2_mixer-2.0.4\lib\x64;C:\SDL2_image-2.0.5\lib\x64;C:\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>.\;lib\;C:\SDL2_mixer-2.0.4\lib\x64;C:\SDL2_image-2.0.5\lib\x64;C:\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="BaseSystem.cpp" />
+    <ClCompile Include="CollisionHandlers.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -156,12 +157,15 @@
     <ClCompile Include="KeyBindingSingleton.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ShootSystem.cpp" />
+    <ClCompile Include="RoomSingleton.cpp" />
+    <ClCompile Include="RoomSystem.cpp" />
+    <ClCompile Include="TileSetSingleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationComponent.h" />
@@ -169,6 +173,7 @@
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="CharacterComponent.h" />
     <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="CollisionHandlers.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ControllableComponent.h" />
@@ -176,20 +181,23 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />
-    <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
-    <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="MoveCharacterSystem.h" />
     <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="RoomSingleton.h" />
+    <ClInclude Include="RoomSystem.h" />
     <ClInclude Include="ShootingComponent.h" />
     <ClInclude Include="ShootSystem.h" />
+    <ClInclude Include="TileComponent.h" />
+    <ClInclude Include="TileSetSingleton.h" />
     <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +208,7 @@
     <Media Include="assets\scratch.wav" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\lazy.map" />
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +272,7 @@
     <Image Include="assets\Animations\wogol_run.png" />
     <Image Include="assets\Animations\zombie_idle.png" />
     <Image Include="assets\Animations\zombie_run.png" />
+    <Image Include="assets\tiles.png" />
     <Image Include="assets\wizard_move_f.png" />
     <Image Include="assets\wizard_move_m.png" />
   </ItemGroup>

@@ -1,16 +1,13 @@
 #pragma once
 #include "BaseSystem.h"
 #include "Core.h"
-#include "InputComponent.h"
 
 class AudioSystem :
 	public BaseSystem
 
 {
 public:
-	AudioSystem(EntityManager* manager, InputComponent* inputcomponent);
+	AudioSystem(EntityManager* manager);
 	void update(double dt) override;
-private:
-	InputComponent* input_component;
 };
 
