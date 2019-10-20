@@ -5,8 +5,7 @@
 #include "CharacterComponent.h"
 #include "CollisionComponent.h"
 
-ShootSystem::ShootSystem(EntityManager* manager, InputComponent* inputcomponent) : BaseSystem(manager) {
-	input_component = inputcomponent;
+ShootSystem::ShootSystem(EntityManager* manager) : BaseSystem(manager) {
 }
 
 void ShootSystem::update(double dt)
@@ -39,22 +38,22 @@ void ShootSystem::update(double dt)
 
 void ShootSystem::createBullet(int xV, int yV) {
 	auto entity = manager_->get_all_entities<CharacterComponent>().front();
-	auto shoot = &manager_->get_component<ShootingComponent>(entity);
+	auto shoot = manager_->get_component<ShootingComponent>(entity);
 	Uint32 ticks = Engine::GetTicks();
-
 	if (ticks - shoot->last_shot >= shoot->fire_rate) {
 		auto position = manager_->get_component<PositionComponent>(entity);
 		auto collision = manager_->get_component<CollisionComponent>(entity);
 
 		const auto id = manager_->create_entity();
 
-		auto vComponent = std::make_shared<VelocityComponent>(xV, yV);
-		auto pComponent = std::make_shared<PositionComponent>(position.x + collision.width / 2, position.y + collision.height / 2);
-		auto aComponent = std::make_shared<AnimationComponent>("Projectile.png", 1);
-
-		manager_->add_component_to_entity(id, vComponent);
-		manager_->add_component_to_entity(id, pComponent);
-		manager_->add_component_to_entity(id, aComponent);
+		auto vComponent = std::make_unique<VelocityComponent>(xV, yV);
+		auto pComponent = std::make_unique<PositionComponent>(position->x + collision->width + 10, position->y + collision->height / 2);
+		auto aComponent = std::make_unique<AnimationComponent>("Projectile.png", 1, 2);
+		auto cComponent = std::make_unique<CollisionComponent>(12, 12, BulletCollisionHandler);
+		manager_->add_component_to_entity(id, std::move(vComponent));
+		manager_->add_component_to_entity(id, std::move(pComponent));
+		manager_->add_component_to_entity(id, std::move(aComponent));
+		manager_->add_component_to_entity(id, std::move(cComponent));
 		shoot->last_shot = Engine::GetTicks();
 	}
 	

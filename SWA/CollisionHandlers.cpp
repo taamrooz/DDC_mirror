@@ -1,11 +1,12 @@
 #include "CollisionHandlers.h"
+#include "BaseSystem.h"
 
-void BulletCollisionHandler(uint32_t entity1, uint32_t entity2)
+void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
 {
-	//delete bullet
+	manager->remove_entity(entity1);
 }
 
-void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2)
+void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
 {
 	//stop player from moving into a wall
 

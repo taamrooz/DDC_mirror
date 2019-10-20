@@ -1,4 +1,5 @@
 #include "EntityManager.h"
+#include "CollisionComponent.h"
 
 uint32_t EntityManager::create_entity()
 {

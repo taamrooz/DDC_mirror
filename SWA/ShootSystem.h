@@ -2,16 +2,14 @@
 #include "BaseSystem.h"
 #include "Core.h"
 #include "InputComponent.h"
-
+#include "CollisionHandlers.h"
 class ShootSystem :
 	public BaseSystem
-
 {
 public:
-	ShootSystem(EntityManager* manager, InputComponent* inputcomponent);
+	ShootSystem(EntityManager* manager);
 	void update(double dt) override;
 private:
-	InputComponent* input_component;
 	void createBullet(int xV, int yV);
-	const int bullet_velocity = 50;
+	const int bullet_velocity = 30;
 };
