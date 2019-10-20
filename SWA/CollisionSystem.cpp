@@ -67,19 +67,12 @@ void CollisionSystem::update(double dt)
 		Node* first_node = std::get<0>(node_tuple);
 		Node* second_node = std::get<1>(node_tuple);
 
-		auto velocityComponent = manager_->get_component<VelocityComponent>(first_node->id);
-		velocityComponent->dx = 0;
-		velocityComponent->dy = 0;
-
-		auto velocityComponent2 = manager_->get_component<VelocityComponent>(second_node->id);
-		velocityComponent2->dx = 0;
-		velocityComponent2->dy = 0;
+		update_velocity(first_node, second_node);
 	}
 
 
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
 	std::vector<std::tuple<Point, Point>> bounds = quadTree.get_bounds();
-	int i = 0;
 	for (auto const& point_tuple : bounds) {
 		int x = std::get<0>(point_tuple).x;
 		int y = std::get<0>(point_tuple).y;
@@ -92,4 +85,61 @@ void CollisionSystem::update(double dt)
 
 	//Engine::RenderRectangles();
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
+}
+
+void CollisionSystem::update_velocity(Node* first_node, Node* second_node) {
+	auto first_node_velocity_component = manager_->get_component<VelocityComponent>(first_node->id);
+	auto first_node_position_component = manager_->get_component<PositionComponent>(first_node->id);
+	auto second_node_velocity_component = manager_->get_component<VelocityComponent>(second_node->id);
+	auto second_node_position_component = manager_->get_component<PositionComponent>(second_node->id);
+	
+	// check velocity
+		// NEW STRATEGY check which side is touching
+		// set back
+	if (first_node_velocity_component->dx > 0) {
+		if ((first_node_position_component->x + first_node->width) >= (second_node_position_component->x)) {
+			first_node_position_component->x = second_node_position_component->x - first_node->width - 1;
+		}
+	} else if (first_node_velocity_component->dx < 0) {
+		if ((first_node_position_component->x) <= (second_node_position_component->x + second_node->width)) {
+			first_node_position_component->x = second_node_position_component->x + second_node->width + 17;
+		}
+	}
+
+	if (second_node_velocity_component->dx > 0) {
+		if ((second_node_position_component->x + second_node->width) >= (first_node_position_component->x)) {
+			second_node_position_component->x = first_node_position_component->x - second_node->width - 1;
+		}
+	}
+	else if (first_node_velocity_component->dx < 0) {
+		if ((first_node_position_component->x) <= (second_node_position_component->x + second_node->width)) {
+			first_node_position_component->x = second_node_position_component->x + second_node->width + 17;
+		}
+	}
+
+	first_node_velocity_component->dx = 0;
+	second_node_velocity_component->dx = 0;
+
+	/*
+	// check if first node has velocity
+		// set back first node
+	if (first_node_velocity_component->dx > 0 && second_node_position_component->x > first_node_position_component->x) {
+		// set back vertical
+		first_node_position_component->x = second_node_position_component->x - first_node->width - 1;
+	} else if (first_node_velocity_component->dx < 0 && second_node_position_component->x < first_node_position_component->x) {
+		// set back vertical
+		first_node_position_component->x = second_node_position_component->x + second_node->width + 1;
+	}
+
+	if (first_node_velocity_component->dy > 0 && second_node_position_component->y > first_node_position_component->y) {
+		//set back horizontal
+		first_node_position_component->y = second_node_position_component->y - first_node->height - 1;
+	}
+	else if (first_node_velocity_component->dy < 0 && second_node_position_component->y < first_node_position_component->y) {
+		first_node_position_component->y = second_node_position_component->y + second_node->height + 1;
+	}
+		*/
+
+	// check if second node has velocity
+		// set back second node
 }
