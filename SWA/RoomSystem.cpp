@@ -2,6 +2,7 @@
 #include <fstream>
 #include "TileComponent.h"
 #include "RoomSingleton.h"
+#include "rapidjson/writer.h"
 
 RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
 {}
@@ -13,6 +14,10 @@ void RoomSystem::update(double dt)
 		LoadTiles(RoomSingleton::get_instance()->room_path, k_total_tiles_, k_total_sprites_, k_tile_width_, k_level_width_, k_tile_height_);
 		RoomSingleton::get_instance()->reload_room = false;
 	}
+}
+
+void RoomSystem::LoadObjects() {
+
 }
 
 void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites, int tile_width, int level_width, int tile_height)
