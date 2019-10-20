@@ -215,6 +215,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\..\Gebruiker%27\Desktop\PlaySheet.png" />
+    <Image Include="..\..\..\..\..\Gebruiker%27\Documents\GitHub\SWA\SWA\assets\Tileset.png" />
     <Image Include="assets\Animations\big_demon_idle.png" />
     <Image Include="assets\Animations\big_demon_run.png" />
     <Image Include="assets\Animations\big_zombie_idle.png" />
@@ -270,7 +272,6 @@
     <Image Include="assets\Animations\wogol_run.png" />
     <Image Include="assets\Animations\zombie_idle.png" />
     <Image Include="assets\Animations\zombie_run.png" />
-    <Image Include="assets\tiles.png" />
     <Image Include="assets\wizard_move_f.png" />
     <Image Include="assets\wizard_move_m.png" />
   </ItemGroup>
