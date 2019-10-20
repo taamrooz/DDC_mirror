@@ -5,6 +5,7 @@
 #include "RoomSingleton.h"
 #include "PositionComponent.h"
 #include "ComponentFactory.h"
+#include "CollisionComponent.h"
 
 RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
 {}
@@ -23,7 +24,7 @@ void RoomSystem::LoadObjects() {
 	//Get file path for object map
 	auto object_path = RoomSingleton::get_instance()->room_name + RoomSingleton::get_instance()->object_suffix;
 	std::ifstream objects("./assets/" + object_path);
-	
+
 	if (objects.fail())
 	{
 		printf("Unable to load map file!\n");
@@ -37,7 +38,7 @@ void RoomSystem::LoadObjects() {
 		std::stringstream buffer;
 		buffer << objects.rdbuf();
 
-		while (buffer.peek() >= 0){		
+		while (buffer.peek() >= 0) {
 			if (!(buffer >> name)) {
 				std::cout << "Error!! First value is not a string" << std::endl;
 				return;
@@ -68,7 +69,7 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 	int x = 0, y = 0;
 
 	//Open the map
-	std::ifstream map("./assets/"+path);
+	std::ifstream map("./assets/" + path);
 
 	//If the map couldn't be loaded
 	if (map.fail())
@@ -130,9 +131,17 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 	map.close();
 
 	for (std::vector<int> i : tiles) {
-		auto component = std::make_unique<TileComponent>(i[0], i[1], tile_width , tile_height, i[2]);
+		auto pos = std::make_unique<PositionComponent>(i[0], i[1]);
+		auto tile = std::make_unique<TileComponent>(i[0], i[1], tile_width, tile_height, i[2]);
 		auto id = manager_->create_entity();
-		manager_->add_component_to_entity(id, std::move(component));
+		manager_->add_component_to_entity(id, std::move(pos));
+		manager_->add_component_to_entity(id, std::move(tile));
+		for (unsigned int a = 0; a < sizeof(k_collision_tiles) / sizeof(k_collision_tiles[0]); a = a + 1) {
+			if (k_collision_tiles[a] == i[2]) {
+				auto coll = std::make_unique<CollisionComponent>(64, 64);
+				manager_->add_component_to_entity(id, std::move(coll));
+			}
+		}
 	}
 
 }
