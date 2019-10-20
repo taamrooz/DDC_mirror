@@ -66,6 +66,11 @@ void CollisionSystem::update(double dt)
 	for (auto const& node_tuple : collisions) {
 		Node* first_node = std::get<0>(node_tuple);
 		Node* second_node = std::get<1>(node_tuple);
+
+		//handle collision
+		auto collisionComponent = manager_->get_component<CollisionComponent>(0);
+		collisionComponent->collisionHandler(first_node->id, second_node->id);
+		
 	}
 
 

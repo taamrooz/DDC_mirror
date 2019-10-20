@@ -15,6 +15,7 @@
 #include "CharacterComponent.h"
 #include "MoveCharacterSystem.h"
 #include "CollisionComponent.h"
+#include "CollisionHandlers.h"
 
 Core::Core(SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -42,8 +43,8 @@ bool Core::init()
 	auto a1 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 4);
 	auto a2 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 4);
 	auto c1 = std::make_unique<CharacterComponent>();
-	auto q1 = std::make_unique<CollisionComponent>(200, 200);
-	auto q2 = std::make_unique<CollisionComponent>(200, 200);
+	auto q1 = std::make_unique<CollisionComponent>(200, 200, PlayerCollisionHandler);
+	auto q2 = std::make_unique<CollisionComponent>(200, 200, BulletCollisionHandler);
 	manager_->add_component_to_entity(id, std::move(v1));
 	manager_->add_component_to_entity(id, std::move(p1));
 	manager_->add_component_to_entity(id2, std::move(v2));
