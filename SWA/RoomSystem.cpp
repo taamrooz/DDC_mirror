@@ -112,7 +112,7 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 	map.close();
 
 	for (std::vector<int> i : tiles) {
-		auto component = std::make_unique<TileComponent>(i[0],i[1],80,80,i[2]);
+		auto component = std::make_unique<TileComponent>(i[0],i[1],tile_width,tile_height,i[2]);
 		auto id = manager_->create_entity();
 		manager_->add_component_to_entity(id, std::move(component));
 	}
