@@ -13,6 +13,7 @@ CollisionSystem::CollisionSystem(EntityManager* manager) : BaseSystem(manager) {
 
 void CollisionSystem::update(double dt)
 {
+	//Starting points of the quadtree
 	Point leftTop{ 0, 0 };
 	Point botRight{ 1280, 960 };
 	QuadTree quadTree{ leftTop, botRight };
@@ -56,7 +57,7 @@ void CollisionSystem::update(double dt)
 	{
 		auto positionComponent = manager_->get_component<PositionComponent>(entity);
 		auto collisionComponent = manager_->get_component<CollisionComponent>(entity);
-		Node node{ Point{ positionComponent.x, positionComponent.y }, entity, collisionComponent.width, collisionComponent.height };
+		Node node{ Point{ positionComponent->x, positionComponent->y }, entity, collisionComponent->width, collisionComponent->height };
 		quadTree.insert(&node);
 	}
 
@@ -81,6 +82,6 @@ void CollisionSystem::update(double dt)
 		Engine::AddRectangle(x, y, width, height);
 	}
 
-	Engine::RenderRectangles();	
+	//Engine::RenderRectangles();
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
 }

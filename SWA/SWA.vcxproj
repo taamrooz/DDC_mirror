@@ -156,8 +156,8 @@
     <ClCompile Include="KeyBindingSingleton.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="MenuManager.cpp" />
-    <ClCompile Include="MoveCharacterSystem.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+	<ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
@@ -182,7 +182,7 @@
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
-    <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="MoveCharacterSystem.h" />
     <ClInclude Include="MoveSystem.h" />

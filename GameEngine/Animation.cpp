@@ -2,6 +2,7 @@
 
 Animation::Animation(int frames, std::vector<SDL_Rect>& spriteclips, Texture texture) : gSpriteSheetTexture{texture} {
 	WALKING_ANIMATION_FRAMES = frames;
+	total_frames = frames;
 	//gSpriteSheetTexture = texture;
 	gSpriteClips = spriteclips;
 }
@@ -16,7 +17,7 @@ void Animation::UpdateAnimation(double x, double y, SDL_RendererFlip flip)
 	//Render current frame
 	SDL_Rect* currentClip = &gSpriteClips[CURRENT_FRAME / 4];
 
-	gSpriteSheetTexture.render((x - currentClip->w), (y - currentClip->h), currentClip, scale, flip);
+	gSpriteSheetTexture.render((x), (y), currentClip, scale, flip);
 
 	//Go to next frame
 	CURRENT_FRAME++;

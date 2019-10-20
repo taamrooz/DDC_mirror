@@ -1,8 +1,6 @@
 #pragma once
 #include <cstdint>
 #include <vector>
-#include <map>
-#include <string>
 #include "Component.h"
 #include <iostream>
 #include <typeindex>
@@ -13,12 +11,12 @@ class EntityManager
 private:
 	int id_ = -1;
 	std::vector<uint32_t> entities_;
-	std::unordered_map <size_t, std::unordered_map<uint32_t, std::shared_ptr<Component>>> components_by_class_;
+	std::unordered_map <size_t, std::unordered_map<uint32_t, std::unique_ptr<Component>>> components_by_class_;
 
 public:
 	uint32_t create_entity();
 	uint32_t create_entity(std::vector<Component*>&);
-	void add_component_to_entity(uint32_t, std::shared_ptr<Component> comp);
+	void add_component_to_entity(uint32_t, std::unique_ptr<Component>);
 	void remove_entity(uint32_t id);
 
 	
@@ -29,10 +27,10 @@ public:
 		components_by_class_[type].erase(id);
 	}
 	template<class T>
-	T& get_component(const uint32_t id)
+	T* get_component(const uint32_t id)
 	{
 		const auto type = typeid(T).hash_code();
-		return *static_cast<T*>(components_by_class_[type][id].get());
+		return static_cast<T*>(components_by_class_[type][id].get());
 	}
 	template<class T>
 	std::vector<uint32_t> get_all_entities()
