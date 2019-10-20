@@ -194,6 +194,7 @@
     <ClInclude Include="RoomSingleton.h" />
     <ClInclude Include="RoomSystem.h" />
     <ClInclude Include="ShootingComponent.h" />
+    <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TileSetSingleton.h" />
     <ClInclude Include="VelocityComponent.h" />

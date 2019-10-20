@@ -82,6 +82,6 @@ void CollisionSystem::update(double dt)
 		Engine::AddRectangle(x, y, width, height);
 	}
 
-	Engine::RenderRectangles();
+	//Engine::RenderRectangles();
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
 }

@@ -197,6 +197,9 @@
     <ClInclude Include="ComponentFactory.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\scratch.wav">
