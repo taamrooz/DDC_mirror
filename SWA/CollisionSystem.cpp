@@ -68,6 +68,7 @@ void CollisionSystem::update(double dt)
 		Node* second_node = std::get<1>(node_tuple);
 
 		//handle collision
+		//gebruikt nu entity 0 omdat er nog test data in staat
 		auto collisionComponent = manager_->get_component<CollisionComponent>(0);
 		collisionComponent->collisionHandler(first_node->id, second_node->id);
 		
