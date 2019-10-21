@@ -26,7 +26,7 @@ void InputSystem::update(double dt)
 	{
 		if (keycode == SDLK_q)
 		{
-			core->scene_manager_->pop_scene();
+			core->scene_manager_->delete_scene();
 			break;
 		}
 		if (KeyBindingSingleton::get_instance()->keybindings.find(keycode) != KeyBindingSingleton::get_instance()->keybindings.end()) {

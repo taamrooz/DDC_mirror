@@ -14,6 +14,7 @@ void SceneManager::add_scene(BaseScene & menu)
 void SceneManager::delete_scene()
 {
 	active_scenes_.back()->cleanup();
+	pop_scene();
 	active_scenes_.pop_back();
 }
 

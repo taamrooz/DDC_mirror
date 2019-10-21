@@ -72,6 +72,9 @@ void MainMenu::input()
 		{
 			if (current_action_ == 0)
 			{
+				auto core = std::make_unique<Core>(scene_manager_);
+				core->init();
+				scene_manager_->add_scene(*core);
 				scene_manager_->push_scene();
 			}
 			else if (current_action_ == 2)
