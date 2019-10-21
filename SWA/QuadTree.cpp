@@ -8,7 +8,6 @@ Point::Point(int _x, int _y) {
 }
 
 Node::Node(Point _position, uint32_t _id, int _width, int _height) : position(_position), id(_id), width(_width), height(_height) {
-
 }
 
 QuadTree::QuadTree(Point topL, Point botR) : 
@@ -17,6 +16,14 @@ QuadTree::QuadTree(Point topL, Point botR) :
 }
 
 QuadTree::~QuadTree() {
+	for (size_t i = 0; i < capacity; i++)
+	{
+		if (nodes[i]) {
+			delete nodes[i];
+			nodes[i] = nullptr;
+		}
+	}
+
 	delete topLeftTree;
 	delete topRightTree;
 	delete botLeftTree;
@@ -42,6 +49,7 @@ void QuadTree::insert(Node* node) {
 		}
 
 		if (nodes[i]->id == node->id) {
+			delete node;
 			return;
 		}
 	}
@@ -52,13 +60,13 @@ void QuadTree::insert(Node* node) {
 			for (int i = 0; i < capacity; ++i) {
 				//divide(nodes[i], &nodes[i]->position);
 				divideNode(nodes[i]);
-
 			}
 		}
 
 		// subdivde node
 		//divide(node, &node->position);
 		divideNode(node);
+		delete node;
 	}
 }
 
@@ -69,10 +77,15 @@ void QuadTree::divideNode(Node* node) {
 	Point* botLeft = new Point{ node->position.x, (node->position.y + node->height) };
 	Point* botRight = new Point{ (node->position.x + node->width), (node->position.y + node->height) };
 
-	divide(node, topLeft);
-	divide(node, topRight);
-	divide(node, botLeft);
-	divide(node, botRight);
+	Node* topLeftNode = new Node(node->position, node->id, node->width, node->height);
+	Node* topRightNode = new Node(node->position, node->id, node->width, node->height);
+	Node* botLetNode = new Node(node->position, node->id, node->width, node->height);
+	Node* botRightNode = new Node(node->position, node->id, node->width, node->height);
+
+	divide(topLeftNode, topLeft);
+	divide(topRightNode, topRight);
+	divide(botLetNode, botLeft);
+	divide(botRightNode, botRight);
 
 	delete topLeft;
 	delete topRight;
@@ -255,11 +268,11 @@ std::vector<std::tuple<Node*, Node*>> QuadTree::get_collisions() {
 							int node_a_y2 = node_a_y1 + nodes[i]->height;
 
 							int node_b_y1 = nodes[x]->position.y;
-							int node_b_y2 = node_a_y2+ nodes[x]->height;
+							int node_b_y2 = node_b_y1+ nodes[x]->height;
 
 
-							if (node_a_x1 <= node_b_x2 && node_a_x2 >= node_b_x1&&
-								node_a_y1 <= node_b_y2 && node_a_y2 >= node_b_y1) {
+							if (node_a_x1 < node_b_x2 && node_a_x2 > node_b_x1&&
+								node_a_y1 < node_b_y2 && node_a_y2 > node_b_y1) {
 								std::tuple<Node*, Node*> collision{ nodes[i], nodes[x] };
 								collisions_list.push_back(collision);
 							}

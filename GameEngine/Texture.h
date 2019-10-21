@@ -3,14 +3,19 @@
 #include <SDL_image.h>
 #include <string>
 
+#ifdef ENGINE_EXPORTS
+#define ENGINE_API __declspec(dllexport)
+#else
+#define ENGINE_API __declspec(dllimport)
+#endif
 class Texture
 {
 public:
 	//Initializes variables
-	Texture(SDL_Renderer*);
+	ENGINE_API Texture(SDL_Renderer*);
 
 	//Deallocates memory
-	~Texture();
+	ENGINE_API ~Texture();
 
 	bool loadText(std::string font, int font_size, SDL_Color color, std::string text);
 
@@ -30,7 +35,7 @@ public:
 	void setAlpha(Uint8 alpha);
 
 	//Renders texture at given point
-	void render(int x, int y, SDL_Rect* clip, double scale = 1, double angle = 0.0, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void render(int x, int y, SDL_Rect* clip, double scale = 1, SDL_RendererFlip flip = SDL_FLIP_NONE, double angle = 0.0);
 
 	//Gets image dimensions
 	int getWidth();

@@ -67,4 +67,5 @@ namespace Engine {
 	 * Renders all rectangles in the collection.
 	 */
 	ENGINE_API void RenderRectangles();
+	ENGINE_API Uint32 GetTicks();
 }

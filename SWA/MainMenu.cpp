@@ -7,7 +7,7 @@
 
 MainMenu::~MainMenu() = default;
 
-MainMenu::MainMenu(SceneManager * manager) : BaseScene(manager) { }
+MainMenu::MainMenu(SceneManager* manager) : BaseScene(manager) { }
 
 void MainMenu::render()
 {
@@ -72,7 +72,9 @@ void MainMenu::input()
 		{
 			if (current_action_ == 0)
 			{
+				Engine::StopMusic();
 				scene_manager_->push_scene();
+				Engine::PlayMusic("ingame.wav");
 			}
 			else if (current_action_ == 2)
 			{
@@ -87,6 +89,13 @@ void MainMenu::input()
 
 void MainMenu::cleanup()
 {
+	delete background_;
+	delete title_;
+	delete start_;
+	delete settings_;
+	delete quit_;
+	delete helper;
+	delete selector_;
 	Engine::DestroyRenderer();
 	Engine::CloseAudio();
 }
@@ -108,6 +117,7 @@ bool MainMenu::init()
 	selector_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">");
 	helper = Engine::LoadText("manaspc.ttf", 24, {255, 255, 255, 255},
 	                          "Use the arrow keys ^` to navigate the menu and ENTER to confirm");
+	Engine::PlayMusic("mainmenu.wav");
 	return true;
 }
 

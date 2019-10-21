@@ -38,9 +38,7 @@ void RenderSystem::update(double dt)
 		auto animation_component = manager_->get_component<AnimationComponent>(entityid);
 		auto position_component = manager_->get_component<PositionComponent>(entityid);
 
-		bool should_flip_horizontally = false;
-
-		Engine::UpdateAnimation(&animation_component->animation, position_component->x, position_component->y, should_flip_horizontally);
+		Engine::UpdateAnimation(&animation_component->animation, position_component->x, position_component->y, animation_component->flip_horizontally);
 	}
 
 	

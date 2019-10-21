@@ -1,4 +1,6 @@
 #include "EntityManager.h"
+#include "CollisionComponent.h"
+#include "AnimationComponent.h"
 
 uint32_t EntityManager::create_entity()
 {
@@ -26,5 +28,9 @@ void EntityManager::add_component_to_entity(const uint32_t id, std::unique_ptr<C
 
 void EntityManager::remove_entity(const uint32_t id)
 {
-	entities_.erase(entities_.begin() + id);
+	auto i = std::find(entities_.begin(), entities_.end(), id);
+	
+	remove_component_from_entity<CollisionComponent>(id);
+	remove_component_from_entity<AnimationComponent>(id);
+	entities_.erase(i);
 }

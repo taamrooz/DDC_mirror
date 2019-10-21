@@ -123,6 +123,10 @@ int Engine::PreUpdate() {
 	return frameStart;
 }
 
+Uint32 Engine::GetTicks() {
+	return SDL_GetTicks();
+}
+
 void Engine::Render(int framestart) {
 	SDL_RenderPresent(renderer);
 	
