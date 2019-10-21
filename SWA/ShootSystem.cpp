@@ -19,27 +19,27 @@ void ShootSystem::update(double dt)
 			auto position = manager_->get_component<PositionComponent>(entity);
 			if (!i->first.compare("shootUp")) {
 				int xPos = position->x + collision->width / 2;
-				int yPos = position->y - sComponent->bullet_size - 1 + 20;
+				int yPos = (position->y - sComponent->bullet_size) - 1;
 				createBullet(0, -1 * bullet_velocity, xPos, yPos);
 				i->second = false;
 			}
 			if (!i->first.compare("shootLeft")) {
 				int xPos = position->x - sComponent->bullet_size;
-				int yPos = position->y + (collision->height / 2) + 20;
+				int yPos = position->y + (collision->height / 2) + 15;
 				createBullet(-1 * bullet_velocity, 0, xPos, yPos);
 				i->second = false;
 			}
 
 			if (!i->first.compare("shootDown")) {
 				int xPos = position->x + collision->width / 2;
-				int yPos = position->y + collision->height + 1;
+				int yPos = position->y + collision->height + 1 + 20;
 				createBullet(0, bullet_velocity, xPos, yPos);
 				i->second = false;
 			}
 
 			if (!i->first.compare("shootRight")) {
-				int xPos = position->x + collision->width + sComponent->bullet_size + 1;
-				int yPos = position->y + collision->height / 2;
+				int xPos = position->x + collision->width + 1;
+				int yPos = position->y + collision->height / 2 + 15;
 				createBullet(bullet_velocity, 0, xPos, yPos);
 				i->second = false;
 			}
@@ -61,7 +61,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 		auto vComponent = std::make_unique<VelocityComponent>(xV, yV);
 		auto pComponent = std::make_unique<PositionComponent>(x, y);
 		auto aComponent = std::make_unique<AnimationComponent>("Projectile.png", 1, 2);
-		auto cComponent = std::make_unique<CollisionComponent>(12, 12, BulletCollisionHandler);
+		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size, shoot->bullet_size, BulletCollisionHandler);
 		manager_->add_component_to_entity(id, std::move(vComponent));
 		manager_->add_component_to_entity(id, std::move(pComponent));
 		manager_->add_component_to_entity(id, std::move(aComponent));
