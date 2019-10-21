@@ -70,7 +70,17 @@ void CollisionSystem::update(double dt)
 		//handle collision
 		//gebruikt nu entity 0 omdat er nog test data in staat
 		auto collisionComponent = manager_->get_component<CollisionComponent>(first_node->id);
-		collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+		bool handleCollision = true;
+		for (int i = 0; i < collisionComponent->ignore_.size(); i++) {
+			if (collisionComponent->ignore_[i] == second_node->id) {
+				handleCollision = false;
+			}
+		}
+		if (handleCollision) {
+			collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+		}
+			
+
 
 		//update_velocity(first_node, second_node);
 	}

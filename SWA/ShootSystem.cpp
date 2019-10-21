@@ -47,13 +47,15 @@ void ShootSystem::createBullet(int xV, int yV) {
 		const auto id = manager_->create_entity();
 
 		auto vComponent = std::make_unique<VelocityComponent>(xV, yV);
-		auto pComponent = std::make_unique<PositionComponent>(position->x + collision->width + 10, position->y + collision->height / 2);
+		auto pComponent = std::make_unique<PositionComponent>(position->x + collision->width / 2, position->y + collision->height / 2);
 		auto aComponent = std::make_unique<AnimationComponent>("Projectile.png", 1, 2);
 		auto cComponent = std::make_unique<CollisionComponent>(12, 12, BulletCollisionHandler);
 		manager_->add_component_to_entity(id, std::move(vComponent));
 		manager_->add_component_to_entity(id, std::move(pComponent));
 		manager_->add_component_to_entity(id, std::move(aComponent));
 		manager_->add_component_to_entity(id, std::move(cComponent));
+		collision->ignore_.push_back(id);
+		manager_->get_component<CollisionComponent>(id)->ignore_.push_back(entity);
 		shoot->last_shot = Engine::GetTicks();
 	}
 	

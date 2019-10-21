@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseSystem.h"
 #include "Core.h"
-#include "InputComponent.h"
 #include "CollisionHandlers.h"
 class ShootSystem :
 	public BaseSystem
