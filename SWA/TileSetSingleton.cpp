@@ -19,7 +19,7 @@ TileSetSingleton::TileSetSingleton() {
 		}
 	}
 
-	path = "tiles.png";
+	path = "Tileset.png";
 	reload = true;
 }
 
