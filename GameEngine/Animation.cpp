@@ -1,10 +1,11 @@
 #include "Animation.h"
 
-Animation::Animation(int frames, std::vector<SDL_Rect>& spriteclips, Texture texture) : gSpriteSheetTexture{texture} {
+Animation::Animation(int frames, std::vector<SDL_Rect>& spriteclips, Texture texture) : gSpriteSheetTexture{ texture } {
 	WALKING_ANIMATION_FRAMES = frames;
 	total_frames = frames;
 	//gSpriteSheetTexture = texture;
 	gSpriteClips = spriteclips;
+	pause = false;
 }
 
 Animation::~Animation() {
@@ -19,13 +20,14 @@ void Animation::UpdateAnimation(double x, double y, SDL_RendererFlip flip)
 
 	gSpriteSheetTexture.render((x), (y), currentClip, scale, flip);
 
-	//Go to next frame
-	CURRENT_FRAME++;
+	if (!pause) {
+		//Go to next frame
+		CURRENT_FRAME++;
 
-	//Cycle animation
-	if (CURRENT_FRAME / total_frames >= WALKING_ANIMATION_FRAMES)
-	{
-		CURRENT_FRAME = 0;
+		//Cycle animation
+		if (CURRENT_FRAME / total_frames >= WALKING_ANIMATION_FRAMES)
+		{
+			CURRENT_FRAME = 0;
+		}
 	}
-
 }

@@ -150,6 +150,7 @@
     <ClCompile Include="BaseSystem.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="InputSystem.cpp" />
@@ -157,7 +158,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-	<ClCompile Include="MoveCharacterSystem.cpp" />
+    <ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
@@ -173,7 +174,7 @@
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="ControllableComponent.h" />
+    <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="DamagingComponent.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="RoomSingleton.h" />
     <ClInclude Include="RoomSystem.h" />
     <ClInclude Include="ShootingComponent.h" />
+    <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TileSetSingleton.h" />
     <ClInclude Include="VelocityComponent.h" />
@@ -213,6 +215,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\..\Gebruiker%27\Desktop\PlaySheet.png" />
+    <Image Include="..\..\..\..\..\Gebruiker%27\Documents\GitHub\SWA\SWA\assets\Tileset.png" />
     <Image Include="assets\Animations\big_demon_idle.png" />
     <Image Include="assets\Animations\big_demon_run.png" />
     <Image Include="assets\Animations\big_zombie_idle.png" />
@@ -268,7 +272,6 @@
     <Image Include="assets\Animations\wogol_run.png" />
     <Image Include="assets\Animations\zombie_idle.png" />
     <Image Include="assets\Animations\zombie_run.png" />
-    <Image Include="assets\tiles.png" />
     <Image Include="assets\wizard_move_f.png" />
     <Image Include="assets\wizard_move_m.png" />
   </ItemGroup>

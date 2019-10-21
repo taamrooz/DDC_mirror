@@ -102,6 +102,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentFactory.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -132,9 +135,6 @@
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="CollisionComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ControllableComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="DamagingComponent.h">
@@ -190,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentFactory.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,7 +393,10 @@
     <Image Include="assets\Animations\skelet_idle.png">
       <Filter>Resource Files\Animations</Filter>
     </Image>
-    <Image Include="assets\tiles.png">
+    <Image Include="..\..\..\..\..\Gebruiker%27\Documents\GitHub\SWA\SWA\assets\Tileset.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\..\Gebruiker%27\Desktop\PlaySheet.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
