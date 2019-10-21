@@ -53,7 +53,7 @@ int ComponentFactory::CreateEntity(std::string name, int id, EntityManager* em) 
 }
 
 void ComponentFactory::AddChestComponents(int id, EntityManager* em) {
-	auto coll = std::make_unique<CollisionComponent>(16, 28, PlayerCollisionHandler);
+	auto coll = std::make_unique<CollisionComponent>(48, 48, PlayerCollisionHandler);
 	auto ani = std::make_unique<AnimationComponent>("Animations/chest_full_open.png", 3, 3);
 	ani.get()->animation.pause = true;
 	em->add_component_to_entity(id, std::move(ani));
@@ -66,7 +66,7 @@ void ComponentFactory::AddPlayerComponents(int id, EntityManager* em) {
 	auto vel = std::make_unique<VelocityComponent>();
 	auto ani = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 3);
 	auto cha = std::make_unique<CharacterComponent>();
-	auto coll = std::make_unique<CollisionComponent>(16, 28, PlayerCollisionHandler);
+	auto coll = std::make_unique<CollisionComponent>(48, 84, PlayerCollisionHandler);
 	em->add_component_to_entity(id, std::move(vel));
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(cha));
