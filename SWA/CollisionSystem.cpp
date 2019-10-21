@@ -13,6 +13,7 @@ CollisionSystem::CollisionSystem(EntityManager* manager) : BaseSystem(manager) {
 
 void CollisionSystem::update(double dt)
 {
+
 	//Starting points of the quadtree
 	Point leftTop{ 0, 0 };
 	Point botRight{ 1280, 960 }; // TODO: make this not hardcoded
@@ -52,7 +53,6 @@ void CollisionSystem::update(double dt)
 	quadTree.insert(&Node{ Point{405, 285}, 12, 10, 10 });
 	*/
 	//// <----- TEST SCENARIO ----->  ////
-
 	for (auto entity : manager_->get_all_entities<CollisionComponent>())
 	{
 		auto positionComponent = manager_->get_component<PositionComponent>(entity);
@@ -70,19 +70,10 @@ void CollisionSystem::update(double dt)
 		//handle collision
 		//gebruikt nu entity 0 omdat er nog test data in staat
 		auto collisionComponent = manager_->get_component<CollisionComponent>(first_node->id);
-		bool handleCollision = true;
-		for (int i = 0; i < collisionComponent->ignore_.size(); i++) {
-			if (collisionComponent->ignore_[i] == second_node->id) {
-				handleCollision = false;
-			}
-		}
-		if (handleCollision) {
-			collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
-		}
-			
 
+		collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
 
-		//update_velocity(first_node, second_node);
+		update_velocity(first_node, second_node);
 	}
 
 

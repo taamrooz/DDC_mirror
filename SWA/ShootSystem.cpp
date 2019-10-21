@@ -13,22 +13,34 @@ void ShootSystem::update(double dt)
 	for (auto i = KeyBindingSingleton::get_instance()->keys_down.begin(); i != KeyBindingSingleton::get_instance()->keys_down.end(); ++i)
 	{
 		if (i->second) {
+			auto entity = manager_->get_all_entities<CharacterComponent>().front();
+			auto sComponent = manager_->get_component<ShootingComponent>(entity);
+			auto collision = manager_->get_component<CollisionComponent>(entity);
+			auto position = manager_->get_component<PositionComponent>(entity);
 			if (!i->first.compare("shootUp")) {
-				createBullet(0, -1 * bullet_velocity);
+				int xPos = position->x + collision->width / 2;
+				int yPos = position->y - sComponent->bullet_size - 1 + 20;
+				createBullet(0, -1 * bullet_velocity, xPos, yPos);
 				i->second = false;
 			}
 			if (!i->first.compare("shootLeft")) {
-				createBullet(-1 * bullet_velocity, 0);
+				int xPos = position->x - sComponent->bullet_size;
+				int yPos = position->y + (collision->height / 2) + 20;
+				createBullet(-1 * bullet_velocity, 0, xPos, yPos);
 				i->second = false;
 			}
 
 			if (!i->first.compare("shootDown")) {
-				createBullet(0, bullet_velocity);
+				int xPos = position->x + collision->width / 2;
+				int yPos = position->y + collision->height + 1;
+				createBullet(0, bullet_velocity, xPos, yPos);
 				i->second = false;
 			}
 
 			if (!i->first.compare("shootRight")) {
-				createBullet(bullet_velocity, 0);
+				int xPos = position->x + collision->width + sComponent->bullet_size + 1;
+				int yPos = position->y + collision->height / 2;
+				createBullet(bullet_velocity, 0, xPos, yPos);
 				i->second = false;
 			}
 			
@@ -36,7 +48,7 @@ void ShootSystem::update(double dt)
 	}
 }
 
-void ShootSystem::createBullet(int xV, int yV) {
+void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 	auto entity = manager_->get_all_entities<CharacterComponent>().front();
 	auto shoot = manager_->get_component<ShootingComponent>(entity);
 	Uint32 ticks = Engine::GetTicks();
@@ -47,15 +59,13 @@ void ShootSystem::createBullet(int xV, int yV) {
 		const auto id = manager_->create_entity();
 
 		auto vComponent = std::make_unique<VelocityComponent>(xV, yV);
-		auto pComponent = std::make_unique<PositionComponent>(position->x + collision->width / 2, position->y + collision->height / 2);
+		auto pComponent = std::make_unique<PositionComponent>(x, y);
 		auto aComponent = std::make_unique<AnimationComponent>("Projectile.png", 1, 2);
 		auto cComponent = std::make_unique<CollisionComponent>(12, 12, BulletCollisionHandler);
 		manager_->add_component_to_entity(id, std::move(vComponent));
 		manager_->add_component_to_entity(id, std::move(pComponent));
 		manager_->add_component_to_entity(id, std::move(aComponent));
 		manager_->add_component_to_entity(id, std::move(cComponent));
-		collision->ignore_.push_back(id);
-		manager_->get_component<CollisionComponent>(id)->ignore_.push_back(entity);
 		shoot->last_shot = Engine::GetTicks();
 	}
 	

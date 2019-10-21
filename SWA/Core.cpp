@@ -49,7 +49,7 @@ bool Core::init()
 	auto c1 = std::make_unique<CharacterComponent>();
 	auto q1 = std::make_unique<CollisionComponent>(64, 80, PlayerCollisionHandler);
 	auto q2 = std::make_unique<CollisionComponent>(64, 80, PlayerCollisionHandler);
-	auto s1 = std::make_unique<ShootingComponent>(4, 1000);
+	auto s1 = std::make_unique<ShootingComponent>(7, 200);
 	manager_->add_component_to_entity(id, std::move(v1));
 	manager_->add_component_to_entity(id, std::move(p1));
 	manager_->add_component_to_entity(id2, std::move(v2));

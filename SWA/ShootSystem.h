@@ -9,6 +9,6 @@ public:
 	ShootSystem(EntityManager* manager);
 	void update(double dt) override;
 private:
-	void createBullet(int xV, int yV);
-	const int bullet_velocity = 30;
+	void createBullet(int xV, int yV, int x, int y);
+	const int bullet_velocity = 5;
 };
