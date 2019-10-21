@@ -11,7 +11,6 @@
 #include "RenderSystem.h"
 #include "AnimationComponent.h"
 #include "ShootSystem.h"
-#include "ControllableComponent.h"
 #include "TileComponent.h"
 #include "CollisionSystem.h"
 #include "MoveCharacterSystem.h"
@@ -36,29 +35,28 @@ bool Core::init()
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
 
-	const auto id = manager_->create_entity();
-	const auto id2 = manager_->create_entity();
-	
-	auto v1 = std::make_unique<VelocityComponent>(8, 8);
-	auto p1 = std::make_unique<PositionComponent>(50, 600);
-	auto v2 = std::make_unique<VelocityComponent>(0, 0);
-	auto p2 = std::make_unique<PositionComponent>(400, 250);
-	auto a1 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 4);
-	auto a2 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 4);
-	auto c1 = std::make_unique<CharacterComponent>();
-	auto q1 = std::make_unique<CollisionComponent>(64, 80, PlayerCollisionHandler);
-	auto q2 = std::make_unique<CollisionComponent>(64, 80, PlayerCollisionHandler);
-	auto s1 = std::make_unique<ShootingComponent>(7, 200);
-	manager_->add_component_to_entity(id, std::move(v1));
-	manager_->add_component_to_entity(id, std::move(p1));
-	manager_->add_component_to_entity(id2, std::move(v2));
-	manager_->add_component_to_entity(id2, std::move(p2));
-	manager_->add_component_to_entity(id2, std::move(a2));
-	manager_->add_component_to_entity(id2, std::move(q2));
-	manager_->add_component_to_entity(id, std::move(a1));
-	manager_->add_component_to_entity(id, std::move(c1));
-	manager_->add_component_to_entity(id, std::move(q1));
-	manager_->add_component_to_entity(id, std::move(s1));
+	//const auto id = manager_->create_entity();
+	//const auto id2 = manager_->create_entity();
+	//
+	//auto v1 = std::make_unique<VelocityComponent>(8, 8);
+	//auto p1 = std::make_unique<PositionComponent>(50, 600);
+	//auto v2 = std::make_unique<VelocityComponent>(0, 0);
+	//auto p2 = std::make_unique<PositionComponent>(100, 250);
+	//auto a1 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 3);
+	//auto a2 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 3);
+	//auto q1 = std::make_unique<CollisionComponent>(48, 60, PlayerCollisionHandler);
+	//auto q2 = std::make_unique<CollisionComponent>(48, 60, PlayerCollisionHandler);
+	//auto s1 = std::make_unique<ShootingComponent>(7, 200);
+	//
+	//manager_->add_component_to_entity(id, std::move(v1));
+	//manager_->add_component_to_entity(id, std::move(p1));
+	//manager_->add_component_to_entity(id2, std::move(v2));
+	//manager_->add_component_to_entity(id2, std::move(p2));
+	//manager_->add_component_to_entity(id2, std::move(a2));
+	//manager_->add_component_to_entity(id2, std::move(q2));
+	//manager_->add_component_to_entity(id, std::move(a1));
+	//manager_->add_component_to_entity(id, std::move(q1));
+	//manager_->add_component_to_entity(id, std::move(s1));
 
 	return true;
 }
