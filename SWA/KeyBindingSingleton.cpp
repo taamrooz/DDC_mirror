@@ -26,11 +26,27 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keys_down.insert(std::make_pair("medium.wav", false));
 		instance->keys_down.insert(std::make_pair("low.wav", false));
 		instance->keys_down.insert(std::make_pair("scratch.wav", false));
-		instance->keys_down.insert(std::make_pair("moveUP", false));
-		instance->keys_down.insert(std::make_pair("moveLeft", false));
-		instance->keys_down.insert(std::make_pair("moveRight", false));
-		instance->keys_down.insert(std::make_pair("moveDown", false));
+		instance->keys_down.insert(std::make_pair(instance->get_move_up_key_binding(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_move_left_key_binding() , false));
+		instance->keys_down.insert(std::make_pair(instance->get_move_right_key_binding(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_move_down_key_binding(), false));
 	}
 
 	return instance;
+}
+
+std::string KeyBindingSingleton::get_move_up_key_binding() {
+	return "moveUP";
+}
+
+std::string KeyBindingSingleton::get_move_left_key_binding() {
+	return "moveLeft";
+}
+
+std::string KeyBindingSingleton::get_move_right_key_binding() {
+	return "moveRight";
+}
+
+std::string KeyBindingSingleton::get_move_down_key_binding() {
+	return "moveDown";
 }
