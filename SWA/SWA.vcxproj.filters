@@ -78,6 +78,9 @@
     <ClCompile Include="RenderSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="ShootSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
     <ClCompile Include="RoomSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -101,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionHandlers.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ComponentFactory.cpp">
       <Filter>Source Files\Entities</Filter>
@@ -131,9 +137,6 @@
     <ClInclude Include="MoveSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootSystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="TileComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -191,11 +197,17 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionHandlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ComponentFactory.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="TextureComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -393,10 +405,7 @@
     <Image Include="assets\Animations\skelet_idle.png">
       <Filter>Resource Files\Animations</Filter>
     </Image>
-    <Image Include="..\..\..\..\..\Gebruiker%27\Documents\GitHub\SWA\SWA\assets\Tileset.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\..\..\Gebruiker%27\Desktop\PlaySheet.png">
+    <Image Include="assets\Tileset.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

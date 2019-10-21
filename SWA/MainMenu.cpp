@@ -7,7 +7,7 @@
 
 MainMenu::~MainMenu() = default;
 
-MainMenu::MainMenu(SceneManager * manager) : BaseScene(manager) { }
+MainMenu::MainMenu(SceneManager* manager) : BaseScene(manager) { }
 
 void MainMenu::render()
 {
@@ -87,6 +87,13 @@ void MainMenu::input()
 
 void MainMenu::cleanup()
 {
+	delete background_;
+	delete title_;
+	delete start_;
+	delete settings_;
+	delete quit_;
+	delete helper;
+	delete selector_;
 	Engine::DestroyRenderer();
 	Engine::CloseAudio();
 }

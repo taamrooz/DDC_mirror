@@ -1,4 +1,5 @@
 #pragma once
+#include <utility>
 class SceneManager;
 #include "SceneManager.h"
 
@@ -7,7 +8,7 @@ class BaseScene
 public:
 	SceneManager* scene_manager_;
 	BaseScene(SceneManager* manager) : scene_manager_(manager) {}
-	virtual ~BaseScene() = default;
+	virtual ~BaseScene() { };
 	/*
 	 * Initializes the scene.
 	 */

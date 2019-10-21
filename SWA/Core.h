@@ -11,6 +11,7 @@
 #include "VelocityComponent.h"
 #include "PositionComponent.h"
 #include "BaseScene.h"
+#include "SceneManager.h"
 
 class Core : virtual public BaseScene
 {

@@ -1,4 +1,5 @@
 #include "BaseSystem.h"
+#include "QuadTree.h"
 
 class CollisionSystem :
 	public BaseSystem
@@ -6,5 +7,6 @@ class CollisionSystem :
 public:
 	CollisionSystem(EntityManager* manager);
 	void update(double dt) override;
+	void update_velocity(Node* first_node, Node* second_node);
 };
 

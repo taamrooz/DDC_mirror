@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="BaseSystem.cpp" />
+    <ClCompile Include="CollisionHandlers.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentFactory.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="ShootSystem.cpp" />
     <ClCompile Include="RoomSingleton.cpp" />
     <ClCompile Include="RoomSystem.cpp" />
     <ClCompile Include="TileSetSingleton.cpp" />
@@ -172,6 +174,7 @@
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="CharacterComponent.h" />
     <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="CollisionHandlers.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
@@ -193,6 +196,7 @@
     <ClInclude Include="RoomSingleton.h" />
     <ClInclude Include="RoomSystem.h" />
     <ClInclude Include="ShootingComponent.h" />
+    <ClInclude Include="ShootSystem.h" />
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TileSetSingleton.h" />
@@ -215,8 +219,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\Gebruiker%27\Desktop\PlaySheet.png" />
-    <Image Include="..\..\..\..\..\Gebruiker%27\Documents\GitHub\SWA\SWA\assets\Tileset.png" />
+    <Image Include="assets\Tileset.png" />
     <Image Include="assets\Animations\big_demon_idle.png" />
     <Image Include="assets\Animations\big_demon_run.png" />
     <Image Include="assets\Animations\big_zombie_idle.png" />

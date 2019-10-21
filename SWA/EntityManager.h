@@ -30,7 +30,11 @@ public:
 	T* get_component(const uint32_t id)
 	{
 		const auto type = typeid(T).hash_code();
-		return static_cast<T*>(components_by_class_[type][id].get());
+		if(components_by_class_.find(type) != components_by_class_.end() && components_by_class_.find(type)->second.find(id) != components_by_class_.find(type)->second.end())
+		{
+			return static_cast<T*>(components_by_class_.find(type)->second.find(id)->second.get());
+		}
+		return nullptr;
 	}
 	template<class T>
 	std::vector<uint32_t> get_all_entities()
