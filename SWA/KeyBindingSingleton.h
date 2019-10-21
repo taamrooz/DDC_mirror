@@ -14,6 +14,10 @@ private:
 public:
 	/* Static access method. */
 	static KeyBindingSingleton* get_instance();
+	std::string get_move_up_key_binding();
+	std::string get_move_left_key_binding();
+	std::string get_move_right_key_binding();
+	std::string get_move_down_key_binding();
 	std::map<SDL_Keycode, std::string> keybindings;
 	std::map<std::string, bool> keys_down;
 };
