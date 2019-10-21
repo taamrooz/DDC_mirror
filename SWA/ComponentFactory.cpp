@@ -61,14 +61,15 @@ void ComponentFactory::AddChestComponents(int id, EntityManager* em) {
 }
 
 void ComponentFactory::AddPlayerComponents(int id, EntityManager* em) {
-	//auto hea = std::make_unique<HealthComponent>();
-
-	//auto vel = std::make_unique<VelocityComponent>();
+	auto hea = std::make_unique<HealthComponent>();
+	auto sho = std::make_unique<ShootingComponent>(7, 200);
+	auto vel = std::make_unique<VelocityComponent>();
 	auto ani = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 3);
 	auto cha = std::make_unique<CharacterComponent>();
 	auto coll = std::make_unique<CollisionComponent>(16, 28, PlayerCollisionHandler);
-	//em->add_component_to_entity(id, std::move(vel));
+	em->add_component_to_entity(id, std::move(vel));
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(cha));
 	em->add_component_to_entity(id, std::move(coll));
+	em->add_component_to_entity(id, std::move(sho));
 }

@@ -200,14 +200,14 @@
     <ClInclude Include="CollisionHandlers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentFactory.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="TextureComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

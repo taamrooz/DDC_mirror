@@ -1,9 +1,13 @@
 #include "CollisionHandlers.h"
 #include "BaseSystem.h"
+#include "CharacterComponent.h"
 
 void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
 {
-	manager->remove_entity(entity1);
+	auto player = manager->get_component<CharacterComponent>(entity2);
+	if (player == nullptr) {
+		manager->remove_entity(entity1);
+	}
 }
 
 void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)

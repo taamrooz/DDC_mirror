@@ -7,6 +7,8 @@
 #include <vector>
 #include <tuple>
 #include "CollisionComponent.h"
+#include "ShootingComponent.h"
+#include "CharacterComponent.h"
 
 
 CollisionSystem::CollisionSystem(EntityManager* manager) : BaseSystem(manager) {}
@@ -53,7 +55,7 @@ void CollisionSystem::update(double dt)
 	quadTree.insert(new Node{ Point{405, 285}, 12, 10, 10 });
 			*/
 
-	//// <----- TEST SCENARIO ----->  ////
+			//// <----- TEST SCENARIO ----->  ////
 	for (auto entity : manager_->get_all_entities<CollisionComponent>())
 	{
 
@@ -63,10 +65,10 @@ void CollisionSystem::update(double dt)
 		int x = positionComponent->x;
 		int y = positionComponent->y;
 		if (velocityComponent != nullptr) {
-			x = (positionComponent->x + velocityComponent->dx);
-			y = (positionComponent->y + velocityComponent->dy);
+			x = positionComponent->x + velocityComponent->dx;
+			y = positionComponent->y + velocityComponent->dy;
 		}
-		
+
 
 		quadTree.insert(new Node{ Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
 	}
@@ -79,11 +81,15 @@ void CollisionSystem::update(double dt)
 
 		//handle collision
 		//gebruikt nu entity 0 omdat er nog test data in staat
+
 		auto collisionComponent = manager_->get_component<CollisionComponent>(first_node->id);
 
-		collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+
 
 		update_velocity(first_node, second_node);
+		if (collisionComponent != nullptr) {
+			collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+		}
 	}
 
 
@@ -108,6 +114,20 @@ void CollisionSystem::update_velocity(Node* first_node, Node* second_node) {
 	auto first_node_position_component = manager_->get_component<PositionComponent>(first_node->id);
 	auto second_node_velocity_component = manager_->get_component<VelocityComponent>(second_node->id);
 	auto second_node_position_component = manager_->get_component<PositionComponent>(second_node->id);
+
+	//TEMP if first_node is bullet and second_node is character, do not update vel (eating own bullets).
+	auto collision = manager_->get_component<CollisionComponent>(first_node->id);
+	if (collision != nullptr && collision->owner == second_node->id)
+	{
+		return;
+	}
+	//Vice versa
+	collision = manager_->get_component<CollisionComponent>(second_node->id);
+	if (collision != nullptr && collision->owner == first_node->id)
+	{
+		return;
+	}
+
 	
 	if (first_node_velocity_component != nullptr) {
 		// Top bottom collisiondetection first node
