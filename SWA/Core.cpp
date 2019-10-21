@@ -14,7 +14,6 @@
 #include "ControllableComponent.h"
 #include "TileComponent.h"
 #include "CollisionSystem.h"
-#include "CharacterComponent.h"
 #include "MoveCharacterSystem.h"
 #include "CollisionComponent.h"
 #include "ShootingComponent.h"
