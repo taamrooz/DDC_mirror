@@ -19,25 +19,25 @@ void MoveCharacterSystem::update(double dt) {
 	//Go through possible actions and check if any need to be executed
 	for (auto& i : KeyBindingSingleton::get_instance()->keys_down)
 	{
-		if (i.first == "moveUP") {
+		if (i.first == KeyBindingSingleton::get_instance()->get_move_up_key_binding()) {
 			if (i.second) {
 				velocity->dy = -1 * move_velocity;
 			}
 		}
 
-		if (i.first == "moveLeft") {
+		if (i.first == KeyBindingSingleton::get_instance()->get_move_left_key_binding()) {
 			if (i.second) {
 				velocity->dx = -1 * move_velocity;
 			}
 		}
 
-		if (i.first == "moveDown") {
+		if (i.first == KeyBindingSingleton::get_instance()->get_move_up_key_binding()) {
 			if (i.second) {
 				velocity->dy = move_velocity;
 			}
 		}
 
-		if (i.first == "moveRight") {
+		if (i.first == KeyBindingSingleton::get_instance()->get_move_right_key_binding()) {
 			if (i.second) {
 				velocity->dx = move_velocity;
 			}
