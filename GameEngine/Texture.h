@@ -3,14 +3,19 @@
 #include <SDL_image.h>
 #include <string>
 
+#ifdef ENGINE_EXPORTS
+#define ENGINE_API __declspec(dllexport)
+#else
+#define ENGINE_API __declspec(dllimport)
+#endif
 class Texture
 {
 public:
 	//Initializes variables
-	Texture(SDL_Renderer*);
+	ENGINE_API Texture(SDL_Renderer*);
 
 	//Deallocates memory
-	~Texture();
+	ENGINE_API ~Texture();
 
 	bool loadText(std::string font, int font_size, SDL_Color color, std::string text);
 

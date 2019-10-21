@@ -405,10 +405,7 @@
     <Image Include="assets\Animations\skelet_idle.png">
       <Filter>Resource Files\Animations</Filter>
     </Image>
-    <Image Include="..\..\..\..\..\Gebruiker%27\Documents\GitHub\SWA\SWA\assets\Tileset.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\..\..\Gebruiker%27\Desktop\PlaySheet.png">
+    <Image Include="assets\Tileset.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

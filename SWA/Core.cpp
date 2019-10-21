@@ -1,22 +1,16 @@
 #include "Core.h"
 #include "MoveSystem.h"
 #include "InputSystem.h"
-#include "VelocityComponent.h"
-#include "PositionComponent.h"
 #include "RoomSystem.h"
-#include <Windows.h>
 #include "UserInput.h"
 #include "AudioSystem.h"
 #include <Renderer.h>
 #include "RenderSystem.h"
-#include "AnimationComponent.h"
 #include "ShootSystem.h"
-#include "TileComponent.h"
 #include "CollisionSystem.h"
 #include "MoveCharacterSystem.h"
 #include "CollisionComponent.h"
-#include "ShootingComponent.h"
-#include "CollisionHandlers.h"
+#include "SceneManager.h"
 
 Core::Core(SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;

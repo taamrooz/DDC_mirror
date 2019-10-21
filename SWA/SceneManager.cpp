@@ -1,7 +1,10 @@
 #include "SceneManager.h"
 
 SceneManager::SceneManager() = default;
-SceneManager::~SceneManager() = default;
+SceneManager::~SceneManager()
+{
+	active_scenes_.clear();
+}
 
 void SceneManager::add_scene(BaseScene & menu)
 {
@@ -61,7 +64,3 @@ bool SceneManager::init()
 	const auto current_menu = &*active_scenes_.back();
 	return current_menu->init();
 }
-
-
-
-
