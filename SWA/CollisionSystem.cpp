@@ -35,22 +35,23 @@ void CollisionSystem::update(double dt)
 	quadTree.insert(&Node{ Point{170, 200}, 6, 10, 10 });
 	quadTree.insert(&Node{ Point{180, 200}, 7, 10, 10 });
 	quadTree.insert(&Node{ Point{175, 200}, 8, 10, 10 });
-	
+
 	// Special scenario
-	quadTree.insert(&Node{ Point{395, 295}, 8, 10, 10 });
+	quadTree.insert(new Node{ Point{395, 295}, 8, 10, 10 });
 
 	// linksboven
-	quadTree.insert(&Node{ Point{386, 286}, 9, 10, 10 });
+	quadTree.insert(new Node{ Point{386, 286}, 9, 10, 10 });
 
 	// rechtsonder
-	quadTree.insert(&Node{ Point{405, 305}, 10, 10, 10 });
+	quadTree.insert(new Node{ Point{405, 305}, 10, 10, 10 });
 
 	// linskonder
-	quadTree.insert(&Node{ Point{385, 305}, 11, 10, 10 });
+	quadTree.insert(new Node{ Point{385, 305}, 11, 10, 10 });
 
 	// Rechstonder
-	quadTree.insert(&Node{ Point{405, 285}, 12, 10, 10 });
-	*/
+	quadTree.insert(new Node{ Point{405, 285}, 12, 10, 10 });
+			*/
+
 	//// <----- TEST SCENARIO ----->  ////
 
 	for (auto entity : manager_->get_all_entities<CollisionComponent>())
@@ -61,8 +62,7 @@ void CollisionSystem::update(double dt)
 		int x = (positionComponent->x + velocityComponent->dx);
 		int y = (positionComponent->y + velocityComponent->dy);
 
-		Node* node = new Node{ Point{ x, y }, entity, collisionComponent->width, collisionComponent->height };
-		quadTree.insert(node);
+		quadTree.insert(new Node{ Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
 	}
 
 	std::vector<std::tuple<Node*, Node*>> collisions = quadTree.get_collisions();
