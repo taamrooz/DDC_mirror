@@ -57,6 +57,7 @@ void MoveCharacterSystem::update(double dt) {
 		if (i.first == KeyBindingSingleton::get_instance()->get_move_left_key_binding()) {
 			if (i.second) {
 				velocity->dx = (counter > 1) ? velocity->dx = -1 * (move_velocity / 2) : velocity->dx = -1 * move_velocity;
+				animation->flip_horizontally = true;
 			}
 		}
 
@@ -69,6 +70,7 @@ void MoveCharacterSystem::update(double dt) {
 		if (i.first == KeyBindingSingleton::get_instance()->get_move_right_key_binding()) {
 			if (i.second) {
 				velocity->dx = (counter > 1) ? velocity->dx = move_velocity / 2 : velocity->dx = move_velocity;
+				animation->flip_horizontally = false;
 			}
 		}
 	}
