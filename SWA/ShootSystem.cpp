@@ -19,7 +19,7 @@ void ShootSystem::update(double dt)
 			auto position = manager_->get_component<PositionComponent>(entity);
 			if (i->first == KeyBindingSingleton::get_instance()->get_shoot_up_key_binding()) {
 				int xPos = position->x + collision->width / 2;
-				int yPos = (position->y - sComponent->bullet_size) - 1;
+				int yPos = (position->y - sComponent->bullet_size + 20) - 1;
 				createBullet(0, -1 * bullet_velocity, xPos, yPos);
 				i->second = false;
 			}
@@ -61,7 +61,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 		auto vComponent = std::make_unique<VelocityComponent>(xV, yV);
 		auto pComponent = std::make_unique<PositionComponent>(x, y);
 		auto aComponent = std::make_unique<AnimationComponent>("Projectile.png", 1, 2);
-		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size, shoot->bullet_size, BulletCollisionHandler);
+		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size * 2, shoot->bullet_size * 2, BulletCollisionHandler);
 		manager_->add_component_to_entity(id, std::move(vComponent));
 		manager_->add_component_to_entity(id, std::move(pComponent));
 		manager_->add_component_to_entity(id, std::move(aComponent));
