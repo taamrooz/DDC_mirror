@@ -137,9 +137,6 @@
     <ClInclude Include="CollisionComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ControllableComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="DamagingComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
