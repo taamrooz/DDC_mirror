@@ -12,6 +12,7 @@ struct AnimationComponent : Component
 	{
 		animation.scale = scale;
 		animation.total_frames = frames;
+		flip_horizontally = false;
 	}
 	bool flip_horizontally;
 	std::string filename;

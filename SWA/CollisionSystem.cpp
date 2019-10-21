@@ -73,7 +73,7 @@ void CollisionSystem::update(double dt)
 
 		collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
 
-		update_velocity(first_node, second_node);
+		//update_velocity(first_node, second_node);
 	}
 
 

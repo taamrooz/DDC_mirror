@@ -17,27 +17,27 @@ void ShootSystem::update(double dt)
 			auto sComponent = manager_->get_component<ShootingComponent>(entity);
 			auto collision = manager_->get_component<CollisionComponent>(entity);
 			auto position = manager_->get_component<PositionComponent>(entity);
-			if (!i->first.compare("shootUp")) {
+			if (i->first == KeyBindingSingleton::get_instance()->get_shoot_up_key_binding()) {
 				int xPos = position->x + collision->width / 2;
 				int yPos = (position->y - sComponent->bullet_size) - 1;
 				createBullet(0, -1 * bullet_velocity, xPos, yPos);
 				i->second = false;
 			}
-			if (!i->first.compare("shootLeft")) {
+			if (i->first == KeyBindingSingleton::get_instance()->get_shoot_left_key_binding()) {
 				int xPos = position->x - sComponent->bullet_size;
 				int yPos = position->y + (collision->height / 2) + 15;
 				createBullet(-1 * bullet_velocity, 0, xPos, yPos);
 				i->second = false;
 			}
 
-			if (!i->first.compare("shootDown")) {
+			if (i->first == KeyBindingSingleton::get_instance()->get_shoot_down_key_binding()) {
 				int xPos = position->x + collision->width / 2;
 				int yPos = position->y + collision->height + 1 + 20;
 				createBullet(0, bullet_velocity, xPos, yPos);
 				i->second = false;
 			}
 
-			if (!i->first.compare("shootRight")) {
+			if (i->first == KeyBindingSingleton::get_instance()->get_shoot_right_key_binding()) {
 				int xPos = position->x + collision->width + 1;
 				int yPos = position->y + collision->height / 2 + 15;
 				createBullet(bullet_velocity, 0, xPos, yPos);

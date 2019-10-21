@@ -34,6 +34,10 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keys_down.insert(std::make_pair(instance->get_move_left_key_binding() , false));
 		instance->keys_down.insert(std::make_pair(instance->get_move_right_key_binding(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_move_down_key_binding(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_shoot_up_key_binding(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_shoot_left_key_binding(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_shoot_right_key_binding(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_shoot_down_key_binding(), false));
 	}
 
 	return instance;
@@ -53,4 +57,20 @@ std::string KeyBindingSingleton::get_move_right_key_binding() {
 
 std::string KeyBindingSingleton::get_move_down_key_binding() {
 	return "moveDown";
+}
+
+std::string KeyBindingSingleton::get_shoot_up_key_binding() {
+	return "shootUp";
+}
+
+std::string KeyBindingSingleton::get_shoot_left_key_binding() {
+	return "shootLeft";
+}
+
+std::string KeyBindingSingleton::get_shoot_right_key_binding() {
+	return "shootRight";
+}
+
+std::string KeyBindingSingleton::get_shoot_down_key_binding() {
+	return "shootDown";
 }
