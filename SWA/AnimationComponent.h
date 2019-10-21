@@ -12,12 +12,10 @@ struct AnimationComponent : Component
 	{
 		animation.scale = scale;
 		animation.total_frames = frames;
-		flip_horizontally = false;
-		flip_vertically = false;
 	}
+	bool flip_horizontally;
 	std::string filename;
 	Animation& animation;
-	bool flip_horizontally;
 	int frames{};
 	int scale{};
 };
