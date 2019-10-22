@@ -3,13 +3,14 @@
 #include <iostream>
 
 
-Texture::Texture(SDL_Renderer *renderer)
+Texture::Texture(SDL_Renderer* renderer)
 {
 	//Initialize
 	renderer_ = renderer;
-	mTexture = NULL;
+	mTexture = nullptr;
 	mWidth = 0;
 	mHeight = 0;
+	surface_ = nullptr;
 }
 
 Texture::~Texture()
@@ -23,74 +24,72 @@ bool Texture::loadText(std::string font, int font_size, SDL_Color color, std::st
 	free();
 	const auto filename = "./assets/" + font;
 	const auto ttf_font = TTF_OpenFont(filename.c_str(), font_size);
-	SDL_Surface* surface = TTF_RenderText_Blended(ttf_font, text.c_str(), color);
-	if(surface == nullptr)
+	surface_ = TTF_RenderText_Blended(ttf_font, text.c_str(), color);
+	if (surface_ == nullptr)
 	{
 		std::cout << "Unable to render text: " << TTF_GetError() << std::endl;
 		return false;
 	}
-	mTexture = SDL_CreateTextureFromSurface(renderer_, surface);
-	if(mTexture == nullptr)
+	mTexture = SDL_CreateTextureFromSurface(renderer_, surface_);
+	if (mTexture == nullptr)
 	{
 		std::cout << "Unable to create texture: " << SDL_GetError() << std::endl;
 		return false;
 	}
-	mHeight = surface->h;
-	mWidth = surface->w;
+	mHeight = surface_->h;
+	mWidth = surface_->w;
 	TTF_CloseFont(ttf_font);
-	//SDL_FreeSurface(surface);
 	return true;
 }
 
-bool Texture::loadFromFile(std::string path)
+bool Texture::loadFromFile(const std::string& path)
 {
 	//Get rid of preexisting texture
 	free();
-
-	//The final texture
-	SDL_Texture* newTexture = NULL;
-
 	//Load image at specified path
-	SDL_Surface* loadedSurface = IMG_Load(("./assets/" + path).c_str());
-	if (loadedSurface == NULL)
+	surface_ = IMG_Load(("./assets/" + path).c_str());
+	if (surface_ == nullptr)
 	{
 		printf("Unable to load image %s! SDL_image Error: %s\n", ("./assets/" + path).c_str(), IMG_GetError());
+		return false;
 	}
-	else
+	//Color key image
+	SDL_SetColorKey(surface_, SDL_TRUE, SDL_MapRGB(surface_->format, 0, 0xFF, 0xFF));
+	//Create texture from surface pixels
+	mTexture = SDL_CreateTextureFromSurface(renderer_, surface_);
+	if (mTexture == nullptr)
 	{
-		//Color key image
-		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
-		//Create texture from surface pixels
-		newTexture = SDL_CreateTextureFromSurface(renderer_, loadedSurface);
-		if (newTexture == NULL)
-		{
-			printf("Unable to create texture from %s! SDL Error: %s\n", ("./assets/" + path).c_str(), SDL_GetError());
-		}
-		else
-		{
-			//Get image dimensions
-
-			mWidth = loadedSurface->w;
-			mHeight = loadedSurface->h;
-		}
-
+		printf("Unable to create texture from %s! SDL Error: %s\n", ("./assets/" + path).c_str(), SDL_GetError());
+		return false;
 	}
+	//Get image dimensions
+
+	mWidth = surface_->w;
+	mHeight = surface_->h;
+
 
 	//Return success
-	mTexture = newTexture;
-	return mTexture != NULL;
+	return true;
 }
 
 void Texture::free()
 {
-	//Free texture if it exists
-	if (mTexture != NULL)
+	if (surface_) {
+		delete surface_;
+		surface_ = nullptr;
+		//SDL_FreeSurface(surface_);
+	}
+	//delete surface_;
+	if (mTexture != nullptr)
 	{
 		SDL_DestroyTexture(mTexture);
-		mTexture = NULL;
-		mWidth = 0;
-		mHeight = 0;
+		mTexture = nullptr;
 	}
+
+	//mTexture = nullptr;
+	mWidth = 0;
+	mHeight = 0;
+
 }
 
 void Texture::setColor(Uint8 red, Uint8 green, Uint8 blue)
@@ -116,7 +115,7 @@ void Texture::render(int x, int y, SDL_Rect* clip, double scale, SDL_RendererFli
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
 	//Set clip rendering dimensions
-	if (clip != NULL)
+	if (clip != nullptr)
 	{
 		renderQuad.w = clip->w * scale;
 		renderQuad.h = clip->h * scale;

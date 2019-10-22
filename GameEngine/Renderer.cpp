@@ -47,26 +47,27 @@ bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint
 	return true;
 }
 
-Animation& Engine::LoadAnimation(std::string path, int frames) {
+std::unique_ptr<Animation> Engine::LoadAnimation(std::string path, int frames) {
 
 	auto WALKING_ANIMATION_FRAMES = frames;
 	auto gSpriteClips = std::vector<SDL_Rect>(WALKING_ANIMATION_FRAMES);
 	auto texture = new Texture(renderer);
-	auto animation = new Animation(WALKING_ANIMATION_FRAMES, gSpriteClips, *texture);
-	texture->free();
+	auto animation = std::make_unique<Animation>(WALKING_ANIMATION_FRAMES, gSpriteClips, *texture);
+	
 
 	//Load media
-	if (!Engine::LoadSpriteSheet(path, animation))
+	if (!Engine::LoadSpriteSheet(path, animation.get()))
 	{
 		printf("Failed to load media!\n");
 	}
-
-	return *animation;
+	texture->free();
+	delete texture;
+	return animation;
 }
 
-Texture* Engine::LoadTileset(std::string path)
+std::unique_ptr<Texture> Engine::LoadTileset(std::string path)
 {
-	Texture* texture = new Texture(renderer);
+	auto texture = std::make_unique<Texture>(renderer);
 	texture->loadFromFile(path);
 	return texture;
 }
@@ -104,9 +105,9 @@ bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
 	return success;
 }
 
-Texture* Engine::LoadText(std::string path, uint32_t font_size, SDL_Color color, const char* text)
+std::unique_ptr<Texture> Engine::LoadText(std::string path, uint32_t font_size, SDL_Color color, const char* text)
 {
-	auto* texture = new Texture(renderer);
+	auto texture = std::make_unique<Texture>(renderer);
 	texture->loadText(std::move(path), font_size, color, text);
 	return texture;
 }

@@ -28,9 +28,10 @@ void EntityManager::add_component_to_entity(const uint32_t id, std::unique_ptr<C
 
 void EntityManager::remove_entity(const uint32_t id)
 {
-	auto i = std::find(entities_.begin(), entities_.end(), id);
-	
-	remove_component_from_entity<CollisionComponent>(id);
-	remove_component_from_entity<AnimationComponent>(id);
+	const auto i = std::find(entities_.begin(), entities_.end(), id);
+	for(auto &comp : components_by_class_)
+	{
+		comp.second.erase(id);
+	}
 	entities_.erase(i);
 }

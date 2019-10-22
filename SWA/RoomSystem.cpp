@@ -8,7 +8,9 @@
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
 RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
-{}
+{
+	RoomSingleton::get_instance()->reload_room = true;
+}
 
 void RoomSystem::update(double dt)
 {

@@ -6,16 +6,15 @@ SceneManager::~SceneManager()
 	active_scenes_.clear();
 }
 
-void SceneManager::add_scene(BaseScene & menu)
+void SceneManager::add_scene(std::unique_ptr<BaseScene> menu)
 {
-	active_scenes_.push_back(std::unique_ptr<BaseScene>(&menu));
+	active_scenes_.push_back(std::move(menu));
 }
 
 void SceneManager::delete_scene()
 {
-	active_scenes_.back()->cleanup();
+	delete_last = true;
 	pop_scene();
-	active_scenes_.pop_back();
 }
 
 void SceneManager::push_scene()
@@ -24,6 +23,7 @@ void SceneManager::push_scene()
 	{
 		++current_scene_;
 	}
+	active_scenes_[current_scene_]->init();
 	
 }
 
@@ -37,10 +37,17 @@ void SceneManager::pop_scene()
 
 void SceneManager::render()
 {
+	
 	if (!active_scenes_.empty()) {
 		auto current_menu = &*active_scenes_[current_scene_];
-		while (current_menu->is_running)
+		while (current_menu->is_running || delete_last)
 		{
+			if (delete_last)
+			{
+				active_scenes_.back()->cleanup();
+				active_scenes_.pop_back();
+				delete_last = false;
+			}
 			current_menu = &*active_scenes_[current_scene_];
 			if(current_menu != nullptr)
 			{

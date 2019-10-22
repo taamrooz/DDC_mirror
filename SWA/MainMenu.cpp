@@ -13,23 +13,23 @@ void MainMenu::render()
 {
 	const auto timer = Engine::PreUpdate();
 	input();
-	Engine::UpdateAnimation(background_, 0, 0);
-	Engine::RenderTexture(title_, 250, 200, nullptr);
-	Engine::RenderTexture(start_, 500, 400, nullptr);
-	Engine::RenderTexture(settings_, 500, 500, nullptr);
-	Engine::RenderTexture(quit_, 500, 600, nullptr);
-	Engine::RenderTexture(helper, 115, 800, nullptr);
+	Engine::UpdateAnimation(background_.get(), 0, 0);
+	Engine::RenderTexture(title_.get(), 250, 200, nullptr);
+	Engine::RenderTexture(start_.get(), 500, 400, nullptr);
+	Engine::RenderTexture(settings_.get(), 500, 500, nullptr);
+	Engine::RenderTexture(quit_.get(), 500, 600, nullptr);
+	Engine::RenderTexture(helper_.get(), 115, 800, nullptr);
 	if (current_action_ == 0)
 	{
-		Engine::RenderTexture(selector_, 480, 400, nullptr);
+		Engine::RenderTexture(selector_.get(), 480, 400, nullptr);
 	}
 	else if (current_action_ == 1)
 	{
-		Engine::RenderTexture(selector_, 480, 500, nullptr);
+		Engine::RenderTexture(selector_.get(), 480, 500, nullptr);
 	}
 	else if (current_action_ == 2)
 	{
-		Engine::RenderTexture(selector_, 480, 600, nullptr);
+		Engine::RenderTexture(selector_.get(), 480, 600, nullptr);
 	}
 	Engine::Render(timer);
 
@@ -73,8 +73,8 @@ void MainMenu::input()
 			if (current_action_ == 0)
 			{
 				auto core = std::make_unique<Core>(scene_manager_);
-				core->init();
-				scene_manager_->add_scene(*core);
+				//core->init();
+				scene_manager_->add_scene(std::move(core));
 				Engine::StopMusic();
 				scene_manager_->push_scene();
 				Engine::PlayMusic("ingame.wav");
@@ -92,15 +92,14 @@ void MainMenu::input()
 
 void MainMenu::cleanup()
 {
-	delete background_;
-	delete title_;
-	delete start_;
-	delete settings_;
-	delete quit_;
-	delete helper;
-	delete selector_;
 	Engine::DestroyRenderer();
 	Engine::CloseAudio();
+	title_->free();
+	start_->free();
+	settings_->free();
+	quit_->free();
+	helper_->free();
+	selector_->free();
 }
 
 bool MainMenu::init()
@@ -112,13 +111,13 @@ bool MainMenu::init()
 		return false;
 	}
 	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle");
-	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
+	background_ = Engine::LoadAnimation("mainmenu.png", 3);
 	background_->scale = 1280.0 / 960.0;
 	start_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game");
 	settings_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings");
 	quit_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop");
 	selector_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">");
-	helper = Engine::LoadText("manaspc.ttf", 24, {255, 255, 255, 255},
+	helper_ = Engine::LoadText("manaspc.ttf", 24, {255, 255, 255, 255},
 	                          "Use the arrow keys ^` to navigate the menu and ENTER to confirm");
 	Engine::PlayMusic("mainmenu.wav");
 	return true;

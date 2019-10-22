@@ -4,6 +4,7 @@
 
 InputSystem::InputSystem(EntityManager* manager, Core &core) : BaseSystem(manager) {
 	InputSystem::core = &core;
+	KeyBindingSingleton::reset();
 }
 
 void InputSystem::update(double dt)
@@ -28,6 +29,7 @@ void InputSystem::update(double dt)
 		{
 			Engine::StopMusic();
 			core->scene_manager_->delete_scene();
+			core->StopGameLoop();
 			Engine::PlayMusic("mainmenu.wav");
 			break;
 		}

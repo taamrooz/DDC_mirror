@@ -8,6 +8,7 @@
 
 RenderSystem::RenderSystem(EntityManager* manager) 
 	: BaseSystem(manager) {
+	TileSetSingleton::reset();
 }
 
 void RenderSystem::update(double dt)
@@ -29,7 +30,7 @@ void RenderSystem::update(double dt)
 			tile_component->height,
 			TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][0],
 			TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][1],
-			TileSetSingleton::get_instance()->tilemap
+			TileSetSingleton::get_instance()->tilemap.get()
 		);
 	}
 
@@ -38,7 +39,7 @@ void RenderSystem::update(double dt)
 		auto animation_component = manager_->get_component<AnimationComponent>(entityid);
 		auto position_component = manager_->get_component<PositionComponent>(entityid);
 
-		Engine::UpdateAnimation(&animation_component->animation, position_component->x, position_component->y, animation_component->flip_horizontally);
+		Engine::UpdateAnimation(animation_component->animation.get(), position_component->x, position_component->y, animation_component->flip_horizontally);
 	}
 
 	

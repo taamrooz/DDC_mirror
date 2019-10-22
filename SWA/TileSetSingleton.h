@@ -2,6 +2,7 @@
 #include "Component.h"
 #include <Texture.h>
 #include <vector>
+#include <memory>
 
 class TileSetSingleton
 {
@@ -15,9 +16,10 @@ private:
 	/* Private constructor to prevent instancing. */
 	TileSetSingleton();
 public:
-	Texture* tilemap;
+	std::unique_ptr<Texture> tilemap;
 	bool reload;
 	std::string path;
 	std::vector<std::vector<int>> tiletypes;
 	static TileSetSingleton* get_instance();
+	static void reset();
 };

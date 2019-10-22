@@ -55,7 +55,7 @@ int ComponentFactory::CreateEntity(std::string name, int id, EntityManager* em) 
 void ComponentFactory::AddChestComponents(int id, EntityManager* em) {
 	auto coll = std::make_unique<CollisionComponent>(16, 28, PlayerCollisionHandler);
 	auto ani = std::make_unique<AnimationComponent>("Animations/chest_full_open.png", 3, 3);
-	ani.get()->animation.pause = true;
+	ani->animation->pause = true;
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
 }

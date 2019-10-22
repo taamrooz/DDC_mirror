@@ -29,7 +29,12 @@ TileSetSingleton* TileSetSingleton::instance = 0;
 TileSetSingleton* TileSetSingleton::get_instance()
 {
 	if (instance == 0) {
-		instance = new TileSetSingleton();
+		reset();
 	}
 	return instance;
+}
+
+void TileSetSingleton::reset()
+{
+	instance = new TileSetSingleton();
 }

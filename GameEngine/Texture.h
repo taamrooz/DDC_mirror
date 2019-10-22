@@ -20,10 +20,10 @@ public:
 	bool loadText(std::string font, int font_size, SDL_Color color, std::string text);
 
 	//Loads image at specified path
-	bool loadFromFile(std::string path);
+	bool loadFromFile(const std::string& path);
 
 	//Deallocates texture
-	void free();
+	ENGINE_API void free();
 
 	//Set color modulation
 	void setColor(Uint8 red, Uint8 green, Uint8 blue);
@@ -48,7 +48,7 @@ private:
 	//Image dimensions
 	int mWidth;
 	int mHeight;
-
+	SDL_Surface* surface_;
 	//The window renderer
 	SDL_Renderer* renderer_;
 };

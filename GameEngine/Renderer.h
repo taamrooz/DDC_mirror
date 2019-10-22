@@ -6,6 +6,7 @@
 #include <vector>
 #include "Texture.h"
 #include "Animation.h"
+#include <memory>
 
 
 #ifdef ENGINE_EXPORTS
@@ -30,15 +31,15 @@ namespace Engine {
 	/*
 	 * Returns a texture with a font, it's font size, the text color, and the text.
 	 */
-	ENGINE_API Texture* LoadText(std::string path, uint32_t font_size, SDL_Color color, const char* text);
+	ENGINE_API std::unique_ptr<Texture> LoadText(std::string path, uint32_t font_size, SDL_Color color, const char* text);
 	/*
 	 * Returns an animation by a filepath and the amount of frames the animation will have.
 	 */
-	ENGINE_API Animation& LoadAnimation(std::string path, int frames);
+	ENGINE_API std::unique_ptr<Animation> LoadAnimation(std::string path, int frames);
 	/*
 	 * Loads the tile set by specified path.
 	 */
-	ENGINE_API Texture* LoadTileset(std::string path);
+	ENGINE_API std::unique_ptr<Texture> LoadTileset(std::string path);
 	/*
 	 * Renders a tile on specific x and y position, width and height.
 	 */
