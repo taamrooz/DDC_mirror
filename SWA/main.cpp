@@ -1,6 +1,7 @@
 #include "Core.h"
 #include "SceneManager.h"
 #include "MainMenu.h"
+#include "Credits.h"
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 #include "stdlib.h"
@@ -17,8 +18,10 @@ int main(int argc, char* argv[])
 	auto core = std::make_unique<Core>(sm.get());
 	mm->init();
 	core->init();
+
 	sm->add_scene(*mm);
 	sm->add_scene(*core);
+
 	sm->render();
 	sm->cleanup();
 	core.release();

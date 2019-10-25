@@ -4,6 +4,7 @@
 #include "UserInput.h"
 #include "Core.h"
 #include "KeyBindingSingleton.h"
+#include "Credits.h"
 
 MainMenu::~MainMenu() = default;
 
@@ -17,8 +18,9 @@ void MainMenu::render()
 	Engine::RenderTexture(title_, 250, 200, nullptr);
 	Engine::RenderTexture(start_, 500, 400, nullptr);
 	Engine::RenderTexture(settings_, 500, 500, nullptr);
-	Engine::RenderTexture(quit_, 500, 600, nullptr);
-	Engine::RenderTexture(helper, 115, 800, nullptr);
+	Engine::RenderTexture(credits_, 500, 600, nullptr);
+	Engine::RenderTexture(quit_, 500, 700, nullptr);
+	Engine::RenderTexture(helper, 115, 900, nullptr);
 	if (current_action_ == 0)
 	{
 		Engine::RenderTexture(selector_, 480, 400, nullptr);
@@ -30,6 +32,10 @@ void MainMenu::render()
 	else if (current_action_ == 2)
 	{
 		Engine::RenderTexture(selector_, 480, 600, nullptr);
+	}
+	else if (current_action_ == 3)
+	{
+		Engine::RenderTexture(selector_, 480, 700, nullptr);
 	}
 	Engine::Render(timer);
 
@@ -63,23 +69,37 @@ void MainMenu::input()
 		}
 		else if (keycode == SDLK_DOWN)
 		{
-			if (current_action_ < 2)
+			if (current_action_ < 3)
 			{
 				++current_action_;
 			}
 		}
 		else if (keycode == SDLK_RETURN)
 		{
-			if (current_action_ == 0)
-			{
+			auto credits = std::make_unique<Credits>(scene_manager_);
+			credits->init();
+
+			switch (current_action_) {
+			case 0:
 				Engine::StopMusic();
 				scene_manager_->push_scene();
 				Engine::PlayMusic("ingame.wav");
-			}
-			else if (current_action_ == 2)
-			{
+				break;
+			case 1:
+				break;
+			case 2:
+				scene_manager_->add_scene(*credits);
+				scene_manager_->push_scene();
+				scene_manager_->push_scene();
+				scene_manager_->render();
+				break;
+			case 3:
 				is_running = false;
 				scene_manager_->pop_scene();
+				break;
+			}
+			
+			if (!is_running) {
 				break;
 			}
 		}
@@ -93,6 +113,7 @@ void MainMenu::cleanup()
 	delete title_;
 	delete start_;
 	delete settings_;
+	delete credits_;
 	delete quit_;
 	delete helper;
 	delete selector_;
@@ -113,10 +134,11 @@ bool MainMenu::init()
 	background_->scale = 1280.0 / 960.0;
 	start_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game");
 	settings_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings");
+	credits_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits");
 	quit_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop");
 	selector_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">");
 	helper = Engine::LoadText("manaspc.ttf", 24, {255, 255, 255, 255},
-	                          "Use the arrow keys ^` to navigate the menu and ENTER to confirm");
+	                          "Use the arrow keys ^` to navigate the menu and press ENTER to confirm");
 	Engine::PlayMusic("mainmenu.wav");
 	return true;
 }
