@@ -34,6 +34,10 @@ void InputSystem::update(double dt)
 		if (KeyBindingSingleton::get_instance()->keybindings.find(keycode) != KeyBindingSingleton::get_instance()->keybindings.end()) {
 			auto command = KeyBindingSingleton::get_instance()->keybindings.at(keycode);
 			KeyBindingSingleton::get_instance()->keys_down.at(command) = true;
+
+			if (command == KeyBindingSingleton::get_instance()->get_pause_game_key_binding()) {
+				core->is_paused = !core->is_paused;
+			}
 		}
 	}
 

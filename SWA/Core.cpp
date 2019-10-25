@@ -62,6 +62,13 @@ void Core::update()
 		if(is_running)
 		{
 			system->update(1);
+
+			if (is_paused) {
+				scene_manager_->push_scene();
+				scene_manager_->push_scene();
+				scene_manager_->push_scene();
+				scene_manager_->render();
+			}
 		}else
 		{
 			break;
