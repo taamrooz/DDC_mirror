@@ -32,13 +32,6 @@ void Credits::input() {
 
 	auto inputs = Engine::GetInputs();
 
-	//Quit if user wants to exit
-	if (!std::get<k_stop>(inputs)) {
-		//core->StopGameLoop();
-		is_running = false;
-		return;
-	}
-
 	//Handle all key down events
 	for (const auto& keycode : std::get<k_keydown>(inputs))
 	{
@@ -67,12 +60,6 @@ void Credits::cleanup() {
 }
 
 bool Credits::init() {
-	if (!Engine::InitRenderer("Demonic Dungeon Castle", false, 1280, 960)) {
-		return false;
-	}
-	if (!Engine::InitAudio()) {
-		return false;
-	}
 	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle");
 	sub_title_ = Engine::LoadText("manaspc.ttf", 40, { 255,0,0, 255 }, "Credits");
 	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
@@ -85,6 +72,5 @@ bool Credits::init() {
 	gijs_verdonschot = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Gijs Verdonschot");
 	helper = Engine::LoadText("manaspc.ttf", 24, { 255, 255, 255, 255 },
 		"Press ENTER to quit to main menu");
-	Engine::PlayMusic("mainmenu.wav");
 	return true;
 }

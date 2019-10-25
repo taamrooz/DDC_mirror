@@ -14,6 +14,7 @@ void MainMenu::render()
 {
 	const auto timer = Engine::PreUpdate();
 	input();
+
 	Engine::UpdateAnimation(background_, 0, 0);
 	Engine::RenderTexture(title_, 250, 200, nullptr);
 	Engine::RenderTexture(start_, 500, 400, nullptr);
@@ -76,9 +77,6 @@ void MainMenu::input()
 		}
 		else if (keycode == SDLK_RETURN)
 		{
-			auto credits = std::make_unique<Credits>(scene_manager_);
-			credits->init();
-
 			switch (current_action_) {
 			case 0:
 				Engine::StopMusic();
@@ -88,7 +86,6 @@ void MainMenu::input()
 			case 1:
 				break;
 			case 2:
-				scene_manager_->add_scene(*credits);
 				scene_manager_->push_scene();
 				scene_manager_->push_scene();
 				scene_manager_->render();
