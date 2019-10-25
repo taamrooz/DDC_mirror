@@ -1,4 +1,4 @@
-#include "KeyBindingSingleton.h"
+﻿#include "KeyBindingSingleton.h"
 
 
 KeyBindingSingleton::KeyBindingSingleton()
@@ -73,4 +73,38 @@ std::string KeyBindingSingleton::get_shoot_right_key_binding() {
 
 std::string KeyBindingSingleton::get_shoot_down_key_binding() {
 	return "shootDown";
+}
+
+// TO-DO: map SDL_keys to strings!!
+
+std::string KeyBindingSingleton::get_move_up_key() {
+	return "W";
+}
+
+std::string KeyBindingSingleton::get_move_left_key() {
+	return "A";
+}
+
+std::string KeyBindingSingleton::get_move_right_key() {
+	return "D";
+}
+
+std::string KeyBindingSingleton::get_move_down_key() {
+	return "s";
+}
+
+std::string KeyBindingSingleton::get_shoot_up_key() {
+	return "^";
+}
+
+std::string KeyBindingSingleton::get_shoot_left_key() {
+	return "<";
+}
+
+std::string KeyBindingSingleton::get_shoot_right_key() {
+	return ">";
+}
+
+std::string KeyBindingSingleton::get_shoot_down_key() {
+	return "`";
 }

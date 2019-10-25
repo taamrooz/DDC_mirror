@@ -155,6 +155,7 @@
     <ClCompile Include="Credits.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Help.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="KeyBindingSingleton.cpp" />
     <ClCompile Include="main.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="Help.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
