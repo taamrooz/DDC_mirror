@@ -12,9 +12,9 @@ private:
 	Texture* sub_title_ = nullptr;
 	Animation* background_ = nullptr;
 	Texture* mart_van_den_berg = nullptr;
-	Texture* mark_donkers = nullptr;
-	Texture* sjors_ficken = nullptr;
+	Texture* mark_donker = nullptr;
 	Texture* renato_feroce = nullptr;
+	Texture* sjors_ficken = nullptr;
 	Texture* tom_roozen = nullptr;
 	Texture* gijs_verdonschot = nullptr;
 	Texture* helper = nullptr;
