@@ -9,6 +9,8 @@ class Pause :
 {
 private:
 	Texture* title_ = nullptr;
+	Texture* pausedTexture_ = nullptr;
+	Texture* helper_ = nullptr;
 	Animation* background_ = nullptr;
 	uint8_t current_action_ = 0;
 public:
