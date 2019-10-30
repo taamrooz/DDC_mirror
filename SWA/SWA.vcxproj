@@ -179,6 +179,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="DamagingComponent.h" />
+    <ClInclude Include="DoorComponent.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="MoveCharacterSystem.h" />
@@ -212,6 +214,7 @@
   <ItemGroup>
     <None Include="assets\lazy.map" />
     <None Include="ClassDiagram.cd" />
+    <None Include="second.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
@@ -277,6 +280,9 @@
     <Image Include="assets\Animations\zombie_run.png" />
     <Image Include="assets\wizard_move_f.png" />
     <Image Include="assets\wizard_move_m.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SWA.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

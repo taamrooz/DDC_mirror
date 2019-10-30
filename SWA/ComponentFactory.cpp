@@ -8,6 +8,7 @@
 #include "HealthComponent.h"
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
+#include "DoorComponent.h"
 ComponentFactory::ComponentFactory() {
 
 }
@@ -17,13 +18,15 @@ ComponentFactory* ComponentFactory::instance_ = 0;
 enum string_code {
 	cPlayer,
 	cWall,
-	cChest
+	cChest,
+	cDoor
 };
 
 string_code Convert(std::string const& inString) {
 	if (inString == "player") return cPlayer;
 	if (inString == "wall") return cWall;
 	if (inString == "chest") return cChest;
+	if (inString == "door") return cDoor;
 	return cWall;
 }
 
@@ -43,6 +46,10 @@ int ComponentFactory::CreateEntity(std::string name, int id, EntityManager* em) 
 	}
 	case cChest: {
 		AddChestComponents(id, em);
+		break;
+	}
+	case cDoor: {
+		AddDoorComponents(id, em);
 		break;
 	}
 	default: {
@@ -72,4 +79,14 @@ void ComponentFactory::AddPlayerComponents(int id, EntityManager* em) {
 	em->add_component_to_entity(id, std::move(cha));
 	em->add_component_to_entity(id, std::move(coll));
 	em->add_component_to_entity(id, std::move(sho));
+}
+
+void ComponentFactory::AddDoorComponents(int id, EntityManager* em) {
+	auto door = std::make_unique<DoorComponent>();
+	auto coll = std::make_unique<CollisionComponent>(48, 48, PlayerCollisionHandler);
+	auto ani = std::make_unique<AnimationComponent>("Animations/floor_spikes.png", 4, 3);
+	ani.get()->animation.pause = true;
+	em->add_component_to_entity(id, std::move(ani));
+	em->add_component_to_entity(id, std::move(coll));
+	em->add_component_to_entity(id, std::move(door));
 }
