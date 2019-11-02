@@ -153,6 +153,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="Credits.cpp" />
+    <ClCompile Include="EndGame.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Help.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="Credits.h" />
     <ClInclude Include="DamagingComponent.h" />
+    <ClInclude Include="EndGame.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />
