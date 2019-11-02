@@ -38,9 +38,9 @@ void RenderSystem::update(double dt)
 		auto animation_component = manager_->get_component<AnimationComponent>(entityid);
 		auto position_component = manager_->get_component<PositionComponent>(entityid);
 
-		Engine::UpdateAnimation(&animation_component->animation, position_component->x, position_component->y, animation_component->flip_horizontally);
+		Engine::UpdateAnimation(&animation_component->animations.at(animation_component->currentState), position_component->x, position_component->y, animation_component->flip_horizontally);
+		if (animation_component->lock_until < Engine::GetTicks()) {
+			animation_component->currentState = State::DEFAULT;
+		}
 	}
-
-	
-
 }

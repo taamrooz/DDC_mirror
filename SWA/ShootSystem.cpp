@@ -60,7 +60,10 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 
 		auto vComponent = std::make_unique<VelocityComponent>(xV, yV);
 		auto pComponent = std::make_unique<PositionComponent>(x, y);
-		auto aComponent = std::make_unique<AnimationComponent>("Projectile.png", 1, 2);
+		std::map<State, Animation> animations;
+		animations.insert({ State::DEFAULT, Engine::LoadAnimation("Projectile.png", 1) });
+		animations.at(State::DEFAULT).scale = 2;
+		auto aComponent = std::make_unique<AnimationComponent>(animations);
 		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size * 2, shoot->bullet_size * 2, BulletCollisionHandler, entity);
 		manager_->add_component_to_entity(id, std::move(vComponent));
 		manager_->add_component_to_entity(id, std::move(pComponent));
