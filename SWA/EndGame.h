@@ -9,17 +9,8 @@ class EndGame :
 {
 private:
 	Texture* title_ = nullptr;
-	Texture* sub_title_moving_ = nullptr;
-	Texture* sub_title_shooting_ = nullptr;
+	Texture* sub_title_ = nullptr;
 	Animation* background_ = nullptr;
-	Texture* move_up_ = nullptr;
-	Texture* move_left_ = nullptr;
-	Texture* move_right_ = nullptr;
-	Texture* move_down_ = nullptr;
-	Texture* shoot_up_ = nullptr;
-	Texture* shoot_left_ = nullptr;
-	Texture* shoot_right_ = nullptr;
-	Texture* shoot_down_ = nullptr;
 	Texture* helper = nullptr;
 	uint8_t current_action_ = 0;
 public:
