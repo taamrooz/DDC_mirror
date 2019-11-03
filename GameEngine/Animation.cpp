@@ -6,6 +6,7 @@ Animation::Animation(int frames, std::vector<SDL_Rect>& spriteclips, Texture tex
 	//gSpriteSheetTexture = texture;
 	gSpriteClips = spriteclips;
 	pause = false;
+	loop = true;
 }
 
 Animation::~Animation() {
@@ -27,7 +28,12 @@ void Animation::UpdateAnimation(double x, double y, SDL_RendererFlip flip)
 		//Cycle animation
 		if (CURRENT_FRAME / total_frames >= WALKING_ANIMATION_FRAMES)
 		{
-			CURRENT_FRAME = 0;
+			if (loop) {
+				CURRENT_FRAME = 0;
+			}
+			else {
+				pause = true;
+			}
 		}
 	}
 }

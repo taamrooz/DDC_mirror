@@ -5,6 +5,11 @@
 #include "HealthComponent.h"
 #include <Renderer.h>
 #include "AnimationComponent.h"
+#include "ComponentFactory.h"
+#include "ChestComponent.h"
+#include "PositionComponent.h"
+#include "CollisionComponent.h"
+#include "VelocityComponent.h"
 
 void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
 {
@@ -32,5 +37,32 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 			}
 		}
 		
+	}
+}
+
+void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager) {
+	auto compFactory = ComponentFactory::get_instance();
+
+	auto charC = manager->get_component<CharacterComponent>(entity2);
+	if (charC != nullptr) {
+		auto ani = manager->get_component<AnimationComponent>(entity1);
+		ani->animations.at(ani->currentState).pause = false;
+		
+
+		//create drop
+		int drop = manager->create_entity();
+		auto chest = manager->get_component<ChestComponent>(entity1);
+		ComponentFactory::get_instance()->CreateEntity("Flask_Blue", drop, manager);
+		auto cPos = manager->get_component<PositionComponent>(entity1);
+		auto cColl = manager->get_component<CollisionComponent>(entity1);
+		auto pVel = manager->get_component<VelocityComponent>(entity2);
+		auto dPos = std::make_unique<PositionComponent>(cPos->x + cColl->width / 2, cPos->y);
+		auto dVel = std::make_unique<VelocityComponent>(pVel->dx, pVel->dy, 0.2);
+
+		manager->add_component_to_entity(drop, std::move(dPos));
+		manager->add_component_to_entity(drop, std::move(dVel));
+		cColl->collisionHandler = nullptr;
+		manager->remove_component_from_entity<ChestComponent>(entity1);
+
 	}
 }

@@ -12,6 +12,7 @@ private:
 	ComponentFactory& operator=(const ComponentFactory&& entityFactory) = delete; // Move operator
 	static ComponentFactory* instance_;
 	void AddPlayerComponents(int, EntityManager*);
+	void AddBlueFlaskComponents(int id, EntityManager* em);
 	void AddChestComponents(int id, EntityManager* em);
 public:
 	static ComponentFactory* get_instance();

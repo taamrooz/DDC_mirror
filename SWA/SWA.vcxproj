@@ -173,6 +173,7 @@
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="CharacterComponent.h" />
+    <ClInclude Include="ChestComponent.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionHandlers.h" />
     <ClInclude Include="CollisionSystem.h" />

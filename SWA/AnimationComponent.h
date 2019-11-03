@@ -13,8 +13,8 @@ struct AnimationComponent : Component
 {
 
 	AnimationComponent() = default;
-	AnimationComponent(std::map<State, Animation> animations) :
-		animations { animations }
+	AnimationComponent(std::map<State, Animation> animations, bool visible = true) :
+		animations { animations }, visible{visible}
 	{
 		currentState = State::DEFAULT;
 		flip_horizontally = false;
@@ -24,5 +24,6 @@ struct AnimationComponent : Component
 	std::map<State, Animation> animations;
 	State currentState;
 	int lock_until;
+	bool visible;
 };
 

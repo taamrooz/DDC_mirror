@@ -86,13 +86,14 @@ void CollisionSystem::update(double dt)
 
 
 
-		update_velocity(first_node, second_node);
+		
 		if (collisionComponent != nullptr) {
 			if (collisionComponent->collisionHandler != nullptr) {
 				collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
 			}
 			
 		}
+		update_velocity(first_node, second_node);
 	}
 
 
@@ -137,13 +138,13 @@ void CollisionSystem::update_velocity(Node* first_node, Node* second_node) {
 		if (first_node_velocity_component->dx > 0) {
 			if ((first_node_position_component->x + first_node->width) >= (second_node_position_component->x)) {
 				first_node_position_component->x = second_node_position_component->x - first_node->width;
-				first_node_velocity_component->dx = 0;
+				//first_node_velocity_component->dx = 0;
 			}
 		}
 		else if (first_node_velocity_component->dx < 0) {
 			if ((first_node_position_component->x) <= (second_node_position_component->x + second_node->width)) {
 				first_node_position_component->x = second_node_position_component->x + second_node->width;
-				first_node_velocity_component->dx = 0;
+				//first_node_velocity_component->dx = 0;
 			}
 		}
 
@@ -151,13 +152,13 @@ void CollisionSystem::update_velocity(Node* first_node, Node* second_node) {
 		if (first_node_velocity_component->dy > 0) {
 			if ((first_node_position_component->y + first_node->height) >= (second_node_position_component->y)) {
 				first_node_position_component->y = second_node_position_component->y - first_node->height;
-				first_node_velocity_component->dy = 0;
+				//first_node_velocity_component->dy = 0;
 			}
 		}
 		else if (first_node_velocity_component->dy < 0) {
 			if ((first_node_position_component->y) <= (second_node_position_component->y + second_node->height)) {
 				first_node_position_component->y = second_node_position_component->y + second_node->height;
-				first_node_velocity_component->dy = 0;
+				//first_node_velocity_component->dy = 0;
 			}
 		}
 	}
