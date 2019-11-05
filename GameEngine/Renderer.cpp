@@ -1,6 +1,8 @@
 #include "Renderer.h"
 #include <iostream>
 #include <SDL_ttf.h>
+#include "Timer.h"
+#include <sstream>
 
 SDL_Window* window;
 SDL_Renderer* renderer;
@@ -115,8 +117,14 @@ const int FPS = 60;
 const int frameDelay = 1000 / FPS;
 uint32_t frameStart;
 uint32_t frameTime;
+Timer frameTimer{};
+std::string timeText;
+int countedFrames = 0;
 
 int Engine::PreUpdate() {
+	if (!frameTimer.IsStarted())
+		frameTimer.Start();
+	
 	auto frameStart = SDL_GetTicks();
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
@@ -128,10 +136,36 @@ Uint32 Engine::GetTicks() {
 }
 
 void Engine::Render(int framestart) {
-	SDL_RenderPresent(renderer);
-	
-	frameTime = SDL_GetTicks() - framestart;
+	float avgFPS = countedFrames / (frameTimer.GetTicks() / 1000.f);
+	if (avgFPS > 2000000)
+	{
+		avgFPS = 0;
+	}
 
+	//Set text to be rendered
+	timeText = "Average FPS: ";
+	int avg_FPS = static_cast<int>(avgFPS);
+	if(avg_FPS >= 0 && avg_FPS <= 100)
+		timeText += std::to_string(avg_FPS);
+	else
+		timeText += std::to_string(59);
+
+	Texture* gFPSTextTexture = Engine::LoadText("manaspc.ttf", 18, { 127,255,0, 255 }, timeText.c_str());;
+
+	//Render textures
+	gFPSTextTexture->render(5, 5, new SDL_Rect{ 0,0,gFPSTextTexture->getWidth() ,gFPSTextTexture->getHeight() });
+	++countedFrames;
+	if(countedFrames > 60)
+	{
+		countedFrames = 0;
+		frameTimer.Stop();
+	}
+	
+	SDL_RenderPresent(renderer);
+
+	delete gFPSTextTexture;
+	frameTime = SDL_GetTicks() - framestart;
+	
 	if (frameDelay > frameTime) {
 		SDL_Delay(frameDelay - frameTime);
 	}
