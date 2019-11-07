@@ -132,7 +132,7 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 	//Close the file
 	map.close();
 
-	for (std::vector<int> i : tiles) {
+	for (auto& i : tiles) {
 		auto pos = std::make_unique<PositionComponent>(i[0], i[1]);
 		auto tile = std::make_unique<TileComponent>(i[0], i[1], tile_width, tile_height, i[2]);
 		auto id = manager_->create_entity();

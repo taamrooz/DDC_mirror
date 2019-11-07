@@ -73,11 +73,10 @@ void MainMenu::input()
 			if (current_action_ == 0)
 			{
 				auto core = std::make_unique<Core>(scene_manager_);
-				//core->init();
 				scene_manager_->add_scene(std::move(core));
-				Engine::StopMusic();
+				//Engine::StopMusic();
 				scene_manager_->push_scene();
-				Engine::PlayMusic("ingame.wav");
+				//Engine::PlayMusic("ingame.wav");
 			}
 			else if (current_action_ == 2)
 			{
@@ -94,12 +93,12 @@ void MainMenu::cleanup()
 {
 	Engine::DestroyRenderer();
 	Engine::CloseAudio();
-	title_->free();
-	start_->free();
-	settings_->free();
-	quit_->free();
-	helper_->free();
-	selector_->free();
+	title_->free_texture();
+	start_->free_texture();
+	settings_->free_texture();
+	quit_->free_texture();
+	helper_->free_texture();
+	selector_->free_texture();
 }
 
 bool MainMenu::init()
@@ -107,9 +106,9 @@ bool MainMenu::init()
 	if (!Engine::InitRenderer("Demonic Dungeon Castle", false, 1280, 960)) {
 		return false;
 	}
-	if (!Engine::InitAudio()) {
-		return false;
-	}
+	//if (!Engine::InitAudio()) {
+		//return false;
+	//}
 	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle");
 	background_ = Engine::LoadAnimation("mainmenu.png", 3);
 	background_->scale = 1280.0 / 960.0;
@@ -119,7 +118,7 @@ bool MainMenu::init()
 	selector_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">");
 	helper_ = Engine::LoadText("manaspc.ttf", 24, {255, 255, 255, 255},
 	                          "Use the arrow keys ^` to navigate the menu and ENTER to confirm");
-	Engine::PlayMusic("mainmenu.wav");
+	//Engine::PlayMusic("mainmenu.wav");
 	return true;
 }
 

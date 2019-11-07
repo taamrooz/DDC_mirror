@@ -1,17 +1,9 @@
 #pragma once
-#include <iostream>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <cstdio>
-#include <string>
 #include "EntityManager.h"
 #include "BaseSystem.h"
 #include "Audio.h"
 #include "AnimationComponent.h"
-#include "VelocityComponent.h"
-#include "PositionComponent.h"
 #include "BaseScene.h"
-#include "SceneManager.h"
 
 class Core : virtual public BaseScene
 {

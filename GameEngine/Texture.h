@@ -23,7 +23,7 @@ public:
 	bool loadFromFile(const std::string& path);
 
 	//Deallocates texture
-	ENGINE_API void free();
+	ENGINE_API void free_texture();
 
 	//Set color modulation
 	void setColor(Uint8 red, Uint8 green, Uint8 blue);
@@ -48,7 +48,6 @@ private:
 	//Image dimensions
 	int mWidth;
 	int mHeight;
-	SDL_Surface* surface_;
 	//The window renderer
 	SDL_Renderer* renderer_;
 };

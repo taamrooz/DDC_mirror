@@ -10,53 +10,55 @@ Texture::Texture(SDL_Renderer* renderer)
 	mTexture = nullptr;
 	mWidth = 0;
 	mHeight = 0;
-	surface_ = nullptr;
 }
 
 Texture::~Texture()
 {
 	//Deallocate
-	free();
+	free_texture();
 }
 
 bool Texture::loadText(std::string font, int font_size, SDL_Color color, std::string text)
 {
-	free();
+	free_texture();
 	const auto filename = "./assets/" + font;
 	const auto ttf_font = TTF_OpenFont(filename.c_str(), font_size);
-	surface_ = TTF_RenderText_Blended(ttf_font, text.c_str(), color);
-	if (surface_ == nullptr)
+	const auto surface = TTF_RenderText_Blended(ttf_font, text.c_str(), color);
+	if (surface == nullptr)
 	{
 		std::cout << "Unable to render text: " << TTF_GetError() << std::endl;
 		return false;
 	}
-	mTexture = SDL_CreateTextureFromSurface(renderer_, surface_);
+	mTexture = SDL_CreateTextureFromSurface(renderer_, surface);
 	if (mTexture == nullptr)
 	{
 		std::cout << "Unable to create texture: " << SDL_GetError() << std::endl;
 		return false;
 	}
-	mHeight = surface_->h;
-	mWidth = surface_->w;
+	mHeight = surface->h;
+	mWidth = surface->w;
 	TTF_CloseFont(ttf_font);
+	surface->refcount++;
+	SDL_FreeSurface(surface);
+	
 	return true;
 }
 
 bool Texture::loadFromFile(const std::string& path)
 {
 	//Get rid of preexisting texture
-	free();
+	free_texture();
 	//Load image at specified path
-	surface_ = IMG_Load(("./assets/" + path).c_str());
-	if (surface_ == nullptr)
+	const auto surface = IMG_Load(("./assets/" + path).c_str());
+	if (surface == nullptr)
 	{
 		printf("Unable to load image %s! SDL_image Error: %s\n", ("./assets/" + path).c_str(), IMG_GetError());
 		return false;
 	}
 	//Color key image
-	SDL_SetColorKey(surface_, SDL_TRUE, SDL_MapRGB(surface_->format, 0, 0xFF, 0xFF));
+	SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0, 0xFF, 0xFF));
 	//Create texture from surface pixels
-	mTexture = SDL_CreateTextureFromSurface(renderer_, surface_);
+	mTexture = SDL_CreateTextureFromSurface(renderer_, surface);
 	if (mTexture == nullptr)
 	{
 		printf("Unable to create texture from %s! SDL Error: %s\n", ("./assets/" + path).c_str(), SDL_GetError());
@@ -64,22 +66,16 @@ bool Texture::loadFromFile(const std::string& path)
 	}
 	//Get image dimensions
 
-	mWidth = surface_->w;
-	mHeight = surface_->h;
-
-
+	mWidth = surface->w;
+	mHeight = surface->h;
+	surface->refcount++;
+	SDL_FreeSurface(surface);
 	//Return success
 	return true;
 }
 
-void Texture::free()
+void Texture::free_texture()
 {
-	if (surface_) {
-		delete surface_;
-		surface_ = nullptr;
-		//SDL_FreeSurface(surface_);
-	}
-	//delete surface_;
 	if (mTexture != nullptr)
 	{
 		SDL_DestroyTexture(mTexture);

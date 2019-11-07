@@ -28,7 +28,7 @@ TileSetSingleton* TileSetSingleton::instance = 0;
 //Returns an instance of the TileSet
 TileSetSingleton* TileSetSingleton::get_instance()
 {
-	if (instance == 0) {
+	if (instance == nullptr) {
 		reset();
 	}
 	return instance;
@@ -36,5 +36,6 @@ TileSetSingleton* TileSetSingleton::get_instance()
 
 void TileSetSingleton::reset()
 {
+	delete instance;
 	instance = new TileSetSingleton();
 }

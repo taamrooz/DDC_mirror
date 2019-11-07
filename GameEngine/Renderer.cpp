@@ -1,10 +1,10 @@
 #include "Renderer.h"
 #include <iostream>
+#include <utility>
 #include <SDL_ttf.h>
 
 SDL_Window* window;
 SDL_Renderer* renderer;
-SDL_Surface* surf;
 std::vector<SDL_Rect> rectangles;
 
 bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint32 height) {
@@ -23,7 +23,6 @@ bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint
 		std::cout << "Unable to initialize Window" << std::endl;
 		return false;
 	}
-	surf = SDL_GetWindowSurface(window);
 	if ((renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
 	{
 		std::cout << "Unable to initialize renderer" << std::endl;
@@ -56,11 +55,11 @@ std::unique_ptr<Animation> Engine::LoadAnimation(std::string path, int frames) {
 	
 
 	//Load media
-	if (!Engine::LoadSpriteSheet(path, animation.get()))
+	if (!Engine::LoadSpriteSheet(std::move(path), animation.get()))
 	{
 		printf("Failed to load media!\n");
 	}
-	texture->free();
+	texture->free_texture();
 	delete texture;
 	return animation;
 }

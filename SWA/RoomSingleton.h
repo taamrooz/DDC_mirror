@@ -4,7 +4,7 @@
 class RoomSingleton
 {
 private:
-	static RoomSingleton* instance;
+	static RoomSingleton* instance_;
 	RoomSingleton();	
 public:
 	//If reload_room is true, load the map from at the room_path location

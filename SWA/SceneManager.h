@@ -8,7 +8,7 @@ class SceneManager
 {
 private:
 	std::vector<std::unique_ptr<BaseScene>> active_scenes_;
-	uint8_t current_scene_ = 0;
+	size_t current_scene_ = 0;
 	bool delete_last = false;
 public:
 	SceneManager();

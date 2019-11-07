@@ -4,6 +4,8 @@
 #include "KeyBindingSingleton.h"
 #include "CharacterComponent.h"
 #include "CollisionComponent.h"
+#include "PositionComponent.h"
+#include "VelocityComponent.h"
 
 ShootSystem::ShootSystem(EntityManager* manager) : BaseSystem(manager) {
 }

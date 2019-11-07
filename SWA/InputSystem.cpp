@@ -27,10 +27,10 @@ void InputSystem::update(double dt)
 	{
 		if (keycode == SDLK_q)
 		{
-			Engine::StopMusic();
+			//Engine::StopMusic();
 			core->scene_manager_->delete_scene();
 			core->StopGameLoop();
-			Engine::PlayMusic("mainmenu.wav");
+			//Engine::PlayMusic("mainmenu.wav");
 			break;
 		}
 		if (KeyBindingSingleton::get_instance()->keybindings.find(keycode) != KeyBindingSingleton::get_instance()->keybindings.end()) {

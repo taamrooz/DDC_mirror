@@ -3,11 +3,13 @@
 #include "Animation.h"
 #include "Renderer.h"
 #include <string>
+#include <utility>
+
 struct AnimationComponent : Component
 {
 	AnimationComponent() = default;
-	AnimationComponent(const std::string& filename, const int frames, const int scale) : 
-		filename{ filename }, 
+	AnimationComponent(const std::string filename, const int frames, const int scale) : 
+		filename{filename}, 
 		animation{ Engine::LoadAnimation(filename, frames) }
 	{
 		animation->scale = scale;
@@ -16,7 +18,7 @@ struct AnimationComponent : Component
 	}
 	~AnimationComponent()
 	{
-		/*delete animation;*/
+		
 	}
 	bool flip_horizontally;
 	std::string filename;

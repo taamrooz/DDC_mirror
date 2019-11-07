@@ -11,6 +11,8 @@
 #include "MoveCharacterSystem.h"
 #include "CollisionComponent.h"
 #include "SceneManager.h"
+#include "VelocityComponent.h"
+#include "PositionComponent.h"
 
 Core::Core(SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -79,10 +81,6 @@ void Core::render()
 
 void Core::cleanup()
 {
-	if (manager_)
-	{
-		manager_ = nullptr;
-	}
 	systems_.clear();
 }
 

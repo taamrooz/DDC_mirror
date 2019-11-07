@@ -19,7 +19,7 @@ void SceneManager::delete_scene()
 
 void SceneManager::push_scene()
 {
-	if(active_scenes_.size() > current_scene_ + 1)
+	if(active_scenes_.size() - 1 > current_scene_)
 	{
 		++current_scene_;
 	}

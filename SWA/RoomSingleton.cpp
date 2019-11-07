@@ -7,12 +7,12 @@ RoomSingleton::RoomSingleton() {
 	object_suffix = ".objects";
 }
 
-RoomSingleton* RoomSingleton::instance = 0;
+RoomSingleton* RoomSingleton::instance_ = nullptr;
 
 RoomSingleton* RoomSingleton::get_instance()
 {
-	if (instance == 0) {
-		instance = new RoomSingleton();
+	if (instance_ == nullptr) {
+		instance_ = new RoomSingleton();
 	}
-	return instance;
+	return instance_;
 }

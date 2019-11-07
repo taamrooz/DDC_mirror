@@ -10,7 +10,7 @@
 class Animation
 {
 public:
-	ENGINE_API Animation(int, std::vector<SDL_Rect>&, Texture);
+	ENGINE_API Animation(int, std::vector<SDL_Rect>&, const Texture&);
 	ENGINE_API ~Animation();
 	/*
 	 * Updates the animation by its specified x and y coordinates, and whether the animation should be flipped.
