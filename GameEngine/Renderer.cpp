@@ -113,8 +113,9 @@ Texture* Engine::LoadText(std::string path, uint32_t font_size, SDL_Color color,
 	return texture;
 }
 
-const int FPS = 60;
-const int frameDelay = 1000 / FPS;
+const int kFPS = 60;
+const int kFPSCounterPositionOffset = 5;
+const int kframeDelay = 1000 / kFPS;
 uint32_t frameStart;
 uint32_t frameTime;
 Timer frameTimer{};
@@ -122,8 +123,13 @@ std::string timeText;
 int countedFrames = 0;
 
 int Engine::PreUpdate() {
+	if (countedFrames > 600)
+	{
+		countedFrames = 0;
+		frameTimer.Stop();
+	}
 	if (!frameTimer.IsStarted())
-		frameTimer.Start();
+		frameTimer.Start();	
 	
 	auto frameStart = SDL_GetTicks();
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -153,21 +159,17 @@ void Engine::Render(int framestart) {
 	Texture* gFPSTextTexture = Engine::LoadText("manaspc.ttf", 18, { 127,255,0, 255 }, timeText.c_str());;
 
 	//Render textures
-	gFPSTextTexture->render(5, 5, new SDL_Rect{ 0,0,gFPSTextTexture->getWidth() ,gFPSTextTexture->getHeight() });
-	++countedFrames;
-	if(countedFrames > 60)
-	{
-		countedFrames = 0;
-		frameTimer.Stop();
-	}
+	gFPSTextTexture->render(kFPSCounterPositionOffset, kFPSCounterPositionOffset, 
+		new SDL_Rect{ 0,0,gFPSTextTexture->getWidth() ,gFPSTextTexture->getHeight() });
+	++countedFrames;	
 	
 	SDL_RenderPresent(renderer);
 
 	delete gFPSTextTexture;
 	frameTime = SDL_GetTicks() - framestart;
 	
-	if (frameDelay > frameTime) {
-		SDL_Delay(frameDelay - frameTime);
+	if (kframeDelay > frameTime) {
+		SDL_Delay(kframeDelay - frameTime);
 	}
 }
 
@@ -186,12 +188,12 @@ void Engine::RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip)
 }
 
 void Engine::DestroyRenderer() {
-	if (renderer)
+	if (renderer != nullptr)
 	{
 		SDL_DestroyRenderer(renderer);
 		renderer = nullptr;
 	}
-	if (window)
+	if (window != nullptr)
 	{
 		SDL_DestroyWindow(window);
 		window = nullptr;
