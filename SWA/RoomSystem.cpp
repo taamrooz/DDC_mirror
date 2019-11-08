@@ -7,6 +7,7 @@
 #include "ComponentFactory.h"
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
+#include "RoomComponent.h"
 RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
 {}
 
@@ -14,7 +15,7 @@ void RoomSystem::update(double dt)
 {
 	//Check if a new room needs to be loaded
 	if (RoomSingleton::get_instance()->reload_room) {
-		LoadTiles(RoomSingleton::get_instance()->room_name + RoomSingleton::get_instance()->room_suffix, k_total_tiles_, k_total_sprites_, k_tile_width_, k_level_width_, k_tile_height_);
+		LoadTiles(RoomSingleton::get_instance()->room_name, RoomSingleton::get_instance()->room_name + RoomSingleton::get_instance()->room_suffix, k_total_tiles_, k_total_sprites_, k_tile_width_, k_level_width_, k_tile_height_);
 		LoadObjects();
 		RoomSingleton::get_instance()->reload_room = false;
 	}
@@ -60,7 +61,7 @@ void RoomSystem::LoadObjects() {
 	objects.close();
 }
 
-void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites, int tile_width, int level_width, int tile_height)
+void RoomSystem::LoadTiles(std::string room_name, std::string path, int total_tiles, int total_sprites, int tile_width, int level_width, int tile_height)
 {
 	//tiles vector
 	std::vector<std::vector<int>> tiles;
@@ -131,11 +132,13 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 	map.close();
 
 	for (std::vector<int> i : tiles) {
+		auto room = std::make_unique<RoomComponent>(room_name);
 		auto pos = std::make_unique<PositionComponent>(i[0], i[1]);
 		auto tile = std::make_unique<TileComponent>(i[0], i[1], tile_width, tile_height, i[2]);
 		auto id = manager_->create_entity();
 		manager_->add_component_to_entity(id, std::move(pos));
 		manager_->add_component_to_entity(id, std::move(tile));
+		manager_->add_component_to_entity(id, std::move(room));
 		for (unsigned int a = 0; a < sizeof(k_collision_tiles) / sizeof(k_collision_tiles[0]); a = a + 1) {
 			if (k_collision_tiles[a] == i[2]) {
 				auto coll = std::make_unique<CollisionComponent>(63, 63, PlayerCollisionHandler);

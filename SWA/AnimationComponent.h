@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include "Renderer.h"
 #include <string>
+
 struct AnimationComponent : Component
 {
 	AnimationComponent() = default;

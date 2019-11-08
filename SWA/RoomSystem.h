@@ -6,7 +6,7 @@ class RoomSystem :
 {
 public:
 	RoomSystem(EntityManager* manager);
-	void LoadTiles(std::string path, int total_tiles, int total_sprites, int tile_width, int level_width, int tile_height);
+	void LoadTiles(std::string room_name, std::string path, int total_tiles, int total_sprites, int tile_width, int level_width, int tile_height);
 	void LoadObjects();
 	void update(double dt) override;
 private:
