@@ -64,13 +64,17 @@ void CollisionSystem::update(double dt)
 		auto velocityComponent = manager_->get_component<VelocityComponent>(entity);
 		int x = positionComponent->x;
 		int y = positionComponent->y;
+		int xV = 0;
+		int yV = 0;
 		if (velocityComponent != nullptr) {
 			x = positionComponent->x + velocityComponent->dx;
 			y = positionComponent->y + velocityComponent->dy;
+			xV = velocityComponent->dx;
+			yV = velocityComponent->dy;
 		}
 
 
-		quadTree.insert(new Node{ Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
+		quadTree.insert(new Node{ Point{ x, y }, entity, collisionComponent->width, collisionComponent->height, xV, yV });
 	}
 
 	std::vector<std::tuple<Node*, Node*>> collisions = quadTree.get_collisions();
@@ -128,66 +132,124 @@ void CollisionSystem::update_velocity(Node* first_node, Node* second_node) {
 		return;
 	}
 
-	
+
 	if (first_node_velocity_component != nullptr) {
 		// Top bottom collisiondetection first node
-		if (first_node_velocity_component->dx > 0) {
-			if ((first_node_position_component->x + first_node->width) >= (second_node_position_component->x)) {
-				first_node_position_component->x = second_node_position_component->x - first_node->width;
+		int xDiff = 0;
+		int yDiff = 0;
+		int xd = 0;
+		int yd = 0;
+		if (first_node->xV != 0 && first_node->yV == 0) {
+			if (first_node->xV > 0) {
+				xDiff = (first_node_position_component->x + first_node->width - second_node_position_component->x);
+				first_node_position_component->x -= xDiff;
+				first_node_velocity_component->dx = 0;
+			}
+			else {
+				xDiff = (first_node_position_component->x - (second_node_position_component->x + second_node->width));
+				first_node_position_component->x -= xDiff;
 				first_node_velocity_component->dx = 0;
 			}
 		}
-		else if (first_node_velocity_component->dx < 0) {
-			if ((first_node_position_component->x) <= (second_node_position_component->x + second_node->width)) {
-				first_node_position_component->x = second_node_position_component->x + second_node->width;
+		else if (first_node->xV == 0 && first_node->yV != 0) {
+			if (first_node->yV > 0) {
+				yDiff = (first_node_position_component->y + first_node->height - second_node_position_component->y);
+				first_node_position_component->y -= yDiff;
+				first_node_velocity_component->dy = 0;
+			}
+			else {
+				yDiff = (first_node_position_component->y - (second_node_position_component->y + second_node->height));
+				first_node_position_component->y -= yDiff;
+				first_node_velocity_component->dy = 0;
+			}
+		}
+		else {
+			if (first_node->xV > 0) {
+				xDiff = (first_node_position_component->x + first_node->width - second_node_position_component->x) + 1;
+				xd = xDiff / first_node->xV;
+			}
+			if (first_node->xV < 0) {
+				//diff between xpos and collision xpos;
+				xDiff = (first_node_position_component->x - (second_node_position_component->x + second_node->width)) - 1;
+				xd = xDiff / first_node->xV;
+			}
+			if (first_node->yV > 0) {
+				yDiff = (first_node_position_component->y + first_node->height - second_node_position_component->y) + 1;
+				yd = yDiff / first_node->yV;
+			}
+			if (first_node->yV < 0) {
+				yDiff = (first_node_position_component->y - (second_node_position_component->y + second_node->height)) - 1;
+				yd = yDiff / first_node->yV;
+			}
+			if (xd < yd) {
+				first_node_position_component->x -= xDiff;
 				first_node_velocity_component->dx = 0;
+			}
+			if (xd > yd) {
+				first_node_position_component->y -= yDiff;
+				first_node_velocity_component->dy = 0;
 			}
 		}
 
-		// Top and bottom collisiondetection first node
-		if (first_node_velocity_component->dy > 0) {
-			if ((first_node_position_component->y + first_node->height) >= (second_node_position_component->y)) {
-				first_node_position_component->y = second_node_position_component->y - first_node->height;
-				first_node_velocity_component->dy = 0;
-			}
-		}
-		else if (first_node_velocity_component->dy < 0) {
-			if ((first_node_position_component->y) <= (second_node_position_component->y + second_node->height)) {
-				first_node_position_component->y = second_node_position_component->y + second_node->height;
-				first_node_velocity_component->dy = 0;
-			}
-		}
+		//if (first_node_velocity_component->dy == 0 || first_node_velocity_component->dx == 0) {
+		//	// Top bottom collisiondetection first node
+		//	if (first_node_velocity_component->dx > 0) {
+		//		if ((first_node_position_component->x + first_node->width) >= (second_node_position_component->x)) {
+		//			first_node_position_component->x = second_node_position_component->x - first_node->width;
+		//			first_node_velocity_component->dx = 0;
+		//		}
+		//	}
+		//	else if (first_node_velocity_component->dx < 0) {
+		//		if ((first_node_position_component->x) <= (second_node_position_component->x + second_node->width)) {
+		//			first_node_position_component->x = second_node_position_component->x + second_node->width;
+		//			first_node_velocity_component->dx = 0;
+		//		}
+		//	}
+
+		//	// Top and bottom collisiondetection first node
+		//	if (first_node_velocity_component->dy > 0) {
+		//		if ((first_node_position_component->y + first_node->height) >= (second_node_position_component->y)) {
+		//			first_node_position_component->y = second_node_position_component->y - first_node->height;
+		//			first_node_velocity_component->dy = 0;
+		//		}
+		//	}
+		//	else if (first_node_velocity_component->dy < 0) {
+		//		if ((first_node_position_component->y) <= (second_node_position_component->y + second_node->height)) {
+		//			first_node_position_component->y = second_node_position_component->y + second_node->height;
+		//			first_node_velocity_component->dy = 0;
+		//		}
+		//	}
+		//}
 	}
 
 	if (second_node_velocity_component != nullptr) {
 
-		// Top bottom collisiondetection second node
-		if (second_node_velocity_component->dx > 0) {
-			if ((second_node_position_component->x + second_node->width) >= (first_node_position_component->x)) {
-				second_node_position_component->x = first_node_position_component->x - second_node->width;
-				second_node_velocity_component->dx = 0;
-			}
-		}
-		else if (second_node_velocity_component->dx < 0) {
-			if ((second_node_position_component->x) <= (first_node_position_component->x + first_node->width)) {
-				second_node_position_component->x = first_node_position_component->x + first_node->width;
-				second_node_velocity_component->dx = 0;
-			}
-		}
+		// top bottom collisiondetection second node
+		//if (second_node_velocity_component->dx > 0) {
+		//	if ((second_node_position_component->x + second_node->width) >= (first_node_position_component->x)) {
+		//		second_node_position_component->x = first_node_position_component->x - second_node->width;
+		//		second_node_velocity_component->dx = 0;
+		//	}
+		//}
+		//else if (second_node_velocity_component->dx < 0) {
+		//	if ((second_node_position_component->x) <= (first_node_position_component->x + first_node->width)) {
+		//		second_node_position_component->x = first_node_position_component->x + first_node->width;
+		//		second_node_velocity_component->dx = 0;
+		//	}
+		//}
 
-
-		// Top and bottom collisiondetection second node
-		if (second_node_velocity_component->dy > 0) {
-			if ((second_node_position_component->y + second_node->height) >= (first_node_position_component->y)) {
-				second_node_position_component->y = first_node_position_component->y - second_node->height;
-				second_node_velocity_component->dy = 0;
-			}
-		}
-		else if (second_node_velocity_component->dy < 0) {
-			if ((second_node_position_component->y) <= (first_node_position_component->y + first_node->height)) {
-				second_node_position_component->y = first_node_position_component->y + first_node->height;
-				second_node_velocity_component->dy = 0;
-			}
-		}
+		//// top and bottom collisiondetection second node
+		//if (second_node_velocity_component->dy > 0) {
+		//	if ((second_node_position_component->y + second_node->height) >= (first_node_position_component->y)) {
+		//		second_node_position_component->y = first_node_position_component->y - second_node->height;
+		//		second_node_velocity_component->dy = 0;
+		//	}
+		//}
+		//else if (second_node_velocity_component->dy < 0) {
+		//	if ((second_node_position_component->y) <= (first_node_position_component->y + first_node->height)) {
+		//		second_node_position_component->y = first_node_position_component->y + first_node->height;
+		//		second_node_velocity_component->dy = 0;
+		//	}
+		//}
 	}
 }

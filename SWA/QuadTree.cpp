@@ -7,7 +7,7 @@ Point::Point(int _x, int _y) {
 	y = _y;
 }
 
-Node::Node(Point _position, uint32_t _id, int _width, int _height) : position(_position), id(_id), width(_width), height(_height) {
+Node::Node(Point _position, uint32_t _id, int _width, int _height, int xV, int yV) : position(_position), id(_id), width(_width), height(_height), xV{ xV }, yV{ yV } {
 }
 
 QuadTree::QuadTree(Point topL, Point botR) : 
@@ -77,10 +77,10 @@ void QuadTree::divideNode(Node* node) {
 	Point* botLeft = new Point{ node->position.x, (node->position.y + node->height) };
 	Point* botRight = new Point{ (node->position.x + node->width), (node->position.y + node->height) };
 
-	Node* topLeftNode = new Node(node->position, node->id, node->width, node->height);
-	Node* topRightNode = new Node(node->position, node->id, node->width, node->height);
-	Node* botLetNode = new Node(node->position, node->id, node->width, node->height);
-	Node* botRightNode = new Node(node->position, node->id, node->width, node->height);
+	Node* topLeftNode = new Node(node->position, node->id, node->width, node->height, node->xV, node->yV);
+	Node* topRightNode = new Node(node->position, node->id, node->width, node->height, node->xV, node->yV);
+	Node* botLetNode = new Node(node->position, node->id, node->width, node->height, node->xV, node->yV);
+	Node* botRightNode = new Node(node->position, node->id, node->width, node->height, node->xV, node->yV);
 
 	divide(topLeftNode, topLeft);
 	divide(topRightNode, topRight);
