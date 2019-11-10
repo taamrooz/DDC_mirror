@@ -9,6 +9,8 @@
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
 #include "DoorComponent.h"
+#include "RoomComponent.h"
+#include "RoomSingleton.h"
 ComponentFactory::ComponentFactory() {
 
 }
@@ -62,9 +64,11 @@ int ComponentFactory::CreateEntity(std::string name, int id, EntityManager* em) 
 void ComponentFactory::AddChestComponents(int id, EntityManager* em) {
 	auto coll = std::make_unique<CollisionComponent>(48, 48, PlayerCollisionHandler);
 	auto ani = std::make_unique<AnimationComponent>("Animations/chest_full_open.png", 3, 3);
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
 	ani.get()->animation.pause = true;
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
+	em->add_component_to_entity(id, std::move(room));
 }
 
 void ComponentFactory::AddPlayerComponents(int id, EntityManager* em) {
@@ -74,19 +78,23 @@ void ComponentFactory::AddPlayerComponents(int id, EntityManager* em) {
 	auto ani = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 3);
 	auto cha = std::make_unique<CharacterComponent>();
 	auto coll = std::make_unique<CollisionComponent>(48, 84, PlayerCollisionHandler);
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
 	em->add_component_to_entity(id, std::move(vel));
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(cha));
 	em->add_component_to_entity(id, std::move(coll));
 	em->add_component_to_entity(id, std::move(sho));
+	em->add_component_to_entity(id, std::move(room));
 }
 
 void ComponentFactory::AddDoorComponents(int id, EntityManager* em) {
 	auto door = std::make_unique<DoorComponent>();
 	auto coll = std::make_unique<CollisionComponent>(48, 48, PlayerCollisionHandler);
 	auto ani = std::make_unique<AnimationComponent>("Animations/floor_spikes.png", 4, 3);
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
 	ani.get()->animation.pause = true;
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
 	em->add_component_to_entity(id, std::move(door));
+	em->add_component_to_entity(id, std::move(room));
 }

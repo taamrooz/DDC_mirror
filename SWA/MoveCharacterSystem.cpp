@@ -11,7 +11,7 @@ MoveCharacterSystem::MoveCharacterSystem(EntityManager* manager) : BaseSystem(ma
 void MoveCharacterSystem::update(double dt) {
 
 	//Get all relevant components for the player character
-	auto entity = manager_->get_all_entities<CharacterComponent>().front();
+	auto entity = manager_->get_all_entities_from_current_room<CharacterComponent>().front();
 	auto velocity = manager_->get_component<VelocityComponent>(entity);
 	auto position = manager_->get_component<PositionComponent>(entity);
 	auto animation = manager_->get_component<AnimationComponent>(entity);

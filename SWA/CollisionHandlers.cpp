@@ -19,7 +19,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 
 	if (door != nullptr) {
 		// load next level
-		RoomSingleton::get_instance()->room_name = "second";
+		RoomSingleton::get_instance()->current_room_index++;
 		RoomSingleton::get_instance()->reload_room = true;
 	} else {
 
