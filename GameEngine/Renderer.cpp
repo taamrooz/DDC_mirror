@@ -152,6 +152,8 @@ void Engine::RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip)
 }
 
 void Engine::RenderHealthBar(int x, int y, bool friendly, int max_health, int current_health) {
+	if (current_health <= 0) return;
+
 	if (friendly) {
 		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 	}
@@ -160,12 +162,13 @@ void Engine::RenderHealthBar(int x, int y, bool friendly, int max_health, int cu
 	}
 
 	// Healthbar outline
-	SDL_Rect* health_bar_outline = new SDL_Rect{ x, y, 50, 10 };
+	int bar_length = 50;
+	SDL_Rect* health_bar_outline = new SDL_Rect{ x, y, bar_length, 10 };
 	SDL_RenderDrawRect(renderer, health_bar_outline);
 
 	// Current health
-	int health_bar_width = 50 - (max_health - current_health) / 2;
-	SDL_Rect* health_bar = new SDL_Rect{ x, y, health_bar_width, 10 };
+	float health_bar_length = (float) current_health / (float) max_health * (float) bar_length;
+	SDL_Rect* health_bar = new SDL_Rect{ x, y, (int) health_bar_length, 10 };
 	SDL_RenderFillRect(renderer, health_bar);
 
 	delete health_bar_outline;
