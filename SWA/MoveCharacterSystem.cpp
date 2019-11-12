@@ -50,12 +50,18 @@ void MoveCharacterSystem::update(double dt) {
 	{
 		if (i.first == KeyBindingSingleton::get_instance()->get_move_up_key_binding()) {
 			if (i.second) {
+				if (animation->lock_until < Engine::GetTicks()) {
+					animation->currentState = State::RUN;
+				}
 				velocity->dy = (counter > 1) ? velocity->dy = -1 * (move_velocity / 2) : velocity->dy = -1 * move_velocity;
 			}
 		}
 
 		if (i.first == KeyBindingSingleton::get_instance()->get_move_left_key_binding()) {
 			if (i.second) {
+				if (animation->lock_until < Engine::GetTicks()) {
+					animation->currentState = State::RUN;
+				}
 				velocity->dx = (counter > 1) ? velocity->dx = -1 * (move_velocity / 2) : velocity->dx = -1 * move_velocity;
 				animation->flip_horizontally = true;
 			}
@@ -63,12 +69,18 @@ void MoveCharacterSystem::update(double dt) {
 
 		if (i.first == KeyBindingSingleton::get_instance()->get_move_down_key_binding()) {
 			if (i.second) {
+				if (animation->lock_until < Engine::GetTicks()) {
+					animation->currentState = State::RUN;
+				}
 				velocity->dy = (counter > 1) ? velocity->dy = move_velocity / 2 : velocity->dy = move_velocity;
 			}
 		}
 
 		if (i.first == KeyBindingSingleton::get_instance()->get_move_right_key_binding()) {
 			if (i.second) {
+				if (animation->lock_until < Engine::GetTicks()) {
+					animation->currentState = State::RUN;
+				}
 				velocity->dx = (counter > 1) ? velocity->dx = move_velocity / 2 : velocity->dx = move_velocity;
 				animation->flip_horizontally = false;
 			}

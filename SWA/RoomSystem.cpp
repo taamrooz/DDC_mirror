@@ -8,6 +8,7 @@
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
 #include "RoomComponent.h"
+#include "DamagingComponent.h"
 RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
 {}
 
@@ -143,7 +144,7 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 		manager_->add_component_to_entity(id, std::move(room));
 		for (unsigned int a = 0; a < sizeof(k_collision_tiles) / sizeof(k_collision_tiles[0]); a = a + 1) {
 			if (k_collision_tiles[a] == i[2]) {
-				auto coll = std::make_unique<CollisionComponent>(63, 63, PlayerCollisionHandler);
+				auto coll = std::make_unique<CollisionComponent>(63, 63, nullptr);
 				manager_->add_component_to_entity(id, std::move(coll));
 			}
 		}

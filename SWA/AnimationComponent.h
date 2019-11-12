@@ -3,22 +3,26 @@
 #include "Animation.h"
 #include "Renderer.h"
 #include <string>
-
+#include <map>
+enum class State {
+	DEFAULT,
+	RUN,
+	HIT
+};
 struct AnimationComponent : Component
 {
+
 	AnimationComponent() = default;
-	AnimationComponent(const std::string& filename, const int frames, const int scale) : 
-		filename{ filename }, 
-		animation{ Engine::LoadAnimation(filename, frames) }
+	AnimationComponent(std::map<State, Animation> animations) :
+		animations { animations }
 	{
-		animation.scale = scale;
-		animation.total_frames = frames;
+		currentState = State::DEFAULT;
 		flip_horizontally = false;
+		lock_until = 0;
 	}
 	bool flip_horizontally;
-	std::string filename;
-	Animation& animation;
-	int frames{};
-	int scale{};
+	std::map<State, Animation> animations;
+	State currentState;
+	int lock_until;
 };
 
