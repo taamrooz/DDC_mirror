@@ -87,5 +87,4 @@ void ComponentFactory::AddPlayerComponents(int id, EntityManager* em) {
 	em->add_component_to_entity(id, std::move(cha));
 	em->add_component_to_entity(id, std::move(coll));
 	em->add_component_to_entity(id, std::move(sho));
-	em->add_component_to_entity(id, std::move(hea));
 }
