@@ -81,6 +81,7 @@ void ComponentFactory::AddPlayerComponents(int id, EntityManager* em) {
 	auto ani = std::make_unique<AnimationComponent>(animations);
 	auto cha = std::make_unique<CharacterComponent>();
 	auto coll = std::make_unique<CollisionComponent>(48, 84, PlayerCollisionHandler);
+	em->add_component_to_entity(id, std::move(hea));
 	em->add_component_to_entity(id, std::move(vel));
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(cha));
