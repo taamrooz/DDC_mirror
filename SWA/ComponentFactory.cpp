@@ -16,12 +16,7 @@ ComponentFactory::ComponentFactory() {
 
 ComponentFactory* ComponentFactory::instance_ = 0;
 
-enum string_code {
-	cPlayer,
-	cWall,
-	cChest,
-	cFlask_Blue
-};
+
 
 string_code Convert(std::string const& inString) {
 	if (inString == "player") return cPlayer;
@@ -40,7 +35,12 @@ ComponentFactory* ComponentFactory::get_instance() {
 }
 
 int ComponentFactory::CreateEntity(std::string name, int id, EntityManager* em) {
-	switch (Convert(name)) {
+	return CreateEntity(Convert(name), id, em);
+}
+
+int ComponentFactory::CreateEntity(string_code name, int id, EntityManager* em)
+{
+	switch (name) {
 	case cPlayer: {
 		AddPlayerComponents(id, em);
 		break;
@@ -59,6 +59,10 @@ int ComponentFactory::CreateEntity(std::string name, int id, EntityManager* em) 
 	return -1;
 }
 
+//int ComponentFactory::CreateEntity(string_code name, int id, EntityManager* em) {
+
+//}
+
 void ComponentFactory::AddChestComponents(int id, EntityManager* em) {
 	//create chest
 	auto coll = std::make_unique<CollisionComponent>(48, 48, ChestCollisionHandler);
@@ -74,7 +78,7 @@ void ComponentFactory::AddChestComponents(int id, EntityManager* em) {
 	em->add_component_to_entity(id, std::move(dmg));
 
 	//create chestComponent and add to the entity
-	auto chest = std::make_unique<ChestComponent>(DropTypes::Flask_Blue);
+	auto chest = std::make_unique<ChestComponent>(string_code::cFlask_Blue);
 	em->add_component_to_entity(id, std::move(chest));
 }
 

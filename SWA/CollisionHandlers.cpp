@@ -52,7 +52,7 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* ma
 		//create drop
 		int drop = manager->create_entity();
 		auto chest = manager->get_component<ChestComponent>(entity1);
-		ComponentFactory::get_instance()->CreateEntity("Flask_Blue", drop, manager);
+		ComponentFactory::get_instance()->CreateEntity(chest->contains, drop, manager);
 		auto cPos = manager->get_component<PositionComponent>(entity1);
 		auto cColl = manager->get_component<CollisionComponent>(entity1);
 		auto pVel = manager->get_component<VelocityComponent>(entity2);

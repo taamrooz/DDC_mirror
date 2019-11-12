@@ -1,7 +1,12 @@
 #pragma once
 #include <string>
 #include "EntityManager.h"
-
+enum string_code {
+	cPlayer,
+	cWall,
+	cChest,
+	cFlask_Blue
+};
 class ComponentFactory
 {
 private:
@@ -17,5 +22,6 @@ private:
 public:
 	static ComponentFactory* get_instance();
 	int CreateEntity(std::string, int id, EntityManager*);
+	int CreateEntity(string_code name, int id, EntityManager*);
 };
 

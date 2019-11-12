@@ -4,6 +4,6 @@ enum class DropTypes {
 	Flask_Blue
 };
 struct ChestComponent : Component {
-	ChestComponent(DropTypes contains) : contains{ contains } {}
-		DropTypes contains;
+	ChestComponent(string_code contains) : contains{ contains } {}
+		string_code contains;
 };
