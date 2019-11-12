@@ -48,6 +48,10 @@ namespace Engine {
 	 */
 	ENGINE_API void RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip);
 	/*
+	 * Renders a healthbar on specific x and y position. Healthbar is based on its max_damage and current_damage
+	 */
+	ENGINE_API void RenderHealthBar(int x, int y, bool friendly, int max_damage, int current_damage);
+	/*
 	 * Destroys the renderer and all of its features.
 	 */
 	ENGINE_API void DestroyRenderer();
