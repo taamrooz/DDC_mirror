@@ -152,6 +152,7 @@
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentFactory.cpp" />
+    <ClCompile Include="Credits.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="InputSystem.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
+    <ClInclude Include="Credits.h" />
     <ClInclude Include="DamagingComponent.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
