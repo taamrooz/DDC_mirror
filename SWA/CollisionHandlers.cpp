@@ -1,8 +1,9 @@
 #include "CollisionHandlers.h"
 #include "BaseSystem.h"
 #include "CharacterComponent.h"
-#include "DoorComponent.h"
+#include "ladderComponent.h"
 #include "RoomSingleton.h"
+#include "LadderComponent.h"
 
 void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
 {
@@ -15,12 +16,14 @@ void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
 {
 	auto player = manager->get_component<CharacterComponent>(entity2);
-	auto door = manager->get_component<DoorComponent>(entity1);
+	auto ladder = manager->get_component<LadderComponent>(entity1);
 
-	if (door != nullptr) {
+	if (ladder != nullptr) {
 		// load next level
-		RoomSingleton::get_instance()->current_room_index++;
-		RoomSingleton::get_instance()->reload_room = true;
+		if (!RoomSingleton::get_instance()->reload_room) {
+			RoomSingleton::get_instance()->current_room_index++;
+			RoomSingleton::get_instance()->reload_room = true;
+		}
 	} else {
 
 	}

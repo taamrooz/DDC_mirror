@@ -8,7 +8,7 @@
 #include "HealthComponent.h"
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
-#include "DoorComponent.h"
+#include "ladderComponent.h"
 #include "RoomComponent.h"
 #include "RoomSingleton.h"
 ComponentFactory::ComponentFactory() {
@@ -21,14 +21,14 @@ enum string_code {
 	cPlayer,
 	cWall,
 	cChest,
-	cDoor
+	cladder
 };
 
 string_code Convert(std::string const& inString) {
 	if (inString == "player") return cPlayer;
 	if (inString == "wall") return cWall;
 	if (inString == "chest") return cChest;
-	if (inString == "door") return cDoor;
+	if (inString == "ladder") return cladder;
 	return cWall;
 }
 
@@ -50,8 +50,8 @@ int ComponentFactory::CreateEntity(std::string name, int id, EntityManager* em) 
 		AddChestComponents(id, em);
 		break;
 	}
-	case cDoor: {
-		AddDoorComponents(id, em);
+	case cladder: {
+		AddLadderComponents(id, em);
 		break;
 	}
 	default: {
@@ -87,14 +87,11 @@ void ComponentFactory::AddPlayerComponents(int id, EntityManager* em) {
 	em->add_component_to_entity(id, std::move(room));
 }
 
-void ComponentFactory::AddDoorComponents(int id, EntityManager* em) {
-	auto door = std::make_unique<DoorComponent>();
+void ComponentFactory::AddLadderComponents(int id, EntityManager* em) {
+	auto ladder = std::make_unique<LadderComponent>();
 	auto coll = std::make_unique<CollisionComponent>(48, 48, PlayerCollisionHandler);
-	auto ani = std::make_unique<AnimationComponent>("Animations/floor_spikes.png", 4, 3);
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
-	ani.get()->animation.pause = true;
-	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
-	em->add_component_to_entity(id, std::move(door));
+	em->add_component_to_entity(id, std::move(ladder));
 	em->add_component_to_entity(id, std::move(room));
 }

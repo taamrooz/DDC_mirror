@@ -179,7 +179,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="DamagingComponent.h" />
-    <ClInclude Include="DoorComponent.h" />
+    <ClInclude Include="LadderComponent.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />
