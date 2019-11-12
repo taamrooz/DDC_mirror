@@ -5,6 +5,8 @@
 #include "CharacterComponent.h"
 #include "PositionComponent.h"
 #include "TileSetSingleton.h"
+#include "DamagingComponent.h"
+#include "HealthComponent.h"
 
 RenderSystem::RenderSystem(EntityManager* manager) 
 	: BaseSystem(manager) {
@@ -39,6 +41,18 @@ void RenderSystem::update(double dt)
 		auto position_component = manager_->get_component<PositionComponent>(entityid);
 
 		Engine::UpdateAnimation(&animation_component->animation, position_component->x, position_component->y, animation_component->flip_horizontally);
+	}
+
+	for (auto entityid : manager_->get_all_entities<HealthComponent>())
+	{
+		auto character_component = manager_->get_component<CharacterComponent>(entityid);
+		auto health_component = manager_->get_component<HealthComponent>(entityid);
+		auto position_component = manager_->get_component<PositionComponent>(entityid);
+
+		if (health_component->current_health < health_component->max_health) {
+			bool friendly = character_component != nullptr;
+			Engine::RenderHealthBar(position_component->x, position_component->y, friendly, health_component->max_health, health_component->current_health);
+		}
 	}
 
 	
