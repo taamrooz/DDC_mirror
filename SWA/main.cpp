@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "MainMenu.h"
 #include "Credits.h"
+#include "Help.h"
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 #include "stdlib.h"
@@ -17,13 +18,16 @@ int main(int argc, char* argv[])
 	auto mm = std::make_unique<MainMenu>(sm.get());
 	auto core = std::make_unique<Core>(sm.get());
 	auto credits = std::make_unique<Credits>(sm.get());
+	auto help = std::make_unique<Help>(sm.get());
 	mm->init();
 	core->init();
 	credits->init();
+	help->init();
 
 	sm->add_scene(*mm);
 	sm->add_scene(*core);
 	sm->add_scene(*credits);
+	sm->add_scene(*help);
 
 	sm->render();
 	sm->cleanup();

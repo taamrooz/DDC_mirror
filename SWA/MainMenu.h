@@ -13,6 +13,7 @@ private:
 	Texture* start_ = nullptr;
 	Texture* settings_ = nullptr;
 	Texture* credits_ = nullptr;
+	Texture* help_ = nullptr;
 	Texture* quit_ = nullptr;
 	Texture* selector_ = nullptr;
 	Texture* helper = nullptr;
