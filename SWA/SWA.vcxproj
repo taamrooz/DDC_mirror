@@ -160,6 +160,7 @@
     <ClCompile Include="KeyBindingSingleton.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Pause.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="Pause.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="MoveCharacterSystem.h" />
