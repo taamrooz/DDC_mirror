@@ -61,7 +61,7 @@ void ComponentFactory::AddChestComponents(int id, EntityManager* em) {
 }
 
 void ComponentFactory::AddPlayerComponents(int id, EntityManager* em) {
-	auto hea = std::make_unique<HealthComponent>(80, 100);
+	auto hea = std::make_unique<HealthComponent>(100, 100);
 	auto sho = std::make_unique<ShootingComponent>(7, 200);
 	auto vel = std::make_unique<VelocityComponent>();
 	auto ani = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 3);
