@@ -38,7 +38,7 @@ bool Texture::loadText(std::string font, int font_size, SDL_Color color, std::st
 	mHeight = surface->h;
 	mWidth = surface->w;
 	TTF_CloseFont(ttf_font);
-	//SDL_FreeSurface(surface);
+	SDL_FreeSurface(surface);
 	return true;
 }
 
