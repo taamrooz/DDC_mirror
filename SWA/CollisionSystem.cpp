@@ -69,7 +69,6 @@ void CollisionSystem::update(double dt)
 			y = positionComponent->y + velocityComponent->dy;
 		}
 
-
 		quadTree.insert(new Node{ Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
 	}
 
@@ -78,20 +77,14 @@ void CollisionSystem::update(double dt)
 	for (auto const& node_tuple : collisions) {
 		Node* first_node = std::get<0>(node_tuple);
 		Node* second_node = std::get<1>(node_tuple);
-
-		//handle collision
-		//gebruikt nu entity 0 omdat er nog test data in staat
-
+		
 		auto collisionComponent = manager_->get_component<CollisionComponent>(first_node->id);
 
-
-
-		
 		if (collisionComponent != nullptr) {
 			if (collisionComponent->collisionHandler != nullptr) {
 				collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
 			}
-			
+
 		}
 		update_velocity(first_node, second_node);
 	}
@@ -111,87 +104,4 @@ void CollisionSystem::update(double dt)
 
 	//Engine::RenderRectangles();
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
-}
-
-void CollisionSystem::update_velocity(Node* first_node, Node* second_node) {
-	auto first_node_velocity_component = manager_->get_component<VelocityComponent>(first_node->id);
-	auto first_node_position_component = manager_->get_component<PositionComponent>(first_node->id);
-	auto second_node_velocity_component = manager_->get_component<VelocityComponent>(second_node->id);
-	auto second_node_position_component = manager_->get_component<PositionComponent>(second_node->id);
-
-	//TEMP if first_node is bullet and second_node is character, do not update vel (eating own bullets).
-	auto collision = manager_->get_component<CollisionComponent>(first_node->id);
-	if (collision != nullptr && collision->owner == second_node->id)
-	{
-		return;
-	}
-	//Vice versa
-	collision = manager_->get_component<CollisionComponent>(second_node->id);
-	if (collision != nullptr && collision->owner == first_node->id)
-	{
-		return;
-	}
-
-	
-	if (first_node_velocity_component != nullptr) {
-		// Top bottom collisiondetection first node
-		if (first_node_velocity_component->dx > 0) {
-			if ((first_node_position_component->x + first_node->width) >= (second_node_position_component->x)) {
-				first_node_position_component->x = second_node_position_component->x - first_node->width;
-				//first_node_velocity_component->dx = 0;
-			}
-		}
-		else if (first_node_velocity_component->dx < 0) {
-			if ((first_node_position_component->x) <= (second_node_position_component->x + second_node->width)) {
-				first_node_position_component->x = second_node_position_component->x + second_node->width;
-				//first_node_velocity_component->dx = 0;
-			}
-		}
-
-		// Top and bottom collisiondetection first node
-		if (first_node_velocity_component->dy > 0) {
-			if ((first_node_position_component->y + first_node->height) >= (second_node_position_component->y)) {
-				first_node_position_component->y = second_node_position_component->y - first_node->height;
-				//first_node_velocity_component->dy = 0;
-			}
-		}
-		else if (first_node_velocity_component->dy < 0) {
-			if ((first_node_position_component->y) <= (second_node_position_component->y + second_node->height)) {
-				first_node_position_component->y = second_node_position_component->y + second_node->height;
-				//first_node_velocity_component->dy = 0;
-			}
-		}
-	}
-
-	if (second_node_velocity_component != nullptr) {
-
-		// Top bottom collisiondetection second node
-		if (second_node_velocity_component->dx > 0) {
-			if ((second_node_position_component->x + second_node->width) >= (first_node_position_component->x)) {
-				second_node_position_component->x = first_node_position_component->x - second_node->width;
-				second_node_velocity_component->dx = 0;
-			}
-		}
-		else if (second_node_velocity_component->dx < 0) {
-			if ((second_node_position_component->x) <= (first_node_position_component->x + first_node->width)) {
-				second_node_position_component->x = first_node_position_component->x + first_node->width;
-				second_node_velocity_component->dx = 0;
-			}
-		}
-
-
-		// Top and bottom collisiondetection second node
-		if (second_node_velocity_component->dy > 0) {
-			if ((second_node_position_component->y + second_node->height) >= (first_node_position_component->y)) {
-				second_node_position_component->y = first_node_position_component->y - second_node->height;
-				second_node_velocity_component->dy = 0;
-			}
-		}
-		else if (second_node_velocity_component->dy < 0) {
-			if ((second_node_position_component->y) <= (first_node_position_component->y + first_node->height)) {
-				second_node_position_component->y = first_node_position_component->y + first_node->height;
-				second_node_velocity_component->dy = 0;
-			}
-		}
-	}
 }

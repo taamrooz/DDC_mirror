@@ -19,6 +19,7 @@ private:
 	void AddPlayerComponents(int, EntityManager*);
 	void AddBlueFlaskComponents(int id, EntityManager* em);
 	void AddChestComponents(int id, EntityManager* em);
+	void AddEnemyComponents(int id, EntityManager* em);
 public:
 	static ComponentFactory* get_instance();
 	int CreateEntity(std::string, int id, EntityManager*);

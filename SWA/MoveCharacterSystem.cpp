@@ -53,7 +53,7 @@ void MoveCharacterSystem::update(double dt) {
 				if (animation->lock_until < Engine::GetTicks()) {
 					animation->currentState = State::RUN;
 				}
-				velocity->dy = (counter > 1) ? velocity->dy = -1 * (move_velocity / 2) : velocity->dy = -1 * move_velocity;
+				velocity->dy = (counter > 1) ? velocity->dy = -1 * diagonal_move_velocity : velocity->dy = -1 * move_velocity;
 			}
 		}
 
@@ -62,7 +62,7 @@ void MoveCharacterSystem::update(double dt) {
 				if (animation->lock_until < Engine::GetTicks()) {
 					animation->currentState = State::RUN;
 				}
-				velocity->dx = (counter > 1) ? velocity->dx = -1 * (move_velocity / 2) : velocity->dx = -1 * move_velocity;
+				velocity->dx = (counter > 1) ? velocity->dx = -1 * diagonal_move_velocity : velocity->dx = -1 * move_velocity;
 				animation->flip_horizontally = true;
 			}
 		}
@@ -72,7 +72,7 @@ void MoveCharacterSystem::update(double dt) {
 				if (animation->lock_until < Engine::GetTicks()) {
 					animation->currentState = State::RUN;
 				}
-				velocity->dy = (counter > 1) ? velocity->dy = move_velocity / 2 : velocity->dy = move_velocity;
+				velocity->dy = (counter > 1) ? velocity->dy = diagonal_move_velocity : velocity->dy = move_velocity;
 			}
 		}
 
@@ -81,7 +81,7 @@ void MoveCharacterSystem::update(double dt) {
 				if (animation->lock_until < Engine::GetTicks()) {
 					animation->currentState = State::RUN;
 				}
-				velocity->dx = (counter > 1) ? velocity->dx = move_velocity / 2 : velocity->dx = move_velocity;
+				velocity->dx = (counter > 1) ? velocity->dx = diagonal_move_velocity : velocity->dx = move_velocity;
 				animation->flip_horizontally = false;
 			}
 		}
