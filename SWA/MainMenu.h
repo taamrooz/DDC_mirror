@@ -12,6 +12,7 @@ private:
 	Animation* background_ = nullptr;
 	Texture* start_ = nullptr;
 	Texture* settings_ = nullptr;
+	Texture* level_editor_ = nullptr;
 	Texture* quit_ = nullptr;
 	Texture* selector_ = nullptr;
 	Texture* helper = nullptr;

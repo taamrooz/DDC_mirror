@@ -23,7 +23,7 @@ void RoomSystem::update(double dt)
 void RoomSystem::LoadObjects() {
 	//Get file path for object map
 	auto object_path = RoomSingleton::get_instance()->room_name + RoomSingleton::get_instance()->object_suffix;
-	std::ifstream objects("./assets/" + object_path);
+	std::ifstream objects("./assets/Levels/" + object_path);
 
 	if (objects.fail())
 	{
@@ -69,7 +69,7 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 	int x = 0, y = 0;
 
 	//Open the map
-	std::ifstream map("./assets/" + path);
+	std::ifstream map("./assets/Levels/" + path);
 
 	//If the map couldn't be loaded
 	if (map.fail())

@@ -2,7 +2,7 @@
 
 RoomSingleton::RoomSingleton() {
 	reload_room = true;
-	room_name = "lazy";
+	room_name = "leveleditor";
 	room_suffix = ".map";
 	object_suffix = ".objects";
 }

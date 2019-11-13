@@ -17,7 +17,8 @@ void MainMenu::render()
 	Engine::RenderTexture(title_, 250, 200, nullptr);
 	Engine::RenderTexture(start_, 500, 400, nullptr);
 	Engine::RenderTexture(settings_, 500, 500, nullptr);
-	Engine::RenderTexture(quit_, 500, 600, nullptr);
+	Engine::RenderTexture(level_editor_, 500, 600, nullptr);
+	Engine::RenderTexture(quit_, 500, 700, nullptr);
 	Engine::RenderTexture(helper, 115, 800, nullptr);
 	if (current_action_ == 0)
 	{
@@ -30,6 +31,10 @@ void MainMenu::render()
 	else if (current_action_ == 2)
 	{
 		Engine::RenderTexture(selector_, 480, 600, nullptr);
+	}
+	else if (current_action_ == 3)
+	{
+		Engine::RenderTexture(selector_, 480, 700, nullptr);
 	}
 	Engine::Render(timer);
 
@@ -63,7 +68,7 @@ void MainMenu::input()
 		}
 		else if (keycode == SDLK_DOWN)
 		{
-			if (current_action_ < 2)
+			if (current_action_ < 3)
 			{
 				++current_action_;
 			}
@@ -77,6 +82,11 @@ void MainMenu::input()
 				Engine::PlayMusic("ingame.wav");
 			}
 			else if (current_action_ == 2)
+			{
+				scene_manager_->push_scene();
+				scene_manager_->push_scene();
+			}
+			else if (current_action_ == 3)
 			{
 				is_running = false;
 				scene_manager_->pop_scene();
@@ -113,6 +123,7 @@ bool MainMenu::init()
 	background_->scale = 1280.0 / 960.0;
 	start_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game");
 	settings_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings");
+	level_editor_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Level Editor");
 	quit_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop");
 	selector_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">");
 	helper = Engine::LoadText("manaspc.ttf", 24, {255, 255, 255, 255},

@@ -71,11 +71,23 @@ Texture* Engine::LoadTileset(std::string path)
 	return texture;
 }
 
-void Engine::RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture)
+void Engine::RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture, double scale)
 {
 	SDL_Rect* clip = new SDL_Rect{ xclip, yclip, width, height };
-	texture->render(xpos, ypos, clip);
+	texture->render(xpos, ypos, clip, scale);
 	delete clip;
+}
+
+void Engine::RenderEmptyTile(int x, int y, int width, int height)
+{
+	SDL_Rect rect;
+	rect.x = x;
+	rect.y = y;
+	rect.w = width/2;
+	rect.h = height/2;
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderDrawRect(renderer, &rect);
 }
 
 bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
@@ -146,9 +158,9 @@ void Engine::UpdateAnimation(Animation* a, double x, double y, bool flip_horizon
 	a->UpdateAnimation(x, y, flip);
 }
 
-void Engine::RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip)
+void Engine::RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip, double scale)
 {
-	texture->render(x, y, clip);
+	texture->render(x, y, clip, scale);
 }
 
 void Engine::DestroyRenderer() {

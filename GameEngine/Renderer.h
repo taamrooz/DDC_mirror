@@ -42,11 +42,11 @@ namespace Engine {
 	/*
 	 * Renders a tile on specific x and y position, width and height.
 	 */
-	ENGINE_API void RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture);
+	ENGINE_API void RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture, double scale = 1);
 	/*
 	 * Renders a texture on specific x and y position with the clip of the texture.
 	 */
-	ENGINE_API void RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip);
+	ENGINE_API void RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip, double scale = 1);
 	/*
 	 * Destroys the renderer and all of its features.
 	 */
@@ -67,5 +67,9 @@ namespace Engine {
 	 * Renders all rectangles in the collection.
 	 */
 	ENGINE_API void RenderRectangles();
+	/*
+	 * Renders the outline of a rectangle for the sake of representing empty tiles (Half size of what you pass to the function)
+	 */
+	ENGINE_API void RenderEmptyTile(int x, int y, int width, int height);
 	ENGINE_API Uint32 GetTicks();
 }
