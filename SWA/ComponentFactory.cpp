@@ -110,6 +110,7 @@ void ComponentFactory::AddBlueFlaskComponents(int id, EntityManager* em) {
 	animations.insert({ State::DEFAULT, Engine::LoadAnimation("flask_big_blue.png", 1) });
 	animations.at(State::DEFAULT).scale = 2;
 	auto ani = std::make_unique<AnimationComponent>(animations, false);
-
+	auto coll = std::make_unique<CollisionComponent>(32, 32, nullptr);
 	em->add_component_to_entity(id, std::move(ani));
+	em->add_component_to_entity(id, std::move(coll));
 }

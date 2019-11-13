@@ -414,5 +414,8 @@
     <Image Include="assets\Animations\wizard_m_hit.png">
       <Filter>Resource Files\Animations</Filter>
     </Image>
+    <Image Include="assets\flask_big_blue.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

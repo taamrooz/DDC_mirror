@@ -221,6 +221,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Animations\wizard_m_hit.png" />
+    <Image Include="assets\flask_big_blue.png" />
     <Image Include="assets\Tileset.png" />
     <Image Include="assets\Animations\big_demon_idle.png" />
     <Image Include="assets\Animations\big_demon_run.png" />
