@@ -1,0 +1,75 @@
+#include "Credits.h"
+#include "Audio.h"
+#include "Renderer.h"
+#include "UserInput.h"
+#include "Core.h"
+
+Credits::~Credits() = default;
+
+Credits::Credits(SceneManager* manager) : BaseScene(manager) { }
+
+void Credits::render()
+{
+	const auto timer = Engine::PreUpdate();
+	input();
+	Engine::UpdateAnimation(background_, 0, 0);
+	Engine::RenderTexture(title_, 250, 200, nullptr);
+	Engine::RenderTexture(sub_title_, 500, 300, nullptr);
+	Engine::RenderTexture(mart_van_den_berg, 500, 400, nullptr);
+	Engine::RenderTexture(mark_donker, 500, 450, nullptr);
+	Engine::RenderTexture(renato_feroce, 500, 500, nullptr);
+	Engine::RenderTexture(sjors_ficken, 500, 550, nullptr);
+	Engine::RenderTexture(tom_roozen, 500, 600, nullptr);
+	Engine::RenderTexture(gijs_verdonschot, 500, 650, nullptr);
+	Engine::RenderTexture(helper, 370, 800, nullptr);
+	Engine::Render(timer);
+}
+
+void Credits::input() {
+	const int k_keydown = 0;
+	const int k_stop = 2;
+
+	auto inputs = Engine::GetInputs();
+
+	//Handle all key down events
+	for (const auto& keycode : std::get<k_keydown>(inputs))
+	{
+		if (keycode == SDLK_RETURN)
+		{
+			is_running = false;
+			scene_manager_->pop_scene();
+			scene_manager_->pop_scene();
+			break;
+		}
+	}
+}
+
+void Credits::cleanup() {
+	title_->free_texture();
+	sub_title_->free_texture();
+	mart_van_den_berg->free_texture();
+	mark_donker->free_texture();
+	renato_feroce->free_texture();
+	sjors_ficken->free_texture();
+	tom_roozen->free_texture();
+	gijs_verdonschot->free_texture();
+	helper->free_texture();
+	Engine::DestroyRenderer();
+	Engine::CloseAudio();
+}
+
+bool Credits::init() {
+	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle");
+	sub_title_ = Engine::LoadText("manaspc.ttf", 40, { 255,0,0, 255 }, "Credits");
+	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
+	background_->scale = 1280.0 / 960.0;
+	mart_van_den_berg = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Mart van den Berg");
+	mark_donker = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Mark Donker");
+	renato_feroce = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Renato Feroce");
+	sjors_ficken = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Sjors Ficken");
+	tom_roozen = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Tom Roozen");
+	gijs_verdonschot = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Gijs Verdonschot");
+	helper = Engine::LoadText("manaspc.ttf", 24, { 255, 255, 255, 255 },
+		"Press ENTER to quit to main menu");
+	return true;
+}

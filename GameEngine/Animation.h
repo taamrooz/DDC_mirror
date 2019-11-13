@@ -18,9 +18,9 @@ public:
 	void UpdateAnimation(double x, double y, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	int CURRENT_FRAME = 0;
 	double scale = 1;
-	int total_frames;
-	bool pause;
-	int WALKING_ANIMATION_FRAMES;
+	int total_frames{};
+	bool pause{};
+	int WALKING_ANIMATION_FRAMES{};
 	std::vector<SDL_Rect> gSpriteClips;
 	Texture gSpriteSheetTexture;
 };

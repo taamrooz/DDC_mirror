@@ -88,7 +88,10 @@ void CollisionSystem::update(double dt)
 
 		update_velocity(first_node, second_node);
 		if (collisionComponent != nullptr) {
-			collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+			if (collisionComponent->collisionHandler != nullptr) {
+				collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+			}
+			
 		}
 	}
 
@@ -129,7 +132,7 @@ void CollisionSystem::update_velocity(Node* first_node, Node* second_node) {
 	}
 
 	
-	if (first_node_velocity_component != nullptr) {
+	if (first_node_velocity_component != nullptr && second_node_position_component != nullptr) {
 		// Top bottom collisiondetection first node
 		if (first_node_velocity_component->dx > 0) {
 			if ((first_node_position_component->x + first_node->width) >= (second_node_position_component->x)) {

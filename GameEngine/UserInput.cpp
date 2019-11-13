@@ -2,9 +2,9 @@
 
 SDL_Event event;
 
-std::tuple<std::vector<SDL_Keycode>, std::vector<SDL_Keycode>, bool> Engine::GetInputs() {
-	std::vector<SDL_Keycode> keysdown;
-	std::vector<SDL_Keycode> keysup;
+std::tuple<std::vector<Engine::DDC_Keycode>, std::vector<Engine::DDC_Keycode>, bool> Engine::GetInputs() {
+	std::vector<DDC_Keycode> keysdown;
+	std::vector<DDC_Keycode> keysup;
 	while (SDL_PollEvent(&event) != 0)
 	{
 		if (event.type == SDL_QUIT)

@@ -17,7 +17,7 @@ public:
 	//Deallocates memory
 	ENGINE_API ~Texture();
 
-	bool loadText(std::string font, int font_size, SDL_Color color, std::string text);
+	bool loadText(std::string font, int font_size, SDL_Color color, const std::string& text);
 
 	//Loads image at specified path
 	bool loadFromFile(const std::string& path);

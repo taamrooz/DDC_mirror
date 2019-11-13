@@ -1,12 +1,8 @@
 #pragma once
 #include <SDL.h>
-#include <SDL_image.h>
-#include <stdio.h>
 #include <string>
-#include <vector>
 #include "Texture.h"
 #include "Animation.h"
-#include <memory>
 
 
 #ifdef ENGINE_EXPORTS
@@ -31,15 +27,15 @@ namespace Engine {
 	/*
 	 * Returns a texture with a font, it's font size, the text color, and the text.
 	 */
-	ENGINE_API std::unique_ptr<Texture> LoadText(std::string path, uint32_t font_size, SDL_Color color, const char* text);
+	ENGINE_API Texture* LoadText(std::string path, uint32_t font_size, SDL_Color color, const char* text);
 	/*
 	 * Returns an animation by a filepath and the amount of frames the animation will have.
 	 */
-	ENGINE_API std::unique_ptr<Animation> LoadAnimation(std::string path, int frames);
+	ENGINE_API Animation& LoadAnimation(std::string path, int frames);
 	/*
 	 * Loads the tile set by specified path.
 	 */
-	ENGINE_API std::unique_ptr<Texture> LoadTileset(std::string path);
+	ENGINE_API Texture* LoadTileset(std::string path);
 	/*
 	 * Renders a tile on specific x and y position, width and height.
 	 */
@@ -48,6 +44,10 @@ namespace Engine {
 	 * Renders a texture on specific x and y position with the clip of the texture.
 	 */
 	ENGINE_API void RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip);
+	/*
+	 * Renders a healthbar on specific x and y position. Healthbar is based on its max_damage and current_damage
+	 */
+	ENGINE_API void RenderHealthBar(int x, int y, bool friendly, int max_damage, int current_damage);
 	/*
 	 * Destroys the renderer and all of its features.
 	 */

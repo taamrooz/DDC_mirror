@@ -111,6 +111,15 @@
     <ClCompile Include="ComponentFactory.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Credits.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Help.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Pause.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -208,6 +217,15 @@
     </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Credits.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Help.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Pause.h">
+      <Filter>Header Files\Menus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +425,9 @@
     </Image>
     <Image Include="assets\Tileset.png">
       <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\Animations\wizard_m_hit.png">
+      <Filter>Resource Files\Animations</Filter>
     </Image>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #include "VelocityComponent.h"
 #include "KeyBindingSingleton.h"
 #include "AnimationComponent.h"
+#include "Renderer.h"
 
 MoveCharacterSystem::MoveCharacterSystem(EntityManager* manager) : BaseSystem(manager) {
 }
@@ -50,26 +51,38 @@ void MoveCharacterSystem::update(double dt) {
 	{
 		if (i.first == KeyBindingSingleton::get_instance()->get_move_up_key_binding()) {
 			if (i.second) {
-				velocity->dy = (counter > 1) ? velocity->dy = -1 * (move_velocity / 2) : velocity->dy = -1 * move_velocity;
+				if (animation->lock_until < Engine::GetTicks()) {
+					animation->currentState = State::RUN;
+				}
+				velocity->dy = (counter > 1) ? velocity->dy = -1 * diagonal_move_velocity : velocity->dy = -1 * move_velocity;
 			}
 		}
 
 		if (i.first == KeyBindingSingleton::get_instance()->get_move_left_key_binding()) {
 			if (i.second) {
-				velocity->dx = (counter > 1) ? velocity->dx = -1 * (move_velocity / 2) : velocity->dx = -1 * move_velocity;
+				if (animation->lock_until < Engine::GetTicks()) {
+					animation->currentState = State::RUN;
+				}
+				velocity->dx = (counter > 1) ? velocity->dx = -1 * diagonal_move_velocity : velocity->dx = -1 * move_velocity;
 				animation->flip_horizontally = true;
 			}
 		}
 
 		if (i.first == KeyBindingSingleton::get_instance()->get_move_down_key_binding()) {
 			if (i.second) {
-				velocity->dy = (counter > 1) ? velocity->dy = move_velocity / 2 : velocity->dy = move_velocity;
+				if (animation->lock_until < Engine::GetTicks()) {
+					animation->currentState = State::RUN;
+				}
+				velocity->dy = (counter > 1) ? velocity->dy = diagonal_move_velocity : velocity->dy = move_velocity;
 			}
 		}
 
 		if (i.first == KeyBindingSingleton::get_instance()->get_move_right_key_binding()) {
 			if (i.second) {
-				velocity->dx = (counter > 1) ? velocity->dx = move_velocity / 2 : velocity->dx = move_velocity;
+				if (animation->lock_until < Engine::GetTicks()) {
+					animation->currentState = State::RUN;
+				}
+				velocity->dx = (counter > 1) ? velocity->dx = diagonal_move_velocity : velocity->dx = move_velocity;
 				animation->flip_horizontally = false;
 			}
 		}
