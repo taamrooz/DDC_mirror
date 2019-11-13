@@ -1,4 +1,4 @@
-#include "KeyBindingSingleton.h"
+﻿#include "KeyBindingSingleton.h"
 
 
 KeyBindingSingleton::KeyBindingSingleton()
@@ -17,19 +17,21 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keybindings.insert(std::make_pair(SDLK_2, "medium.wav"));
 		instance->keybindings.insert(std::make_pair(SDLK_3, "low.wav"));
 		instance->keybindings.insert(std::make_pair(SDLK_4, "scratch.wav"));
-		instance->keybindings.insert(std::make_pair(SDLK_w, "moveUP"));
-		instance->keybindings.insert(std::make_pair(SDLK_a, "moveLeft"));
-		instance->keybindings.insert(std::make_pair(SDLK_d, "moveRight"));
-		instance->keybindings.insert(std::make_pair(SDLK_s, "moveDown"));
-		instance->keybindings.insert(std::make_pair(SDLK_UP, "shootUp"));
-		instance->keybindings.insert(std::make_pair(SDLK_LEFT, "shootLeft"));
-		instance->keybindings.insert(std::make_pair(SDLK_RIGHT, "shootRight"));
-		instance->keybindings.insert(std::make_pair(SDLK_DOWN, "shootDown"));
+		instance->keybindings.insert(std::make_pair(SDLK_p, "pauseGame"));
+		instance->keybindings.insert(std::make_pair(SDLK_w, instance->get_move_up_key_binding()));
+		instance->keybindings.insert(std::make_pair(SDLK_a, instance->get_move_left_key_binding()));
+		instance->keybindings.insert(std::make_pair(SDLK_d, instance->get_move_right_key_binding()));
+		instance->keybindings.insert(std::make_pair(SDLK_s, instance->get_move_down_key_binding()));
+		instance->keybindings.insert(std::make_pair(SDLK_UP, instance->get_shoot_up_key_binding()));
+		instance->keybindings.insert(std::make_pair(SDLK_LEFT, instance->get_shoot_left_key_binding()));
+		instance->keybindings.insert(std::make_pair(SDLK_RIGHT, instance->get_shoot_right_key_binding()));
+		instance->keybindings.insert(std::make_pair(SDLK_DOWN, instance->get_shoot_down_key_binding()));
 
 		instance->keys_down.insert(std::make_pair("high.wav", false));
 		instance->keys_down.insert(std::make_pair("medium.wav", false));
 		instance->keys_down.insert(std::make_pair("low.wav", false));
 		instance->keys_down.insert(std::make_pair("scratch.wav", false));
+		instance->keys_down.insert(std::make_pair(instance->get_pause_game_key_binding(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_move_up_key_binding(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_move_left_key_binding() , false));
 		instance->keys_down.insert(std::make_pair(instance->get_move_right_key_binding(), false));
@@ -41,6 +43,10 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 	}
 
 	return instance;
+}
+
+std::string KeyBindingSingleton::get_pause_game_key_binding() {
+	return "pauseGame";
 }
 
 std::string KeyBindingSingleton::get_move_up_key_binding() {
@@ -73,4 +79,42 @@ std::string KeyBindingSingleton::get_shoot_right_key_binding() {
 
 std::string KeyBindingSingleton::get_shoot_down_key_binding() {
 	return "shootDown";
+}
+
+// TO-DO: map SDL_keys to strings!!
+
+std::string KeyBindingSingleton::get_pause_game_key() {
+	return "p";
+}
+
+std::string KeyBindingSingleton::get_move_up_key() {
+	return "W";
+}
+
+std::string KeyBindingSingleton::get_move_left_key() {
+	return "A";
+}
+
+std::string KeyBindingSingleton::get_move_right_key() {
+	return "D";
+}
+
+std::string KeyBindingSingleton::get_move_down_key() {
+	return "S";
+}
+
+std::string KeyBindingSingleton::get_shoot_up_key() {
+	return "^";
+}
+
+std::string KeyBindingSingleton::get_shoot_left_key() {
+	return "<";
+}
+
+std::string KeyBindingSingleton::get_shoot_right_key() {
+	return ">";
+}
+
+std::string KeyBindingSingleton::get_shoot_down_key() {
+	return "`";
 }

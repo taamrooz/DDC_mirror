@@ -92,7 +92,10 @@ void CollisionSystem::update(double dt)
 
 		update_velocity(first_node, second_node);
 		if (collisionComponent != nullptr) {
-			collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+			if (collisionComponent->collisionHandler != nullptr) {
+				collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+			}
+			
 		}
 	}
 
