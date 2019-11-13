@@ -9,6 +9,8 @@
 #include "CollisionComponent.h"
 #include "ShootingComponent.h"
 #include "CharacterComponent.h"
+#include "RoomComponent.h"
+#include "RoomSingleton.h"
 
 
 CollisionSystem::CollisionSystem(EntityManager* manager) : BaseSystem(manager) {}
@@ -56,57 +58,52 @@ void CollisionSystem::update(double dt)
 			*/
 
 			//// <----- TEST SCENARIO ----->  ////
-	for (auto entity : manager_->get_all_entities<CollisionComponent>())
+	for (auto entity : manager_->get_all_entities_from_current_room<CollisionComponent>())
 	{
-
 		auto positionComponent = manager_->get_component<PositionComponent>(entity);
 		auto collisionComponent = manager_->get_component<CollisionComponent>(entity);
 		auto velocityComponent = manager_->get_component<VelocityComponent>(entity);
-		int x = positionComponent->x;
-		int y = positionComponent->y;
-		if (velocityComponent != nullptr) {
-			x = positionComponent->x + velocityComponent->dx;
-			y = positionComponent->y + velocityComponent->dy;
-		}
+		auto roomComponent = manager_->get_component<RoomComponent>(entity);
 
-
-		quadTree.insert(new Node{ Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
-	}
-
-	std::vector<std::tuple<Node*, Node*>> collisions = quadTree.get_collisions();
-
-	for (auto const& node_tuple : collisions) {
-		Node* first_node = std::get<0>(node_tuple);
-		Node* second_node = std::get<1>(node_tuple);
-
-		//handle collision
-		//gebruikt nu entity 0 omdat er nog test data in staat
-
-		auto collisionComponent = manager_->get_component<CollisionComponent>(first_node->id);
-
-
-
-		update_velocity(first_node, second_node);
-		if (collisionComponent != nullptr) {
-			if (collisionComponent->collisionHandler != nullptr) {
-				collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+			int x = positionComponent->x;
+			int y = positionComponent->y;
+			if (velocityComponent != nullptr) {
+				x = positionComponent->x + velocityComponent->dx;
+				y = positionComponent->y + velocityComponent->dy;
 			}
-			
+
+
+			quadTree.insert(new Node{ Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
 		}
-	}
 
+		std::vector<std::tuple<Node*, Node*>> collisions = quadTree.get_collisions();
 
-	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
-	std::vector<std::tuple<Point, Point>> bounds = quadTree.get_bounds();
-	for (auto const& point_tuple : bounds) {
-		int x = std::get<0>(point_tuple).x;
-		int y = std::get<0>(point_tuple).y;
+		for (auto const& node_tuple : collisions) {
+			Node* first_node = std::get<0>(node_tuple);
+			Node* second_node = std::get<1>(node_tuple);
 
-		int width = std::get<1>(point_tuple).x - std::get<0>(point_tuple).x;
-		int height = std::get<1>(point_tuple).y - std::get<0>(point_tuple).y;
+			//handle collision
+			//gebruikt nu entity 0 omdat er nog test data in staat
 
-		Engine::AddRectangle(x, y, width, height);
-	}
+			auto collisionComponent = manager_->get_component<CollisionComponent>(first_node->id);
+
+      update_velocity(first_node, second_node);
+      if (collisionComponent != nullptr && collisionComponent->collisionHandler != nullptr) {
+          collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+      }
+    }
+
+		//// <----- VISUAL DEMO OF QUADTREE ----->  ////
+		std::vector<std::tuple<Point, Point>> bounds = quadTree.get_bounds();
+		for (auto const& point_tuple : bounds) {
+			int x = std::get<0>(point_tuple).x;
+			int y = std::get<0>(point_tuple).y;
+
+			int width = std::get<1>(point_tuple).x - std::get<0>(point_tuple).x;
+			int height = std::get<1>(point_tuple).y - std::get<0>(point_tuple).y;
+
+			Engine::AddRectangle(x, y, width, height);
+		}
 
 	//Engine::RenderRectangles();
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
