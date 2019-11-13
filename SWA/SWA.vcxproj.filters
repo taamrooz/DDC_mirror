@@ -179,6 +179,9 @@
     <ClInclude Include="TileComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ChestComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
     <ClInclude Include="RoomSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
@@ -217,9 +220,6 @@
     </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="ChestComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Credits.h">
       <Filter>Header Files\Menus</Filter>

@@ -2,6 +2,9 @@
 #include "VelocityComponent.h"
 #include "PositionComponent.h"
 #include "CollisionComponent.h"
+#include "ComponentFactory.h"
+#include "ChestComponent.h"
+#include "ChestComponent.h"
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 
@@ -146,7 +149,24 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* ma
 		auto cColl = manager->get_component<CollisionComponent>(entity1);
 		auto pVel = manager->get_component<VelocityComponent>(entity2);
 		auto dPos = std::make_unique<PositionComponent>(cPos->x + cColl->width / 2, cPos->y);
-		auto dVel = std::make_unique<VelocityComponent>(pVel->dx, pVel->dy, 0.2);
+
+		auto pPos = manager->get_component<PositionComponent>(entity2);
+		auto pColl = manager->get_component<CollisionComponent>(entity2);
+		int xv = pVel->dx;
+		int yv = pVel->dy;
+		if (pPos->x >= cPos->x + cColl->width) {
+			xv = -5;
+		}
+		else if (pPos->x + pColl->width <= cPos->x) {
+			xv = 5;
+		}
+		else if (pPos->y > cPos->y) {
+			yv = -5;
+		}
+		else {
+			yv = 5;
+		}
+		auto dVel = std::make_unique<VelocityComponent>(xv, yv, 0.2);
 
 		manager->add_component_to_entity(drop, std::move(dPos));
 		manager->add_component_to_entity(drop, std::move(dVel));

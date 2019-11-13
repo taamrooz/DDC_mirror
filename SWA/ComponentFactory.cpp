@@ -16,14 +16,6 @@ ComponentFactory::ComponentFactory() {
 
 ComponentFactory* ComponentFactory::instance_ = 0;
 
-enum string_code {
-	cPlayer,
-	cWall,
-	cChest,
-	cMonster,
-	cFlask_Blue
-};
-
 string_code Convert(std::string const& inString) {
 	if (inString == "player") return cPlayer;
 	if (inString == "wall") return cWall;
@@ -59,6 +51,7 @@ int ComponentFactory::CreateEntity(string_code name, int id, EntityManager* em)
 	case cFlask_Blue: {
 		AddBlueFlaskComponents(id, em);
 		break;
+	}
 	case cMonster: {
 		AddEnemyComponents(id, em);
 		break;
@@ -69,10 +62,6 @@ int ComponentFactory::CreateEntity(string_code name, int id, EntityManager* em)
 	}
 	return -1;
 }
-
-//int ComponentFactory::CreateEntity(string_code name, int id, EntityManager* em) {
-
-//}
 
 void ComponentFactory::AddChestComponents(int id, EntityManager* em) {
 	//create chest

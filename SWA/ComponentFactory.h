@@ -5,6 +5,7 @@ enum string_code {
 	cPlayer,
 	cWall,
 	cChest,
+	cMonster,
 	cFlask_Blue
 };
 class ComponentFactory

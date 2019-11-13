@@ -86,7 +86,6 @@ void CollisionSystem::update(double dt)
 			}
 
 		}
-		update_velocity(first_node, second_node);
 	}
 
 
