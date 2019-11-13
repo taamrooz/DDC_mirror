@@ -15,9 +15,7 @@ struct Node
 	uint32_t id;
 	int width;
 	int height;
-	int xV;
-	int yV;
-	Node(Point, uint32_t, int, int, int, int);
+	Node(Point, uint32_t, int, int);
 };
 
 class QuadTree {
