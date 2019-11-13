@@ -55,6 +55,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 	auto entity = manager_->get_all_entities_from_current_room<CharacterComponent>().front();
 	auto shoot = manager_->get_component<ShootingComponent>(entity);
 	auto dmg = std::make_unique<DamagingComponent>(1, false);
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
 
 	Uint32 ticks = Engine::GetTicks();
 	if (ticks - shoot->last_shot >= shoot->fire_rate) {
@@ -75,6 +76,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 		manager_->add_component_to_entity(id, std::move(aComponent));
 		manager_->add_component_to_entity(id, std::move(cComponent));
 		manager_->add_component_to_entity(id, std::move(dmg));
+		manager_->add_component_to_entity(id, std::move(room));
 		shoot->last_shot = Engine::GetTicks();
 	}
 	
