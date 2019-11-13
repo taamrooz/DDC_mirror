@@ -22,7 +22,7 @@ enum string_code {
 	cPlayer,
 	cWall,
 	cChest,
-	cladder
+	cladder,
 	cMonster
 };
 
@@ -55,8 +55,8 @@ int ComponentFactory::CreateEntity(std::string name, int id, EntityManager* em) 
 	}
 	case cladder: {
 		AddLadderComponents(id, em);
-    break;
-  }
+		break;
+	}
 	case cMonster: {
 		AddEnemyComponents(id, em);
 		break;

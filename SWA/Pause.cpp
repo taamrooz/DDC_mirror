@@ -29,7 +29,7 @@ void Pause::input() {
 	//Handle all key down events
 	for (const auto& keycode : std::get<k_keydown>(inputs))
 	{
-		if (keycode == SDLK_RETURN || keycode == SDLK_p)
+		if (keycode == SDLK_p)
 		{
 			Engine::PlayMusic("ingame.wav");
 			scene_manager_->pop_scene();
