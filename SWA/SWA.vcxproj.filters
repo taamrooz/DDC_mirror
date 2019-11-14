@@ -229,6 +229,7 @@
     </ClInclude>
     <ClInclude Include="LadderComponent.h">
       <Filter>Header Files\Components</Filter>
+      </ClInclude>
     <ClInclude Include="Credits.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
