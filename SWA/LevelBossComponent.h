@@ -6,4 +6,3 @@ struct LevelBossComponent : Component
 {
 	LevelBossComponent() = default;
 };
-

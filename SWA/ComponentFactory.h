@@ -14,9 +14,8 @@ private:
 	void AddPlayerComponents(int, EntityManager*);
 	void AddChestComponents(int id, EntityManager* em);
 	void AddLadderComponents(int id, EntityManager* em);
-	void AddEnemyComponents(int id, EntityManager* em);
+	void AddEnemyComponents(int id, EntityManager* em, bool level_boss);
 public:
 	static ComponentFactory* get_instance();
 	int CreateEntity(std::string, int id, EntityManager*);
 };
-
