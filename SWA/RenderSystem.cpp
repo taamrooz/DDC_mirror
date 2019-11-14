@@ -42,9 +42,13 @@ void RenderSystem::update(double dt)
 	for (auto entityid : manager_->get_all_entities_from_current_room<AnimationComponent>()) {
 		auto animation_component = manager_->get_component<AnimationComponent>(entityid);
 		auto position_component = manager_->get_component<PositionComponent>(entityid);
-		auto room_component = manager_->get_component<RoomComponent>(entityid);
-		
-		Engine::UpdateAnimation(&animation_component->animations.at(animation_component->currentState), position_component->x, position_component->y, animation_component->flip_horizontally);
+		if(animation_component->animations.find(animation_component->currentState) != animation_component->animations.end())
+		{
+			Engine::UpdateAnimation(&animation_component->animations.at(animation_component->currentState), position_component->x, position_component->y, animation_component->flip_horizontally);
+		}else
+		{
+			Engine::UpdateAnimation(&animation_component->animations.at(animation_component->animations.begin()->first), position_component->x, position_component->y, animation_component->flip_horizontally);
+		}
 		if (animation_component->lock_until < Engine::GetTicks()) {
 			animation_component->currentState = State::DEFAULT;
 		}

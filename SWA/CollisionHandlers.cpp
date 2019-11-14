@@ -33,7 +33,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	auto ladder = manager->get_component<LadderComponent>(entity1);
 
-	if (ladder != nullptr) {
+	if (player != nullptr && ladder != nullptr) {
 		// load next level
 		if (!RoomSingleton::get_instance()->reload_room) {
 			RoomSingleton::get_instance()->current_room_index++;
@@ -42,17 +42,23 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 	} 
 	
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
-	if (dmg != nullptr) {
-		auto ani = manager->get_component<AnimationComponent>(entity1);
+	auto ani = manager->get_component<AnimationComponent>(entity1);
+	if (dmg != nullptr && ani != nullptr) {
+		
 		ani->currentState = State::HIT;
 		ani->lock_until = Engine::GetTicks() + 250;
 
-		auto health = manager->get_component<HealthComponent>(entity1);
-		DamageHandler(health, dmg);
-		
-		if (health->current_health <= 0) {
-			std::cout << "Game Over!" << std::endl;
+		const auto health = manager->get_component<HealthComponent>(entity1);
+		if(health != nullptr)
+		{
+			DamageHandler(health, dmg);
+			if (health->current_health <= 0) {
+				std::cout << "Game Over!" << std::endl;
+			}
 		}
+		
+		
+		
 	}
 }
 

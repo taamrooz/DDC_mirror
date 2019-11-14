@@ -55,8 +55,6 @@ void Credits::cleanup() {
 	delete tom_roozen;
 	delete gijs_verdonschot;
 	delete helper;
-	Engine::DestroyRenderer();
-	Engine::CloseAudio();
 }
 
 bool Credits::init() {
