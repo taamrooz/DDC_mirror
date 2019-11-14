@@ -16,3 +16,7 @@ RoomSingleton* RoomSingleton::get_instance()
 	}
 	return instance;
 }
+
+std::string RoomSingleton::get_current_room_name() {
+	return room_names[current_room_index];
+}

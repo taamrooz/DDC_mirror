@@ -65,7 +65,7 @@ public:
 			for (auto i = components_by_class_[type].begin(); i != components_by_class_[type].end(); ++i)
 			{
 				auto room_component = get_component<RoomComponent>(i->first);
-				if (room_component->room_name.compare(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]) == 0)
+				if (room_component->room_name.compare(RoomSingleton::get_instance()->get_current_room_name()) == 0)
 					list.push_back(i->first);
 			}
 		}

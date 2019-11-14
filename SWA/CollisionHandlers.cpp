@@ -3,6 +3,7 @@
 #include "CharacterComponent.h"
 #include "RoomSingleton.h"
 #include "LadderComponent.h"
+#include "LevelBossComponent.h"
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 
@@ -34,8 +35,17 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 	auto ladder = manager->get_component<LadderComponent>(entity1);
 
 	if (player != nullptr && ladder != nullptr) {
-		// load next level
-		if (!RoomSingleton::get_instance()->reload_room) {
+		const auto boss_entity = manager->get_all_entities_from_current_room<LevelBossComponent>().front();
+		const auto boss_health = manager->get_component<HealthComponent>(boss_entity);
+		const auto boss_room = manager->get_component<RoomComponent>(boss_entity);
+		
+		const bool load_next_map = (boss_room->room_name.compare(RoomSingleton::get_instance()->get_current_room_name()) == 0 && boss_health->current_health <= 0);
+		if (load_next_map && !RoomSingleton::get_instance()->reload_level) {
+			RoomSingleton::get_instance()->current_room_index = 0;
+			RoomSingleton::get_instance()->reload_level = true;
+		}
+		else if (!RoomSingleton::get_instance()->reload_room) {
+			// load next level
 			RoomSingleton::get_instance()->current_room_index++;
 			RoomSingleton::get_instance()->reload_room = true;
 		}
