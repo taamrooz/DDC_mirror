@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <vector>
 #include "Component.h"
+#include "RoomComponent.h"
+#include "RoomSingleton.h"
 #include <iostream>
 #include <typeindex>
 #include <unordered_map>
@@ -52,4 +54,21 @@ public:
 		return list;
 	}
 
+	template<class T>
+	std::vector<uint32_t> get_all_entities_from_current_room()
+	{
+		//TODO: use boost iterator instead of vector
+		std::vector<uint32_t> list;
+		const auto type = typeid(T).hash_code();
+		if (components_by_class_.find(type) != components_by_class_.end())
+		{
+			for (auto i = components_by_class_[type].begin(); i != components_by_class_[type].end(); ++i)
+			{
+				auto room_component = get_component<RoomComponent>(i->first);
+				if (room_component->room_name.compare(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]) == 0)
+					list.push_back(i->first);
+			}
+		}
+		return list;
+	}
 };

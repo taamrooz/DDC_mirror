@@ -46,6 +46,9 @@
     <Filter Include="Header Files\Singletons">
       <UniqueIdentifier>{19246156-bd10-4516-8d72-50eefc590436}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Maps">
+      <UniqueIdentifier>{e0c9c984-26d7-4b9d-9b25-e413be9e54cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -218,6 +221,14 @@
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LadderComponent.h">
+      <Filter>Header Files\Components</Filter>
     <ClInclude Include="Credits.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
@@ -248,7 +259,10 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="assets\lazy.map">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Maps</Filter>
+    </None>
+    <None Include="second.map">
+      <Filter>Resource Files\Maps</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -429,5 +443,10 @@
     <Image Include="assets\Animations\wizard_m_hit.png">
       <Filter>Resource Files\Animations</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SWA.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
