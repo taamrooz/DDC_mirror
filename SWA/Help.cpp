@@ -63,8 +63,6 @@ void Help::cleanup() {
 	delete shoot_right_;
 	delete shoot_down_;
 	delete helper;
-	Engine::DestroyRenderer();
-	Engine::CloseAudio();
 }
 
 bool Help::init() {

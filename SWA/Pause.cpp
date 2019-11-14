@@ -45,8 +45,6 @@ void Pause::cleanup() {
 	delete title_;
 	delete pausedTexture_;
 	delete helper_;
-	Engine::DestroyRenderer();
-	Engine::CloseAudio();
 }
 
 bool Pause::init() {
