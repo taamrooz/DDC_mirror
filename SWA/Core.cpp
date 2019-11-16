@@ -11,6 +11,7 @@
 #include "MoveCharacterSystem.h"
 #include "CollisionComponent.h"
 #include "SceneManager.h"
+#include "Audio.h"
 
 Core::Core(SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -18,7 +19,7 @@ Core::~Core() = default;
 
 bool Core::init()
 {
-	manager_ = std::make_unique<EntityManager>();
+	manager_ = std::make_unique<Engine::EntityManager<Component>>();
 
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
@@ -82,6 +83,7 @@ void Core::update()
 void Core::render()
 {
 	auto timer = Engine::PreUpdate();
+	//Engine::Clear();
 	update();
 	Engine::Render(timer);
 }

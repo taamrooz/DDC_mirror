@@ -5,7 +5,7 @@
 #include "KeyBindingSingleton.h"
 #include "AnimationComponent.h"
 
-MoveCharacterSystem::MoveCharacterSystem(EntityManager* manager) : BaseSystem(manager) {
+MoveCharacterSystem::MoveCharacterSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {
 }
 
 void MoveCharacterSystem::update(double dt) {

@@ -7,7 +7,7 @@ class AudioSystem :
 
 {
 public:
-	AudioSystem(EntityManager* manager);
+	AudioSystem(Engine::EntityManager<Component>* manager);
 	void update(double dt) override;
 };
 

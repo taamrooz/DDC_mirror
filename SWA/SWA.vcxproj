@@ -107,6 +107,7 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <ResourceCompile />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -153,7 +154,6 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="Credits.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="InputSystem.cpp" />
@@ -164,7 +164,6 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
-    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ShootSystem.cpp" />
     <ClCompile Include="RoomSingleton.cpp" />
@@ -184,7 +183,6 @@
     <ClInclude Include="Credits.h" />
     <ClInclude Include="DamagingComponent.h" />
     <ClInclude Include="LadderComponent.h" />
-    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Help.h" />
@@ -192,7 +190,6 @@
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="RoomComponent.h" />
     <ClInclude Include="Pause.h" />
     <ClInclude Include="SceneManager.h" />
@@ -200,7 +197,6 @@
     <ClInclude Include="MoveCharacterSystem.h" />
     <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="PositionComponent.h" />
-    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="RoomSingleton.h" />
     <ClInclude Include="RoomSystem.h" />

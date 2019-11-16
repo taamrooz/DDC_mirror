@@ -69,9 +69,6 @@
     <ClCompile Include="MoveSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="InputSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -86,9 +83,6 @@
     </ClCompile>
     <ClCompile Include="RoomSystem.cpp">
       <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="QuadTree.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MoveCharacterSystem.cpp">
       <Filter>Source Files\Systems</Filter>
@@ -185,9 +179,6 @@
     <ClInclude Include="RoomSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="QuadTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CharacterComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -218,18 +209,12 @@
     <ClInclude Include="TextureComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RoomComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="LadderComponent.h">
       <Filter>Header Files\Components</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="Credits.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>

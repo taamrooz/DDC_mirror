@@ -3,10 +3,10 @@
 #include <SDL_ttf.h>
 #include "Timer.h"
 #include <sstream>
+#include <SDL_image.h>
 
 SDL_Window* window;
 SDL_Renderer* renderer;
-SDL_Surface* surf;
 std::vector<SDL_Rect> rectangles;
 
 bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint32 height) {
@@ -25,7 +25,6 @@ bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint
 		std::cout << "Unable to initialize Window" << std::endl;
 		return false;
 	}
-	surf = SDL_GetWindowSurface(window);
 	if ((renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)) == nullptr)
 	{
 		std::cout << "Unable to initialize renderer" << std::endl;
@@ -49,7 +48,7 @@ bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint
 	return true;
 }
 
-Animation& Engine::LoadAnimation(std::string path, int frames) {
+Animation* Engine::LoadAnimation(std::string path, int frames) {
 
 	auto WALKING_ANIMATION_FRAMES = frames;
 	auto gSpriteClips = std::vector<SDL_Rect>(WALKING_ANIMATION_FRAMES);
@@ -58,18 +57,18 @@ Animation& Engine::LoadAnimation(std::string path, int frames) {
 	texture->free();
 
 	//Load media
-	if (!Engine::LoadSpriteSheet(path, animation))
+	if (!LoadSpriteSheet(path, animation))
 	{
 		printf("Failed to load media!\n");
 	}
 
-	return *animation;
+	return animation;
 }
 
 Texture* Engine::LoadTileset(std::string path)
 {
 	Texture* texture = new Texture(renderer);
-	texture->loadFromFile(path);
+	texture->load_from_file(path);
 	return texture;
 }
 
@@ -86,20 +85,20 @@ bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
 	bool success = true;
 
 	//Load sprite sheet texture
-	if (!animation->gSpriteSheetTexture.loadFromFile(path))
+	if (!animation->gSpriteSheetTexture.load_from_file(path))
 	{
 		printf("Failed to load walking animation texture!\n");
 		success = false;
 	}
 	else
 	{
-		int height = animation->gSpriteSheetTexture.getHeight();
-		int width = animation->gSpriteSheetTexture.getWidth() / animation->WALKING_ANIMATION_FRAMES;
+		int height = animation->gSpriteSheetTexture.get_height();
+		int width = animation->gSpriteSheetTexture.get_width() / animation->WALKING_ANIMATION_FRAMES;
 		for (int i = 0; i < animation->WALKING_ANIMATION_FRAMES; i++) {
 			animation->gSpriteClips[i].x = width * i;
 			animation->gSpriteClips[i].y = 0;
 			animation->gSpriteClips[i].w = width;
-			animation->gSpriteClips[i].h = animation->gSpriteSheetTexture.getHeight();
+			animation->gSpriteClips[i].h = animation->gSpriteSheetTexture.get_height();
 		}
 	}
 
@@ -109,7 +108,7 @@ bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
 Texture* Engine::LoadText(std::string path, uint32_t font_size, SDL_Color color, const char* text)
 {
 	auto* texture = new Texture(renderer);
-	texture->loadText(std::move(path), font_size, color, text);
+	texture->load_text(std::move(path), font_size, color, text);
 	return texture;
 }
 
@@ -132,9 +131,14 @@ int Engine::PreUpdate() {
 		frameTimer.Start();	
 	
 	auto frameStart = SDL_GetTicks();
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+	//SDL_RenderClear(renderer);
 	return frameStart;
+}
+
+void Engine::Clear()
+{
+	SDL_RenderClear(renderer);
 }
 
 Uint32 Engine::GetTicks() {
@@ -160,7 +164,7 @@ void Engine::Render(int framestart) {
 
 	//Render textures
 	gFPSTextTexture->render(kFPSCounterPositionOffset, kFPSCounterPositionOffset, 
-		new SDL_Rect{ 0,0,gFPSTextTexture->getWidth() ,gFPSTextTexture->getHeight() });
+		new SDL_Rect{ 0,0,gFPSTextTexture->get_width() ,gFPSTextTexture->get_height() });
 	++countedFrames;	
 	
 	SDL_RenderPresent(renderer);
@@ -212,6 +216,7 @@ void Engine::RenderHealthBar(int x, int y, bool friendly, int max_health, int cu
 }
 
 void Engine::DestroyRenderer() {
+	rectangles.clear();
 	if (renderer != nullptr)
 	{
 		SDL_DestroyRenderer(renderer);

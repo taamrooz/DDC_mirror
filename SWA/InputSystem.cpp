@@ -1,9 +1,10 @@
 #include "InputSystem.h"
 #include "UserInput.h"
 #include "KeyBindingSingleton.h"
+#include "Audio.h"
 
-InputSystem::InputSystem(EntityManager* manager, Core &core) : BaseSystem(manager) {
-	InputSystem::core = &core;
+InputSystem::InputSystem(Engine::EntityManager<Component>* manager, Core &core) : BaseSystem(manager) {
+	core_ = &core;
 }
 
 void InputSystem::update(double dt)
@@ -17,7 +18,7 @@ void InputSystem::update(double dt)
 
 	//Quit if user wants to exit
 	if (!std::get<k_stop>(inputs)) {
-		core->StopGameLoop();
+		core_->StopGameLoop();
 		return;
 	}
 	
@@ -27,7 +28,7 @@ void InputSystem::update(double dt)
 		if (keycode == SDLK_q)
 		{
 			Engine::StopMusic();
-			core->scene_manager_->pop_scene();
+			core_->scene_manager_->pop_scene();
 			Engine::PlayMusic("mainmenu.wav");
 			break;
 		}
@@ -36,7 +37,7 @@ void InputSystem::update(double dt)
 			KeyBindingSingleton::get_instance()->keys_down.at(command) = true;
 
 			if (command == KeyBindingSingleton::get_instance()->get_pause_game_key_binding()) {
-				core->is_paused = !core->is_paused;
+				core_->is_paused = !core_->is_paused;
 			}
 		}
 	}

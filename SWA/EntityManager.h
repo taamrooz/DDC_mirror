@@ -1,74 +1,107 @@
 #pragma once
 #include <cstdint>
 #include <vector>
-#include "Component.h"
-#include "RoomComponent.h"
-#include "RoomSingleton.h"
 #include <iostream>
 #include <typeindex>
 #include <unordered_map>
+#include "RoomComponent.h"
+#include "RoomSingleton.h"
 
-class EntityManager
-{
-private:
-	int id_ = -1;
-	std::vector<uint32_t> entities_;
-	std::unordered_map <size_t, std::unordered_map<uint32_t, std::unique_ptr<Component>>> components_by_class_;
-
-public:
-	uint32_t create_entity();
-	uint32_t create_entity(std::vector<Component*>&);
-	void add_component_to_entity(uint32_t, std::unique_ptr<Component>);
-	void remove_entity(uint32_t id);
-
-	
-	template<class T>
-	void remove_component_from_entity(const uint32_t id)
+namespace Engine {
+	template<typename T> class EntityManager
 	{
-		const auto type = typeid(T).hash_code();
-		components_by_class_[type].erase(id);
-	}
-	template<class T>
-	T* get_component(const uint32_t id)
-	{
-		const auto type = typeid(T).hash_code();
-		if(components_by_class_.find(type) != components_by_class_.end() && components_by_class_.find(type)->second.find(id) != components_by_class_.find(type)->second.end())
+	private:
+		int id_ = -1;
+		std::vector<uint32_t> entities_;
+		std::unordered_map <size_t, std::unordered_map<uint32_t, std::unique_ptr<T>>> components_by_class_;
+
+	public:
+		template<typename C>
+		void remove_component_from_entity(const uint32_t id)
 		{
-			return static_cast<T*>(components_by_class_.find(type)->second.find(id)->second.get());
+			const auto type = typeid(C).hash_code();
+			components_by_class_[type].erase(id);
 		}
-		return nullptr;
-	}
-	template<class T>
-	std::vector<uint32_t> get_all_entities()
-	{
-		//TODO: use boost iterator instead of vector
-		std::vector<uint32_t> list;
-		const auto type = typeid(T).hash_code();
-		if(components_by_class_.find(type) != components_by_class_.end())
+
+		template<typename C>
+		C* get_component(const uint32_t id) const
 		{
-			for (auto i = components_by_class_[type].begin(); i != components_by_class_[type].end(); ++i)
+			const auto type = typeid(C).hash_code();
+			if (components_by_class_.find(type) != components_by_class_.end() && components_by_class_.find(type)->second.find(id) != components_by_class_.find(type)->second.end())
 			{
-				list.push_back(i->first);
+				return static_cast<C*>(components_by_class_.find(type)->second.find(id)->second.get());
 			}
+			return nullptr;
 		}
-		return list;
-	}
 
-	template<class T>
-	std::vector<uint32_t> get_all_entities_from_current_room()
-	{
-		//TODO: use boost iterator instead of vector
-		std::vector<uint32_t> list;
-		const auto type = typeid(T).hash_code();
-		if (components_by_class_.find(type) != components_by_class_.end())
+		template<typename C>
+		std::vector<uint32_t> get_all_entities() const
 		{
-			for (auto i = components_by_class_[type].begin(); i != components_by_class_[type].end(); ++i)
+			//TODO: use boost iterator instead of vector
+			std::vector<uint32_t> list;
+			const auto type = typeid(C).hash_code();
+			if (components_by_class_.find(type) != components_by_class_.end())
 			{
-				auto room_component = get_component<RoomComponent>(i->first);
-				if (room_component->room_name.compare(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]) == 0)
+				for (auto i = components_by_class_.at(type).begin(); i != components_by_class_.at(type).end(); ++i)
+				{
 					list.push_back(i->first);
+				}
 			}
+			return list;
 		}
-		return list;
-	}
-};
+		
+		template<typename C>
+		std::vector<uint32_t> get_all_entities_from_current_room() const
+		{
+			std::vector<uint32_t> list;
+			const auto type = typeid(C).hash_code();
+			if(components_by_class_.find(type) != components_by_class_.end())
+			{
+				for(auto i = components_by_class_.at(type).begin(); i != components_by_class_.at(type).end(); ++i)
+				{
+					auto room_comp = get_component<RoomComponent>(i->first);
+					if(room_comp->room_name == RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index])
+					{
+						list.push_back(i->first);
+					}
+				}
+			}
+			return list;
+		}
+
+		uint32_t create_entity()
+		{
+			entities_.push_back(++id_);
+			return id_;
+		}
+
+		uint32_t create_entity(std::vector<T*>& components)
+		{
+			entities_.push_back(++id_);
+			for (auto& component : components)
+			{
+				add_component_to_entity(id_, std::make_unique<T>(*component));
+			}
+			return id_;
+		}
+
+		void add_component_to_entity(const uint32_t id, std::unique_ptr<T> comp)
+		{
+			const auto& ref = *comp;
+			const auto type = typeid(*&ref).hash_code();
+			components_by_class_[type].insert_or_assign(id, std::move(comp));
+		}
+
+		void remove_entity(const uint32_t id)
+		{
+			const auto i = std::find(entities_.begin(), entities_.end(), id);
+			for (auto& comp : components_by_class_)
+			{
+				comp.second.erase(id);
+			}
+			entities_.erase(i);
+		}
+
+
+	};
+}

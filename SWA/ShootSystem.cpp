@@ -4,8 +4,9 @@
 #include "KeyBindingSingleton.h"
 #include "CharacterComponent.h"
 #include "CollisionComponent.h"
+#include "PositionComponent.h"
 
-ShootSystem::ShootSystem(EntityManager* manager) : BaseSystem(manager) {
+ShootSystem::ShootSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {
 }
 
 void ShootSystem::update(double dt)
@@ -67,7 +68,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 		auto vComponent = std::make_unique<VelocityComponent>(xV, yV);
 		auto pComponent = std::make_unique<PositionComponent>(x, y);
 		std::map<State, Animation> animations;
-		animations.insert({ State::DEFAULT, Engine::LoadAnimation("Projectile.png", 1) });
+		animations.insert({ State::DEFAULT, *Engine::LoadAnimation("Projectile.png", 1) });
 		animations.at(State::DEFAULT).scale = 2;
 		auto aComponent = std::make_unique<AnimationComponent>(animations);
 		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size * 2, shoot->bullet_size * 2, BulletCollisionHandler, entity);

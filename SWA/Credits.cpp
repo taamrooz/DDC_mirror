@@ -12,6 +12,7 @@ Credits::Credits(SceneManager* manager) : BaseScene(manager) { }
 void Credits::render()
 {
 	const auto timer = Engine::PreUpdate();
+	Engine::Clear();
 	input();
 	Engine::UpdateAnimation(background_, 0, 0);
 	Engine::RenderTexture(title_, 250, 200, nullptr);
@@ -60,7 +61,7 @@ void Credits::cleanup() {
 bool Credits::init() {
 	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle");
 	sub_title_ = Engine::LoadText("manaspc.ttf", 40, { 255,0,0, 255 }, "Credits");
-	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
+	background_ = Engine::LoadAnimation("mainmenu.png", 3);
 	background_->scale = 1280.0 / 960.0;
 	mart_van_den_berg = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Mart van den Berg");
 	mark_donker = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Mark Donker");

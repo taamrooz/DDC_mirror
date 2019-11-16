@@ -13,35 +13,36 @@ MainMenu::MainMenu(SceneManager* manager) : BaseScene(manager) { }
 void MainMenu::render()
 {
 	const auto timer = Engine::PreUpdate();
+	Engine::Clear();
 	input();
 
-	Engine::UpdateAnimation(background_, 0, 0);
-	Engine::RenderTexture(title_, 250, 200, nullptr);
-	Engine::RenderTexture(start_, 500, 400, nullptr);
-	Engine::RenderTexture(settings_, 500, 500, nullptr);
-	Engine::RenderTexture(credits_, 500, 600, nullptr);
-	Engine::RenderTexture(help_, 500, 700, nullptr);
-	Engine::RenderTexture(quit_, 500, 800, nullptr);
-	Engine::RenderTexture(helper, 115, 900, nullptr);
+	Engine::UpdateAnimation(background_.get(), 0, 0);
+	Engine::RenderTexture(title_.get(), 250, 200, nullptr);
+	Engine::RenderTexture(start_.get(), 500, 400, nullptr);
+	Engine::RenderTexture(settings_.get(), 500, 500, nullptr);
+	Engine::RenderTexture(credits_.get(), 500, 600, nullptr);
+	Engine::RenderTexture(help_.get(), 500, 700, nullptr);
+	Engine::RenderTexture(quit_.get(), 500, 800, nullptr);
+	Engine::RenderTexture(helper.get(), 115, 900, nullptr);
 	if (current_action_ == 0)
 	{
-		Engine::RenderTexture(selector_, 480, 400, nullptr);
+		Engine::RenderTexture(selector_.get(), 480, 400, nullptr);
 	}
 	else if (current_action_ == 1)
 	{
-		Engine::RenderTexture(selector_, 480, 500, nullptr);
+		Engine::RenderTexture(selector_.get(), 480, 500, nullptr);
 	}
 	else if (current_action_ == 2)
 	{
-		Engine::RenderTexture(selector_, 480, 600, nullptr);
+		Engine::RenderTexture(selector_.get(), 480, 600, nullptr);
 	}
 	else if (current_action_ == 3)
 	{
-		Engine::RenderTexture(selector_, 480, 700, nullptr);
+		Engine::RenderTexture(selector_.get(), 480, 700, nullptr);
 	}
 	else if (current_action_ == 4)
 	{
-		Engine::RenderTexture(selector_, 480, 800, nullptr);
+		Engine::RenderTexture(selector_.get(), 480, 800, nullptr);
 	}
 	Engine::Render(timer);
 
@@ -117,14 +118,6 @@ void MainMenu::input()
 
 void MainMenu::cleanup()
 {
-	delete background_;
-	delete title_;
-	delete start_;
-	delete settings_;
-	delete credits_;
-	delete quit_;
-	delete helper;
-	delete selector_;
 	Engine::DestroyRenderer();
 	Engine::CloseAudio();
 }
@@ -137,17 +130,17 @@ bool MainMenu::init()
 	if (!Engine::InitAudio()) {
 		return false;
 	}
-	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle");
-	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
+	title_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
+	background_ = std::make_unique<Animation>(*Engine::LoadAnimation("mainmenu.png", 3));
 	background_->scale = 1280.0 / 960.0;
-	start_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game");
-	settings_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings");
-	credits_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits");
-	help_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Help");
-	quit_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop");
-	selector_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">");
-	helper = Engine::LoadText("manaspc.ttf", 24, {255, 255, 255, 255},
-	                          "Use the arrow keys ^` to navigate the menu and press ENTER to confirm");
+	start_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game"));
+	settings_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings"));
+	credits_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits"));
+	help_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Help"));
+	quit_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop"));
+	selector_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">"));
+	helper = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 24, {255, 255, 255, 255},
+	                          "Use the arrow keys ^` to navigate the menu and press ENTER to confirm"));
 	Engine::PlayMusic("mainmenu.wav");
 	return true;
 }

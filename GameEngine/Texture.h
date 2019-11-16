@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL.h>
-#include <SDL_image.h>
 #include <string>
 
 #ifdef ENGINE_EXPORTS
@@ -14,40 +13,40 @@ public:
 	//Initializes variables
 	ENGINE_API Texture(SDL_Renderer*);
 
-	//Deallocates memory
-	ENGINE_API ~Texture();
+	//Deallocate memory
+	ENGINE_API ~Texture() noexcept;
 
-	bool loadText(std::string font, int font_size, SDL_Color color, std::string text);
+	bool load_text(std::string font, int font_size, SDL_Color color, std::string text);
 
 	//Loads image at specified path
-	bool loadFromFile(std::string path);
+	bool load_from_file(std::string path);
 
-	//Deallocates texture
+	//Deallocate texture
 	void free();
 
 	//Set color modulation
-	void setColor(Uint8 red, Uint8 green, Uint8 blue);
+	void set_color(Uint8 red, Uint8 green, Uint8 blue);
 
 	//Set blending
-	void setBlendMode(SDL_BlendMode blending);
+	void set_blend_mode(SDL_BlendMode blending);
 
 	//Set alpha modulation
-	void setAlpha(Uint8 alpha);
+	void set_alpha(Uint8 alpha);
 
 	//Renders texture at given point
 	void render(int x, int y, SDL_Rect* clip, double scale = 1, SDL_RendererFlip flip = SDL_FLIP_NONE, double angle = 0.0);
 
 	//Gets image dimensions
-	int getWidth();
-	int getHeight();
+	int get_width() const;
+	int get_height() const;
 
 private:
 	//The actual hardware texture
-	SDL_Texture* mTexture;
+	SDL_Texture* m_texture_;
 
 	//Image dimensions
-	int mWidth;
-	int mHeight;
+	int m_width_;
+	int m_height_;
 
 	//The window renderer
 	SDL_Renderer* renderer_;

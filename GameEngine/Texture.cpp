@@ -1,24 +1,18 @@
 #include "Texture.h"
-#include <SDL_ttf.h>
+#include "SDL_ttf.h"
+#include "SDL_image.h"
 #include <iostream>
 
 
-Texture::Texture(SDL_Renderer *renderer)
-{
-	//Initialize
-	renderer_ = renderer;
-	mTexture = NULL;
-	mWidth = 0;
-	mHeight = 0;
-}
+Texture::Texture(SDL_Renderer *renderer) : m_texture_(nullptr), m_width_(0), m_height_(0), renderer_(renderer){ }
 
-Texture::~Texture()
+Texture::~Texture() noexcept
 {
 	//Deallocate
 	free();
 }
 
-bool Texture::loadText(std::string font, int font_size, SDL_Color color, std::string text)
+bool Texture::load_text(std::string font, int font_size, SDL_Color color, std::string text)
 {
 	free();
 	const auto filename = "./assets/" + font;
@@ -29,20 +23,20 @@ bool Texture::loadText(std::string font, int font_size, SDL_Color color, std::st
 		std::cout << "Unable to render text: " << TTF_GetError() << std::endl;
 		return false;
 	}
-	mTexture = SDL_CreateTextureFromSurface(renderer_, surface);
-	if(mTexture == nullptr)
+	m_texture_ = SDL_CreateTextureFromSurface(renderer_, surface);
+	if(m_texture_ == nullptr)
 	{
 		std::cout << "Unable to create texture: " << SDL_GetError() << std::endl;
 		return false;
 	}
-	mHeight = surface->h;
-	mWidth = surface->w;
+	m_height_ = surface->h;
+	m_width_ = surface->w;
 	TTF_CloseFont(ttf_font);
 	SDL_FreeSurface(surface);
 	return true;
 }
 
-bool Texture::loadFromFile(std::string path)
+bool Texture::load_from_file(std::string path)
 {
 	//Get rid of preexisting texture
 	free();
@@ -70,68 +64,70 @@ bool Texture::loadFromFile(std::string path)
 		{
 			//Get image dimensions
 
-			mWidth = loadedSurface->w;
-			mHeight = loadedSurface->h;
+			m_width_ = loadedSurface->w;
+			m_height_ = loadedSurface->h;
 		}
 
 	}
-
+	SDL_FreeSurface(loadedSurface);
 	//Return success
-	mTexture = newTexture;
-	return mTexture != NULL;
+	m_texture_ = newTexture;
+	return m_texture_ != NULL;
 }
 
 void Texture::free()
 {
 	//Free texture if it exists
-	if (mTexture != NULL)
+	if (m_texture_ != nullptr)
 	{
-		SDL_DestroyTexture(mTexture);
-		mTexture = NULL;
-		mWidth = 0;
-		mHeight = 0;
+		SDL_DestroyTexture(m_texture_);
+		m_texture_ = nullptr;
+		m_width_ = 0;
+		m_height_ = 0;
 	}
 }
 
-void Texture::setColor(Uint8 red, Uint8 green, Uint8 blue)
+void Texture::set_color(Uint8 red, Uint8 green, Uint8 blue)
 {
 	//Modulate texture rgb
-	SDL_SetTextureColorMod(mTexture, red, green, blue);
+	SDL_SetTextureColorMod(m_texture_, red, green, blue);
 }
 
-void Texture::setBlendMode(SDL_BlendMode blending)
+void Texture::set_blend_mode(SDL_BlendMode blending)
 {
 	//Set blending function
-	SDL_SetTextureBlendMode(mTexture, blending);
+	SDL_SetTextureBlendMode(m_texture_, blending);
 }
 
-void Texture::setAlpha(Uint8 alpha)
+void Texture::set_alpha(Uint8 alpha)
 {
 	//Modulate texture alpha
-	SDL_SetTextureAlphaMod(mTexture, alpha);
+	SDL_SetTextureAlphaMod(m_texture_, alpha);
 }
 
 void Texture::render(int x, int y, SDL_Rect* clip, double scale, SDL_RendererFlip flip, double angle)
 {
 	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+	SDL_Rect renderQuad = { x, y, m_width_, m_height_ };
 	//Set clip rendering dimensions
 	if (clip != NULL)
 	{
 		renderQuad.w = clip->w * scale;
 		renderQuad.h = clip->h * scale;
 	}
-
+	SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureBlendMode(m_texture_, SDL_BLENDMODE_BLEND);
 	//Render to screen
-	SDL_RenderCopyEx(renderer_, mTexture, clip, &renderQuad, angle, nullptr, flip);
+	SDL_RenderCopyEx(renderer_, m_texture_, clip, &renderQuad, angle, nullptr, flip);
+	
 }
 
-int Texture::getWidth()
+int Texture::get_width() const
 {
-	return mWidth;
+	return m_width_;
 }
 
-int Texture::getHeight()
+int Texture::get_height() const
 {
-	return mHeight;
+	return m_height_;
 }

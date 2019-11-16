@@ -51,7 +51,7 @@ bool Pause::init() {
 	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle");
 	pausedTexture_ = Engine::LoadText("manaspc.ttf", 50, { 255,196,0,255 }, "PAUSED");
 	helper_ = Engine::LoadText("manaspc.ttf", 24, { 255, 255, 255, 255 }, "Press P to continue ...");
-	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
+	background_ = Engine::LoadAnimation("mainmenu.png", 3);
 	background_->scale = 1280.0 / 960.0;
 	return true;
 }

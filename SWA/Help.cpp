@@ -12,6 +12,7 @@ Help::Help(SceneManager* manager) : BaseScene(manager) { }
 void Help::render()
 {
 	const auto timer = Engine::PreUpdate();
+	Engine::Clear();
 	input();
 	Engine::UpdateAnimation(background_, 0, 0);
 	Engine::RenderTexture(title_, 250, 200, nullptr);
@@ -69,7 +70,7 @@ bool Help::init() {
 	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle");
 	sub_title_moving_ = Engine::LoadText("manaspc.ttf", 40, { 255,0,0, 255 }, "Moving controls");
 	sub_title_shooting_ = Engine::LoadText("manaspc.ttf", 40, { 255,0,0, 255 }, "Shooting controls");
-	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
+	background_ = Engine::LoadAnimation("mainmenu.png", 3);
 	background_->scale = 1280.0 / 960.0;
 	move_up_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 },		("Move up:        " + KeyBindingSingleton::get_instance()->get_move_up_key()).c_str());
 	move_left_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 },		("Move left:      " + KeyBindingSingleton::get_instance()->get_move_left_key()).c_str());

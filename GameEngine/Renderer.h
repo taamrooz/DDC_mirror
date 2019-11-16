@@ -1,12 +1,8 @@
 #pragma once
 #include <SDL.h>
-#include <SDL_image.h>
-#include <stdio.h>
 #include <string>
-#include <vector>
 #include "Texture.h"
 #include "Animation.h"
-
 
 #ifdef ENGINE_EXPORTS
 #define ENGINE_API __declspec(dllexport)
@@ -15,9 +11,10 @@
 #endif
 
 namespace Engine {
+
 	/*
-	 * Initializes the renderer and all of its features.
-	 */
+	* Initializes the renderer and all of its features.
+	*/
 	ENGINE_API bool InitRenderer(std::string, bool, Uint32, Uint32);
 	/*
 	 * Updates the supplied animation with x and y positions and if the animation needs to be flipped.
@@ -34,7 +31,7 @@ namespace Engine {
 	/*
 	 * Returns an animation by a filepath and the amount of frames the animation will have.
 	 */
-	ENGINE_API Animation& LoadAnimation(std::string path, int frames);
+	ENGINE_API Animation* LoadAnimation(std::string path, int frames);
 	/*
 	 * Loads the tile set by specified path.
 	 */
@@ -63,6 +60,7 @@ namespace Engine {
 	 * Clears the screen and returns the tick after the screen has been cleared.
 	 */
 	ENGINE_API int PreUpdate();
+	ENGINE_API void Clear();
 	/*
 	 * Adds a rectangle to the collection on specified x and y coordinates, with the width and height.
 	 */
@@ -72,4 +70,4 @@ namespace Engine {
 	 */
 	ENGINE_API void RenderRectangles();
 	ENGINE_API Uint32 GetTicks();
-}
+};

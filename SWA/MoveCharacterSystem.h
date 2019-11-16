@@ -7,7 +7,7 @@ class MoveCharacterSystem :
 
 {
 public:
-	MoveCharacterSystem(EntityManager*);
+	MoveCharacterSystem(Engine::EntityManager<Component>*);
 	void update(double) override;
 private:
 	const double move_velocity = 8;

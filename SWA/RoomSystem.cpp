@@ -9,7 +9,7 @@
 #include "CollisionHandlers.h"
 #include "RoomComponent.h"
 #include "DamagingComponent.h"
-RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
+RoomSystem::RoomSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
 {}
 
 void RoomSystem::update(double dt)

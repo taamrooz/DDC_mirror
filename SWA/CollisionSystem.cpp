@@ -7,21 +7,18 @@
 #include <vector>
 #include <tuple>
 #include "CollisionComponent.h"
-#include "ShootingComponent.h"
-#include "CharacterComponent.h"
 #include "RoomComponent.h"
-#include "RoomSingleton.h"
 
 
-CollisionSystem::CollisionSystem(EntityManager* manager) : BaseSystem(manager) {}
+CollisionSystem::CollisionSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {}
 
 void CollisionSystem::update(double dt)
 {
 
 	//Starting points of the quadtree
-	Point leftTop{ 0, 0 };
-	Point botRight{ 1280, 960 }; // TODO: make this not hardcoded
-	QuadTree quadTree{ leftTop, botRight };
+	Engine::Point leftTop{ 0, 0 };
+	Engine::Point botRight{ 1280, 960 }; // TODO: make this not hardcoded
+	Engine::QuadTree quadTree{ leftTop, botRight };
 
 	//// <----- TEST SCENARIO ----->  ////
 	/*
@@ -65,51 +62,51 @@ void CollisionSystem::update(double dt)
 		auto velocityComponent = manager_->get_component<VelocityComponent>(entity);
 		auto roomComponent = manager_->get_component<RoomComponent>(entity);
 
-			int x = positionComponent->x;
-			int y = positionComponent->y;
-			if (velocityComponent != nullptr) {
-				x = positionComponent->x + velocityComponent->dx;
-				y = positionComponent->y + velocityComponent->dy;
-			}
-
-
-			quadTree.insert(new Node{ Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
+		int x = positionComponent->x;
+		int y = positionComponent->y;
+		if (velocityComponent != nullptr) {
+			x = positionComponent->x + velocityComponent->dx;
+			y = positionComponent->y + velocityComponent->dy;
 		}
 
-		std::vector<std::tuple<Node*, Node*>> collisions = quadTree.get_collisions();
 
-		for (auto const& node_tuple : collisions) {
-			Node* first_node = std::get<0>(node_tuple);
-			Node* second_node = std::get<1>(node_tuple);
+		quadTree.insert(new Engine::Node{ Engine::Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
+	}
 
-			//handle collision
-			//gebruikt nu entity 0 omdat er nog test data in staat
+	std::vector<std::tuple<Engine::Node*, Engine::Node*>> collisions = quadTree.get_collisions();
 
-			auto collisionComponent = manager_->get_component<CollisionComponent>(first_node->id);
+	for (auto const& node_tuple : collisions) {
+		Engine::Node* first_node = std::get<0>(node_tuple);
+		Engine::Node* second_node = std::get<1>(node_tuple);
 
-      update_velocity(first_node, second_node);
-      if (collisionComponent != nullptr && collisionComponent->collisionHandler != nullptr) {
-          collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
-      }
-    }
+		//handle collision
+		//gebruikt nu entity 0 omdat er nog test data in staat
 
-		//// <----- VISUAL DEMO OF QUADTREE ----->  ////
-		std::vector<std::tuple<Point, Point>> bounds = quadTree.get_bounds();
-		for (auto const& point_tuple : bounds) {
-			int x = std::get<0>(point_tuple).x;
-			int y = std::get<0>(point_tuple).y;
+		auto collisionComponent = manager_->get_component<CollisionComponent>(first_node->id);
 
-			int width = std::get<1>(point_tuple).x - std::get<0>(point_tuple).x;
-			int height = std::get<1>(point_tuple).y - std::get<0>(point_tuple).y;
-
-			Engine::AddRectangle(x, y, width, height);
+		update_velocity(first_node, second_node);
+		if (collisionComponent != nullptr && collisionComponent->collisionHandler != nullptr) {
+			collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
 		}
+	}
+
+	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
+	std::vector<std::tuple<Engine::Point, Engine::Point>> bounds = quadTree.get_bounds();
+	for (auto const& point_tuple : bounds) {
+		int x = std::get<0>(point_tuple).x;
+		int y = std::get<0>(point_tuple).y;
+
+		int width = std::get<1>(point_tuple).x - std::get<0>(point_tuple).x;
+		int height = std::get<1>(point_tuple).y - std::get<0>(point_tuple).y;
+
+		Engine::AddRectangle(x, y, width, height);
+	}
 
 	//Engine::RenderRectangles();
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
 }
 
-void CollisionSystem::update_velocity(Node* first_node, Node* second_node) {
+void CollisionSystem::update_velocity(Engine::Node* first_node, Engine::Node* second_node) {
 	auto first_node_velocity_component = manager_->get_component<VelocityComponent>(first_node->id);
 	auto first_node_position_component = manager_->get_component<PositionComponent>(first_node->id);
 	auto second_node_velocity_component = manager_->get_component<VelocityComponent>(second_node->id);
@@ -128,8 +125,8 @@ void CollisionSystem::update_velocity(Node* first_node, Node* second_node) {
 		return;
 	}
 
-	
-	if (first_node_velocity_component != nullptr) {
+
+	if (first_node_velocity_component != nullptr && second_node_position_component != nullptr) {
 		// Top bottom collisiondetection first node
 		if (first_node_velocity_component->dx > 0) {
 			if ((first_node_position_component->x + first_node->width) >= (second_node_position_component->x)) {
@@ -184,7 +181,7 @@ void CollisionSystem::update_velocity(Node* first_node, Node* second_node) {
 			}
 		}
 		else if (second_node_velocity_component->dy < 0) {
-			if ((second_node_position_component->y) <= (first_node_position_component->y + first_node->height)) {
+			if (second_node_position_component->y <= first_node_position_component->y + first_node->height) {
 				second_node_position_component->y = first_node_position_component->y + first_node->height;
 				second_node_velocity_component->dy = 0;
 			}

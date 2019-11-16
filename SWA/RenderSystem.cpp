@@ -10,7 +10,7 @@
 #include "DamagingComponent.h"
 #include "HealthComponent.h"
 
-RenderSystem::RenderSystem(EntityManager* manager) 
+RenderSystem::RenderSystem(Engine::EntityManager<Component>* manager)
 	: BaseSystem(manager) {
 }
 

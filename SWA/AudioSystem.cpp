@@ -1,39 +1,40 @@
 #include "AudioSystem.h"
 #include "UserInput.h"
 #include "KeyBindingSingleton.h"
+#include "Audio.h"
 
-AudioSystem::AudioSystem(EntityManager* manager) : BaseSystem(manager) 
+AudioSystem::AudioSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
 {}
 
 void AudioSystem::update(double dt)
 {
-	for (auto i = KeyBindingSingleton::get_instance()->keys_down.begin(); i != KeyBindingSingleton::get_instance()->keys_down.end(); ++i)
+	for (auto& i : KeyBindingSingleton::get_instance()->keys_down)
 	{
-		if (i->first.compare("high.wav") == 0) {
-			if (i->second) {
+		if (i.first == "high.wav") {
+			if (i.second) {
 				Engine::PlayAudio("high.wav");
-				i->second = false;
+				i.second = false;
 			}
 		}
 
-		if (i->first.compare("medium.wav") == 0) {
-			if (i->second) {
+		if (i.first == "medium.wav") {
+			if (i.second) {
 				Engine::PlayAudio("medium.wav");
-				i->second = false;
+				i.second = false;
 			}
 		}
 
-		if (i->first.compare("low.wav") == 0) {
-			if (i->second) {
+		if (i.first == "low.wav") {
+			if (i.second) {
 				Engine::PlayAudio("low.wav");
-				i->second = false;
+				i.second = false;
 			}
 		}
 
-		if (i->first.compare("scratch.wav") == 0) {
-			if (i->second) {
+		if (i.first == "scratch.wav") {
+			if (i.second) {
 				Engine::PlayAudio("scratch.wav");
-				i->second = false;
+				i.second = false;
 			}
 		}
 	}
