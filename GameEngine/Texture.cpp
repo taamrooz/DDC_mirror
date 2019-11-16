@@ -3,7 +3,6 @@
 #include "SDL_image.h"
 #include <iostream>
 
-
 Texture::Texture(SDL_Renderer *renderer) : m_texture_(nullptr), m_width_(0), m_height_(0), renderer_(renderer){ }
 
 Texture::~Texture() noexcept
@@ -42,11 +41,11 @@ bool Texture::load_from_file(std::string path)
 	free();
 
 	//The final texture
-	SDL_Texture* newTexture = NULL;
+	SDL_Texture* newTexture = nullptr;
 
 	//Load image at specified path
 	SDL_Surface* loadedSurface = IMG_Load(("./assets/" + path).c_str());
-	if (loadedSurface == NULL)
+	if (loadedSurface == nullptr)
 	{
 		printf("Unable to load image %s! SDL_image Error: %s\n", ("./assets/" + path).c_str(), IMG_GetError());
 	}
@@ -56,7 +55,7 @@ bool Texture::load_from_file(std::string path)
 		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 		//Create texture from surface pixels
 		newTexture = SDL_CreateTextureFromSurface(renderer_, loadedSurface);
-		if (newTexture == NULL)
+		if (newTexture == nullptr)
 		{
 			printf("Unable to create texture from %s! SDL Error: %s\n", ("./assets/" + path).c_str(), SDL_GetError());
 		}
@@ -72,7 +71,7 @@ bool Texture::load_from_file(std::string path)
 	SDL_FreeSurface(loadedSurface);
 	//Return success
 	m_texture_ = newTexture;
-	return m_texture_ != NULL;
+	return m_texture_ != nullptr;
 }
 
 void Texture::free()
@@ -110,7 +109,7 @@ void Texture::render(int x, int y, SDL_Rect* clip, double scale, SDL_RendererFli
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, m_width_, m_height_ };
 	//Set clip rendering dimensions
-	if (clip != NULL)
+	if (clip != nullptr)
 	{
 		renderQuad.w = clip->w * scale;
 		renderQuad.h = clip->h * scale;
