@@ -27,9 +27,9 @@ void InputSystem::update(double dt)
 	{
 		if (keycode == SDLK_q)
 		{
-			Engine::StopMusic();
+			Engine::stop_music();
 			core_->scene_manager_->pop_scene();
-			Engine::PlayMusic("mainmenu.wav");
+			Engine::play_music("mainmenu.wav");
 			break;
 		}
 		if (KeyBindingSingleton::get_instance()->keybindings.find(keycode) != KeyBindingSingleton::get_instance()->keybindings.end()) {

@@ -12,28 +12,28 @@ void AudioSystem::update(double dt)
 	{
 		if (i.first == "high.wav") {
 			if (i.second) {
-				Engine::PlayAudio("high.wav");
+				Engine::play_audio("high.wav");
 				i.second = false;
 			}
 		}
 
 		if (i.first == "medium.wav") {
 			if (i.second) {
-				Engine::PlayAudio("medium.wav");
+				Engine::play_audio("medium.wav");
 				i.second = false;
 			}
 		}
 
 		if (i.first == "low.wav") {
 			if (i.second) {
-				Engine::PlayAudio("low.wav");
+				Engine::play_audio("low.wav");
 				i.second = false;
 			}
 		}
 
 		if (i.first == "scratch.wav") {
 			if (i.second) {
-				Engine::PlayAudio("scratch.wav");
+				Engine::play_audio("scratch.wav");
 				i.second = false;
 			}
 		}

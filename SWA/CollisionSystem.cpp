@@ -99,7 +99,7 @@ void CollisionSystem::update(double dt)
 		int width = std::get<1>(point_tuple).x - std::get<0>(point_tuple).x;
 		int height = std::get<1>(point_tuple).y - std::get<0>(point_tuple).y;
 
-		Engine::AddRectangle(x, y, width, height);
+		Engine::add_rectangle(x, y, width, height);
 	}
 
 	//Engine::RenderRectangles();

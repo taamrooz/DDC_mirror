@@ -18,7 +18,7 @@ void RenderSystem::update(double dt)
 {
 	//Check if new tileset needs to be loaded
 	if (TileSetSingleton::get_instance()->reload) {
-		TileSetSingleton::get_instance()->tilemap = Engine::LoadTileset(TileSetSingleton::get_instance()->path);
+		TileSetSingleton::get_instance()->tilemap = Engine::load_tileset(TileSetSingleton::get_instance()->path);
 		TileSetSingleton::get_instance()->reload = false;
 	}
 
@@ -27,7 +27,7 @@ void RenderSystem::update(double dt)
 		auto tile_component = manager_->get_component<TileComponent>(entityid);
 		auto room_component = manager_->get_component<RoomComponent>(entityid);
 
-		Engine::RenderTile(
+		Engine::render_tile(
 			tile_component->x_pos,
 			tile_component->y_pos,
 			tile_component->width,
@@ -44,12 +44,12 @@ void RenderSystem::update(double dt)
 		auto position_component = manager_->get_component<PositionComponent>(entityid);
 		if(animation_component->animations.find(animation_component->currentState) != animation_component->animations.end())
 		{
-			Engine::UpdateAnimation(&animation_component->animations.at(animation_component->currentState), position_component->x, position_component->y, animation_component->flip_horizontally);
+			Engine::update_animation(&animation_component->animations.at(animation_component->currentState), position_component->x, position_component->y, animation_component->flip_horizontally);
 		}else
 		{
-			Engine::UpdateAnimation(&animation_component->animations.at(animation_component->animations.begin()->first), position_component->x, position_component->y, animation_component->flip_horizontally);
+			Engine::update_animation(&animation_component->animations.at(animation_component->animations.begin()->first), position_component->x, position_component->y, animation_component->flip_horizontally);
 		}
-		if (animation_component->lock_until < Engine::GetTicks()) {
+		if (animation_component->lock_until < Engine::get_ticks()) {
 			animation_component->currentState = State::DEFAULT;
 		}
 	}
@@ -62,7 +62,7 @@ void RenderSystem::update(double dt)
 
 		if (health_component->current_health < health_component->max_health) {
 			bool friendly = character_component != nullptr;
-			Engine::RenderHealthBar(position_component->x, position_component->y, friendly, health_component->max_health, health_component->current_health);
+			Engine::render_health_bar(position_component->x, position_component->y, friendly, health_component->max_health, health_component->current_health);
 		}
 	}
 }

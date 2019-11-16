@@ -31,7 +31,10 @@ bool Texture::load_text(std::string font, int font_size, SDL_Color color, std::s
 	m_height_ = surface->h;
 	m_width_ = surface->w;
 	TTF_CloseFont(ttf_font);
+#ifdef _DEBUG
+#else
 	SDL_FreeSurface(surface);
+#endif
 	return true;
 }
 
@@ -68,7 +71,10 @@ bool Texture::load_from_file(std::string path)
 		}
 
 	}
+#ifdef _DEBUG
+#else
 	SDL_FreeSurface(loadedSurface);
+#endif
 	//Return success
 	m_texture_ = newTexture;
 	return m_texture_ != nullptr;

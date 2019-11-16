@@ -7,7 +7,7 @@
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 
-	int currentTick = Engine::GetTicks();
+	int currentTick = Engine::get_ticks();
 	if (health->invulnerable_until < currentTick) {
 		std::cout << "HIT" << std::endl;
 		health->current_health -= dmg->damage_amount;
@@ -47,7 +47,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 	if (dmg != nullptr && ani != nullptr) {
 		
 		ani->currentState = State::HIT;
-		ani->lock_until = Engine::GetTicks() + 250;
+		ani->lock_until = Engine::get_ticks() + 250;
 
 		const auto health = manager->get_component<HealthComponent>(entity1);
 		if(health != nullptr)
@@ -69,7 +69,7 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::Ent
 	if (dmg != nullptr) {
 		auto ani = manager->get_component<AnimationComponent>(entity1);
 		ani->currentState = State::HIT;
-		ani->lock_until = Engine::GetTicks() + 250;
+		ani->lock_until = Engine::get_ticks() + 250;
 
 		auto health = manager->get_component<HealthComponent>(entity1);
 		DamageHandler(health, dmg);

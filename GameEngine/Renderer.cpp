@@ -9,7 +9,7 @@ SDL_Window* window;
 SDL_Renderer* renderer;
 std::vector<SDL_Rect> rectangles;
 
-bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint32 height) {
+bool Engine::init_renderer(std::string title, bool fullscreen, Uint32 width, Uint32 height) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		std::cout << "Unable to initialize SDL" << std::endl;
@@ -48,7 +48,7 @@ bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint
 	return true;
 }
 
-Animation* Engine::LoadAnimation(std::string path, int frames) {
+Animation* Engine::load_animation(std::string path, int frames) {
 
 	auto WALKING_ANIMATION_FRAMES = frames;
 	auto gSpriteClips = std::vector<SDL_Rect>(WALKING_ANIMATION_FRAMES);
@@ -57,7 +57,7 @@ Animation* Engine::LoadAnimation(std::string path, int frames) {
 	texture->free();
 
 	//Load media
-	if (!LoadSpriteSheet(path, animation))
+	if (!load_sprite_sheet(path, animation))
 	{
 		printf("Failed to load media!\n");
 	}
@@ -65,21 +65,21 @@ Animation* Engine::LoadAnimation(std::string path, int frames) {
 	return animation;
 }
 
-Texture* Engine::LoadTileset(std::string path)
+Texture* Engine::load_tileset(std::string path)
 {
 	Texture* texture = new Texture(renderer);
 	texture->load_from_file(path);
 	return texture;
 }
 
-void Engine::RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture)
+void Engine::render_tile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture)
 {
 	SDL_Rect* clip = new SDL_Rect{ xclip, yclip, width, height };
 	texture->render(xpos, ypos, clip);
 	delete clip;
 }
 
-bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
+bool Engine::load_sprite_sheet(std::string path, Animation* animation)
 {
 	//Loading success flag
 	bool success = true;
@@ -105,7 +105,7 @@ bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
 	return success;
 }
 
-Texture* Engine::LoadText(std::string path, uint32_t font_size, SDL_Color color, const char* text)
+Texture* Engine::load_text(std::string path, uint32_t font_size, SDL_Color color, const char* text)
 {
 	auto* texture = new Texture(renderer);
 	texture->load_text(std::move(path), font_size, color, text);
@@ -121,31 +121,26 @@ Timer frameTimer{};
 std::string timeText;
 int countedFrames = 0;
 
-int Engine::PreUpdate() {
+int Engine::pre_update() {
 	if (countedFrames > 600)
 	{
 		countedFrames = 0;
 		frameTimer.Stop();
 	}
 	if (!frameTimer.IsStarted())
-		frameTimer.Start();	
-	
+		frameTimer.Start();
+
 	auto frameStart = SDL_GetTicks();
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-	//SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
 	return frameStart;
 }
 
-void Engine::Clear()
-{
-	SDL_RenderClear(renderer);
-}
-
-Uint32 Engine::GetTicks() {
+Uint32 Engine::get_ticks() {
 	return SDL_GetTicks();
 }
 
-void Engine::Render(int framestart) {
+void Engine::render(int framestart) {
 	float avgFPS = countedFrames / (frameTimer.GetTicks() / 1000.f);
 	if (avgFPS > 2000000)
 	{
@@ -160,7 +155,7 @@ void Engine::Render(int framestart) {
 	else
 		timeText += std::to_string(59);
 
-	Texture* gFPSTextTexture = Engine::LoadText("manaspc.ttf", 18, { 127,255,0, 255 }, timeText.c_str());;
+	Texture* gFPSTextTexture = Engine::load_text("manaspc.ttf", 18, { 127,255,0, 255 }, timeText.c_str());;
 
 	//Render textures
 	gFPSTextTexture->render(kFPSCounterPositionOffset, kFPSCounterPositionOffset, 
@@ -177,7 +172,7 @@ void Engine::Render(int framestart) {
 	}
 }
 
-void Engine::UpdateAnimation(Animation* a, double x, double y, bool flip_horizontally)
+void Engine::update_animation(Animation* a, double x, double y, bool flip_horizontally)
 {
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 
@@ -186,12 +181,12 @@ void Engine::UpdateAnimation(Animation* a, double x, double y, bool flip_horizon
 	a->UpdateAnimation(x, y, flip);
 }
 
-void Engine::RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip)
+void Engine::render_texture(Texture* texture, int x, int y, SDL_Rect* clip)
 {
 	texture->render(x, y, clip);
 }
 
-void Engine::RenderHealthBar(int x, int y, bool friendly, int max_health, int current_health) {
+void Engine::render_health_bar(int x, int y, bool friendly, int max_health, int current_health) {
 	if (current_health <= 0) return;
 
 	if (friendly) {
@@ -215,7 +210,7 @@ void Engine::RenderHealthBar(int x, int y, bool friendly, int max_health, int cu
 	delete health_bar;
 }
 
-void Engine::DestroyRenderer() {
+void Engine::destroy_renderer() {
 	rectangles.clear();
 	if (renderer != nullptr)
 	{
@@ -234,7 +229,7 @@ void Engine::DestroyRenderer() {
 
 
 
-void Engine::AddRectangle(int x, int y, int w, int h)
+void Engine::add_rectangle(int x, int y, int w, int h)
 {
 	SDL_Rect rect;
 	rect.x = x;
@@ -244,7 +239,7 @@ void Engine::AddRectangle(int x, int y, int w, int h)
 	rectangles.push_back(rect);
 }
 
-void Engine::RenderRectangles() 
+void Engine::render_rectangles() 
 {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 

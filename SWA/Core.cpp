@@ -65,7 +65,7 @@ void Core::update()
 			system->update(1);
 
 			if (is_paused) {
-				Engine::StopMusic();
+				Engine::stop_music();
 				is_paused = false;
 				scene_manager_->push_scene();
 				scene_manager_->push_scene();
@@ -82,10 +82,10 @@ void Core::update()
 
 void Core::render()
 {
-	auto timer = Engine::PreUpdate();
+	auto timer = Engine::pre_update();
 	//Engine::Clear();
 	update();
-	Engine::Render(timer);
+	Engine::render(timer);
 }
 
 void Core::cleanup()

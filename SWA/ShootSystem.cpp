@@ -5,6 +5,8 @@
 #include "CharacterComponent.h"
 #include "CollisionComponent.h"
 #include "PositionComponent.h"
+#include "RoomSingleton.h"
+#include "RoomComponent.h"
 
 ShootSystem::ShootSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {
 }
@@ -58,7 +60,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 	auto dmg = std::make_unique<DamagingComponent>(1, false);
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
 
-	Uint32 ticks = Engine::GetTicks();
+	Uint32 ticks = Engine::get_ticks();
 	if (ticks - shoot->last_shot >= shoot->fire_rate) {
 		auto position = manager_->get_component<PositionComponent>(entity);
 		auto collision = manager_->get_component<CollisionComponent>(entity);
@@ -68,7 +70,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 		auto vComponent = std::make_unique<VelocityComponent>(xV, yV);
 		auto pComponent = std::make_unique<PositionComponent>(x, y);
 		std::map<State, Animation> animations;
-		animations.insert({ State::DEFAULT, *Engine::LoadAnimation("Projectile.png", 1) });
+		animations.insert({ State::DEFAULT, *Engine::load_animation("Projectile.png", 1) });
 		animations.at(State::DEFAULT).scale = 2;
 		auto aComponent = std::make_unique<AnimationComponent>(animations);
 		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size * 2, shoot->bullet_size * 2, BulletCollisionHandler, entity);
@@ -78,7 +80,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 		manager_->add_component_to_entity(id, std::move(cComponent));
 		manager_->add_component_to_entity(id, std::move(dmg));
 		manager_->add_component_to_entity(id, std::move(room));
-		shoot->last_shot = Engine::GetTicks();
+		shoot->last_shot = Engine::get_ticks();
 	}
 	
 
