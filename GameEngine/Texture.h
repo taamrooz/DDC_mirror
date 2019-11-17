@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL.h>
+#include "SDL.h"
 #include <string>
 
 #ifdef ENGINE_EXPORTS
@@ -25,13 +25,13 @@ public:
 	void free();
 
 	//Set color modulation
-	void set_color(Uint8 red, Uint8 green, Uint8 blue);
+	void set_color(uint8_t red, uint8_t green, uint8_t blue);
 
 	//Set blending
 	void set_blend_mode(SDL_BlendMode blending);
 
 	//Set alpha modulation
-	void set_alpha(Uint8 alpha);
+	void set_alpha(uint8_t alpha);
 
 	//Renders texture at given point
 	void render(int x, int y, SDL_Rect* clip, double scale = 1, SDL_RendererFlip flip = SDL_FLIP_NONE, double angle = 0.0);

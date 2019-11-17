@@ -5,6 +5,7 @@
 #include "VelocityComponent.h"
 #include "KeyBindingSingleton.h"
 #include "AnimationComponent.h"
+#include "Renderer.h"
 
 MoveCharacterSystem::MoveCharacterSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {
 }

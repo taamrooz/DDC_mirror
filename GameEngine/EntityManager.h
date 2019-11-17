@@ -17,14 +17,14 @@ namespace Engine {
 
 	public:
 		template<typename C>
-		void remove_component_from_entity(const uint32_t id)
+		void remove_component_from_entity(uint32_t id)
 		{
 			const auto type = typeid(C).hash_code();
 			components_by_class_[type].erase(id);
 		}
 
 		template<typename C>
-		C* get_component(const uint32_t id) const
+		C* get_component(uint32_t id) const
 		{
 			const auto type = typeid(C).hash_code();
 			if (components_by_class_.find(type) != components_by_class_.end() && components_by_class_.find(type)->second.find(id) != components_by_class_.find(type)->second.end())
@@ -85,14 +85,14 @@ namespace Engine {
 			return id_;
 		}
 
-		void add_component_to_entity(const uint32_t id, std::unique_ptr<T> comp)
+		void add_component_to_entity(uint32_t id, std::unique_ptr<T> comp)
 		{
 			const auto& ref = *comp;
 			const auto type = typeid(*&ref).hash_code();
 			components_by_class_[type].insert_or_assign(id, std::move(comp));
 		}
 
-		void remove_entity(const uint32_t id)
+		void remove_entity(uint32_t id)
 		{
 			const auto i = std::find(entities_.begin(), entities_.end(), id);
 			for (auto& comp : components_by_class_)
@@ -101,7 +101,5 @@ namespace Engine {
 			}
 			entities_.erase(i);
 		}
-
-
 	};
 }

@@ -12,13 +12,15 @@
 #include "RoomComponent.h"
 #include "RoomSingleton.h"
 #include "DamagingComponent.h"
+#include "Renderer.h"
+
 ComponentFactory::ComponentFactory() {
 
 }
 
 ComponentFactory* ComponentFactory::instance_ = 0;
 
-enum string_code {
+enum class string_code {
 	cPlayer,
 	cWall,
 	cChest,
@@ -27,12 +29,12 @@ enum string_code {
 };
 
 string_code Convert(std::string const& inString) {
-	if (inString == "player") return cPlayer;
-	if (inString == "wall") return cWall;
-	if (inString == "chest") return cChest;
-	if (inString == "ladder") return cladder;
-	if (inString == "monster") return cMonster;
-	return cWall;
+	if (inString == "player") return string_code::cPlayer;
+	if (inString == "wall") return string_code::cWall;
+	if (inString == "chest") return string_code::cChest;
+	if (inString == "ladder") return string_code::cladder;
+	if (inString == "monster") return string_code::cMonster;
+	return string_code::cWall;
 }
 
 ComponentFactory* ComponentFactory::get_instance() {
@@ -45,19 +47,19 @@ ComponentFactory* ComponentFactory::get_instance() {
 
 int ComponentFactory::CreateEntity(std::string name, int id, Engine::EntityManager<Component>* em) {
 	switch (Convert(name)) {
-	case cPlayer: {
+	case string_code::cPlayer: {
 		AddPlayerComponents(id, em);
 		break;
 	}
-	case cChest: {
+	case string_code::cChest: {
 		AddChestComponents(id, em);
 		break;
 	}
-	case cladder: {
+	case string_code::cladder: {
 		AddLadderComponents(id, em);
 		break;
 	}
-	case cMonster: {
+	case string_code::cMonster: {
 		AddEnemyComponents(id, em);
 		break;
 	}

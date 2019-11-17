@@ -13,7 +13,7 @@
 #include "SceneManager.h"
 #include "Audio.h"
 
-Core::Core(SceneManager* manager) : BaseScene(manager) {}
+Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
 
 
@@ -30,29 +30,6 @@ bool Core::init()
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
 
-	//const auto id = manager_->create_entity();
-	//const auto id2 = manager_->create_entity();
-	//
-	//auto v1 = std::make_unique<VelocityComponent>(8, 8);
-	//auto p1 = std::make_unique<PositionComponent>(50, 600);
-	//auto v2 = std::make_unique<VelocityComponent>(0, 0);
-	//auto p2 = std::make_unique<PositionComponent>(100, 250);
-	//auto a1 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 3);
-	//auto a2 = std::make_unique<AnimationComponent>("Animations/wizard_m_run.png", 4, 3);
-	//auto q1 = std::make_unique<CollisionComponent>(48, 60, PlayerCollisionHandler);
-	//auto q2 = std::make_unique<CollisionComponent>(48, 60, PlayerCollisionHandler);
-	//auto s1 = std::make_unique<ShootingComponent>(7, 200);
-	//
-	//manager_->add_component_to_entity(id, std::move(v1));
-	//manager_->add_component_to_entity(id, std::move(p1));
-	//manager_->add_component_to_entity(id2, std::move(v2));
-	//manager_->add_component_to_entity(id2, std::move(p2));
-	//manager_->add_component_to_entity(id2, std::move(a2));
-	//manager_->add_component_to_entity(id2, std::move(q2));
-	//manager_->add_component_to_entity(id, std::move(a1));
-	//manager_->add_component_to_entity(id, std::move(q1));
-	//manager_->add_component_to_entity(id, std::move(s1));
-
 	return true;
 }
 
@@ -60,17 +37,14 @@ void Core::update()
 {
 	for (auto& system : systems_)
 	{
-		if(is_running)
+		if(is_running_)
 		{
 			system->update(1);
 
-			if (is_paused) {
+			if (is_paused_) {
 				Engine::stop_music();
-				is_paused = false;
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
-				scene_manager_->render();
+				is_paused_ = false;
+				scene_manager_->push_scene().push_scene().push_scene();
 			}
 		}else
 		{
@@ -98,5 +72,15 @@ void Core::cleanup()
 }
 
 void Core::StopGameLoop() {
-	is_running = false;
+	is_running_ = false;
+}
+
+bool Core::get_is_paused() const
+{
+	return is_paused_;
+}
+
+void Core::toggle_pause()
+{
+	is_paused_ = !is_paused_;
 }

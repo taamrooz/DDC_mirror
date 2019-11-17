@@ -8,7 +8,7 @@
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
 #include "RoomComponent.h"
-#include "DamagingComponent.h"
+
 RoomSystem::RoomSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
 {}
 
@@ -34,7 +34,6 @@ void RoomSystem::LoadObjects() {
 	else
 	{
 		std::string name;
-		char data[100];
 		int x = -1, y = -1, count = 0;
 
 		std::stringstream buffer;

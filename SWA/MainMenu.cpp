@@ -6,7 +6,7 @@
 
 MainMenu::~MainMenu() = default;
 
-MainMenu::MainMenu(SceneManager* manager) : BaseScene(manager) { }
+MainMenu::MainMenu(Engine::SceneManager* manager) : BaseScene(manager) { }
 
 void MainMenu::render()
 {
@@ -48,15 +48,13 @@ void MainMenu::render()
 void MainMenu::input()
 {
 	const int k_keydown = 0;
-	const int k_keyup = 1;
 	const int k_stop = 2;
 
 	auto inputs = Engine::GetInputs();
 
 	//Quit if user wants to exit
 	if (!std::get<k_stop>(inputs)) {
-		//core->StopGameLoop();
-		is_running = false;
+		is_running_ = false;
 		return;
 	}
 
@@ -89,23 +87,18 @@ void MainMenu::input()
 			case 1:
 				break;
 			case 2:
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
-				scene_manager_->render();
+				scene_manager_->push_scene().push_scene();
 				break;
 			case 3:
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
-				scene_manager_->render();
+				scene_manager_->push_scene().push_scene().push_scene();
 				break;
 			case 4:
-				is_running = false;
+				is_running_ = false;
 				scene_manager_->pop_scene();
 				break;
 			}
 			
-			if (!is_running) {
+			if (!is_running_) {
 				break;
 			}
 		}
@@ -125,6 +118,7 @@ bool MainMenu::init()
 		return false;
 	}
 	if (!Engine::init_audio()) {
+		Engine::destroy_renderer();
 		return false;
 	}
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));

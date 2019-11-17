@@ -5,7 +5,7 @@
 #include "Animation.h"
 
 class MainMenu :
-	virtual public BaseScene
+	virtual public Engine::BaseScene
 {
 private:
 	std::unique_ptr<Texture> title_ = nullptr;
@@ -20,7 +20,7 @@ private:
 	uint8_t current_action_ = 0;
 public:
 	~MainMenu();
-	MainMenu(SceneManager* manager);
+	MainMenu(Engine::SceneManager* manager);
 	void render() override;
 	void cleanup() override;
 	bool init() override;

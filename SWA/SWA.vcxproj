@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\GameEngine;C:\SDL2_mixer-2.0.4\include;C:\SDL2_image-2.0.5\include;C:\SDL2-2.0.10\include;C:\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>.\;lib\;C:\SDL2_mixer-2.0.4\lib\x64;C:\SDL2_image-2.0.5\lib\x64;C:\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)GameEngine;C:\SDL2-2.0.10\include;C:\SDL2_mixer-2.0.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)build\$(IntDir);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -96,18 +96,22 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\GameEngine;C:\SDL2_mixer-2.0.4\include;C:\SDL2-2.0.10\include;C:\SDL2_image-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GameEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>GameEngine.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\SDL2_mixer-2.0.4\lib\x64;C:\SDL2-2.0.10\lib\x64;C:\SDL2_image-2.0.5\lib\x64;lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GameEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
       </Command>
     </PostBuildEvent>
     <ResourceCompile />
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -148,7 +152,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
-    <ClCompile Include="BaseSystem.cpp" />
     <ClCompile Include="CollisionHandlers.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -161,7 +164,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Pause.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
@@ -189,10 +191,8 @@
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="BaseScene.h" />
     <ClInclude Include="RoomComponent.h" />
     <ClInclude Include="Pause.h" />
-    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="MoveCharacterSystem.h" />
     <ClInclude Include="MoveSystem.h" />

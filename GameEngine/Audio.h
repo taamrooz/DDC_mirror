@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <SDL_mixer.h>
+#include "SDL_mixer.h"
 
 #ifdef ENGINE_EXPORTS
 #define ENGINE_API __declspec(dllexport)

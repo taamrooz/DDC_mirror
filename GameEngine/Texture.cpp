@@ -31,10 +31,7 @@ bool Texture::load_text(std::string font, int font_size, SDL_Color color, std::s
 	m_height_ = surface->h;
 	m_width_ = surface->w;
 	TTF_CloseFont(ttf_font);
-#ifdef _DEBUG
-#else
 	SDL_FreeSurface(surface);
-#endif
 	return true;
 }
 
@@ -71,10 +68,7 @@ bool Texture::load_from_file(std::string path)
 		}
 
 	}
-#ifdef _DEBUG
-#else
 	SDL_FreeSurface(loadedSurface);
-#endif
 	//Return success
 	m_texture_ = newTexture;
 	return m_texture_ != nullptr;
@@ -92,7 +86,7 @@ void Texture::free()
 	}
 }
 
-void Texture::set_color(Uint8 red, Uint8 green, Uint8 blue)
+void Texture::set_color(uint8_t red, uint8_t green, uint8_t blue)
 {
 	//Modulate texture rgb
 	SDL_SetTextureColorMod(m_texture_, red, green, blue);
@@ -104,7 +98,7 @@ void Texture::set_blend_mode(SDL_BlendMode blending)
 	SDL_SetTextureBlendMode(m_texture_, blending);
 }
 
-void Texture::set_alpha(Uint8 alpha)
+void Texture::set_alpha(uint8_t alpha)
 {
 	//Modulate texture alpha
 	SDL_SetTextureAlphaMod(m_texture_, alpha);

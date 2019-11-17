@@ -1,15 +1,15 @@
 #include "Renderer.h"
 #include <iostream>
-#include <SDL_ttf.h>
+#include "SDL_ttf.h"
 #include "Timer.h"
 #include <sstream>
-#include <SDL_image.h>
+#include "SDL_image.h"
 
 SDL_Window* window;
 SDL_Renderer* renderer;
 std::vector<SDL_Rect> rectangles;
 
-bool Engine::init_renderer(std::string title, bool fullscreen, Uint32 width, Uint32 height) {
+bool Engine::init_renderer(std::string title, bool fullscreen, uint32_t width, uint32_t height) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		std::cout << "Unable to initialize SDL" << std::endl;
@@ -136,7 +136,7 @@ int Engine::pre_update() {
 	return frameStart;
 }
 
-Uint32 Engine::get_ticks() {
+uint32_t Engine::get_ticks() {
 	return SDL_GetTicks();
 }
 
@@ -174,9 +174,7 @@ void Engine::render(int framestart) {
 
 void Engine::update_animation(Animation* a, double x, double y, bool flip_horizontally)
 {
-	SDL_RendererFlip flip = SDL_FLIP_NONE;
-
-	flip = flip_horizontally ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+	const SDL_RendererFlip flip = flip_horizontally ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
 	a->UpdateAnimation(x, y, flip);
 }

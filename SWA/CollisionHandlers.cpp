@@ -4,6 +4,7 @@
 #include "RoomSingleton.h"
 #include "LadderComponent.h"
 #include "AnimationComponent.h"
+#include "Renderer.h"
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 

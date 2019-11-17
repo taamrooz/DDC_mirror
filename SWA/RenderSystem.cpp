@@ -6,8 +6,6 @@
 #include "PositionComponent.h"
 #include "TileSetSingleton.h"
 #include "RoomComponent.h"
-#include "RoomSingleton.h"
-#include "DamagingComponent.h"
 #include "HealthComponent.h"
 
 RenderSystem::RenderSystem(Engine::EntityManager<Component>* manager)

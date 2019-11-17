@@ -7,6 +7,10 @@
 #include "PositionComponent.h"
 #include "RoomSingleton.h"
 #include "RoomComponent.h"
+#include "DamagingComponent.h"
+#include "Renderer.h"
+#include "VelocityComponent.h"
+#include "CollisionHandlers.h"
 
 ShootSystem::ShootSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {
 }
