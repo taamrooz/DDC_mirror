@@ -48,6 +48,10 @@ namespace Engine {
 	 */
 	ENGINE_API void RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip, double scale = 1);
 	/*
+	 * Renders a healthbar on specific x and y position. Healthbar is based on its max_damage and current_damage
+	 */
+	ENGINE_API void RenderHealthBar(int x, int y, bool friendly, int max_damage, int current_damage);
+	/*
 	 * Destroys the renderer and all of its features.
 	 */
 	ENGINE_API void DestroyRenderer();
@@ -87,5 +91,9 @@ namespace Engine {
 	 * @param a The alpha value.
 	 */
 	ENGINE_API void set_render_draw_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+	/*
+	 * Toggles rendering the FPS counter.
+	 */
+	ENGINE_API void ToggleFPScounter();
 	ENGINE_API Uint32 GetTicks();
 }

@@ -1,6 +1,8 @@
 #include "Renderer.h"
 #include <iostream>
 #include <SDL_ttf.h>
+#include "Timer.h"
+#include <sstream>
 
 SDL_Window* window;
 SDL_Renderer* renderer;
@@ -38,7 +40,7 @@ bool Engine::InitRenderer(std::string title, bool fullscreen, Uint32 width, Uint
 		return false;
 	}
 
-	if(TTF_Init() < 0)
+	if (TTF_Init() < 0)
 	{
 		std::cout << TTF_GetError() << std::endl;
 		std::cout << "Unable to initialize TTF" << std::endl;
@@ -123,12 +125,25 @@ Texture* Engine::LoadText(std::string path, uint32_t font_size, SDL_Color color,
 	return texture;
 }
 
-const int FPS = 60;
-const int frameDelay = 1000 / FPS;
+const int kFPS = 60;
+const int kFPSCounterPositionOffset = 5;
+const int kframeDelay = 1000 / kFPS;
 uint32_t frameStart;
 uint32_t frameTime;
+Timer frameTimer{};
+std::string timeText;
+int countedFrames = 0;
+bool render_fps = true;
 
 int Engine::PreUpdate() {
+	if (countedFrames > 600)
+	{
+		countedFrames = 0;
+		frameTimer.Stop();
+	}
+	if (!frameTimer.IsStarted())
+		frameTimer.Start();
+
 	auto frameStart = SDL_GetTicks();
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
@@ -139,13 +154,45 @@ Uint32 Engine::GetTicks() {
 	return SDL_GetTicks();
 }
 
+void Engine::ToggleFPScounter()
+{
+	render_fps = !render_fps;
+}
+
 void Engine::Render(int framestart) {
+	float avgFPS = countedFrames / (frameTimer.GetTicks() / 1000.f);
+	if (avgFPS > 2000000)
+	{
+		avgFPS = 0;
+	}
+
+	//Set text to be rendered
+	timeText = "Average FPS: ";
+	int avg_FPS = static_cast<int>(avgFPS);
+	if (avg_FPS >= 0 && avg_FPS <= 100)
+		timeText += std::to_string(avg_FPS);
+	else
+		timeText += std::to_string(59);
+
+	Texture* gFPSTextTexture = Engine::LoadText("manaspc.ttf", 18, { 127,255,0, 255 }, timeText.c_str());;
+
+	//Render textures
+	if (render_fps) {
+		int w;
+		SDL_GL_GetDrawableSize(window, &w, nullptr);
+		auto rec = SDL_Rect{ 0,0,gFPSTextTexture->getWidth() ,gFPSTextTexture->getHeight() };
+		gFPSTextTexture->render(w - gFPSTextTexture->getWidth() - kFPSCounterPositionOffset, 0 + kFPSCounterPositionOffset,
+			&rec);
+	}
+	++countedFrames;
+
 	SDL_RenderPresent(renderer);
-	
+
+	delete gFPSTextTexture;
 	frameTime = SDL_GetTicks() - framestart;
 
-	if (frameDelay > frameTime) {
-		SDL_Delay(frameDelay - frameTime);
+	if (kframeDelay > frameTime) {
+		SDL_Delay(kframeDelay - frameTime);
 	}
 }
 
@@ -163,13 +210,37 @@ void Engine::RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip, doubl
 	texture->render(x, y, clip, scale);
 }
 
+void Engine::RenderHealthBar(int x, int y, bool friendly, int max_health, int current_health) {
+	if (current_health <= 0) return;
+
+	if (friendly) {
+		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+	}
+	else {
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	}
+
+	// Healthbar outline
+	int bar_length = 50;
+	SDL_Rect* health_bar_outline = new SDL_Rect{ x, y, bar_length, 10 };
+	SDL_RenderDrawRect(renderer, health_bar_outline);
+
+	// Current health
+	float health_bar_length = (float)current_health / (float)max_health * (float)bar_length;
+	SDL_Rect* health_bar = new SDL_Rect{ x, y, (int)health_bar_length, 10 };
+	SDL_RenderFillRect(renderer, health_bar);
+
+	delete health_bar_outline;
+	delete health_bar;
+}
+
 void Engine::DestroyRenderer() {
-	if (renderer)
+	if (renderer != nullptr)
 	{
 		SDL_DestroyRenderer(renderer);
 		renderer = nullptr;
 	}
-	if (window)
+	if (window != nullptr)
 	{
 		SDL_DestroyWindow(window);
 		window = nullptr;
@@ -191,7 +262,7 @@ void Engine::AddRectangle(int x, int y, int w, int h)
 	rectangles.push_back(rect);
 }
 
-void Engine::RenderRectangles() 
+void Engine::RenderRectangles()
 {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 

@@ -22,5 +22,5 @@ public:
 	 */
 	virtual void cleanup() = 0;
 	bool is_running = true;
-	
+	bool is_paused = false;
 };
