@@ -71,5 +71,21 @@ namespace Engine {
 	 * Renders the outline of a rectangle for the sake of representing empty tiles (Half size of what you pass to the function)
 	 */
 	ENGINE_API void RenderEmptyTile(int x, int y, int width, int height);
+	/*
+	 * Takes a screenshot of the current render target and saves it to a file indicated by "path"
+	 */
+	ENGINE_API void TakeScreenshot(int width, int height, int xpos, int ypos, const char* path);
+	/*
+	 * Draw a line between 2 points
+	 */
+	ENGINE_API void RenderLine(int x, int y, int x2, int y2);
+	/**
+	 * \brief Sets the renderer draw color.
+	 * @param r The red value.
+	 * @param g The green value.
+	 * @param b The blue value.
+	 * @param a The alpha value.
+	 */
+	ENGINE_API void set_render_draw_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 	ENGINE_API Uint32 GetTicks();
 }

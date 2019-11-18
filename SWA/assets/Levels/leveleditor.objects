@@ -1,4 +1,4 @@
-player 800 800
+chest 592 518
 chest 500 500
 chest 800 252
 chest 322 218
@@ -19,3 +19,11 @@ chest 314 480
 chest 120 668
 chest 434 650
 chest 568 818
+health_potion_small 1168 64
+health_potion_small 818 2
+health_potion_small 626 68
+health_potion_small 358 14
+health_potion_small 212 88
+health_potion_small 74 350
+health_potion_small 274 476
+health_potion_small 648 380

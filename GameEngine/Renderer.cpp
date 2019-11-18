@@ -203,3 +203,22 @@ void Engine::RenderRectangles()
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	rectangles.clear();
 }
+
+void Engine::TakeScreenshot(int width, int height, int xpos, int ypos, const char* path)
+{
+	SDL_Surface* sshot = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+	SDL_Rect rect{ xpos, ypos, width, height };
+	SDL_RenderReadPixels(renderer, &rect, sshot->format->format, sshot->pixels, sshot->pitch);
+	IMG_SavePNG(sshot, path);
+	SDL_FreeSurface(sshot);
+}
+
+void Engine::set_render_draw_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	SDL_SetRenderDrawColor(renderer, r, g, b, a);
+}
+
+void Engine::RenderLine(int x, int y, int x2, int y2)
+{
+	SDL_RenderDrawLine(renderer, x, y, x2, y2);
+}
