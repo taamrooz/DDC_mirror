@@ -25,6 +25,12 @@
     <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{2ae58d02-6acf-4e67-aaaf-173809df2483}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{8e19bd9e-0868-4307-ae18-b9fe696c41ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{54b722ac-cde6-45a3-818a-8ba41d4fdc97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -65,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="rect2d.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

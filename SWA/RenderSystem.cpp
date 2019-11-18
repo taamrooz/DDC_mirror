@@ -28,10 +28,9 @@ void RenderSystem::update(double dt)
 		Engine::render_tile(
 			tile_component->x_pos,
 			tile_component->y_pos,
-			tile_component->width,
-			tile_component->height,
-			TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][0],
-			TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][1],
+			Engine::rect2d(TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][0],
+				TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][1],
+				tile_component->width, tile_component->height),
 			TileSetSingleton::get_instance()->tilemap
 		);
 	}
@@ -60,7 +59,24 @@ void RenderSystem::update(double dt)
 
 		if (health_component->current_health < health_component->max_health) {
 			bool friendly = character_component != nullptr;
-			Engine::render_health_bar(position_component->x, position_component->y, friendly, health_component->max_health, health_component->current_health);
+			if (health_component->current_health <= 0) return;
+
+			if (friendly) {
+				Engine::set_render_draw_color(0, 255, 0, 255);
+			}
+			else {
+				Engine::set_render_draw_color(255, 0, 0, 255);
+			}
+
+			// Healthbar outline
+			int bar_length = 50;
+			Engine::rect2d health_bar_outline = { position_component->x, position_component->y, bar_length, 10 };
+			Engine::draw_rectangle(health_bar_outline);
+
+			// Current health
+			float health_bar_length = (float)health_component->current_health / (float)health_component->max_health * (float)bar_length;
+			Engine::rect2d health_bar = { position_component->x, position_component->y, (int)health_bar_length, 10 };
+			Engine::fill_rectangle(health_bar);
 		}
 	}
 }

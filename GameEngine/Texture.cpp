@@ -77,7 +77,7 @@ bool Texture::load_from_file(std::string path)
 void Texture::free()
 {
 	//Free texture if it exists
-	if (m_texture_ != nullptr)
+	if (m_texture_)
 	{
 		SDL_DestroyTexture(m_texture_);
 		m_texture_ = nullptr;
@@ -104,20 +104,20 @@ void Texture::set_alpha(uint8_t alpha)
 	SDL_SetTextureAlphaMod(m_texture_, alpha);
 }
 
-void Texture::render(int x, int y, SDL_Rect* clip, double scale, SDL_RendererFlip flip, double angle)
+void Texture::render(int x, int y, Engine::rect2d* clip, double scale, SDL_RendererFlip flip, double angle)
 {
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, m_width_, m_height_ };
 	//Set clip rendering dimensions
 	if (clip != nullptr)
 	{
-		renderQuad.w = clip->w * scale;
-		renderQuad.h = clip->h * scale;
+		renderQuad.w = clip->width() * scale;
+		renderQuad.h = clip->height() * scale;
 	}
 	SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
 	SDL_SetTextureBlendMode(m_texture_, SDL_BLENDMODE_BLEND);
 	//Render to screen
-	SDL_RenderCopyEx(renderer_, m_texture_, clip, &renderQuad, angle, nullptr, flip);
+	SDL_RenderCopyEx(renderer_, m_texture_, clip == nullptr ? nullptr : clip->unwrap(), &renderQuad, angle, nullptr, flip);
 	
 }
 

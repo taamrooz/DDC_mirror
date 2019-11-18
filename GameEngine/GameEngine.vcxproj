@@ -184,6 +184,7 @@
     <ClInclude Include="Tiling.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UserInput.h" />
+    <ClInclude Include="rect2d.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneManager.cpp" />
