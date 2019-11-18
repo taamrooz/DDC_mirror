@@ -17,34 +17,36 @@ void MainMenu::render()
 
 	Engine::UpdateAnimation(background_, 0, 0);
 	Engine::RenderTexture(title_, 250, 200, nullptr);
-	Engine::RenderTexture(start_, 500, 400, nullptr);
-	Engine::RenderTexture(settings_, 500, 500, nullptr);
-	Engine::RenderTexture(level_editor_, 500, 600, nullptr);
-	Engine::RenderTexture(quit_, 500, 700, nullptr);
-	Engine::RenderTexture(helper, 115, 800, nullptr);
-	Engine::RenderTexture(credits_, 500, 600, nullptr);
-	Engine::RenderTexture(help_, 500, 700, nullptr);
-	Engine::RenderTexture(quit_, 500, 800, nullptr);
+	Engine::RenderTexture(start_, 500, 350, nullptr);
+	Engine::RenderTexture(settings_, 500, 450, nullptr);
+	Engine::RenderTexture(level_editor_, 500, 550, nullptr);
+	Engine::RenderTexture(credits_, 500, 650, nullptr);
+	Engine::RenderTexture(help_, 500, 750, nullptr);
+	Engine::RenderTexture(quit_, 500, 850, nullptr);
 	Engine::RenderTexture(helper, 115, 900, nullptr);
 	if (current_action_ == 0)
 	{
-		Engine::RenderTexture(selector_, 480, 400, nullptr);
+		Engine::RenderTexture(selector_, 480, 350, nullptr);
 	}
 	else if (current_action_ == 1)
 	{
-		Engine::RenderTexture(selector_, 480, 500, nullptr);
+		Engine::RenderTexture(selector_, 480, 450, nullptr);
 	}
 	else if (current_action_ == 2)
 	{
-		Engine::RenderTexture(selector_, 480, 600, nullptr);
+		Engine::RenderTexture(selector_, 480, 550, nullptr);
 	}
 	else if (current_action_ == 3)
 	{
-		Engine::RenderTexture(selector_, 480, 700, nullptr);
+		Engine::RenderTexture(selector_, 480, 650, nullptr);
 	}
 	else if (current_action_ == 4)
 	{
-		Engine::RenderTexture(selector_, 480, 800, nullptr);
+		Engine::RenderTexture(selector_, 480, 750, nullptr);
+	}
+	else if (current_action_ == 5)
+	{
+		Engine::RenderTexture(selector_, 480, 850, nullptr);
 	}
 	Engine::Render(timer);
 
@@ -78,7 +80,7 @@ void MainMenu::input()
 		}
 		else if (keycode == SDLK_DOWN)
 		{
-			if (current_action_ < 4)
+			if (current_action_ < 5)
 			{
 				++current_action_;
 			}
@@ -96,15 +98,19 @@ void MainMenu::input()
 			case 2:
 				scene_manager_->push_scene();
 				scene_manager_->push_scene();
-				scene_manager_->render();
 				break;
 			case 3:
 				scene_manager_->push_scene();
 				scene_manager_->push_scene();
 				scene_manager_->push_scene();
-				scene_manager_->render();
 				break;
 			case 4:
+				scene_manager_->push_scene();
+				scene_manager_->push_scene();
+				scene_manager_->push_scene();
+				scene_manager_->push_scene();
+				break;
+			case 5:
 				is_running = false;
 				scene_manager_->pop_scene();
 				break;

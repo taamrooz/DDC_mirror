@@ -37,7 +37,7 @@ void Credits::input() {
 	{
 		if (keycode == SDLK_RETURN)
 		{
-			is_running = false;
+			scene_manager_->pop_scene();
 			scene_manager_->pop_scene();
 			scene_manager_->pop_scene();
 			break;
