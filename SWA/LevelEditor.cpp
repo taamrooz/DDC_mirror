@@ -130,7 +130,9 @@ void LevelEditor::input()
 	for (const auto& keycode : std::get<k_keydown>(inputs))
 	{
 		if (keycode == SDLK_ESCAPE)
-			scene_manager_->push_scene();
+		{
+			scene_manager_->pop_scene(); scene_manager_->pop_scene();
+		}
 
 		switch (state)
 		{
@@ -274,7 +276,7 @@ void LevelEditor::GetFiles()
 	}
 	file_names_.clear();
 	std::string path = "./assets/Levels";
-	for (const auto& entry : std::experimental::filesystem::directory_iterator(path))
+	for (const auto& entry : std::filesystem::directory_iterator(path))
 	{
 		if (entry.path().extension().string() == ".map")
 		{
@@ -371,7 +373,7 @@ bool LevelEditor::OpenFile(std::string path)
 		}
 		map.close();
 
-		path.pop_back(); path.pop_back(); path.pop_back(); path.pop_back();
+		path.erase(path.length() - 4);
 		std::ifstream obj_map("./assets/Levels/" + path + ".objects");
 		if (obj_map.fail())
 		{
