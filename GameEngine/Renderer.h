@@ -116,6 +116,10 @@ namespace Engine {
 	 * @param a The alpha value.
 	 */
 	ENGINE_API void set_render_draw_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+	/*
+	 * Toggles rendering the FPS counter.
+	 */
+	ENGINE_API void ToggleFPScounter();
 	/**
 	 * \brief Destroys the renderer and all of its features.
 	 */

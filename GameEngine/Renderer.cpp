@@ -39,7 +39,7 @@ bool Engine::init_renderer(std::string title, bool fullscreen, uint16_t width, u
 		return false;
 	}
 
-	if(TTF_Init() < 0)
+	if (TTF_Init() < 0)
 	{
 		std::cout << TTF_GetError() << std::endl;
 		std::cout << "Unable to initialize TTF" << std::endl;
@@ -167,6 +167,7 @@ uint32_t frameTime;
 Timer frameTimer{};
 std::string timeText;
 int countedFrames = 0;
+bool render_fps = true;
 
 int Engine::pre_update() {
 	if (countedFrames > 600)
@@ -181,6 +182,15 @@ int Engine::pre_update() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	return frameStart;
+}
+
+Uint32 Engine::GetTicks() {
+	return SDL_GetTicks();
+}
+
+void Engine::ToggleFPScounter()
+{
+	render_fps = !render_fps;
 }
 
 void Engine::render(int framestart) {
@@ -201,8 +211,13 @@ void Engine::render(int framestart) {
 	Texture* gFPSTextTexture = Engine::load_text("manaspc.ttf", 18, { 127,255,0, 255 }, timeText.c_str());;
 
 	//Render textures
-	gFPSTextTexture->render(kFPSCounterPositionOffset, kFPSCounterPositionOffset,
-		new rect2d{ 0,0,gFPSTextTexture->get_width() ,gFPSTextTexture->get_height() });
+	if (render_fps) {
+		int w;
+		SDL_GL_GetDrawableSize(window, &w, nullptr);
+		auto rec = rect2d{ 0,0,gFPSTextTexture->getWidth() ,gFPSTextTexture->getHeight() };
+		gFPSTextTexture->render(w - gFPSTextTexture->getWidth() - kFPSCounterPositionOffset, 0 + kFPSCounterPositionOffset,
+			&rec);
+	}
 	++countedFrames;
 
 	SDL_RenderPresent(renderer);
