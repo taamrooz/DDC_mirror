@@ -168,8 +168,9 @@ void Engine::Render(int framestart) {
 	if (render_fps) {
 		int w;
 		SDL_GL_GetDrawableSize(window, &w, nullptr);
+		auto rec = SDL_Rect{ 0,0,gFPSTextTexture->getWidth() ,gFPSTextTexture->getHeight() };
 		gFPSTextTexture->render(w - gFPSTextTexture->getWidth() - kFPSCounterPositionOffset, 0 + kFPSCounterPositionOffset,
-			new SDL_Rect{ 0,0,gFPSTextTexture->getWidth() ,gFPSTextTexture->getHeight() });
+			&rec);
 	}
 	++countedFrames;
 
