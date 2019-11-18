@@ -71,5 +71,9 @@ namespace Engine {
 	 * Renders all rectangles in the collection.
 	 */
 	ENGINE_API void RenderRectangles();
+	/*
+	 * Toggles rendering the FPS counter.
+	 */
+	ENGINE_API void ToggleFPScounter();
 	ENGINE_API Uint32 GetTicks();
 }
