@@ -373,7 +373,7 @@ bool LevelEditor::OpenFile(std::string path)
 		}
 		map.close();
 
-		path.pop_back(); path.pop_back(); path.pop_back(); path.pop_back();
+		path.erase(path.length() - 4);
 		std::ifstream obj_map("./assets/Levels/" + path + ".objects");
 		if (obj_map.fail())
 		{
