@@ -7,16 +7,20 @@
 
 enum state
 {
-	filepicker,
+	mode_selection,
+	dungeon_filepicker,
+	room_filepicker,
+	dungeon_editor,
 	tile_editor,
 	object_editor,
-	save
+	save_room,
+	save_dungeon
 };
 class LevelEditor :
 	public BaseScene
 {
 private:
-	state state = filepicker;
+	state state = room_filepicker;
 	int selected_tile_type_ = 0;
 	std::vector<TileComponent> tiles_on_grid_;
 	std::vector<TileComponent> tiles_in_toolbox_;

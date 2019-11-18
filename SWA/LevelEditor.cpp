@@ -17,10 +17,10 @@ void LevelEditor::render()
 
 	switch (state)
 	{
-	case filepicker: RenderFilePicker(); break;
+	case room_filepicker: RenderFilePicker(); break;
 	case tile_editor: RenderTileEditor(); break;
 	case object_editor: RenderObjectEditor(); break;
-	case save: RenderSave(); break;
+	case save_room: RenderSave(); break;
 	}
 
 	Engine::Render(timer);
@@ -134,8 +134,8 @@ void LevelEditor::input()
 
 		switch (state)
 		{
-		case filepicker: InputFilePicker(keycode, std::get<k_text>(inputs)); break;
-		case save: InputSave(keycode, std::get<k_text>(inputs)); break;
+		case room_filepicker: InputFilePicker(keycode, std::get<k_text>(inputs)); break;
+		case save_room: InputSave(keycode, std::get<k_text>(inputs)); break;
 		case tile_editor: InputTileEditor(keycode); break;
 		case object_editor: InputObjectEditor(keycode); break;
 		}
@@ -150,7 +150,7 @@ void LevelEditor::InputSave(SDL_Keycode keycode, std::string text)
 	if (keycode == SDLK_RETURN)
 		if (SaveFile())
 		{
-			state = filepicker;
+			state = room_filepicker;
 			Engine::StartTextInput();
 		}
 	save_file_name_.append(text);
@@ -208,7 +208,7 @@ void LevelEditor::InputObjectEditor(SDL_Keycode keycode)
 	}
 	if (keycode == SDLK_RETURN)
 	{
-		state = save;
+		state = save_room;
 		Engine::StartTextInput();
 	}
 }
