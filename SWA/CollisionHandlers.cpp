@@ -5,6 +5,7 @@
 #include "ComponentFactory.h"
 #include "ChestComponent.h"
 #include "ChestComponent.h"
+#include "InventoryComponent.h"
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 
@@ -34,13 +35,21 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 
 		auto health = manager->get_component<HealthComponent>(entity1);
 		DamageHandler(health, dmg);
-		
+
 		if (health->current_health <= 0) {
 			std::cout << "Game Over!" << std::endl;
 		}
 	}
 
 	UpdateVelocity(entity1, entity2, manager);
+}
+
+void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager) {
+	auto inv = manager->get_component<InventoryComponent>(entity2);
+	if (inv != nullptr) {
+		inv->items.push_back(entity1);
+		manager->remove_entity(entity1);
+	}
 }
 
 void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
@@ -139,7 +148,7 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* ma
 	if (charC != nullptr) {
 		auto ani = manager->get_component<AnimationComponent>(entity1);
 		ani->animations.at(ani->currentState).pause = false;
-		
+
 
 		//create drop
 		int drop = manager->create_entity();
@@ -148,7 +157,7 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* ma
 		auto cPos = manager->get_component<PositionComponent>(entity1);
 		auto cColl = manager->get_component<CollisionComponent>(entity1);
 		auto pVel = manager->get_component<VelocityComponent>(entity2);
-		auto dPos = std::make_unique<PositionComponent>(cPos->x + cColl->width / 2, cPos->y);
+		auto dPos = std::make_unique<PositionComponent>(cPos->x + cColl->width / 2 - 16, cPos->y);
 
 		auto pPos = manager->get_component<PositionComponent>(entity2);
 		auto pColl = manager->get_component<CollisionComponent>(entity2);

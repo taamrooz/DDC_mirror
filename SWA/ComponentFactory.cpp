@@ -10,6 +10,7 @@
 #include "CollisionHandlers.h"
 #include "DamagingComponent.h"
 #include "ChestComponent.h"
+#include "InventoryComponent.h"
 ComponentFactory::ComponentFactory() {
 
 }
@@ -96,12 +97,14 @@ void ComponentFactory::AddPlayerComponents(int id, EntityManager* em) {
 	auto ani = std::make_unique<AnimationComponent>(animations);
 	auto cha = std::make_unique<CharacterComponent>();
 	auto coll = std::make_unique<CollisionComponent>(48, 84, PlayerCollisionHandler);
+	auto inv = std::make_unique<InventoryComponent>();
 	em->add_component_to_entity(id, std::move(hea));
 	em->add_component_to_entity(id, std::move(vel));
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(cha));
 	em->add_component_to_entity(id, std::move(coll));
 	em->add_component_to_entity(id, std::move(sho));
+	em->add_component_to_entity(id, std::move(inv));
 }
 
 void ComponentFactory::AddEnemyComponents(int id, EntityManager* em) {
@@ -130,7 +133,7 @@ void ComponentFactory::AddBlueFlaskComponents(int id, EntityManager* em) {
 	animations.insert({ State::DEFAULT, Engine::LoadAnimation("flask_big_blue.png", 1) });
 	animations.at(State::DEFAULT).scale = 2;
 	auto ani = std::make_unique<AnimationComponent>(animations, false);
-	auto coll = std::make_unique<CollisionComponent>(32, 32, nullptr);
+	auto coll = std::make_unique<CollisionComponent>(32, 32, ItemCollisionHandler);
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
 }

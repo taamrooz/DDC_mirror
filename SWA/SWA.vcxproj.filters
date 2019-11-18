@@ -230,6 +230,9 @@
     <ClInclude Include="Pause.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
+    <ClInclude Include="InventoryComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\scratch.wav">

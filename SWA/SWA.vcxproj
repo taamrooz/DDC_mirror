@@ -189,6 +189,7 @@
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="InventoryComponent.h" />
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
