@@ -111,7 +111,7 @@ Texture* Engine::load_tileset(std::string path)
 	return texture;
 }
 
-void Engine::render_tile(int xpos, int ypos, rect2d rectangle, Texture* texture)
+void Engine::render_tile(int xpos, int ypos, rect2d& rectangle, Texture* texture)
 {
 	texture->render(xpos, ypos, &rectangle);
 }
@@ -143,7 +143,7 @@ void Engine::fill_rectangle(const rect2d& rectangle)
 
 void Engine::add_rectangle(const rect2d& rectangle)
 {
-	rectangles.push_back(rectangle);
+	//rectangles.push_back(rectangle);
 }
 
 void Engine::render_rectangles()
@@ -184,10 +184,6 @@ int Engine::pre_update() {
 	return frameStart;
 }
 
-Uint32 Engine::GetTicks() {
-	return SDL_GetTicks();
-}
-
 void Engine::ToggleFPScounter()
 {
 	render_fps = !render_fps;
@@ -214,8 +210,8 @@ void Engine::render(int framestart) {
 	if (render_fps) {
 		int w;
 		SDL_GL_GetDrawableSize(window, &w, nullptr);
-		auto rec = rect2d{ 0,0,gFPSTextTexture->getWidth() ,gFPSTextTexture->getHeight() };
-		gFPSTextTexture->render(w - gFPSTextTexture->getWidth() - kFPSCounterPositionOffset, 0 + kFPSCounterPositionOffset,
+		auto rec = rect2d{ 0,0,gFPSTextTexture->get_width() ,gFPSTextTexture->get_height() };
+		gFPSTextTexture->render(w - gFPSTextTexture->get_width() - kFPSCounterPositionOffset, 0 + kFPSCounterPositionOffset,
 			&rec);
 	}
 	++countedFrames;

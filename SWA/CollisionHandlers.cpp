@@ -86,7 +86,7 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::Ent
 	}
 }
 
-void UpdateVelocity(uint32_t entity1, uint32_t entity2, EntityManager* manager)
+void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
 {
 	auto first_node_velocity_component = manager->get_component<VelocityComponent>(entity1);
 	auto first_node_position_component = manager->get_component<PositionComponent>(entity1);

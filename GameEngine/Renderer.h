@@ -66,7 +66,7 @@ namespace Engine {
 	 * @param rectangle The clip rectangle.
 	 * @param texture Pointer to the tile texture.
 	 */
-	ENGINE_API void render_tile(int xpos, int ypos, rect2d rectangle, Texture* texture);
+	ENGINE_API void render_tile(int xpos, int ypos, rect2d& rectangle, Texture* texture);
 	/**
 	 * \brief Renders a texture on specific x and y position with the clip of the texture.
 	 * @param texture Pointer to the texture that will be rendered.

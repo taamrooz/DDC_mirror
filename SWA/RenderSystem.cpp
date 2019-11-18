@@ -24,13 +24,13 @@ void RenderSystem::update(double dt)
 	for (auto entityid : manager_->get_all_entities_from_current_room<TileComponent>()) {
 		auto tile_component = manager_->get_component<TileComponent>(entityid);
 		auto room_component = manager_->get_component<RoomComponent>(entityid);
-
+		auto rect = Engine::rect2d(TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][0],
+			TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][1],
+			tile_component->width, tile_component->height);
 		Engine::render_tile(
 			tile_component->x_pos,
 			tile_component->y_pos,
-			Engine::rect2d(TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][0],
-				TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][1],
-				tile_component->width, tile_component->height),
+			rect,
 			TileSetSingleton::get_instance()->tilemap
 		);
 	}
@@ -41,10 +41,10 @@ void RenderSystem::update(double dt)
 		auto position_component = manager_->get_component<PositionComponent>(entityid);
 		if(animation_component->animations.find(animation_component->currentState) != animation_component->animations.end())
 		{
-			Engine::update_animation(&animation_component->animations.at(animation_component->currentState), position_component->x, position_component->y, animation_component->flip_horizontally);
+			Engine::update_animation(animation_component->animations.at(animation_component->currentState).get(), position_component->x, position_component->y, animation_component->flip_horizontally);
 		}else
 		{
-			Engine::update_animation(&animation_component->animations.at(animation_component->animations.begin()->first), position_component->x, position_component->y, animation_component->flip_horizontally);
+			Engine::update_animation(animation_component->animations.at(animation_component->animations.begin()->first).get(), position_component->x, position_component->y, animation_component->flip_horizontally);
 		}
 		if (animation_component->lock_until < Engine::get_ticks()) {
 			animation_component->currentState = State::DEFAULT;
