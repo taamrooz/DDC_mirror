@@ -132,6 +132,9 @@
     <ClCompile Include="LevelEditor.cpp">
       <Filter>Source Files\LevelEditor</Filter>
     </ClCompile>
+    <ClCompile Include="EndGame.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -252,6 +255,9 @@
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
     <ClInclude Include="Pause.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="EndGame.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
   </ItemGroup>
