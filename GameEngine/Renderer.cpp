@@ -295,7 +295,26 @@ void Engine::RenderLine(int x, int y, int x2, int y2)
 }
 
 void Engine::RenderItems(std::vector<uint32_t> items, int selected) {
-	for (auto const& item : items) {
-		Texture t = Texture(renderer);
+	int x = 50;
+	int y = SDL_GetWindowSurface(window)->h - 75;
+	for (int i = 0; i < 10; i++) {
+		int scale = 3;
+		if (i + 1 == selected) {
+			scale = 4;
+			y -= 16;
+		}
+		
+		if (items.size() > i) {
+			Texture* t = new Texture(renderer);
+			t->loadFromFile(std::move("flask_big_blue.png"));
+			SDL_Rect* clip = new SDL_Rect{ 0, 0, 16, 16 };
+			RenderTexture(t, x, y, clip, scale);
+		}
+		
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_Rect* rect = new SDL_Rect{ x, y, 16 * scale, 16 * scale };
+		SDL_RenderDrawRect(renderer, rect);
+		x = x + (16 * scale);
+		y = SDL_GetWindowSurface(window)->h - 75;
 	}
 }

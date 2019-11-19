@@ -56,6 +56,7 @@ int ComponentFactory::CreateEntity(string_code name, int id, EntityManager* em)
 	case cladder: {
 		AddLadderComponents(id, em);
 		break;
+	}
 	case cFlask_Blue: {
 		AddBlueFlaskComponents(id, em);
 		break;
@@ -152,7 +153,9 @@ void ComponentFactory::AddBlueFlaskComponents(int id, EntityManager* em) {
 	animations.insert({ State::DEFAULT, Engine::LoadAnimation("flask_big_blue.png", 1) });
 	animations.at(State::DEFAULT).scale = 2;
 	auto ani = std::make_unique<AnimationComponent>(animations, false);
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
 	auto coll = std::make_unique<CollisionComponent>(32, 32, ItemCollisionHandler);
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
+	em->add_component_to_entity(id, std::move(room));
 }

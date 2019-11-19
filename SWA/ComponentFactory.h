@@ -6,6 +6,7 @@ enum string_code {
 	cWall,
 	cChest,
 	cMonster,
+	cladder,
 	cFlask_Blue
 };
 class ComponentFactory
