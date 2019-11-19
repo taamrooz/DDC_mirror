@@ -67,16 +67,16 @@ void LevelEditor::RenderDungeonFilepicker()
 void LevelEditor::RenderDungeonEditor()
 {
 	GetFiles("./assets/Levels", "png");
-
+	
 	//Render grid
 	for (const auto& i : rooms_on_grid_)
 	{
-		if (i.empty) {
-			Engine::set_render_draw_color(255, 255, 255, 255);
-			Engine::draw_rectangle(Engine::rect2d{ i.x, i.y, i.width, i.height });
+		if (!i.empty) {
+			Engine::render_tile(i.x, i.y, Engine::rect2d{ 0, 0,i.width * 4, i.height * 4 }, i.image.get(), 0.25);
 		}
 		else {
-			Engine::render_tile(i.x, i.y, Engine::rect2d{ 0, 0,i.width * 4, i.height * 4 }, i.image.get(), 0.25);
+			Engine::set_render_draw_color(255, 255, 255, 255);
+			Engine::draw_rectangle(Engine::rect2d{ i.x, i.y, i.width, i.height });
 		}
 	}
 
@@ -86,6 +86,9 @@ void LevelEditor::RenderDungeonEditor()
 	{
 		if (selected_room_template_ == counter) {
 			Engine::set_render_draw_color(255, 255, 255, 255);
+		}else
+		{
+			Engine::set_render_draw_color(0, 0, 0, 255);
 		}
 		Engine::draw_rectangle(Engine::rect2d{ i.x - 1, i.y - 1, i.width + 4, i.height + 4 });
 		Engine::render_tile(i.x, i.y, Engine::rect2d{ 0, 0,i.width * 4, i.height * 4, }, i.image.get(), 0.25);
