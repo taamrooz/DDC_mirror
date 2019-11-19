@@ -293,3 +293,9 @@ void Engine::RenderLine(int x, int y, int x2, int y2)
 {
 	SDL_RenderDrawLine(renderer, x, y, x2, y2);
 }
+
+void Engine::RenderItems(std::vector<uint32_t> items, int selected) {
+	for (auto const& item : items) {
+		Texture t = Texture(renderer);
+	}
+}
