@@ -37,7 +37,7 @@ void Credits::input() {
 	{
 		if (keycode == SDLK_RETURN)
 		{
-			is_running = false;
+			scene_manager_->pop_scene();
 			scene_manager_->pop_scene();
 			scene_manager_->pop_scene();
 			break;
@@ -55,8 +55,6 @@ void Credits::cleanup() {
 	delete tom_roozen;
 	delete gijs_verdonschot;
 	delete helper;
-	Engine::DestroyRenderer();
-	Engine::CloseAudio();
 }
 
 bool Credits::init() {

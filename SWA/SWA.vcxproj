@@ -97,6 +97,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\GameEngine;C:\SDL2_mixer-2.0.4\include;C:\SDL2-2.0.10\include;C:\SDL2_image-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,8 +160,10 @@
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="KeyBindingSingleton.cpp" />
+    <ClCompile Include="LevelEditor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Pause.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
@@ -183,6 +186,8 @@
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="Credits.h" />
     <ClInclude Include="DamagingComponent.h" />
+    <ClInclude Include="LadderComponent.h" />
+    <ClInclude Include="EditorObject.h" />
     <ClInclude Include="EndGame.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
@@ -190,8 +195,12 @@
     <ClInclude Include="Help.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="KeyBindingSingleton.h" />
+    <ClInclude Include="LevelEditor.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="RoomComponent.h" />
+    <ClInclude Include="Pause.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="MoveCharacterSystem.h" />
@@ -218,6 +227,7 @@
   <ItemGroup>
     <None Include="assets\lazy.map" />
     <None Include="ClassDiagram.cd" />
+    <None Include="second.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
@@ -225,6 +235,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\Animations\wizard_m_hit.png" />
     <Image Include="assets\Tileset.png" />
     <Image Include="assets\Animations\big_demon_idle.png" />
     <Image Include="assets\Animations\big_demon_run.png" />
@@ -283,6 +294,9 @@
     <Image Include="assets\Animations\zombie_run.png" />
     <Image Include="assets\wizard_move_f.png" />
     <Image Include="assets\wizard_move_m.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SWA.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

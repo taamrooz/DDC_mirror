@@ -42,11 +42,15 @@ namespace Engine {
 	/*
 	 * Renders a tile on specific x and y position, width and height.
 	 */
-	ENGINE_API void RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture);
+	ENGINE_API void RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture, double scale = 1);
 	/*
 	 * Renders a texture on specific x and y position with the clip of the texture.
 	 */
-	ENGINE_API void RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip);
+	ENGINE_API void RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip, double scale = 1);
+	/*
+	 * Renders a healthbar on specific x and y position. Healthbar is based on its max_damage and current_damage
+	 */
+	ENGINE_API void RenderHealthBar(int x, int y, bool friendly, int max_damage, int current_damage);
 	/*
 	 * Destroys the renderer and all of its features.
 	 */
@@ -67,5 +71,29 @@ namespace Engine {
 	 * Renders all rectangles in the collection.
 	 */
 	ENGINE_API void RenderRectangles();
+	/*
+	 * Renders the outline of a rectangle for the sake of representing empty tiles (Half size of what you pass to the function)
+	 */
+	ENGINE_API void RenderEmptyTile(int x, int y, int width, int height);
+	/*
+	 * Takes a screenshot of the current render target and saves it to a file indicated by "path"
+	 */
+	ENGINE_API void TakeScreenshot(int width, int height, int xpos, int ypos, const char* path);
+	/*
+	 * Draw a line between 2 points
+	 */
+	ENGINE_API void RenderLine(int x, int y, int x2, int y2);
+	/**
+	 * \brief Sets the renderer draw color.
+	 * @param r The red value.
+	 * @param g The green value.
+	 * @param b The blue value.
+	 * @param a The alpha value.
+	 */
+	ENGINE_API void set_render_draw_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+	/*
+	 * Toggles rendering the FPS counter.
+	 */
+	ENGINE_API void ToggleFPScounter();
 	ENGINE_API Uint32 GetTicks();
 }

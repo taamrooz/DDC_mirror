@@ -40,7 +40,7 @@ void Help::input() {
 	{
 		if (keycode == SDLK_RETURN)
 		{
-			is_running = false;
+			scene_manager_->pop_scene();
 			scene_manager_->pop_scene();
 			scene_manager_->pop_scene();
 			scene_manager_->pop_scene();
@@ -63,8 +63,6 @@ void Help::cleanup() {
 	delete shoot_right_;
 	delete shoot_down_;
 	delete helper;
-	Engine::DestroyRenderer();
-	Engine::CloseAudio();
 }
 
 bool Help::init() {
@@ -81,7 +79,6 @@ bool Help::init() {
 	shoot_left_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 },	("Shoot left:     " + KeyBindingSingleton::get_instance()->get_shoot_left_key()).c_str());
 	shoot_right_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 },	("Shoot right:    " + KeyBindingSingleton::get_instance()->get_shoot_right_key()).c_str());
 	shoot_down_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 },	("Shoot down:     " + KeyBindingSingleton::get_instance()->get_shoot_down_key()).c_str());
-	helper = Engine::LoadText("manaspc.ttf", 24, { 255, 255, 255, 255 },
-		"Press ENTER to quit to main menu");
+	helper = Engine::LoadText("manaspc.ttf", 24, { 255, 255, 255, 255 }, "Press ENTER to quit to main menu");
 	return true;
 }
