@@ -19,6 +19,7 @@ public:
 	int CURRENT_FRAME = 0;
 	double scale = 1;
 	int total_frames;
+	bool loop;
 	bool pause;
 	int WALKING_ANIMATION_FRAMES;
 	std::vector<SDL_Rect> gSpriteClips;

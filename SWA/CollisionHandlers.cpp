@@ -6,6 +6,9 @@
 #include "CharacterComponent.h"
 #include "RoomSingleton.h"
 #include "LadderComponent.h"
+#include "ComponentFactory.h"
+#include "ChestComponent.h"
+#include "InventoryComponent.h"
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 
@@ -65,6 +68,14 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 	}
 
 	UpdateVelocity(entity1, entity2, manager);
+}
+
+void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager) {
+	auto inv = manager->get_component<InventoryComponent>(entity2);
+	if (inv != nullptr) {
+		inv->items.push_back(entity1);
+		manager->remove_entity(entity1);
+	}
 }
 
 void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
@@ -153,5 +164,49 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, EntityManager* manager)
 				first_node_velocity_component->dy = 0;
 			}
 		}
+	}
+}
+
+void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager) {
+	auto compFactory = ComponentFactory::get_instance();
+
+	auto charC = manager->get_component<CharacterComponent>(entity2);
+	if (charC != nullptr) {
+		auto ani = manager->get_component<AnimationComponent>(entity1);
+		ani->animations.at(ani->currentState).pause = false;
+
+
+		//create drop
+		int drop = manager->create_entity();
+		auto chest = manager->get_component<ChestComponent>(entity1);
+		ComponentFactory::get_instance()->CreateEntity(chest->contains, drop, manager);
+		auto cPos = manager->get_component<PositionComponent>(entity1);
+		auto cColl = manager->get_component<CollisionComponent>(entity1);
+		auto pVel = manager->get_component<VelocityComponent>(entity2);
+		auto dPos = std::make_unique<PositionComponent>(cPos->x + cColl->width / 2 - 16, cPos->y);
+
+		auto pPos = manager->get_component<PositionComponent>(entity2);
+		auto pColl = manager->get_component<CollisionComponent>(entity2);
+		int xv = pVel->dx;
+		int yv = pVel->dy;
+		if (pPos->x >= cPos->x + cColl->width) {
+			xv = -5;
+		}
+		else if (pPos->x + pColl->width <= cPos->x) {
+			xv = 5;
+		}
+		else if (pPos->y > cPos->y) {
+			yv = -5;
+		}
+		else {
+			yv = 5;
+		}
+		auto dVel = std::make_unique<VelocityComponent>(xv, yv, 0.2);
+
+		manager->add_component_to_entity(drop, std::move(dPos));
+		manager->add_component_to_entity(drop, std::move(dVel));
+		cColl->collisionHandler = nullptr;
+		manager->remove_component_from_entity<ChestComponent>(entity1);
+
 	}
 }
