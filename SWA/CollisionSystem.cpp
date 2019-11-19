@@ -91,18 +91,18 @@ void CollisionSystem::update(double dt)
 	}
 
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
-	std::vector<std::tuple<Engine::Point, Engine::Point>> bounds = quadTree.get_bounds();
+	/*std::vector<std::tuple<Engine::Point, Engine::Point>> bounds = quadTree.get_bounds();
 	for (auto const& point_tuple : bounds) {
 		int x = std::get<0>(point_tuple).x;
 		int y = std::get<0>(point_tuple).y;
 
 		int width = std::get<1>(point_tuple).x - std::get<0>(point_tuple).x;
 		int height = std::get<1>(point_tuple).y - std::get<0>(point_tuple).y;
-
-		Engine::add_rectangle(Engine::rect2d(x, y, width, height));
+		auto rect = new Engine::rect2d(x, y, width, height);
+		Engine::add_rectangle(rect);
 	}
 
-	//Engine::render_rectangles();
+	Engine::render_rectangles();*/
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
 }
 

@@ -7,7 +7,7 @@
 
 SDL_Window* window;
 SDL_Renderer* renderer;
-std::vector<Engine::rect2d> rectangles;
+std::vector<std::unique_ptr<Engine::rect2d>> rectangles;
 
 bool Engine::init_renderer(std::string title, bool fullscreen, uint16_t width, uint16_t height) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -131,9 +131,9 @@ void Engine::fill_rectangle(const rect2d& rectangle)
 	SDL_RenderFillRect(renderer, rectangle.unwrap());
 }
 
-void Engine::add_rectangle(const rect2d& rectangle)
+void Engine::add_rectangle(rect2d* rectangle)
 {
-	rectangles.push_back(rectangle);
+	rectangles.push_back(std::unique_ptr<rect2d>(rectangle));
 }
 
 void Engine::render_rectangles()
@@ -142,7 +142,7 @@ void Engine::render_rectangles()
 
 	for (auto &rectangle : rectangles)
 	{
-		SDL_RenderDrawRect(renderer, rectangle.unwrap());
+		SDL_RenderDrawRect(renderer, rectangle->unwrap());
 	}
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

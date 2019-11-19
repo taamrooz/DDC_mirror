@@ -91,7 +91,7 @@ namespace Engine {
 	 * \brief Adds a rectangle to the collection on specified x and y coordinates, with the width and height.
 	 * @param rectangle The rect2d to be added.
 	 */
-	ENGINE_API void add_rectangle(const rect2d& rectangle);
+	ENGINE_API void add_rectangle(rect2d* rectangle);
 	/**
 	 * \brief Renders all rectangles in the collection.
 	 */
