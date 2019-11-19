@@ -160,6 +160,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="Credits.cpp" />
+    <ClCompile Include="EndGame.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="InputSystem.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="DamagingComponent.h" />
     <ClInclude Include="LadderComponent.h" />
     <ClInclude Include="EditorObject.h" />
+    <ClInclude Include="EndGame.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />

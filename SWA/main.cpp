@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "MainMenu.h"
 #include "Credits.h"
+#include "EndGame.h"
 #include "Help.h"
 #include "Pause.h"
 #include "LevelEditor.h"
@@ -10,7 +11,6 @@
 #include <crtdbg.h>
 #endif
 #undef main
-
 
 void init_scenes()
 {
@@ -21,12 +21,14 @@ void init_scenes()
 	auto credits = new Credits(sm.get());
 	auto help = new Help(sm.get());
 	auto pause = new Pause(sm.get());
+  auto endgame = new EndGame(sm.get());
 	sm->add_scene(mm, true);
 	sm->add_scene(core, true);
 	sm->add_scene(level, true);
 	sm->add_scene(credits, true);
 	sm->add_scene(help, true);
 	sm->add_scene(pause, true);
+  sm->add_scene(endgame, true);
 	sm->render();
 	sm->cleanup();
 }
