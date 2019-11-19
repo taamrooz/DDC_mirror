@@ -159,6 +159,7 @@
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="KeyBindingSingleton.cpp" />
+    <ClCompile Include="LevelEditor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Pause.cpp" />
@@ -185,12 +186,14 @@
     <ClInclude Include="Credits.h" />
     <ClInclude Include="DamagingComponent.h" />
     <ClInclude Include="LadderComponent.h" />
+    <ClInclude Include="EditorObject.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="KeyBindingSingleton.h" />
+    <ClInclude Include="LevelEditor.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="resource.h" />

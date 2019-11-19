@@ -73,11 +73,23 @@ Texture* Engine::LoadTileset(std::string path)
 	return texture;
 }
 
-void Engine::RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture)
+void Engine::RenderTile(int xpos, int ypos, int width, int height, int xclip, int yclip, Texture* texture, double scale)
 {
 	SDL_Rect* clip = new SDL_Rect{ xclip, yclip, width, height };
-	texture->render(xpos, ypos, clip);
+	texture->render(xpos, ypos, clip, scale);
 	delete clip;
+}
+
+void Engine::RenderEmptyTile(int x, int y, int width, int height)
+{
+	SDL_Rect rect;
+	rect.x = x;
+	rect.y = y;
+	rect.w = width/2;
+	rect.h = height/2;
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderDrawRect(renderer, &rect);
 }
 
 bool Engine::LoadSpriteSheet(std::string path, Animation* animation)
@@ -193,9 +205,9 @@ void Engine::UpdateAnimation(Animation* a, double x, double y, bool flip_horizon
 	a->UpdateAnimation(x, y, flip);
 }
 
-void Engine::RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip)
+void Engine::RenderTexture(Texture* texture, int x, int y, SDL_Rect* clip, double scale)
 {
-	texture->render(x, y, clip);
+	texture->render(x, y, clip, scale);
 }
 
 void Engine::RenderHealthBar(int x, int y, bool friendly, int max_health, int current_health) {
@@ -261,4 +273,23 @@ void Engine::RenderRectangles()
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	rectangles.clear();
+}
+
+void Engine::TakeScreenshot(int width, int height, int xpos, int ypos, const char* path)
+{
+	SDL_Surface* sshot = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+	SDL_Rect rect{ xpos, ypos, width, height };
+	SDL_RenderReadPixels(renderer, &rect, sshot->format->format, sshot->pixels, sshot->pitch);
+	IMG_SavePNG(sshot, path);
+	SDL_FreeSurface(sshot);
+}
+
+void Engine::set_render_draw_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	SDL_SetRenderDrawColor(renderer, r, g, b, a);
+}
+
+void Engine::RenderLine(int x, int y, int x2, int y2)
+{
+	SDL_RenderDrawLine(renderer, x, y, x2, y2);
 }
