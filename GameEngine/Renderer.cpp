@@ -51,11 +51,11 @@ bool Engine::init_renderer(std::string title, bool fullscreen, uint16_t width, u
 void Engine::update_animation(Animation* a, double x, double y, bool flip_horizontally)
 {
 	const SDL_RendererFlip flip = flip_horizontally ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-
 	a->UpdateAnimation(x, y, flip);
 }
 
 bool Engine::load_sprite_sheet(std::string path, Animation* animation)
+
 {
 	//Loading success flag
 	bool success = true;
@@ -111,46 +111,36 @@ Texture* Engine::load_tileset(std::string path)
 	return texture;
 }
 
-void Engine::render_tile(int xpos, int ypos, rect2d& rectangle, Texture* texture)
+void Engine::render_tile(int xpos, int ypos, const rect2d& rectangle, Texture* texture, double scale)
 {
-	texture->render(xpos, ypos, &rectangle);
+	texture->render(xpos, ypos, &rectangle, scale);
 }
 
-void Engine::render_texture(Texture* texture, int x, int y, rect2d* clip)
+void Engine::render_texture(Texture* texture, int x, int y, rect2d* clip, double scale)
 {
-	texture->render(x, y, clip);
+	texture->render(x, y, clip, scale);
 }
 
 void Engine::draw_rectangle(const rect2d& rectangle)
 {
-	SDL_Rect r;
-	r.x = rectangle.x();
-	r.y = rectangle.y();
-	r.w = rectangle.width();
-	r.h = rectangle.height();
-	SDL_RenderDrawRect(renderer, &r);
+	SDL_RenderDrawRect(renderer, rectangle.unwrap());
 }
 
 void Engine::fill_rectangle(const rect2d& rectangle)
 {
-	SDL_Rect r;
-	r.x = rectangle.x();
-	r.y = rectangle.y();
-	r.w = rectangle.width();
-	r.h = rectangle.height();
-	SDL_RenderFillRect(renderer, &r);
+	SDL_RenderFillRect(renderer, rectangle.unwrap());
 }
 
 void Engine::add_rectangle(const rect2d& rectangle)
 {
-	//rectangles.push_back(rectangle);
+	rectangles.push_back(rectangle);
 }
 
 void Engine::render_rectangles()
 {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
-	for (auto rectangle : rectangles)
+	for (auto &rectangle : rectangles)
 	{
 		SDL_RenderDrawRect(renderer, rectangle.unwrap());
 	}
@@ -184,7 +174,7 @@ int Engine::pre_update() {
 	return frameStart;
 }
 
-void Engine::ToggleFPScounter()
+void Engine::toggle_fps()
 {
 	render_fps = !render_fps;
 }
@@ -204,7 +194,7 @@ void Engine::render(int framestart) {
 	else
 		timeText += std::to_string(59);
 
-	Texture* gFPSTextTexture = Engine::load_text("manaspc.ttf", 18, { 127,255,0, 255 }, timeText.c_str());;
+	Texture* gFPSTextTexture = load_text("manaspc.ttf", 18, { 127,255,0, 255 }, timeText.c_str());;
 
 	//Render textures
 	if (render_fps) {
@@ -250,4 +240,18 @@ void Engine::destroy_renderer() {
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+}
+
+void Engine::take_screenshot(int width, int height, int xpos, int ypos, const char* path)
+{
+	SDL_Surface* sshot = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+	SDL_Rect rect{ xpos, ypos, width, height };
+	SDL_RenderReadPixels(renderer, &rect, sshot->format->format, sshot->pixels, sshot->pitch);
+	IMG_SavePNG(sshot, path);
+	SDL_FreeSurface(sshot);
+}
+
+void Engine::render_line(int x, int y, int x2, int y2)
+{
+	SDL_RenderDrawLine(renderer, x, y, x2, y2);
 }

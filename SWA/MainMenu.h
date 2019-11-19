@@ -14,6 +14,7 @@ private:
 	std::unique_ptr<Texture> settings_ = nullptr;
 	std::unique_ptr<Texture> credits_ = nullptr;
 	std::unique_ptr<Texture> help_ = nullptr;
+	std::unique_ptr<Texture> level_editor_ = nullptr;
 	std::unique_ptr<Texture> quit_ = nullptr;
 	std::unique_ptr<Texture> selector_ = nullptr;
 	std::unique_ptr<Texture> helper = nullptr;

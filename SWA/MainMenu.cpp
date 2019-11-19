@@ -15,40 +15,46 @@ void MainMenu::render()
 
 	Engine::update_animation(background_.get(), 0, 0);
 	Engine::render_texture(title_.get(), 250, 200, nullptr);
-	Engine::render_texture(start_.get(), 500, 400, nullptr);
-	Engine::render_texture(settings_.get(), 500, 500, nullptr);
-	Engine::render_texture(credits_.get(), 500, 600, nullptr);
-	Engine::render_texture(help_.get(), 500, 700, nullptr);
-	Engine::render_texture(quit_.get(), 500, 800, nullptr);
+	Engine::render_texture(start_.get(), 550, 320, nullptr);
+	Engine::render_texture(settings_.get(), 550, 400, nullptr);
+	Engine::render_texture(level_editor_.get(), 550, 480, nullptr);
+	Engine::render_texture(credits_.get(), 550, 560, nullptr);
+	Engine::render_texture(help_.get(), 550, 640, nullptr);
+	Engine::render_texture(quit_.get(), 550, 720, nullptr);
 	Engine::render_texture(helper.get(), 115, 900, nullptr);
 	if (current_action_ == 0)
 	{
-		Engine::render_texture(selector_.get(), 480, 400, nullptr);
+		Engine::render_texture(selector_.get(), 530, 320, nullptr);
 	}
 	else if (current_action_ == 1)
 	{
-		Engine::render_texture(selector_.get(), 480, 500, nullptr);
+		Engine::render_texture(selector_.get(), 530, 400, nullptr);
 	}
 	else if (current_action_ == 2)
 	{
-		Engine::render_texture(selector_.get(), 480, 600, nullptr);
+		Engine::render_texture(selector_.get(), 530, 480, nullptr);
 	}
 	else if (current_action_ == 3)
 	{
-		Engine::render_texture(selector_.get(), 480, 700, nullptr);
+		Engine::render_texture(selector_.get(), 530, 560, nullptr);
 	}
 	else if (current_action_ == 4)
 	{
-		Engine::render_texture(selector_.get(), 480, 800, nullptr);
+		Engine::render_texture(selector_.get(), 530, 640, nullptr);
 	}
+	else if (current_action_ == 5)
+	{
+		Engine::render_texture(selector_.get(), 530, 720, nullptr);
+	}
+	
 	Engine::render(timer);
 
 }
 
 void MainMenu::input()
 {
-	const int k_keydown = 0;
-	const int k_stop = 2;
+	constexpr static int k_keydown = 0;
+	constexpr static int k_stop = 2;
 
 	auto inputs = Engine::GetInputs();
 
@@ -71,7 +77,7 @@ void MainMenu::input()
 		}
 		else if (keycode == SDLK_DOWN)
 		{
-			if (current_action_ < 4)
+			if (current_action_ < 5)
 			{
 				++current_action_;
 			}
@@ -93,6 +99,9 @@ void MainMenu::input()
 				scene_manager_->push_scene().push_scene().push_scene();
 				break;
 			case 4:
+				scene_manager_->push_scene().push_scene().push_scene().push_scene();
+				break;
+			case 5:
 				is_running_ = false;
 				scene_manager_->pop_scene();
 				break;
@@ -128,6 +137,7 @@ bool MainMenu::init()
 	settings_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings"));
 	credits_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits"));
 	help_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Help"));
+	level_editor_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Level Editor"));
 	quit_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop"));
 	selector_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">"));
 	helper = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, {255, 255, 255, 255},

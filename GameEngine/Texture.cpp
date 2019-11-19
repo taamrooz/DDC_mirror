@@ -104,7 +104,7 @@ void Texture::set_alpha(uint8_t alpha)
 	SDL_SetTextureAlphaMod(m_texture_, alpha);
 }
 
-void Texture::render(int x, int y, Engine::rect2d* clip, double scale, SDL_RendererFlip flip, double angle)
+void Texture::render(int x, int y, const Engine::rect2d* clip, double scale, SDL_RendererFlip flip, double angle)
 {
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, m_width_, m_height_ };

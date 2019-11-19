@@ -65,16 +65,18 @@ namespace Engine {
 	 * @param ypos The Y position of the tile.
 	 * @param rectangle The clip rectangle.
 	 * @param texture Pointer to the tile texture.
+	 * @param scale Scale of the tile.
 	 */
-	ENGINE_API void render_tile(int xpos, int ypos, rect2d& rectangle, Texture* texture);
+	ENGINE_API void render_tile(int xpos, int ypos, const rect2d& rectangle, Texture* texture, double scale = 1);
 	/**
 	 * \brief Renders a texture on specific x and y position with the clip of the texture.
 	 * @param texture Pointer to the texture that will be rendered.
 	 * @param x The X position off where it will be rendered.
 	 * @param y The y position off where it will be rendered.
 	 * @param clip The clip of the texture.
+	 * @param scale The scale of the texture.
 	 */
-	ENGINE_API void render_texture(Texture* texture, int x, int y, rect2d* clip);
+	ENGINE_API void render_texture(Texture* texture, int x, int y, rect2d* clip, double scale = 1);
 	/**
 	 * \brief Calls the draw_rectangle method on the rectangle.
 	 * @param rectangle The pointer to the Rectangle.
@@ -116,10 +118,27 @@ namespace Engine {
 	 * @param a The alpha value.
 	 */
 	ENGINE_API void set_render_draw_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-	/*
-	 * Toggles rendering the FPS counter.
+	/**
+	 * \brief Takes a screenshot of the current render target and saves it as a PNG.
+	 * @param width The width that will be screenshotted.
+	 * @param height The height that will be screenshotted.
+	 * @param xpos The X position of the screenshot, from top left.
+	 * @param ypos The Y position of the screenshot, from top left.
+	 * @param path The path to which the screenshot will be saved (as PNG).
 	 */
-	ENGINE_API void ToggleFPScounter();
+	ENGINE_API void take_screenshot(int width, int height, int xpos, int ypos, const char* path);
+	/**
+	 * \brief Draw a line between 2 points
+	 * @param x The first point x.
+	 * @param y The first point y.
+	 * @param x2 The second point x.
+	 * @param y2 The second point y.
+	 */
+	ENGINE_API void render_line(int x, int y, int x2, int y2);
+	/**
+	 * \brief Toggles rendering the FPS counter.
+	 */
+	ENGINE_API void toggle_fps();
 	/**
 	 * \brief Destroys the renderer and all of its features.
 	 */
