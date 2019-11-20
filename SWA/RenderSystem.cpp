@@ -7,6 +7,8 @@
 #include "TileSetSingleton.h"
 #include "RoomComponent.h"
 #include "HealthComponent.h"
+#include "InventoryComponent.h"
+#include "TextureComponent.h"
 
 RenderSystem::RenderSystem(Engine::EntityManager<Component>* manager)
 	: BaseSystem(manager) {
@@ -77,6 +79,42 @@ void RenderSystem::update(double dt)
 			float health_bar_length = (float)health_component->current_health / (float)health_component->max_health * (float)bar_length;
 			Engine::rect2d health_bar = { position_component->x, position_component->y, (int)health_bar_length, 10 };
 			Engine::fill_rectangle(health_bar);
+		}
+	}
+
+	//Render inventory
+	auto invId = manager_->get_all_entities_from_current_room<InventoryComponent>().front();
+	auto inv = manager_->get_component<InventoryComponent>(invId);
+	int x = 25;
+	for (int i = 0; i < 10; i++) {
+		bool selected = false;
+		if (i + 1 == inv->selected) {
+			selected = true;
+		}
+		Engine::render_inventory_tile(selected, x);
+		if (inv->items.size() > i) {
+			auto texture = manager_->get_component<TextureComponent>(inv->items[i]);
+			Engine::render_inventory_item(texture->path, selected, x);
+		}
+		x = x + (16 * 3);
+		if (selected) {
+			x += 16;
+		}
+	}	
+
+	//render minimap (placeholder until full dungeon gets loaded in)
+	for (int i = 0; i < 5; i++) {
+		int x = 25 + (48 * (i));
+		for (int j = 0; j < 5; j++) {
+			int y = 25 + (48 * j);
+			Engine::set_render_draw_color(50, 50, 50, 150);
+			Engine::fill_rectangle(Engine::rect2d(x, y, 48, 48));
+			Engine::set_render_draw_color(0, 0, 0, 175);
+			Engine::draw_rectangle(Engine::rect2d(x, y, 48, 48));
+			if (i == 2 && j == 2) {
+				Engine::set_render_draw_color(225, 225, 225, 175);
+				Engine::draw_rectangle(Engine::rect2d(x, y, 48, 48));
+			}
 		}
 	}
 }
