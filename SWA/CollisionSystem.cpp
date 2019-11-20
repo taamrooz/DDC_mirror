@@ -13,7 +13,9 @@
 #include "RoomSingleton.h"
 
 
-CollisionSystem::CollisionSystem(EntityManager* manager) : BaseSystem(manager) {}
+CollisionSystem::CollisionSystem(EntityManager* manager, Core& core) : BaseSystem(manager) {
+	CollisionSystem::core = &core;
+}
 
 void CollisionSystem::update(double dt)
 {
@@ -87,7 +89,7 @@ void CollisionSystem::update(double dt)
 		auto collisionComponent = manager_->get_component<CollisionComponent>(first_node->id);
 
 		if (collisionComponent != nullptr && collisionComponent->collisionHandler != nullptr) {
-			collisionComponent->collisionHandler(first_node->id, second_node->id, manager_);
+			collisionComponent->collisionHandler(first_node->id, second_node->id, manager_, core);
 		}
 	}
 

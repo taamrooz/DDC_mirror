@@ -17,7 +17,7 @@ void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 	}
 }
 
-void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
+void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager, Core* core)
 {
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	if (player == nullptr) {
@@ -25,7 +25,7 @@ void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 	}
 }
 
-void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
+void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager, Core* core)
 {
   //stop player from moving into a wall
 
@@ -56,7 +56,8 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 		{
 			DamageHandler(health, dmg);
 			if (health->current_health <= 0) {
-				std::cout << "Game Over!" << std::endl;
+				core->is_paused = !core->is_paused;
+				//std::cout << "Game Over!" << std::endl;
 			}
 		}
 		
@@ -64,10 +65,10 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 		
 	}
 
-	UpdateVelocity(entity1, entity2, manager);
+	UpdateVelocity(entity1, entity2, manager, core);
 }
 
-void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
+void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager, Core* core)
 {
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
 	if (dmg != nullptr) {
@@ -84,7 +85,7 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManag
 	}
 }
 
-void UpdateVelocity(uint32_t entity1, uint32_t entity2, EntityManager* manager)
+void UpdateVelocity(uint32_t entity1, uint32_t entity2, EntityManager* manager, Core* core)
 {
 	auto first_node_velocity_component = manager->get_component<VelocityComponent>(entity1);
 	auto first_node_position_component = manager->get_component<PositionComponent>(entity1);
