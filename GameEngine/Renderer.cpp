@@ -255,3 +255,33 @@ void Engine::render_line(int x, int y, int x2, int y2)
 {
 	SDL_RenderDrawLine(renderer, x, y, x2, y2);
 }
+
+void Engine::render_inventory_item(std::string path, bool selected, int x) {
+
+	int y = SDL_GetWindowSurface(window)->h - 75;
+
+	int scale = 3;
+	if (selected) {
+		scale = 4;
+		y -= 16;
+	}
+	auto t = load_tileset(path);
+	rect2d clip = rect2d{ 0, 0, 16 * scale, 16 * scale };
+	t->set_alpha(225);
+	t->render(x, y, &clip);
+}
+
+void Engine::render_inventory_tile(bool selected, int x) {
+	int y = SDL_GetWindowSurface(window)->h - 75;
+	int scale = 3;
+	if (selected) {
+		scale = 4;
+		y -= 16;
+	}
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
+	SDL_Rect rect = SDL_Rect{ x, y, 16 * scale, 16 * scale };
+	SDL_RenderDrawRect(renderer, &rect);
+	SDL_RenderFillRect(renderer, &rect);
+
+}

@@ -92,6 +92,9 @@ namespace Engine {
 	 * @param rectangle The rect2d to be added.
 	 */
 	ENGINE_API void add_rectangle(rect2d* rectangle);
+
+	/*
+	 * Takes a screenshot of the current render target and saves it to a file indicated by "path"
 	/**
 	 * \brief Renders all rectangles in the collection.
 	 */
@@ -109,6 +112,13 @@ namespace Engine {
 	 * \brief Gets the number of ms after the renderer's initialization.
 	 * @return milliseconds
 	 */
+
+	/*
+	 * Draw the items in the inventory
+	 */
+	ENGINE_API void render_inventory_item(std::string path, bool selected, int x);
+	ENGINE_API void render_inventory_tile(bool selected, int x);
+
 	ENGINE_API uint32_t get_ticks();
 	/**
 	 * \brief Sets the renderer draw color.

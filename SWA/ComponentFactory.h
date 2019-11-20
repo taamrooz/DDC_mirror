@@ -1,7 +1,15 @@
 #pragma once
 #include <string>
 #include "EntityManager.h"
-
+enum string_code {
+	cPlayer,
+	cWall,
+	cChest,
+	cMonster,
+	cladder,
+	cFlask_Blue,
+	cBoss
+};
 class ComponentFactory
 {
 private:
@@ -12,10 +20,13 @@ private:
 	ComponentFactory& operator=(const ComponentFactory&& entityFactory) = delete; // Move operator
 	static ComponentFactory* instance_;
 	void AddPlayerComponents(int, Engine::EntityManager<Component>*);
-	void AddChestComponents(int id, Engine::EntityManager<Component>*);
-	void AddLadderComponents(int id, Engine::EntityManager<Component>*);
+	void AddChestComponents(int id, Engine::EntityManager<Component>* em);
+	void AddBlueFlaskComponents(int id, Engine::EntityManager<Component>* em);
+	void AddLadderComponents(int id, Engine::EntityManager<Component>* em);
 	void AddEnemyComponents(int id, Engine::EntityManager<Component>*, bool level_boss);
 public:
 	static ComponentFactory* get_instance();
-	int CreateEntity(std::string, int id, Engine::EntityManager<Component>*);
+	int CreateEntity(std::string const& name, int id, Engine::EntityManager<Component>*);
+	int CreateEntity(string_code name, int id, Engine::EntityManager<Component>* em);
 };
+
