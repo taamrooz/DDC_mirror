@@ -5,7 +5,7 @@ class RenderSystem :
 	public BaseSystem
 {
 public:
-	RenderSystem(EntityManager* manager);
+	RenderSystem(Engine::EntityManager<Component>* manager);
 	void update(double dt) override;
 };
 

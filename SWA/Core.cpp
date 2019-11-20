@@ -11,14 +11,15 @@
 #include "MoveCharacterSystem.h"
 #include "CollisionComponent.h"
 #include "SceneManager.h"
+#include "Audio.h"
 
-Core::Core(SceneManager* manager) : BaseScene(manager) {}
+Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
 
 
 bool Core::init()
 {
-	manager_ = std::make_unique<EntityManager>();
+	manager_ = std::make_unique<Engine::EntityManager<Component>>();
 
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
@@ -36,17 +37,14 @@ void Core::update()
 {
 	for (auto& system : systems_)
 	{
-		if(is_running)
+		if(is_running_)
 		{
 			system->update(1);
 
-			if (is_paused) {
-				Engine::StopMusic();
-				is_paused = false;
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
-				scene_manager_->render();
+			if (is_paused_) {
+				Engine::stop_music();
+				is_paused_ = false;
+				scene_manager_->push_scene().push_scene().push_scene();
 			}
 		}else
 		{
@@ -58,9 +56,10 @@ void Core::update()
 
 void Core::render()
 {
-	auto timer = Engine::PreUpdate();
+	auto timer = Engine::pre_update();
+	//Engine::Clear();
 	update();
-	Engine::Render(timer);
+	Engine::render(timer);
 }
 
 void Core::cleanup()
@@ -73,5 +72,15 @@ void Core::cleanup()
 }
 
 void Core::StopGameLoop() {
-	is_running = false;
+	is_running_ = false;
+}
+
+bool Core::get_is_paused() const
+{
+	return is_paused_;
+}
+
+void Core::toggle_pause()
+{
+	is_paused_ = !is_paused_;
 }

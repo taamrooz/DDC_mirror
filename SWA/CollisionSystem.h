@@ -1,3 +1,4 @@
+#pragma once
 #include "BaseSystem.h"
 #include "QuadTree.h"
 
@@ -5,8 +6,8 @@ class CollisionSystem :
 	public BaseSystem
 {
 public:
-	CollisionSystem(EntityManager* manager);
+	CollisionSystem(Engine::EntityManager<Component>* manager);
 	void update(double dt) override;
-	void update_velocity(Node* first_node, Node* second_node);
+	void update_velocity(Engine::Node* first_node, Engine::Node* second_node);
 };
 

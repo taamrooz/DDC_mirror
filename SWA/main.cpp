@@ -2,42 +2,39 @@
 #include "SceneManager.h"
 #include "MainMenu.h"
 #include "Credits.h"
+#include "EndGame.h"
 #include "Help.h"
 #include "Pause.h"
+#include "LevelEditor.h"
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
-#include "stdlib.h"
-#include "crtdbg.h"
+#include <crtdbg.h>
+#endif
 #undef main
-#endif
-#ifdef __cplusplus
-extern "C"
-#endif
-int main(int argc, char* argv[])
+
+void init_scenes()
 {
-	auto sm = std::make_unique<SceneManager>();
-	auto mm = std::make_unique<MainMenu>(sm.get());
-	auto core = std::make_unique<Core>(sm.get());
-	auto credits = std::make_unique<Credits>(sm.get());
-	auto help = std::make_unique<Help>(sm.get());
-	auto pause = std::make_unique<Pause>(sm.get());
-	mm->init();
-	core->init();
-	credits->init();
-	help->init();
-	pause->init();
-
-	sm->add_scene(*mm);
-	sm->add_scene(*core);
-	sm->add_scene(*credits);
-	sm->add_scene(*help);
-	sm->add_scene(*pause);
-
+	auto sm = std::make_unique<Engine::SceneManager>();
+	auto mm = new MainMenu(sm.get());
+	auto core = new Core(sm.get());
+	auto level = new LevelEditor(sm.get());
+	auto credits = new Credits(sm.get());
+	auto help = new Help(sm.get());
+	auto pause = new Pause(sm.get());
+	auto endgame = new EndGame(sm.get());
+	sm->add_scene(mm, true);
+	sm->add_scene(core, true);
+	sm->add_scene(level, true);
+	sm->add_scene(credits, true);
+	sm->add_scene(help, true);
+	sm->add_scene(pause, true);
+	sm->add_scene(endgame, true);
 	sm->render();
 	sm->cleanup();
-	core.release();
-	mm.release();
-	sm.release();
+}
+int main(int argc, char* argv[])
+{
+	init_scenes();
 	_CrtDumpMemoryLeaks();
 	return 0;
 }

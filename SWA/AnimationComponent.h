@@ -1,9 +1,8 @@
 #pragma once
 #include "Component.h"
 #include "Animation.h"
-#include "Renderer.h"
-#include <string>
-#include <map>
+#include <utility>
+
 enum class State {
 	DEFAULT,
 	RUN,
@@ -13,15 +12,14 @@ struct AnimationComponent : Component
 {
 
 	AnimationComponent() = default;
-	AnimationComponent(std::map<State, Animation> animations) :
-		animations { animations }
+	AnimationComponent(std::unordered_map<State, std::unique_ptr<Animation>>& animations): animations {std::move(animations)}
 	{
 		currentState = State::DEFAULT;
 		flip_horizontally = false;
 		lock_until = 0;
 	}
 	bool flip_horizontally;
-	std::map<State, Animation> animations;
+	std::unordered_map<State, std::unique_ptr<Animation>> animations;
 	State currentState;
 	int lock_until;
 };
