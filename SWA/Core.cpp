@@ -11,6 +11,8 @@
 #include "MoveCharacterSystem.h"
 #include "CollisionComponent.h"
 #include "SceneManager.h"
+#include "ComponentFactory.h"
+#include "InventorySystem.h"
 
 Core::Core(SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -28,6 +30,7 @@ bool Core::init()
 	systems_.push_back(std::make_unique<ShootSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
 
 	//const auto id = manager_->create_entity();
 	//const auto id2 = manager_->create_entity();

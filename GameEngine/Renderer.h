@@ -83,8 +83,11 @@ namespace Engine {
 	 * Draw a line between 2 points
 	 */
 	ENGINE_API void RenderLine(int x, int y, int x2, int y2);
-
+	/*
+	 * Draw the items in the inventory
+	 */
 	ENGINE_API void RenderItems(std::vector<uint32_t> items, int selected);
+
 	/**
 	 * \brief Sets the renderer draw color.
 	 * @param r The red value.

@@ -132,6 +132,9 @@
     <ClCompile Include="LevelEditor.cpp">
       <Filter>Source Files\LevelEditor</Filter>
     </ClCompile>
+    <ClCompile Include="InventorySystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -247,7 +250,7 @@
     </ClInclude>
     <ClInclude Include="LadderComponent.h">
       <Filter>Header Files\Components</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="Credits.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
@@ -259,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="InventoryComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="InventorySystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

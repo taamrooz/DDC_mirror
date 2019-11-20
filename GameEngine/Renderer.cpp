@@ -295,6 +295,7 @@ void Engine::RenderLine(int x, int y, int x2, int y2)
 }
 
 void Engine::RenderItems(std::vector<uint32_t> items, int selected) {
+	
 	int x = 50;
 	int y = SDL_GetWindowSurface(window)->h - 75;
 	for (int i = 0; i < 10; i++) {
@@ -304,17 +305,23 @@ void Engine::RenderItems(std::vector<uint32_t> items, int selected) {
 			y -= 16;
 		}
 		
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
+		SDL_Rect rect = SDL_Rect{ x, y, 16 * scale, 16 * scale };
+		SDL_RenderDrawRect(renderer, &rect);
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+		SDL_RenderFillRect(renderer, &rect);
+		
 		if (items.size() > i) {
 			Texture* t = new Texture(renderer);
 			t->loadFromFile(std::move("flask_big_blue.png"));
-			SDL_Rect* clip = new SDL_Rect{ 0, 0, 16, 16 };
-			RenderTexture(t, x, y, clip, scale);
+			SDL_Rect clip = SDL_Rect{ 0, 0, 16 * scale, 16 * scale };
+			t->setBlendMode(SDL_BLENDMODE_BLEND);
+			t->setAlpha(225);
+			RenderTexture(t, x, y, &clip);
 		}
-		
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_Rect* rect = new SDL_Rect{ x, y, 16 * scale, 16 * scale };
-		SDL_RenderDrawRect(renderer, rect);
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 		x = x + (16 * scale);
 		y = SDL_GetWindowSurface(window)->h - 75;
 	}
+
 }

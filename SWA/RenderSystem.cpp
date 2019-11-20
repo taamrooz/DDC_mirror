@@ -69,5 +69,5 @@ void RenderSystem::update(double dt)
 	
 	auto invId = manager_->get_all_entities_from_current_room<InventoryComponent>().front();
 	auto inv = manager_->get_component<InventoryComponent>(invId);
-	Engine::RenderItems(inv->items, 3);
+	Engine::RenderItems(inv->items, inv->selected);
 }
