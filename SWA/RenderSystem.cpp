@@ -67,7 +67,23 @@ void RenderSystem::update(double dt)
 		}
 	}
 	
+	//render inventory
 	auto invId = manager_->get_all_entities_from_current_room<InventoryComponent>().front();
 	auto inv = manager_->get_component<InventoryComponent>(invId);
 	Engine::RenderItems(inv->items, inv->selected);
+
+	//render minimap (placeholder until full dungeon gets loaded in)
+	Engine::ClearRectangles();
+	for (int i = 0; i < 5; i++) {
+		int x = 25 + (48 * (i));
+		for (int j = 0; j < 5; j++) {
+			int y = 25 + (48 * j);
+			Engine::AddRectangle(x, y, 48, 48);
+			Engine::FillRectangles(50, 50, 50, 150);
+			Engine::RenderRectangles(0, 0, 0, 175);
+			if (i == 2 && j == 2) {
+				Engine::RenderEmptyTile(x, y, 96, 96);
+			}
+		}
+	}
 }

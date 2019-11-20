@@ -262,9 +262,10 @@ void Engine::AddRectangle(int x, int y, int w, int h)
 	rectangles.push_back(rect);
 }
 
-void Engine::RenderRectangles()
+void Engine::RenderRectangles(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	for (auto const rectangle : rectangles)
 	{
@@ -272,6 +273,24 @@ void Engine::RenderRectangles()
 	}
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
+	rectangles.clear();
+}
+
+void Engine::FillRectangles(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+{
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, r, g, b, a);
+
+	for (auto const rectangle : rectangles)
+	{
+		SDL_RenderFillRect(renderer, &rectangle);
+	}
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+}
+
+void Engine::ClearRectangles() {
 	rectangles.clear();
 }
 
@@ -296,7 +315,7 @@ void Engine::RenderLine(int x, int y, int x2, int y2)
 
 void Engine::RenderItems(std::vector<uint32_t> items, int selected) {
 	
-	int x = 50;
+	int x = 25;
 	int y = SDL_GetWindowSurface(window)->h - 75;
 	for (int i = 0; i < 10; i++) {
 		int scale = 3;
