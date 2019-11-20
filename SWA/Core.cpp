@@ -46,6 +46,18 @@ void Core::update()
 				is_paused_ = false;
 				scene_manager_->push_scene().push_scene().push_scene();
 			}
+
+			if (is_winner_) {
+				Engine::stop_music();
+				is_winner_ = false;
+				scene_manager_->push_scene().push_scene().push_scene().push_scene().push_scene();
+			}
+
+			if (is_loser_) {
+				Engine::stop_music();
+				is_loser_ = false;
+				scene_manager_->push_scene().push_scene().push_scene().push_scene().push_scene().push_scene();
+			}
 		}else
 		{
 			break;
@@ -83,4 +95,14 @@ bool Core::get_is_paused() const
 void Core::toggle_pause()
 {
 	is_paused_ = !is_paused_;
+}
+
+void Core::toggle_game_won()
+{
+	is_winner_ = !is_winner_;
+}
+
+void Core::toggle_game_lost()
+{
+	is_loser_ = !is_loser_;
 }

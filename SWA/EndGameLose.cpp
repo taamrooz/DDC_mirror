@@ -1,14 +1,14 @@
-#include "EndGame.h"
+#include "EndGameLose.h"
 #include "Renderer.h"
 #include "UserInput.h"
 #include "Core.h"
 #include "KeyBindingSingleton.h"
 
-EndGame::~EndGame() = default;
+EndGameLose::~EndGameLose() = default;
 
-EndGame::EndGame(Engine::SceneManager * manager) : BaseScene(manager) { }
+EndGameLose::EndGameLose(Engine::SceneManager * manager) : BaseScene(manager) { }
 
-void EndGame::render()
+void EndGameLose::render()
 {
 	const auto timer = Engine::pre_update();
 	input();
@@ -19,7 +19,7 @@ void EndGame::render()
 	Engine::render(timer);
 }
 
-void EndGame::input() {
+void EndGameLose::input() {
 	const int k_keydown = 0;
 
 	auto inputs = Engine::GetInputs();
@@ -35,12 +35,12 @@ void EndGame::input() {
 	}
 }
 
-void EndGame::cleanup() {
+void EndGameLose::cleanup() {
 }
 
-bool EndGame::init() {
-	title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Congratz mate!"));
-	sub_title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 40, { 255,196,0,255 }, "WINNER WINNER CHICKEN DINNER!"));
+bool EndGameLose::init() {
+	title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "You didnt make it."));
+	sub_title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 40, { 255,196,0,255 }, "LOSER LOSER DOUBLE LOSER :p!"));
 	background_ = std::unique_ptr<Animation>(Engine::load_animation("mainmenu.png", 3));
 	background_->scale = 1280.0 / 960.0;
 	helper_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 255, 255, 255 },

@@ -87,7 +87,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 			{
 				DamageHandler(health, dmg);
 				if (health->current_health <= 0) {
-					std::cout << "Game Over!" << std::endl;
+					core->toggle_game_lost();
 				}
 			}
 
@@ -112,6 +112,7 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::Ent
 
 		if (health->current_health <= 0) {
 			manager->remove_entity(entity1);
+			core->toggle_game_won();
 		}
 	}
 }

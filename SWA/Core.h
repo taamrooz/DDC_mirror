@@ -11,6 +11,8 @@ private:
 	std::vector<std::unique_ptr<BaseSystem>> systems_;
 	std::unique_ptr<Engine::EntityManager<Component>> manager_ = nullptr;
 	bool is_paused_ = false;
+	bool is_winner_ = false;
+	bool is_loser_ = false;
 	/*
 	 * Loops through all systems and calls their respective update function.
 	 */
@@ -44,5 +46,13 @@ public:
 	 * \brief Toggles the games pause state.
 	 */
 	void toggle_pause();
+	/**
+	 * \brief Toggles the games win state.
+	 */
+	void toggle_game_won();
+	/**
+	 * \brief Toggles the games lose state.
+	 */
+	void toggle_game_lost();
 };
 
