@@ -31,6 +31,7 @@ string_code Convert(std::string const& inString) {
 	if (inString == "ladder") return cladder;
 	if (inString == "Flask_Blue") return cFlask_Blue;
 	if (inString == "monster") return cMonster;
+	if (inString == "boss") return cBoss;
 	return cWall;
 }
 
@@ -53,11 +54,11 @@ int ComponentFactory::CreateEntity(string_code name, int id, Engine::EntityManag
 		AddPlayerComponents(id, em);
 		break;
 	}
-	case string_code::cChest: {
+	case cChest: {
 		AddChestComponents(id, em);
 		break;
 	}
-	case string_code::cladder: {
+	case cladder: {
 		AddLadderComponents(id, em);
 		break;
 	}
@@ -69,7 +70,7 @@ int ComponentFactory::CreateEntity(string_code name, int id, Engine::EntityManag
 		AddEnemyComponents(id, em, false);
 		break;
 	}
-	case string_code::cBoss: {
+	case cBoss: {
 		AddEnemyComponents(id, em, true);
 		break;
 	}
@@ -167,11 +168,10 @@ void ComponentFactory::AddBlueFlaskComponents(int id, Engine::EntityManager<Comp
 	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("flask_big_blue.png", 1))));
 	animations.at(State::DEFAULT)->scale = 2;
 	auto ani = std::make_unique<AnimationComponent>(animations);
-	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
 	auto coll = std::make_unique<CollisionComponent>(32, 32, ItemCollisionHandler);
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
-	em->add_component_to_entity(id, std::move(room));
 	em->add_component_to_entity(id, std::move(room));
 
 }
