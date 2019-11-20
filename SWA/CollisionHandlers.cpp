@@ -19,7 +19,7 @@ void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 	}
 }
 
-void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
+void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
 {
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	if (player == nullptr) {
@@ -27,7 +27,7 @@ void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 	}
 }
 
-void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
+void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
 {
   //stop player from moving into a wall
 
@@ -58,7 +58,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 		{
 			DamageHandler(health, dmg);
 			if (health->current_health <= 0) {
-				core->is_paused = !core->is_paused;
+				core->toggle_pause();
 				//std::cout << "Game Over!" << std::endl;
 			}
 		}
@@ -70,7 +70,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 	UpdateVelocity(entity1, entity2, manager, core);
 }
 
-void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
+void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
 {
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
 	if (dmg != nullptr) {
@@ -87,7 +87,7 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::Ent
 	}
 }
 
-void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
+void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
 {
 	auto first_node_velocity_component = manager->get_component<VelocityComponent>(entity1);
 	auto first_node_position_component = manager->get_component<PositionComponent>(entity1);

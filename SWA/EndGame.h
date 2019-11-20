@@ -5,17 +5,17 @@
 #include "Animation.h"
 
 class EndGame :
-	virtual public BaseScene
+	virtual public Engine::BaseScene
 {
 private:
-	Texture* title_ = nullptr;
-	Texture* sub_title_ = nullptr;
-	Animation* background_ = nullptr;
-	Texture* helper = nullptr;
+	std::unique_ptr<Texture> title_ = nullptr;
+	std::unique_ptr<Texture> sub_title_ = nullptr;
+	std::unique_ptr<Animation> background_ = nullptr;
+	std::unique_ptr<Texture> helper = nullptr;
 	uint8_t current_action_ = 0;
 public:
 	~EndGame();
-	EndGame(SceneManager* manager);
+	EndGame(Engine::SceneManager* manager);
 	void render() override;
 	void cleanup() override;
 	bool init() override;

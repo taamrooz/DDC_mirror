@@ -7,54 +7,49 @@
 
 EndGame::~EndGame() = default;
 
-EndGame::EndGame(SceneManager * manager) : BaseScene(manager) { }
+EndGame::EndGame(Engine::SceneManager * manager) : BaseScene(manager) { }
 
 void EndGame::render()
 {
-	const auto timer = Engine::PreUpdate();
+	const auto timer = Engine::pre_update();
 	input();
-	Engine::UpdateAnimation(background_, 0, 0);
-	Engine::RenderTexture(title_, 400, 400, nullptr);
-	Engine::RenderTexture(sub_title_, 230, 500, nullptr);
-	Engine::RenderTexture(helper, 370, 750, nullptr);
-	Engine::Render(timer);
+	Engine::update_animation(background_.get(), 0, 0);
+	Engine::render_texture(title_.get(), 400, 400, nullptr);
+	Engine::render_texture(sub_title_.get(), 230, 500, nullptr);
+	Engine::render_texture(helper.get(), 370, 750, nullptr);
+	Engine::render(timer);
 }
 
 void EndGame::input() {
-	const int k_keydown = 0;
-	const int k_stop = 2;
+	constexpr static int k_keydown = 0;
+	constexpr static int k_stop = 2;
 
 	auto inputs = Engine::GetInputs();
 
+	//Quit if user wants to exit
+	if (!std::get<k_stop>(inputs)) {
+		is_running_ = false;
+		return;
+	}
 	//Handle all key down events
 	for (const auto& keycode : std::get<k_keydown>(inputs))
 	{
 		if (keycode == SDLK_RETURN)
 		{
-			is_running = false;
-			scene_manager_->pop_scene();
-			scene_manager_->pop_scene();
-			scene_manager_->pop_scene();
+			scene_manager_->pop_scene().pop_scene().pop_scene().pop_scene();
 			break;
 		}
 	}
 }
 
-void EndGame::cleanup() {
-	delete background_;
-	delete title_;
-	delete sub_title_;
-	delete helper;
-	Engine::DestroyRenderer();
-	Engine::CloseAudio();
-}
+void EndGame::cleanup() { }
 
 bool EndGame::init() {
-	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Congratz mate!");
-	sub_title_ = Engine::LoadText("manaspc.ttf", 40, { 255,196,0,255 }, "WINNER WINNER CHICKEN DINNER!");
-	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
+	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Congratz mate!"));
+	sub_title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 40, { 255,196,0,255 }, "WINNER WINNER CHICKEN DINNER!"));
+	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
 	background_->scale = 1280.0 / 960.0;
-	helper = Engine::LoadText("manaspc.ttf", 24, { 255, 255, 255, 255 },
-		"Press ENTER to quit to main menu");
+	helper = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 255, 255, 255 },
+		"Press ENTER to quit to main menu"));
 	return true;
 }

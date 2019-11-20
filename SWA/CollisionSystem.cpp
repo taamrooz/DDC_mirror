@@ -92,6 +92,7 @@ void CollisionSystem::update(double dt)
 	}
 
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
+	/*
 	std::vector<std::tuple<Point, Point>> bounds = quadTree.get_bounds();
 	for (auto const& point_tuple : bounds) {
 		int x = std::get<0>(point_tuple).x;
@@ -102,7 +103,7 @@ void CollisionSystem::update(double dt)
 
 		Engine::AddRectangle(x, y, width, height);
 	}
-
+	*/
 	//Engine::RenderRectangles();
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
 }
