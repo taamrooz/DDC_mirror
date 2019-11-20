@@ -9,23 +9,25 @@
 #include "CollisionHandlers.h"
 #include "RoomComponent.h"
 #include "DamagingComponent.h"
+#include "LevelSingleton.h"
 RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
 {}
 
 void RoomSystem::update(double dt)
 {
-	// Check if new level needs to be loaded
-	if (RoomSingleton::get_instance()->reload_level) {
-		// what to do when new level needs to be loaded?
-
-	}
-	else if (RoomSingleton::get_instance()->reload_room) {
-		//Check if a new room needs to be loaded
+	if (LevelSingleton::get_instance()->reload_level || RoomSingleton::get_instance()->reload_room) {
+		// what to do when new level or room needs to be loaded?
 		LoadTiles(RoomSingleton::get_instance()->get_current_room_name() + RoomSingleton::get_instance()->room_suffix, k_total_tiles_, k_total_sprites_, k_tile_width_, k_level_width_, k_tile_height_);
 		LoadObjects();
+
 		RoomSingleton::get_instance()->reload_room = false;
+		LevelSingleton::get_instance()->reload_level = false;
 	}
-	
+	else {
+		if (RoomSingleton::get_instance()->reload_room) {
+			//Check if a new room needs to be loaded
+		}
+	}
 }
 
 void RoomSystem::LoadObjects() {

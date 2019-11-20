@@ -25,6 +25,7 @@
     <ClCompile Include="RoomSingleton.cpp" />
     <ClCompile Include="RoomSystem.cpp" />
     <ClCompile Include="TileSetSingleton.cpp" />
+    <ClCompile Include="LevelSingleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationComponent.h" />
@@ -66,6 +67,7 @@
     <ClInclude Include="TileSetSingleton.h" />
     <ClInclude Include="VelocityComponent.h" />
     <ClInclude Include="LevelBossComponent.h" />
+    <ClInclude Include="LevelSingleton.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SWA.rc" />

@@ -1,4 +1,5 @@
 #include "RoomSingleton.h"
+#include "LevelSingleton.h"
 
 RoomSingleton::RoomSingleton() {
 	reload_room = true;
@@ -18,5 +19,13 @@ RoomSingleton* RoomSingleton::get_instance()
 }
 
 std::string RoomSingleton::get_current_room_name() {
-	return room_names[current_room_index];
+	return LevelSingleton::get_instance()->get_current_room_name_from_current_level(current_room_index);
+}
+
+void RoomSingleton::init_first_room() {
+	current_room_index = 0;
+}
+
+void RoomSingleton::init_next_room() {
+	current_room_index++;
 }

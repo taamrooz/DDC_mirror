@@ -13,6 +13,7 @@
 #include "RoomSingleton.h"
 #include "DamagingComponent.h"
 #include "LevelBossComponent.h"
+#include "LevelSingleton.h"
 
 ComponentFactory::ComponentFactory() {
 
@@ -129,6 +130,7 @@ void ComponentFactory::AddEnemyComponents(int id, EntityManager* em, bool level_
 	auto hea = std::make_unique<HealthComponent>(4, 5);
 	auto sho = std::make_unique<ShootingComponent>(7, 200);
 	auto vel = std::make_unique<VelocityComponent>();
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
 	std::map<State, Animation> animations;
 	animations.insert({ State::DEFAULT, Engine::LoadAnimation("Animations/wizard_m_idle.png", 4) });
 	animations.insert({ State::RUN, Engine::LoadAnimation("Animations/wizard_m_run.png", 4) });
@@ -143,6 +145,7 @@ void ComponentFactory::AddEnemyComponents(int id, EntityManager* em, bool level_
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
 	em->add_component_to_entity(id, std::move(sho));
+	em->add_component_to_entity(id, std::move(room));
 
 	if (level_boss) {
 		auto boss = std::make_unique<LevelBossComponent>();
