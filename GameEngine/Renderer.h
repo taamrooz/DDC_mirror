@@ -89,7 +89,8 @@ namespace Engine {
 	/*
 	 * Draw the items in the inventory
 	 */
-	ENGINE_API void RenderItems(std::vector<uint32_t> items, int selected);
+	ENGINE_API void RenderInventoryItem(std::string path, bool selected, int x);
+	ENGINE_API void RenderInventoryTile(bool selected, int x);
 
 	/**
 	 * \brief Sets the renderer draw color.

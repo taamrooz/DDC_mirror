@@ -10,6 +10,7 @@
 #include "DamagingComponent.h"
 #include "HealthComponent.h"
 #include "InventoryComponent.h"
+#include "TextureComponent.h"
 
 RenderSystem::RenderSystem(EntityManager* manager) 
 	: BaseSystem(manager) {
@@ -66,11 +67,26 @@ void RenderSystem::update(double dt)
 			Engine::RenderHealthBar(position_component->x, position_component->y, friendly, health_component->max_health, health_component->current_health);
 		}
 	}
-	
-	//render inventory
 	auto invId = manager_->get_all_entities_from_current_room<InventoryComponent>().front();
 	auto inv = manager_->get_component<InventoryComponent>(invId);
-	Engine::RenderItems(inv->items, inv->selected);
+	int x = 25;
+	for (int i = 0; i < 10; i++) {
+		bool selected = false;
+		if (i + 1 == inv->selected) {
+			selected = true;
+		}
+		Engine::RenderInventoryTile(selected, x);
+		if (inv->items.size() > i) {
+			auto texture = manager_->get_component<TextureComponent>(inv->items[i]);
+			Engine::RenderInventoryItem(texture->path, selected, x);
+		}
+		x = x + (16 * 3);
+		if (selected) {
+			x += 16;
+		}
+	}
+	//render inventory
+	
 
 	//render minimap (placeholder until full dungeon gets loaded in)
 	Engine::ClearRectangles();

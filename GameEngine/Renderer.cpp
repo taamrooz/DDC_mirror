@@ -85,8 +85,8 @@ void Engine::RenderEmptyTile(int x, int y, int width, int height)
 	SDL_Rect rect;
 	rect.x = x;
 	rect.y = y;
-	rect.w = width/2;
-	rect.h = height/2;
+	rect.w = width / 2;
+	rect.h = height / 2;
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderDrawRect(renderer, &rect);
@@ -313,34 +313,36 @@ void Engine::RenderLine(int x, int y, int x2, int y2)
 	SDL_RenderDrawLine(renderer, x, y, x2, y2);
 }
 
-void Engine::RenderItems(std::vector<uint32_t> items, int selected) {
-	
-	int x = 25;
+void Engine::RenderInventoryItem(std::string path, bool selected, int x) {
+
 	int y = SDL_GetWindowSurface(window)->h - 75;
-	for (int i = 0; i < 10; i++) {
-		int scale = 3;
-		if (i + 1 == selected) {
-			scale = 4;
-			y -= 16;
-		}
-		
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
-		SDL_Rect rect = SDL_Rect{ x, y, 16 * scale, 16 * scale };
-		SDL_RenderDrawRect(renderer, &rect);
-		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-		SDL_RenderFillRect(renderer, &rect);
-		
-		if (items.size() > i) {
-			Texture* t = new Texture(renderer);
-			t->loadFromFile(std::move("flask_big_blue.png"));
-			SDL_Rect clip = SDL_Rect{ 0, 0, 16 * scale, 16 * scale };
-			t->setBlendMode(SDL_BLENDMODE_BLEND);
-			t->setAlpha(225);
-			RenderTexture(t, x, y, &clip);
-		}
-		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
-		x = x + (16 * scale);
-		y = SDL_GetWindowSurface(window)->h - 75;
+
+	int scale = 3;
+	if (selected) {
+		scale = 4;
+		y -= 16;
 	}
+	Texture* t = new Texture(renderer);
+	t->loadFromFile(std::move(path));
+	SDL_Rect clip = SDL_Rect{ 0, 0, 16 * scale, 16 * scale };
+	t->setBlendMode(SDL_BLENDMODE_BLEND);
+	t->setAlpha(225);
+	t->render(x, y, &clip);
+}
+
+void Engine::RenderInventoryTile(bool selected, int x) {
+	int y = SDL_GetWindowSurface(window)->h - 75;
+	int scale = 3;
+	if (selected) {
+		scale = 4;
+		y -= 16;
+	}
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
+	SDL_Rect rect = SDL_Rect{ x, y, 16 * scale, 16 * scale };
+	SDL_RenderDrawRect(renderer, &rect);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_RenderFillRect(renderer, &rect);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 
 }

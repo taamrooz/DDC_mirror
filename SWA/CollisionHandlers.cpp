@@ -9,6 +9,7 @@
 #include "ComponentFactory.h"
 #include "ChestComponent.h"
 #include "InventoryComponent.h"
+#include "TextureComponent.h"
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 
@@ -73,8 +74,19 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager) {
 	auto inv = manager->get_component<InventoryComponent>(entity2);
 	if (inv != nullptr) {
-		inv->items.push_back(entity1);
-		manager->remove_entity(entity1);
+		if (inv->items.size() < 10) {
+			inv->items.push_back(entity1);
+
+			auto ani = manager->get_component<AnimationComponent>(entity1);
+			auto texture = std::make_unique<TextureComponent>("flask_big_blue.png");
+			manager->add_component_to_entity(entity1, std::move(texture));
+
+			manager->remove_component_from_entity<CollisionComponent>(entity1);
+			manager->remove_component_from_entity<AnimationComponent>(entity1);
+			manager->remove_component_from_entity<PositionComponent>(entity1);
+			manager->remove_component_from_entity<VelocityComponent>(entity1);
+		}
+		
 	}
 }
 
@@ -173,8 +185,11 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* ma
 	auto charC = manager->get_component<CharacterComponent>(entity2);
 	if (charC != nullptr) {
 		auto ani = manager->get_component<AnimationComponent>(entity1);
+		ani->animations.erase(ani->currentState);
+		ani->animations.insert({ State::DEFAULT, Engine::LoadAnimation("Animations/chest_empty_open.png", 3) });
 		ani->animations.at(ani->currentState).pause = false;
-
+		ani->animations.at(ani->currentState).loop = false;
+		ani->animations.at(ani->currentState).scale = 3;
 
 		//create drop
 		int drop = manager->create_entity();
