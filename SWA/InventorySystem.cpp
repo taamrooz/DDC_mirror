@@ -9,7 +9,7 @@ InventorySystem::InventorySystem(Engine::EntityManager<Component>* manager) : Ba
 
 void InventorySystem::update(double dt)
 {
-	auto entity = manager_->get_all_entities_from_current_room<CharacterComponent>().front();
+	auto entity = manager_->get_all_entities<CharacterComponent>().front();
 	auto inv = manager_->get_component<InventoryComponent>(entity);
 	for (auto i = KeyBindingSingleton::get_instance()->keys_down.begin(); i != KeyBindingSingleton::get_instance()->keys_down.end(); ++i)
 	{

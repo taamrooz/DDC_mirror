@@ -83,7 +83,7 @@ void RenderSystem::update(double dt)
 	}
 
 	//Render inventory
-	auto invId = manager_->get_all_entities_from_current_room<InventoryComponent>().front();
+	auto invId = manager_->get_all_entities<InventoryComponent>().front();
 	auto inv = manager_->get_component<InventoryComponent>(invId);
 	int x = 25;
 	for (int i = 0; i < 10; i++) {
