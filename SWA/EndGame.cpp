@@ -24,11 +24,6 @@ void EndGame::input() {
 
 	auto inputs = Engine::GetInputs();
 
-	//Quit if user wants to exit
-	if (!std::get<k_stop>(inputs)) {
-		is_running_ = false;
-		return;
-	}
 	//Handle all key down events
 	for (const auto& keycode : std::get<k_keydown>(inputs))
 	{

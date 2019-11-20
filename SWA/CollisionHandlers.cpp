@@ -95,7 +95,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 
 		}
 
-		UpdateVelocity(entity1, entity2, manager);
+		UpdateVelocity(entity1, entity2, manager, core);
 	}
 }
 
