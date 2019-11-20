@@ -169,7 +169,7 @@ void ComponentFactory::AddBlueFlaskComponents(int id, Engine::EntityManager<Comp
 	animations.at(State::DEFAULT)->scale = 2;
 	auto ani = std::make_unique<AnimationComponent>(animations);
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
-	auto coll = std::make_unique<CollisionComponent>(32, 32, ItemCollisionHandler);
+	auto coll = std::make_unique<CollisionComponent>(32, 32, ItemCollisionHandler, false);
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
 	em->add_component_to_entity(id, std::move(room));
