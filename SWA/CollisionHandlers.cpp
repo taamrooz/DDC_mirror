@@ -25,7 +25,7 @@ void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 	}
 }
 
-void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
+void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
 {
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	if (player == nullptr) {
@@ -33,7 +33,7 @@ void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 	}
 }
 
-void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
+void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
 {
   //stop player from moving into a wall
 
@@ -41,6 +41,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 
 	//etc.
   
+
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	auto ladder = manager->get_component<LadderComponent>(entity1);
 
@@ -91,18 +92,18 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 		{
 			DamageHandler(health, dmg);
 			if (health->current_health <= 0) {
-				std::cout << "Game Over!" << std::endl;
+				core->toggle_game_lost();
 			}
 		}
 	}
 	auto coll = manager->get_component<CollisionComponent>(entity2);
 	if (coll != nullptr && coll->solid) {
-		UpdateVelocity(entity1, entity2, manager);
+		UpdateVelocity(entity1, entity2, manager, core);
 	}
 	
 }
 
-void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager) {
+void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
 	auto inv = manager->get_component<InventoryComponent>(entity2);
 	if (inv != nullptr) {
 		if (inv->items.size() < 10) {
@@ -117,11 +118,10 @@ void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMana
 			manager->remove_component_from_entity<PositionComponent>(entity1);
 			manager->remove_component_from_entity<VelocityComponent>(entity1);
 		}
-		
 	}
 }
 
-void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
+void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
 {
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
 	if (dmg != nullptr) {
@@ -134,11 +134,12 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::Ent
 
 		if (health->current_health <= 0) {
 			manager->remove_entity(entity1);
+			core->toggle_game_won();
 		}
 	}
 }
 
-void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
+void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
 {
 	auto first_node_velocity_component = manager->get_component<VelocityComponent>(entity1);
 	auto first_node_position_component = manager->get_component<PositionComponent>(entity1);
@@ -210,7 +211,7 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 	}
 }
 
-void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager) {
+void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
 	auto compFactory = ComponentFactory::get_instance();
 
 	auto charC = manager->get_component<CharacterComponent>(entity2);

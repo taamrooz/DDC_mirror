@@ -179,7 +179,7 @@ void Engine::toggle_fps()
 	render_fps = !render_fps;
 }
 
-void Engine::render(int framestart) {
+void Engine::render(int framestart, int speed) {
 	float avgFPS = countedFrames / (frameTimer.GetTicks() / 1000.f);
 	if (avgFPS > 2000000)
 	{
@@ -210,9 +210,10 @@ void Engine::render(int framestart) {
 
 	delete gFPSTextTexture;
 	frameTime = SDL_GetTicks() - framestart;
+	int frameDelay = kframeDelay / speed;
 
-	if (kframeDelay > frameTime) {
-		SDL_Delay(kframeDelay - frameTime);
+	if (frameDelay > frameTime) {
+		SDL_Delay(frameDelay - frameTime);
 	}
 }
 

@@ -4,7 +4,7 @@
 #include "Animation.h"
 #include <memory>
 
-class EndGame :
+class EndGameLose :
 	virtual public Engine::BaseScene
 {
 private:
@@ -13,8 +13,8 @@ private:
 	std::unique_ptr<Animation> background_ = nullptr;
 	std::unique_ptr<Texture> helper_ = nullptr;
 public:
-	~EndGame();
-	EndGame(Engine::SceneManager* manager);
+	~EndGameLose();
+	EndGameLose(Engine::SceneManager* manager);
 	void render() override;
 	void cleanup() override;
 	bool init() override;

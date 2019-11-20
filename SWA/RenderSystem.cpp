@@ -53,7 +53,7 @@ void RenderSystem::update(double dt)
 		}
 	}
 
-	for (auto entityid : manager_->get_all_entities<HealthComponent>())
+	for (auto entityid : manager_->get_all_entities_from_current_room<HealthComponent>())
 	{
 		auto character_component = manager_->get_component<CharacterComponent>(entityid);
 		auto health_component = manager_->get_component<HealthComponent>(entityid);
