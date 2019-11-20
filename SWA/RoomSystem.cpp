@@ -8,23 +8,32 @@
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
 #include "RoomComponent.h"
+#include "DamagingComponent.h"
+#include "LevelSingleton.h"
 
 RoomSystem::RoomSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
 {}
 
 void RoomSystem::update(double dt)
 {
-	//Check if a new room needs to be loaded
-	if (RoomSingleton::get_instance()->reload_room) {
-		LoadTiles(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index] + RoomSingleton::get_instance()->room_suffix, k_total_tiles_, k_total_sprites_, k_tile_width_, k_level_width_, k_tile_height_);
+	if (LevelSingleton::get_instance()->reload_level || RoomSingleton::get_instance()->reload_room) {
+		// what to do when new level or room needs to be loaded?
+		LoadTiles(RoomSingleton::get_instance()->get_current_room_name() + RoomSingleton::get_instance()->room_suffix, k_total_tiles_, k_total_sprites_, k_tile_width_, k_level_width_, k_tile_height_);
 		LoadObjects();
+
 		RoomSingleton::get_instance()->reload_room = false;
+		LevelSingleton::get_instance()->reload_level = false;
+	}
+	else {
+		if (RoomSingleton::get_instance()->reload_room) {
+			//Check if a new room needs to be loaded
+		}
 	}
 }
 
 void RoomSystem::LoadObjects() {
 	//Get file path for object map
-	auto object_path = RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index] + RoomSingleton::get_instance()->object_suffix;
+	auto object_path = RoomSingleton::get_instance()->get_current_room_name() + RoomSingleton::get_instance()->object_suffix;
 	std::ifstream objects("./assets/Levels/" + object_path);
 
 	if (objects.fail())
@@ -54,7 +63,7 @@ void RoomSystem::LoadObjects() {
 			}
 
 			auto id = manager_->create_entity();
-			auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
+			auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
 			manager_->add_component_to_entity(id, std::move(room));
 			manager_->add_component_to_entity(id, std::make_unique<PositionComponent>(x, y));
 			ComponentFactory::get_instance()->CreateEntity(name, id, manager_);
@@ -134,7 +143,7 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 	map.close();
 
 	for (std::vector<int> i : tiles) {
-		auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
+		auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
 		auto pos = std::make_unique<PositionComponent>(i[0], i[1]);
 		auto tile = std::make_unique<TileComponent>(i[0], i[1], tile_width, tile_height, i[2]);
 		auto id = manager_->create_entity();

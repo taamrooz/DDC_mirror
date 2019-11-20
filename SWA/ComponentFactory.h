@@ -22,7 +22,7 @@ private:
 	void AddChestComponents(int id, Engine::EntityManager<Component>* em);
 	void AddBlueFlaskComponents(int id, Engine::EntityManager<Component>* em);
 	void AddLadderComponents(int id, Engine::EntityManager<Component>* em);
-	void AddEnemyComponents(int id, Engine::EntityManager<Component>* em);
+	void AddEnemyComponents(int id, Engine::EntityManager<Component>*, bool level_boss);
 public:
 	static ComponentFactory* get_instance();
 	int CreateEntity(std::string const& name, int id, Engine::EntityManager<Component>*);
