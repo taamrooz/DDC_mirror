@@ -193,7 +193,6 @@
     <ClInclude Include="LadderComponent.h" />
     <ClInclude Include="EditorObject.h" />
     <ClInclude Include="EndGame.h" />
-    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Help.h" />
@@ -220,85 +219,9 @@
     <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="assets\beat.wav" />
-    <Media Include="assets\high.wav" />
-    <Media Include="assets\low.wav" />
-    <Media Include="assets\medium.wav" />
-    <Media Include="assets\scratch.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\lazy.map" />
-    <None Include="ClassDiagram.cd" />
-    <None Include="second.map" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
       <Project>{31372a22-a0ca-4a66-92bb-b1c9a3f24eaf}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\Animations\wizard_m_hit.png" />
-    <Image Include="assets\Tileset.png" />
-    <Image Include="assets\Animations\big_demon_idle.png" />
-    <Image Include="assets\Animations\big_demon_run.png" />
-    <Image Include="assets\Animations\big_zombie_idle.png" />
-    <Image Include="assets\Animations\big_zombie_run.png" />
-    <Image Include="assets\Animations\chest_empty_open.png" />
-    <Image Include="assets\Animations\chest_full_open.png" />
-    <Image Include="assets\Animations\chest_mimic_open.png" />
-    <Image Include="assets\Animations\chort_idle.png" />
-    <Image Include="assets\Animations\chort_run.png" />
-    <Image Include="assets\Animations\coin.png" />
-    <Image Include="assets\Animations\elf_f_idle.png" />
-    <Image Include="assets\Animations\elf_f_run.png" />
-    <Image Include="assets\Animations\elf_m_idle.png" />
-    <Image Include="assets\Animations\elf_m_run.png" />
-    <Image Include="assets\Animations\floor_spikes.png" />
-    <Image Include="assets\Animations\goblin_idle.png" />
-    <Image Include="assets\Animations\goblin_run.png" />
-    <Image Include="assets\Animations\ice_zombie_idle.png" />
-    <Image Include="assets\Animations\ice_zombie_run.png" />
-    <Image Include="assets\Animations\imp_idle.png" />
-    <Image Include="assets\Animations\imp_run.png" />
-    <Image Include="assets\Animations\knight_f_idle.png" />
-    <Image Include="assets\Animations\knight_f_run.png" />
-    <Image Include="assets\Animations\knight_m_idle.png" />
-    <Image Include="assets\Animations\knight_m_run.png" />
-    <Image Include="assets\Animations\masked_orc_idle.png" />
-    <Image Include="assets\Animations\masked_orc_run.png" />
-    <Image Include="assets\Animations\muddy_idle.png" />
-    <Image Include="assets\Animations\muddy_run.png" />
-    <Image Include="assets\Animations\necromancer_idle.png" />
-    <Image Include="assets\Animations\necromancer_run.png" />
-    <Image Include="assets\Animations\ogre_idle.png" />
-    <Image Include="assets\Animations\ogre_run.png" />
-    <Image Include="assets\Animations\orc_shaman_idle.png" />
-    <Image Include="assets\Animations\orc_shaman_run.png" />
-    <Image Include="assets\Animations\orc_warrior_idle.png" />
-    <Image Include="assets\Animations\orc_warrior_run.png" />
-    <Image Include="assets\Animations\skelet_idle.png" />
-    <Image Include="assets\Animations\skelet_run.png" />
-    <Image Include="assets\Animations\swampy_idle.png" />
-    <Image Include="assets\Animations\swampy_run.png" />
-    <Image Include="assets\Animations\tiny_zombie_idle.png" />
-    <Image Include="assets\Animations\tiny_zombie_run.png" />
-    <Image Include="assets\Animations\wall_fountain_basin_blue.png" />
-    <Image Include="assets\Animations\wall_fountain_basin_red.png" />
-    <Image Include="assets\Animations\wall_fountain_mid_blue.png" />
-    <Image Include="assets\Animations\wall_fountain_mid_red.png" />
-    <Image Include="assets\Animations\wizard_f_idle.png" />
-    <Image Include="assets\Animations\wizard_f_run.png" />
-    <Image Include="assets\Animations\wizard_m_idle.png" />
-    <Image Include="assets\Animations\wizard_m_run.png" />
-    <Image Include="assets\Animations\wogol_idle.png" />
-    <Image Include="assets\Animations\wogol_run.png" />
-    <Image Include="assets\Animations\zombie_idle.png" />
-    <Image Include="assets\Animations\zombie_run.png" />
-    <Image Include="assets\wizard_move_f.png" />
-    <Image Include="assets\wizard_move_m.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="SWA.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
