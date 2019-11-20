@@ -59,8 +59,8 @@ namespace Engine {
 			{
 				for(auto i = components_by_class_.at(type).begin(); i != components_by_class_.at(type).end(); ++i)
 				{
-					auto room_comp = get_component<RoomComponent>(i->first);
-					if(room_comp->room_name == RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index])
+					auto room_component = get_component<RoomComponent>(i->first);
+					if (room_component->room_name.compare(RoomSingleton::get_instance()->get_current_room_name()) == 0)
 					{
 						list.push_back(i->first);
 					}

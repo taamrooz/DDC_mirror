@@ -92,8 +92,7 @@ void CollisionSystem::update(double dt)
 	}
 
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
-	/*
-	std::vector<std::tuple<Point, Point>> bounds = quadTree.get_bounds();
+	/*std::vector<std::tuple<Engine::Point, Engine::Point>> bounds = quadTree.get_bounds();
 	for (auto const& point_tuple : bounds) {
 		int x = std::get<0>(point_tuple).x;
 		int y = std::get<0>(point_tuple).y;
@@ -101,9 +100,89 @@ void CollisionSystem::update(double dt)
 		int width = std::get<1>(point_tuple).x - std::get<0>(point_tuple).x;
 		int height = std::get<1>(point_tuple).y - std::get<0>(point_tuple).y;
 
-		Engine::AddRectangle(x, y, width, height);
-	}
-	*/
-	//Engine::RenderRectangles();
+	Engine::render_rectangles();*/
 	//// <----- VISUAL DEMO OF QUADTREE ----->  ////
+}
+
+void CollisionSystem::update_velocity(Engine::Node* first_node, Engine::Node* second_node) {
+	auto first_node_velocity_component = manager_->get_component<VelocityComponent>(first_node->id);
+	auto first_node_position_component = manager_->get_component<PositionComponent>(first_node->id);
+	auto second_node_velocity_component = manager_->get_component<VelocityComponent>(second_node->id);
+	auto second_node_position_component = manager_->get_component<PositionComponent>(second_node->id);
+
+	//TEMP if first_node is bullet and second_node is character, do not update vel (eating own bullets).
+	auto collision = manager_->get_component<CollisionComponent>(first_node->id);
+	if (collision != nullptr && collision->owner == second_node->id)
+	{
+		return;
+	}
+	//Vice versa
+	collision = manager_->get_component<CollisionComponent>(second_node->id);
+	if (collision != nullptr && collision->owner == first_node->id)
+	{
+		return;
+	}
+
+
+	if (first_node_velocity_component != nullptr && second_node_position_component != nullptr) {
+		// Top bottom collisiondetection first node
+		if (first_node_velocity_component->dx > 0) {
+			if ((first_node_position_component->x + first_node->width) >= (second_node_position_component->x)) {
+				first_node_position_component->x = second_node_position_component->x - first_node->width;
+				first_node_velocity_component->dx = 0;
+			}
+		}
+		else if (first_node_velocity_component->dx < 0) {
+			if ((first_node_position_component->x) <= (second_node_position_component->x + second_node->width)) {
+				first_node_position_component->x = second_node_position_component->x + second_node->width;
+				first_node_velocity_component->dx = 0;
+			}
+		}
+
+		// Top and bottom collisiondetection first node
+		if (first_node_velocity_component->dy > 0) {
+			if ((first_node_position_component->y + first_node->height) >= (second_node_position_component->y)) {
+				first_node_position_component->y = second_node_position_component->y - first_node->height;
+				first_node_velocity_component->dy = 0;
+			}
+		}
+		else if (first_node_velocity_component->dy < 0) {
+			if ((first_node_position_component->y) <= (second_node_position_component->y + second_node->height)) {
+				first_node_position_component->y = second_node_position_component->y + second_node->height;
+				first_node_velocity_component->dy = 0;
+			}
+		}
+	}
+
+	if (second_node_velocity_component != nullptr) {
+
+		// Top bottom collisiondetection second node
+		if (second_node_velocity_component->dx > 0) {
+			if ((second_node_position_component->x + second_node->width) >= (first_node_position_component->x)) {
+				second_node_position_component->x = first_node_position_component->x - second_node->width;
+				second_node_velocity_component->dx = 0;
+			}
+		}
+		else if (second_node_velocity_component->dx < 0) {
+			if ((second_node_position_component->x) <= (first_node_position_component->x + first_node->width)) {
+				second_node_position_component->x = first_node_position_component->x + first_node->width;
+				second_node_velocity_component->dx = 0;
+			}
+		}
+
+
+		// Top and bottom collisiondetection second node
+		if (second_node_velocity_component->dy > 0) {
+			if ((second_node_position_component->y + second_node->height) >= (first_node_position_component->y)) {
+				second_node_position_component->y = first_node_position_component->y - second_node->height;
+				second_node_velocity_component->dy = 0;
+			}
+		}
+		else if (second_node_velocity_component->dy < 0) {
+			if (second_node_position_component->y <= first_node_position_component->y + first_node->height) {
+				second_node_position_component->y = first_node_position_component->y + first_node->height;
+				second_node_velocity_component->dy = 0;
+			}
+		}
+	}
 }
