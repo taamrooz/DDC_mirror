@@ -25,6 +25,7 @@ private:
 	void AddEnemyComponents(int id, Engine::EntityManager<Component>* em);
 public:
 	static ComponentFactory* get_instance();
-	int CreateEntity(std::string, int id, Engine::EntityManager<Component>*);
+	int CreateEntity(std::string const& name, int id, Engine::EntityManager<Component>*);
+	int CreateEntity(string_code name, int id, Engine::EntityManager<Component>* em);
 };
 

@@ -181,17 +181,17 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 	}
 }
 
-void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager) {
+void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager) {
 	auto compFactory = ComponentFactory::get_instance();
 
 	auto charC = manager->get_component<CharacterComponent>(entity2);
 	if (charC != nullptr) {
 		auto ani = manager->get_component<AnimationComponent>(entity1);
 		ani->animations.erase(ani->currentState);
-		ani->animations.insert({ State::DEFAULT, Engine::LoadAnimation("Animations/chest_empty_open.png", 3) });
-		ani->animations.at(ani->currentState).pause = false;
-		ani->animations.at(ani->currentState).loop = false;
-		ani->animations.at(ani->currentState).scale = 3;
+		ani->animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/chest_empty_open.png", 3))));
+		ani->animations.at(ani->currentState)->pause = false;
+		ani->animations.at(ani->currentState)->loop = false;
+		ani->animations.at(ani->currentState)->scale = 3;
 
 		//create drop
 		int drop = manager->create_entity();
