@@ -41,6 +41,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 
 	//etc.
   
+
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	auto ladder = manager->get_component<LadderComponent>(entity1);
 
@@ -86,24 +87,23 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 		ani->currentState = State::HIT;
 		ani->lock_until = Engine::get_ticks() + 250;
 
-			const auto health = manager->get_component<HealthComponent>(entity1);
-			if (health != nullptr)
-			{
-				DamageHandler(health, dmg);
-				if (health->current_health <= 0) {
-					core->toggle_game_lost();
-				}
+		const auto health = manager->get_component<HealthComponent>(entity1);
+		if (health != nullptr)
+		{
+			DamageHandler(health, dmg);
+			if (health->current_health <= 0) {
+				core->toggle_game_lost();
 			}
 		}
 	}
 	auto coll = manager->get_component<CollisionComponent>(entity2);
 	if (coll != nullptr && coll->solid) {
-		UpdateVelocity(entity1, entity2, manager);
+		UpdateVelocity(entity1, entity2, manager, core);
 	}
 	
 }
 
-void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager) {
+void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
 	auto inv = manager->get_component<InventoryComponent>(entity2);
 	if (inv != nullptr) {
 		if (inv->items.size() < 10) {
@@ -211,7 +211,7 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 	}
 }
 
-void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager) {
+void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
 	auto compFactory = ComponentFactory::get_instance();
 
 	auto charC = manager->get_component<CharacterComponent>(entity2);
