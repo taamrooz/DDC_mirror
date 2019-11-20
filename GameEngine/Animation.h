@@ -1,6 +1,7 @@
 #pragma once
 #include "Texture.h"
 #include <vector>
+#include "rect2d.h"
 
 #ifdef ENGINE_EXPORTS
 #define ENGINE_API __declspec(dllexport)
@@ -10,7 +11,7 @@
 class Animation
 {
 public:
-	ENGINE_API Animation(int, std::vector<SDL_Rect>&, Texture);
+	ENGINE_API Animation(int, Texture*);
 	ENGINE_API ~Animation();
 	/*
 	 * Updates the animation by its specified x and y coordinates, and whether the animation should be flipped.
@@ -22,7 +23,7 @@ public:
 	bool loop;
 	bool pause;
 	int WALKING_ANIMATION_FRAMES;
-	std::vector<SDL_Rect> gSpriteClips;
-	Texture gSpriteSheetTexture;
+	std::vector<Engine::rect2d> gSpriteClips;
+	Texture* gSpriteSheetTexture;
 };
 

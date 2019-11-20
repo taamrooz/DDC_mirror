@@ -1,30 +1,29 @@
 #pragma once
 #include "BaseScene.h"
-#include "SceneManager.h"
 #include "Texture.h"
 #include "Animation.h"
+#include <memory>
 
 class Help :
-	virtual public BaseScene
+	virtual public Engine::BaseScene
 {
 private:
-	Texture* title_ = nullptr;
-	Texture* sub_title_moving_ = nullptr;
-	Texture* sub_title_shooting_ = nullptr;
-	Animation* background_ = nullptr;
-	Texture* move_up_ = nullptr;
-	Texture* move_left_ = nullptr;
-	Texture* move_right_ = nullptr;
-	Texture* move_down_ = nullptr;
-	Texture* shoot_up_ = nullptr;
-	Texture* shoot_left_ = nullptr;
-	Texture* shoot_right_ = nullptr;
-	Texture* shoot_down_ = nullptr;
-	Texture* helper = nullptr;
-	uint8_t current_action_ = 0;
+	std::unique_ptr<Texture> title_ = nullptr;
+	std::unique_ptr<Texture> sub_title_moving_ = nullptr;
+	std::unique_ptr<Texture> sub_title_shooting_ = nullptr;
+	std::unique_ptr<Animation> background_ = nullptr;
+	std::unique_ptr<Texture> move_up_ = nullptr;
+	std::unique_ptr<Texture> move_left_ = nullptr;
+	std::unique_ptr<Texture> move_right_ = nullptr;
+	std::unique_ptr<Texture> move_down_ = nullptr;
+	std::unique_ptr<Texture> shoot_up_ = nullptr;
+	std::unique_ptr<Texture> shoot_left_ = nullptr;
+	std::unique_ptr<Texture> shoot_right_ = nullptr;
+	std::unique_ptr<Texture> shoot_down_ = nullptr;
+	std::unique_ptr<Texture> helper = nullptr;
 public:
 	~Help();
-	Help(SceneManager* manager);
+	Help(Engine::SceneManager* manager);
 	void render() override;
 	void cleanup() override;
 	bool init() override;

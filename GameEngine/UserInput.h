@@ -1,8 +1,7 @@
 #pragma once
-#include <string>
-#include <SDL.h>
-#include <map>
+#include "SDL.h"
 #include <vector>
+#include <string>
 
 #ifdef ENGINE_EXPORTS
 #define ENGINE_API __declspec(dllexport)

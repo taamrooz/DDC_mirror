@@ -7,9 +7,9 @@ class InputSystem :
 
 {
 public:
-	InputSystem(EntityManager* manager, Core &core);
+	InputSystem(Engine::EntityManager<Component>* manager, Core& core);
 	void update(double dt) override;
 private:
-	Core* core;
+	Core* core_;
 };
 

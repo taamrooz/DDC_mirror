@@ -5,6 +5,7 @@
 #include "TileComponent.h"
 #include "EditorObject.h"
 #include "Renderer.h"
+#include <memory>
 
 enum state
 {
@@ -18,7 +19,7 @@ enum state
 	save_dungeon
 };
 class LevelEditor :
-	public BaseScene
+	public virtual Engine::BaseScene
 {
 private:
 	state state = mode_selection;
@@ -50,7 +51,7 @@ private:
 	int selected_object_ = 0;
 	void RenderTileGrid();
 public:
-	LevelEditor(SceneManager* manager);
+	LevelEditor(Engine::SceneManager* manager);
 	void RenderModeSelection();
 	void RenderDungeonFilepicker();
 	void RenderDungeonEditor();
@@ -61,12 +62,12 @@ public:
 	void RenderObjectEditor();
 	void RenderRoomSave();
 	void InputModeSelection(SDL_Keycode keycode);
-	void InputDungeonFilePicker(SDL_Keycode keycode, std::string text);
+	void InputDungeonFilePicker(SDL_Keycode keycode, std::string& text);
 	void InputDungeonEditor(SDL_Keycode keycode);
-	void InputDungeonSave(SDL_Keycode keycode, std::string text);
+	void InputDungeonSave(SDL_Keycode keycode, std::string& text);
 	void input();
-	void InputRoomSave(SDL_Keycode keycode, std::string text);
-	void InputRoomFilePicker(SDL_Keycode keycode, std::string text);
+	void InputRoomSave(SDL_Keycode keycode, std::string& text);
+	void InputRoomFilePicker(SDL_Keycode keycode, std::string& text);
 	void InputTileEditor(SDL_Keycode keycode);
 	void SelectObject(int first, int second);
 	void PlaceObject(int first, int second);
@@ -75,14 +76,14 @@ public:
 	void PlaceTile(int x, int y);
 	void SelectRoom(int x, int y);
 	void PlaceRoom(int x, int y);
-	void GetFiles(std::string path, std::string extension);
+	void GetFiles(const char* path, std::string extension);
 	bool SaveDungeonFile();
 	void SaveScreenshot();
 	bool SaveRoomFile();
 	void cleanup();
 	void CreateEmptyDungeon();
-	bool OpenDungeonFile(std::string path);
-	bool OpenRoomFile(std::string path);
+	bool OpenDungeonFile(std::string& path);
+	bool OpenRoomFile(std::string& path);
 	void CreateEmptyLevel();
 	bool init();
 	void InitObjects();
