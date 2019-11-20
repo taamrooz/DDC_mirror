@@ -91,17 +91,10 @@ namespace Engine {
 	 * \brief Adds a rectangle to the collection on specified x and y coordinates, with the width and height.
 	 * @param rectangle The rect2d to be added.
 	 */
-	ENGINE_API void RenderRectangles(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-	ENGINE_API void FillRectangles(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-	/*
-	 * Renders the outline of a rectangle for the sake of representing empty tiles (Half size of what you pass to the function)
-	 */
+	ENGINE_API void add_rectangle(rect2d* rectangle);
 
-	ENGINE_API void ClearRectangles();
-	ENGINE_API void RenderEmptyTile(int x, int y, int width, int height);
 	/*
 	 * Takes a screenshot of the current render target and saves it to a file indicated by "path"
-	ENGINE_API void add_rectangle(rect2d* rectangle);
 	/**
 	 * \brief Renders all rectangles in the collection.
 	 */
@@ -119,12 +112,12 @@ namespace Engine {
 	 * \brief Gets the number of ms after the renderer's initialization.
 	 * @return milliseconds
 	 */
-	ENGINE_API void RenderLine(int x, int y, int x2, int y2);
+
 	/*
 	 * Draw the items in the inventory
 	 */
-	ENGINE_API void RenderInventoryItem(std::string path, bool selected, int x);
-	ENGINE_API void RenderInventoryTile(bool selected, int x);
+	ENGINE_API void render_inventory_item(std::string path, bool selected, int x);
+	ENGINE_API void render_inventory_tile(bool selected, int x);
 
 	ENGINE_API uint32_t get_ticks();
 	/**

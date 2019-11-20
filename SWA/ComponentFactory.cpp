@@ -41,7 +41,7 @@ ComponentFactory* ComponentFactory::get_instance() {
 }
 
 int ComponentFactory::CreateEntity(std::string const& name, int id, Engine::EntityManager<Component>* em) {
-	CreateEntity(Convert(name), id, em);
+	return CreateEntity(Convert(name), id, em);
 }
 
 int ComponentFactory::CreateEntity(string_code name, int id, Engine::EntityManager<Component>* em)
@@ -151,10 +151,10 @@ void ComponentFactory::AddEnemyComponents(int id, Engine::EntityManager<Componen
 
 void ComponentFactory::AddBlueFlaskComponents(int id, Engine::EntityManager<Component>* em) {
 
-	std::map<State, Animation> animations;
-	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("flask_big_blue.png", 4))));
-	animations.at(State::DEFAULT).scale = 2;
-	auto ani = std::make_unique<AnimationComponent>(animations, false);
+	std::unordered_map<State, std::unique_ptr<Animation>> animations;
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("flask_big_blue.png", 1))));
+	animations.at(State::DEFAULT)->scale = 2;
+	auto ani = std::make_unique<AnimationComponent>(animations);
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
 	auto coll = std::make_unique<CollisionComponent>(32, 32, ItemCollisionHandler);
 	em->add_component_to_entity(id, std::move(ani));

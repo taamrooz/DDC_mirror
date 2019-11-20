@@ -244,6 +244,7 @@
     </ClInclude>
     <ClInclude Include="InventorySystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
     <ClInclude Include="EndGame.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>

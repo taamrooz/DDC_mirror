@@ -242,50 +242,6 @@ void Engine::destroy_renderer() {
 	SDL_Quit();
 }
 
-
-
-void Engine::AddRectangle(int x, int y, int w, int h)
-{
-	SDL_Rect rect;
-	rect.x = x;
-	rect.y = y;
-	rect.w = w;
-	rect.h = h;
-	rectangles.push_back(rect);
-}
-
-void Engine::RenderRectangles(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-{
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(renderer, r, g, b, a);
-
-	for (auto const rectangle : rectangles)
-	{
-		SDL_RenderDrawRect(renderer, &rectangle);
-	}
-
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
-	rectangles.clear();
-}
-
-void Engine::FillRectangles(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-{
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(renderer, r, g, b, a);
-
-	for (auto const rectangle : rectangles)
-	{
-		SDL_RenderFillRect(renderer, &rectangle);
-	}
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-}
-
-void Engine::ClearRectangles() {
-	rectangles.clear();
-}
-
 void Engine::take_screenshot(int width, int height, int xpos, int ypos, const char* path)
 {
 	SDL_Surface* sshot = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
@@ -300,7 +256,7 @@ void Engine::render_line(int x, int y, int x2, int y2)
 	SDL_RenderDrawLine(renderer, x, y, x2, y2);
 }
 
-void Engine::RenderInventoryItem(std::string path, bool selected, int x) {
+void Engine::render_inventory_item(std::string path, bool selected, int x) {
 
 	int y = SDL_GetWindowSurface(window)->h - 75;
 
@@ -309,15 +265,13 @@ void Engine::RenderInventoryItem(std::string path, bool selected, int x) {
 		scale = 4;
 		y -= 16;
 	}
-	Texture* t = new Texture(renderer);
-	t->loadFromFile(std::move(path));
-	SDL_Rect clip = SDL_Rect{ 0, 0, 16 * scale, 16 * scale };
-	t->setBlendMode(SDL_BLENDMODE_BLEND);
-	t->setAlpha(225);
+	auto t = load_tileset(path);
+	rect2d clip = rect2d{ 0, 0, 16 * scale, 16 * scale };
+	t->set_alpha(225);
 	t->render(x, y, &clip);
 }
 
-void Engine::RenderInventoryTile(bool selected, int x) {
+void Engine::render_inventory_tile(bool selected, int x) {
 	int y = SDL_GetWindowSurface(window)->h - 75;
 	int scale = 3;
 	if (selected) {
@@ -328,8 +282,6 @@ void Engine::RenderInventoryTile(bool selected, int x) {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
 	SDL_Rect rect = SDL_Rect{ x, y, 16 * scale, 16 * scale };
 	SDL_RenderDrawRect(renderer, &rect);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_RenderFillRect(renderer, &rect);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 
 }
