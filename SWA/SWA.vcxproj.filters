@@ -120,6 +120,9 @@
     <ClCompile Include="LevelEditor.cpp">
       <Filter>Source Files\LevelEditor</Filter>
     </ClCompile>
+    <ClCompile Include="InventorySystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
     <ClCompile Include="EndGame.cpp">
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
@@ -182,6 +185,9 @@
     <ClInclude Include="TileComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ChestComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
     <ClInclude Include="RoomSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
@@ -232,6 +238,12 @@
     </ClInclude>
     <ClInclude Include="Pause.h">
       <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="InventorySystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="EndGame.h">
       <Filter>Header Files\Menus</Filter>

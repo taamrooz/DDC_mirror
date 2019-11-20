@@ -164,6 +164,7 @@
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="InventorySystem.cpp" />
     <ClCompile Include="KeyBindingSingleton.cpp" />
     <ClCompile Include="LevelEditor.cpp" />
     <ClCompile Include="LevelSingleton.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="CharacterComponent.h" />
+    <ClInclude Include="ChestComponent.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionHandlers.h" />
     <ClInclude Include="CollisionSystem.h" />
@@ -197,6 +199,7 @@
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="InventoryComponent.h" />
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="LevelBossComponent.h" />
     <ClInclude Include="LevelSingleton.h" />
@@ -211,6 +214,7 @@
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="RoomSingleton.h" />
     <ClInclude Include="RoomSystem.h" />
+    <ClInclude Include="InventorySystem.h" />
     <ClInclude Include="ShootingComponent.h" />
     <ClInclude Include="ShootSystem.h" />
     <ClInclude Include="TextureComponent.h" />

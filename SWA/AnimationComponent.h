@@ -22,5 +22,6 @@ struct AnimationComponent : Component
 	std::unordered_map<State, std::unique_ptr<Animation>> animations;
 	State currentState;
 	int lock_until;
+	bool visible;
 };
 
