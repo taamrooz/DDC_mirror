@@ -14,7 +14,6 @@
 #include "DamagingComponent.h"
 #include "LevelBossComponent.h"
 #include "LevelSingleton.h"
-
 #include "Renderer.h"
 
 ComponentFactory::ComponentFactory() {
@@ -33,13 +32,13 @@ enum class string_code {
 };
 
 string_code Convert(std::string const& inString) {
-	if (inString == "player") return cPlayer;
-	if (inString == "wall") return cWall;
-	if (inString == "chest") return cChest;
-	if (inString == "ladder") return cladder;
-	if (inString == "monster") return cMonster;
-	if (inString == "boss") return cBoss;
-	return cWall;
+	if (inString == "player") return string_code::cPlayer;
+	if (inString == "wall") return string_code::cWall;
+	if (inString == "chest") return string_code::cChest;
+	if (inString == "ladder") return string_code::cladder;
+	if (inString == "monster") return string_code::cMonster;
+	if (inString == "boss") return string_code::cBoss;
+	return string_code::cWall;
 }
 
 ComponentFactory* ComponentFactory::get_instance() {
@@ -64,11 +63,11 @@ int ComponentFactory::CreateEntity(std::string name, int id, Engine::EntityManag
 		AddLadderComponents(id, em);
 		break;
 	}
-	case cMonster: {
+	case string_code::cMonster: {
 		AddEnemyComponents(id, em, false);
 		break;
 	}
-	case cBoss: {
+	case string_code::cBoss: {
 		AddEnemyComponents(id, em, true);
 		break;
 	}
@@ -82,10 +81,10 @@ int ComponentFactory::CreateEntity(std::string name, int id, Engine::EntityManag
 void ComponentFactory::AddChestComponents(int id, Engine::EntityManager<Component>* em) {
 	auto coll = std::make_unique<CollisionComponent>(48, 48, PlayerCollisionHandler);
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
-	std::map<State, Animation> animations;
-	animations.insert({ State::DEFAULT, Engine::LoadAnimation("Animations/chest_full_open.png", 3) });
-	animations.at(State::DEFAULT).pause = true;
-	animations.at(State::DEFAULT).scale = 3;
+	std::unordered_map<State, std::unique_ptr<Animation>> animations;
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/chest_full_open.png", 3))));
+	animations.at(State::DEFAULT)->pause = true;
+	animations.at(State::DEFAULT)->scale = 3;
 	auto ani = std::make_unique<AnimationComponent>(animations);
 	auto dmg = std::make_unique<DamagingComponent>(1, false);
 	//ani.get()->animation.pause = true;
@@ -128,7 +127,7 @@ void ComponentFactory::AddLadderComponents(int id, Engine::EntityManager<Compone
 	em->add_component_to_entity(id, std::move(room));
 }
 
-void ComponentFactory::AddEnemyComponents(int id, EntityManager* em, bool level_boss) {
+void ComponentFactory::AddEnemyComponents(int id, Engine::EntityManager<Component>* em, bool level_boss) {
 	auto hea = std::make_unique<HealthComponent>(4, 5);
 	auto sho = std::make_unique<ShootingComponent>(7, 200);
 	auto vel = std::make_unique<VelocityComponent>();

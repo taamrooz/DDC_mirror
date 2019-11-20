@@ -8,6 +8,8 @@
 #include "LadderComponent.h"
 #include "LevelBossComponent.h"
 #include "LevelSingleton.h"
+#include "AnimationComponent.h"
+#include <Renderer.h>
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 
@@ -78,22 +80,23 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 		if (dmg != nullptr && ani != nullptr) {
 
 			ani->currentState = State::HIT;
-			ani->lock_until = Engine::GetTicks() + 250;
+			ani->lock_until = Engine::get_ticks() + 250;
 
-		const auto health = manager->get_component<HealthComponent>(entity1);
-		if(health != nullptr)
-		{
-			DamageHandler(health, dmg);
-			if (health->current_health <= 0) {
-				std::cout << "Game Over!" << std::endl;
+			const auto health = manager->get_component<HealthComponent>(entity1);
+			if (health != nullptr)
+			{
+				DamageHandler(health, dmg);
+				if (health->current_health <= 0) {
+					std::cout << "Game Over!" << std::endl;
+				}
 			}
-		}
-		
-		
-		
-	}
 
-	UpdateVelocity(entity1, entity2, manager);
+
+
+		}
+
+		UpdateVelocity(entity1, entity2, manager);
+	}
 }
 
 void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)

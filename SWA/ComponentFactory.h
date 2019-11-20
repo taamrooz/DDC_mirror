@@ -11,11 +11,11 @@ private:
 	ComponentFactory& operator=(const ComponentFactory& entityFactory) = delete; // Assignment operator
 	ComponentFactory& operator=(const ComponentFactory&& entityFactory) = delete; // Move operator
 	static ComponentFactory* instance_;
-	void AddPlayerComponents(int, EntityManager*);
-	void AddChestComponents(int id, EntityManager* em);
-	void AddLadderComponents(int id, EntityManager* em);
-	void AddEnemyComponents(int id, EntityManager* em, bool level_boss);
+	void AddPlayerComponents(int, Engine::EntityManager<Component>*);
+	void AddChestComponents(int id, Engine::EntityManager<Component>*);
+	void AddLadderComponents(int id, Engine::EntityManager<Component>*);
+	void AddEnemyComponents(int id, Engine::EntityManager<Component>*, bool level_boss);
 public:
 	static ComponentFactory* get_instance();
-	int CreateEntity(std::string, int id, EntityManager*);
+	int CreateEntity(std::string, int id, Engine::EntityManager<Component>*);
 };

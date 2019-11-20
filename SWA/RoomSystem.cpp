@@ -10,7 +10,8 @@
 #include "RoomComponent.h"
 #include "DamagingComponent.h"
 #include "LevelSingleton.h"
-RoomSystem::RoomSystem(EntityManager* manager) : BaseSystem(manager)
+
+RoomSystem::RoomSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
 {}
 
 void RoomSystem::update(double dt)
@@ -32,7 +33,7 @@ void RoomSystem::update(double dt)
 
 void RoomSystem::LoadObjects() {
 	//Get file path for object map
-	auto object_path = RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index] + RoomSingleton::get_instance()->object_suffix;
+	auto object_path = RoomSingleton::get_instance()->get_current_room_name() + RoomSingleton::get_instance()->object_suffix;
 	std::ifstream objects("./assets/Levels/" + object_path);
 
 	if (objects.fail())
