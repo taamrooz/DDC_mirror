@@ -96,7 +96,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 		}
 	}
 	auto coll = manager->get_component<CollisionComponent>(entity2);
-	if (coll->solid) {
+	if (coll != nullptr && coll->solid) {
 		UpdateVelocity(entity1, entity2, manager);
 	}
 	
