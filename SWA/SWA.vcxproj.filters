@@ -69,14 +69,8 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
-    <ClCompile Include="BaseSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="MoveSystem.cpp">
       <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
-      <Filter>Source Files\Entities</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem.cpp">
       <Filter>Source Files\Systems</Filter>
@@ -93,9 +87,6 @@
     <ClCompile Include="RoomSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="QuadTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MoveCharacterSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -110,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="RoomSingleton.cpp">
       <Filter>Source Files\Singletons</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files\Menus</Filter>
     </ClCompile>
     <ClCompile Include="CollisionHandlers.cpp">
       <Filter>Source Files</Filter>
@@ -144,9 +132,6 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
-      <Filter>Header Files\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseScene.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
     <ClInclude Include="PositionComponent.h">
@@ -197,9 +182,6 @@
     <ClInclude Include="RoomSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="QuadTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CharacterComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -218,9 +200,6 @@
     <ClInclude Include="RoomSingleton.h">
       <Filter>Header Files\Singletons</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files\Menus</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionHandlers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -229,9 +208,6 @@
     </ClInclude>
     <ClInclude Include="TextureComponent.h">
       <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="LevelEditor.h">
       <Filter>Header Files\LevelEditor</Filter>
@@ -247,7 +223,7 @@
     </ClInclude>
     <ClInclude Include="LadderComponent.h">
       <Filter>Header Files\Components</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="Credits.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>

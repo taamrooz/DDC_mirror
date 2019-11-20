@@ -1,13 +1,14 @@
 #pragma once
 #include "EntityManager.h"
+#include "Component.h"
 
 class BaseSystem
 {
 protected:
-	EntityManager* manager_;
+	Engine::EntityManager<Component>* manager_;
 public:
 	virtual ~BaseSystem() = default;
-	BaseSystem(EntityManager* manager) : manager_(manager) {}
+	BaseSystem(Engine::EntityManager<Component>* manager) : manager_(manager) {}
 	virtual void update(double dt) = 0;
 };
 

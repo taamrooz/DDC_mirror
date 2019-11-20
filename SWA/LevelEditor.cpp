@@ -1,19 +1,20 @@
 #include "LevelEditor.h"
 #include "Renderer.h"
 #include "UserInput.h"
-#include "Audio.h"
 #include <fstream>
 #include "TileSetSingleton.h"
 #include <iostream>
 #include <filesystem>
 #include <ppltasks.h>
 #include <sstream>
-LevelEditor::LevelEditor(SceneManager* manager) : BaseScene(manager)
+#include "SceneManager.h"
+
+LevelEditor::LevelEditor(Engine::SceneManager* manager) : BaseScene(manager)
 {}
 
 void LevelEditor::render()
 {
-	const auto timer = Engine::PreUpdate();
+	const auto timer = Engine::pre_update();
 
 	switch (state)
 	{
@@ -27,7 +28,7 @@ void LevelEditor::render()
 	case save_dungeon: RenderDungeonSave(); break;
 	}
 
-	Engine::Render(timer);
+	Engine::render(timer);
 	input();
 }
 
@@ -35,9 +36,9 @@ void LevelEditor::render()
 void LevelEditor::RenderModeSelection()
 {
 	Engine::set_render_draw_color(255, 196, 0, 255);
-	Engine::RenderLine(k_screen_width_ / 2, 0, k_screen_width_ / 2, k_screen_height_);
-	Engine::RenderTexture(menu_item_dungeon_.get(), k_screen_width_ / 4 - 100, k_screen_height_ / 2, nullptr);
-	Engine::RenderTexture(menu_item_room_.get(), 3 * k_screen_width_ / 4 - 100, k_screen_height_ / 2, nullptr);
+	Engine::render_line(k_screen_width_ / 2, 0, k_screen_width_ / 2, k_screen_height_);
+	Engine::render_texture(menu_item_dungeon_.get(), k_screen_width_ / 4 - 100, k_screen_height_ / 2, nullptr);
+	Engine::render_texture(menu_item_room_.get(), 3 * k_screen_width_ / 4 - 100, k_screen_height_ / 2, nullptr);
 }
 
 void LevelEditor::RenderDungeonFilepicker()
@@ -45,13 +46,13 @@ void LevelEditor::RenderDungeonFilepicker()
 	GetFiles("./assets/Levels/Dungeons", "dungeon");
 	if (text_.length() > 0)
 	{
-		text_texture_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
+		text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
 	}
 	int x = 100;
 	int y = 50;
 	for (auto& file : file_name_textures_)
 	{
-		Engine::RenderTexture(file.get(), x, y, nullptr);
+		Engine::render_texture(file.get(), x, y, nullptr);
 		x += 400;
 		if (x > 950)
 		{
@@ -60,20 +61,22 @@ void LevelEditor::RenderDungeonFilepicker()
 		}
 	}
 	if (text_.length() > 0)
-		Engine::RenderTexture(text_texture_.get(), 450, 800, nullptr);
+		Engine::render_texture(text_texture_.get(), 450, 800, nullptr);
 }
 
 void LevelEditor::RenderDungeonEditor()
 {
 	GetFiles("./assets/Levels", "png");
-
+	
 	//Render grid
 	for (const auto& i : rooms_on_grid_)
 	{
-		if (i.empty)
-			Engine::RenderEmptyTile(i.x, i.y, i.width * 2, i.height * 2);
+		if (!i.empty) {
+			Engine::render_tile(i.x, i.y, Engine::rect2d{ 0, 0,i.width * 4, i.height * 4 }, i.image.get(), 0.25);
+		}
 		else {
-			Engine::RenderTile(i.x, i.y, i.width * 4, i.height * 4, 0, 0, i.image.get(), 0.25);
+			Engine::set_render_draw_color(255, 255, 255, 255);
+			Engine::draw_rectangle(Engine::rect2d{ i.x, i.y, i.width, i.height });
 		}
 	}
 
@@ -81,9 +84,14 @@ void LevelEditor::RenderDungeonEditor()
 	int counter = 0;
 	for (const auto& i : rooms_in_toolbox_)
 	{
-		if (selected_room_template_ == counter)
-			Engine::RenderEmptyTile(i.x - 1, i.y - 1, i.width * 2 + 4, i.height * 2 + 4);
-		Engine::RenderTile(i.x, i.y, i.width * 4, i.height * 4, 0, 0, i.image.get(), 0.25);
+		if (selected_room_template_ == counter) {
+			Engine::set_render_draw_color(255, 255, 255, 255);
+		}else
+		{
+			Engine::set_render_draw_color(0, 0, 0, 255);
+		}
+		Engine::draw_rectangle(Engine::rect2d{ i.x - 1, i.y - 1, i.width + 4, i.height + 4 });
+		Engine::render_tile(i.x, i.y, Engine::rect2d{ 0, 0,i.width * 4, i.height * 4, }, i.image.get(), 0.25);
 		++counter;
 	}
 
@@ -93,13 +101,13 @@ void LevelEditor::RenderDungeonSave()
 {
 	if (save_file_name_.length() > 0)
 	{
-		save_text_texture_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 20, { 255, 196, 0, 255 }, save_file_name_.c_str()));
+		save_text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, save_file_name_.c_str()));
 	}
-	auto save_text = Engine::LoadText("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Please enter dungeon name:");
-	Engine::RenderTexture(save_text, 400, 300, nullptr);
+	auto save_text = Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Please enter dungeon name:");
+	Engine::render_texture(save_text, 400, 300, nullptr);
 	delete save_text;
 	if (save_file_name_.length() > 0)
-		Engine::RenderTexture(save_text_texture_.get(), 450, 800, nullptr);
+		Engine::render_texture(save_text_texture_.get(), 450, 800, nullptr);
 }
 
 void LevelEditor::RenderTileGrid()
@@ -108,27 +116,29 @@ void LevelEditor::RenderTileGrid()
 	{
 		if (tile.tiletype == -1)
 		{
-			Engine::RenderEmptyTile(tile.x_pos, tile.y_pos, tile.width, tile.height);
+			Engine::set_render_draw_color(255, 255, 255, 255);
+			Engine::draw_rectangle(Engine::rect2d{ tile.x_pos, tile.y_pos, tile.width, tile.height });
 		}
 		else
 		{
-			Engine::RenderTile(tile.x_pos, tile.y_pos, tile.width, tile.height, TileSetSingleton::get_instance()->tiletypes[tile.tiletype][0],
-				TileSetSingleton::get_instance()->tiletypes[tile.tiletype][1], TileSetSingleton::get_instance()->tilemap, 0.5);
+			Engine::render_tile(tile.x_pos, tile.y_pos, Engine::rect2d{ TileSetSingleton::get_instance()->tiletypes[tile.tiletype][0],
+				TileSetSingleton::get_instance()->tiletypes[tile.tiletype][1], tile.width, tile.height }, TileSetSingleton::get_instance()->tilemap, 0.5);
 		}
 	}
 }
 
 void LevelEditor::RenderTileEditor()
 {
-	for (auto tile : tiles_in_toolbox_)
+	for (auto& tile : tiles_in_toolbox_)
 	{
-		if (tile.tiletype == selected_tile_type_)
-			Engine::RenderEmptyTile(tile.x_pos - 2, tile.y_pos - 2, tile.width + 8, tile.height + 8);
-
-		Engine::RenderTile(tile.x_pos, tile.y_pos, k_tile_width_, k_tile_height_, TileSetSingleton::get_instance()->tiletypes[tile.tiletype][0],
-			TileSetSingleton::get_instance()->tiletypes[tile.tiletype][1], TileSetSingleton::get_instance()->tilemap, 0.5);
+		Engine::render_tile(tile.x_pos, tile.y_pos, Engine::rect2d{ TileSetSingleton::get_instance()->tiletypes[tile.tiletype][0],
+			TileSetSingleton::get_instance()->tiletypes[tile.tiletype][1],k_tile_width_, k_tile_height_ }, TileSetSingleton::get_instance()->tilemap, 0.5);
+		
+		if (tile.tiletype == selected_tile_type_) {
+			Engine::set_render_draw_color(255, 255, 255, 255);
+			Engine::draw_rectangle(Engine::rect2d{ tile.x_pos - 2, tile.y_pos - 2, tile.width / 2 + 8, tile.height / 2 + 8 });
+		}
 	}
-
 	RenderTileGrid();
 }
 
@@ -137,13 +147,13 @@ void LevelEditor::RenderRoomFilePicker()
 	GetFiles("./assets/Levels", "map");
 	if (text_.length() > 0)
 	{
-		text_texture_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
+		text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
 	}
 	int x = 100;
 	int y = 50;
 	for (auto& file : file_name_textures_)
 	{
-		Engine::RenderTexture(file.get(), x, y, nullptr);
+		Engine::render_texture(file.get(), x, y, nullptr);
 		x += 400;
 		if (x > 950)
 		{
@@ -152,23 +162,25 @@ void LevelEditor::RenderRoomFilePicker()
 		}
 	}
 	if (text_.length() > 0)
-		Engine::RenderTexture(text_texture_.get(), 450, 800, nullptr);
+		Engine::render_texture(text_texture_.get(), 450, 800, nullptr);
 }
 
 void LevelEditor::RenderObjectEditor()
 {
 	RenderTileGrid();
 
-	for (int i = 0; i < objects_in_toolbox_.size(); ++i)
+	for (auto& i : objects_in_toolbox_)
 	{
-		if (objects_in_toolbox_[i].name == objects_in_toolbox_[selected_object_].name)
-			Engine::RenderEmptyTile(objects_in_toolbox_[i].x - 1, objects_in_toolbox_[i].y - 1, objects_in_toolbox_[i].width + 4, objects_in_toolbox_[i].height + 4);
-
-		Engine::RenderTexture(objects_in_toolbox_[i].image.get(), objects_in_toolbox_[i].x, objects_in_toolbox_[i].y, nullptr);
+		Engine::render_texture(i.image.get(), i.x, i.y, nullptr);
+		
+		if (i.name == objects_in_toolbox_[selected_object_].name) {
+			Engine::set_render_draw_color(255, 255, 255, 255);
+			Engine::draw_rectangle(Engine::rect2d{ i.x - 1, i.y - 1, i.width / 2 + 4, i.height / 2 + 4 });
+		}
 	}
-	for (int i = 0; i < objects_on_grid_.size(); ++i)
+	for (auto& i : objects_on_grid_)
 	{
-		Engine::RenderTexture(objects_on_grid_[i].image.get(), objects_on_grid_[i].x, objects_on_grid_[i].y, nullptr);
+		Engine::render_texture(i.image.get(), i.x, i.y, nullptr);
 	}
 }
 
@@ -176,31 +188,28 @@ void LevelEditor::RenderRoomSave()
 {
 	if (save_file_name_.length() > 0)
 	{
-		save_text_texture_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 20, { 255, 196, 0, 255 }, save_file_name_.c_str()));
+		save_text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, save_file_name_.c_str()));
 	}
-	auto save_text = Engine::LoadText("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Please enter map name:");
-	Engine::RenderTexture(save_text, 400, 300, nullptr);
+	auto save_text = Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Please enter map name:");
+	Engine::render_texture(save_text, 400, 300, nullptr);
 	delete save_text;
 	if (save_file_name_.length() > 0)
-		Engine::RenderTexture(save_text_texture_.get(), 450, 800, nullptr);
+		Engine::render_texture(save_text_texture_.get(), 450, 800, nullptr);
 }
 
 void LevelEditor::input()
 {
 	const int k_keydown = 0;
-	const int k_keyup = 1;
 	const int k_stop = 2;
 	const int k_text = 3;
 
 	auto inputs = Engine::GetInputs();
 
-	//Quit if user wants to exit
 	if (!std::get<k_stop>(inputs)) {
 		Engine::StopTextInput();
-		is_running = false;
+		is_running_ = false;
 		return;
 	}
-
 	//Handle all key down events
 	for (const auto& keycode : std::get<k_keydown>(inputs))
 	{
@@ -239,7 +248,7 @@ void LevelEditor::InputModeSelection(const int keycode)
 	}
 }
 
-void LevelEditor::InputDungeonFilePicker(SDL_Keycode keycode, std::string text)
+void LevelEditor::InputDungeonFilePicker(SDL_Keycode keycode, std::string& text)
 {
 	if (keycode == SDLK_BACKSPACE && text_.length() > 0)
 		text_.pop_back();
@@ -275,7 +284,7 @@ void LevelEditor::InputDungeonEditor(SDL_Keycode keycode)
 	}
 }
 
-void LevelEditor::InputDungeonSave(SDL_Keycode keycode, std::string text)
+void LevelEditor::InputDungeonSave(SDL_Keycode keycode, std::string& text)
 {
 	if (keycode == SDLK_BACKSPACE && text_.length() > 0)
 		save_file_name_.pop_back();
@@ -288,7 +297,7 @@ void LevelEditor::InputDungeonSave(SDL_Keycode keycode, std::string text)
 	save_file_name_.append(text);
 }
 
-void LevelEditor::InputRoomSave(SDL_Keycode keycode, std::string text)
+void LevelEditor::InputRoomSave(SDL_Keycode keycode, std::string& text)
 {
 	if (keycode == SDLK_BACKSPACE && text_.length() > 0)
 		save_file_name_.pop_back();
@@ -302,7 +311,7 @@ void LevelEditor::InputRoomSave(SDL_Keycode keycode, std::string text)
 	save_file_name_.append(text);
 }
 
-void LevelEditor::InputRoomFilePicker(SDL_Keycode keycode, std::string text)
+void LevelEditor::InputRoomFilePicker(SDL_Keycode keycode, std::string& text)
 {
 	if (keycode == SDLK_BACKSPACE && text_.length() > 0)
 		text_.pop_back();
@@ -355,16 +364,16 @@ void LevelEditor::InputObjectEditor(SDL_Keycode keycode)
 	if (keycode == SDLK_RETURN)
 	{
 		state = save_room;
-		Engine::TakeScreenshot(640, 480, 150, 150, "./assets/Levels/temp_screenshot.png");
+		Engine::take_screenshot(640, 480, 150, 150, "./assets/Levels/temp_screenshot.png");
 		Engine::StartTextInput();
 	}
 }
 
 void LevelEditor::SelectTile(int x, int y)
 {
-	for (auto tile : tiles_in_toolbox_)
+	for (auto& tile : tiles_in_toolbox_)
 	{
-		if (x > tile.x_pos && x < tile.x_pos + (tile.width / 2) && y > tile.y_pos && y < tile.y_pos + (tile.height / 2))
+		if (x > tile.x_pos&& x < tile.x_pos + (tile.width / 2) && y > tile.y_pos&& y < tile.y_pos + (tile.height / 2))
 		{
 			selected_tile_type_ = tile.tiletype;
 			return;
@@ -374,12 +383,12 @@ void LevelEditor::SelectTile(int x, int y)
 
 void LevelEditor::PlaceTile(int x, int y)
 {
-	for (int i = 0; i < tiles_on_grid_.size(); ++i)
+	for (auto& i : tiles_on_grid_)
 	{
-		if (x > tiles_on_grid_[i].x_pos && x < tiles_on_grid_[i].x_pos + (tiles_on_grid_[i].width / 2)
-			&& y > tiles_on_grid_[i].y_pos && y < tiles_on_grid_[i].y_pos + (tiles_on_grid_[i].height / 2))
+		if (x > i.x_pos&& x < i.x_pos + (i.width / 2)
+			&& y > i.y_pos&& y < i.y_pos + (i.height / 2))
 		{
-			tiles_on_grid_[i].tiletype = selected_tile_type_;
+			i.tiletype = selected_tile_type_;
 			return;
 		}
 	}
@@ -388,9 +397,9 @@ void LevelEditor::PlaceTile(int x, int y)
 void LevelEditor::SelectRoom(int x, int y)
 {
 	int counter = 0;
-	for (auto room : rooms_in_toolbox_)
+	for (auto& room : rooms_in_toolbox_)
 	{
-		if (x > room.x && x < room.x + room.width && y > room.y && y < room.y + room.height)
+		if (x > room.x&& x < room.x + room.width && y > room.y&& y < room.y + room.height)
 		{
 			selected_room_template_ = counter;
 			return;
@@ -402,26 +411,26 @@ void LevelEditor::SelectRoom(int x, int y)
 void LevelEditor::PlaceRoom(int x, int y)
 {
 	if (selected_room_template_ == 0) {
-		for (auto j = rooms_on_grid_.begin(); j != rooms_on_grid_.end(); ++j)
+		for (auto& j : rooms_on_grid_)
 		{
-			if (x > j->x && x < j->x + j->width
-				&& y > j->y && y < j->y + j->height)
+			if (x > j.x&& x < j.x + j.width
+				&& y > j.y&& y < j.y + j.height)
 			{
-				j->empty = true;;
+				j.empty = true;;
 				return;
 			}
 		}
 		return;
 	}
-	for (int i = 0; i < rooms_on_grid_.size(); ++i)
-	{		
-		if (x > rooms_on_grid_[i].x && x < rooms_on_grid_[i].x + rooms_on_grid_[i].width
-			&& y > rooms_on_grid_[i].y && y < rooms_on_grid_[i].y + rooms_on_grid_[i].height)
+	for (auto& i : rooms_on_grid_)
+	{
+		if (x > i.x&& x < i.x + i.width
+			&& y > i.y&& y < i.y + i.height)
 		{
-			rooms_on_grid_[i].name = rooms_in_toolbox_[selected_room_template_].name;
-			rooms_on_grid_[i].file_path = rooms_in_toolbox_[selected_room_template_].file_path;
-			rooms_on_grid_[i].image = rooms_in_toolbox_[selected_room_template_].image;
-			rooms_on_grid_[i].empty = false;
+			i.name = rooms_in_toolbox_[selected_room_template_].name;
+			i.file_path = rooms_in_toolbox_[selected_room_template_].file_path;
+			i.image = rooms_in_toolbox_[selected_room_template_].image;
+			i.empty = false;
 			return;
 		}
 	}
@@ -429,10 +438,10 @@ void LevelEditor::PlaceRoom(int x, int y)
 
 void LevelEditor::SelectObject(int x, int y)
 {
-	for (int i = 0; i < objects_in_toolbox_.size(); ++i)
+	for (auto i = 0; i < objects_in_toolbox_.size(); ++i)
 	{
-		if (x > objects_in_toolbox_[i].x && x < objects_in_toolbox_[i].x + (objects_in_toolbox_[i].width / 2)
-			&& y > objects_in_toolbox_[i].y && y < objects_in_toolbox_[i].y + (objects_in_toolbox_[i].height / 2))
+		if (x > objects_in_toolbox_[i].x&& x < objects_in_toolbox_[i].x + (objects_in_toolbox_[i].width / 2)
+			&& y > objects_in_toolbox_[i].y&& y < objects_in_toolbox_[i].y + (objects_in_toolbox_[i].height / 2))
 		{
 			selected_object_ = i;
 			return;
@@ -446,8 +455,8 @@ void LevelEditor::PlaceObject(int x, int y)
 		if (selected_object_ == 0) {
 			for (auto i = objects_on_grid_.begin(); i != objects_on_grid_.end(); ++i)
 			{
-				if (x > i->x && x < i->x + (i->width / 2)
-					&& y > i->y && y < i->y + (i->height / 2))
+				if (x > i->x&& x < i->x + (i->width / 2)
+					&& y > i->y&& y < i->y + (i->height / 2))
 				{
 					objects_on_grid_.erase(i, i + 1);
 					return;
@@ -467,7 +476,7 @@ void LevelEditor::PlaceObject(int x, int y)
 	}
 }
 
-void LevelEditor::GetFiles(std::string path, std::string extension)
+void LevelEditor::GetFiles(const char* path, const std::string extension)
 {
 	file_name_textures_.clear();
 	for (const auto& entry : std::filesystem::directory_iterator(path))
@@ -476,7 +485,7 @@ void LevelEditor::GetFiles(std::string path, std::string extension)
 		{
 			std::string filename = entry.path().filename().string();
 			file_names_.emplace_back(filename);
-			file_name_textures_.push_back(std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 20, { 255, 196, 0, 255 }, filename.c_str())));
+			file_name_textures_.push_back(std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, filename.c_str())));
 		}
 	}
 }
@@ -506,7 +515,7 @@ bool LevelEditor::SaveDungeonFile()
 		//Close the file
 		map.close();
 	}
-	catch (std::exception& e) {
+	catch (std::exception&) {
 		return false;
 	}
 
@@ -541,7 +550,7 @@ bool LevelEditor::SaveRoomFile()
 		//Close the file
 		map.close();
 	}
-	catch (std::exception& e) {
+	catch (std::exception&) {
 		return false;
 	}
 	try {
@@ -556,7 +565,7 @@ bool LevelEditor::SaveRoomFile()
 		//Close the file
 		map.close();
 	}
-	catch (std::exception& e) {
+	catch (std::exception&) {
 		return false;
 	}
 	return true;
@@ -567,7 +576,7 @@ void LevelEditor::cleanup()
 	file_name_textures_.clear();
 }
 
-bool LevelEditor::OpenDungeonFile(std::string path)
+bool LevelEditor::OpenDungeonFile(std::string& path)
 {
 	if (path == "new")
 	{
@@ -598,7 +607,7 @@ bool LevelEditor::OpenDungeonFile(std::string path)
 			bool found = false;
 			for (auto room : rooms_in_toolbox_)
 			{
-				if(room_name == room.name)
+				if (room_name == room.name)
 				{
 					found = true;
 					rooms_on_grid_[i].name = room.name;
@@ -607,9 +616,10 @@ bool LevelEditor::OpenDungeonFile(std::string path)
 					rooms_on_grid_[i].empty = false;
 				}
 			}
-			if(!found)
+			if (!found)
 				rooms_on_grid_[i].empty = true;
-		}else
+		}
+		else
 		{
 			rooms_on_grid_[i].empty = true;
 		}
@@ -618,7 +628,7 @@ bool LevelEditor::OpenDungeonFile(std::string path)
 	return true;
 }
 
-bool LevelEditor::OpenRoomFile(std::string path)
+bool LevelEditor::OpenRoomFile(std::string& path)
 {
 	if (path == "new")
 	{
@@ -715,7 +725,7 @@ void LevelEditor::CreateEmptyDungeon()
 bool LevelEditor::init()
 {
 	if (TileSetSingleton::get_instance()->reload) {
-		TileSetSingleton::get_instance()->tilemap = Engine::LoadTileset(TileSetSingleton::get_instance()->path);
+		TileSetSingleton::get_instance()->tilemap = Engine::load_tileset(TileSetSingleton::get_instance()->path);
 		TileSetSingleton::get_instance()->reload = false;
 	}
 	tiles_on_grid_ = std::vector<TileComponent>();
@@ -724,7 +734,7 @@ bool LevelEditor::init()
 	int counter = 0;
 	for (int i = 0; i < 300; ++i)
 	{
-		tiles_on_grid_.push_back(TileComponent(x, y, k_tile_width_, k_tile_height_, 0));
+		tiles_on_grid_.emplace_back(x, y, k_tile_width_, k_tile_height_, 0);
 		++counter;
 		x += 32;
 		if (counter >= 20)
@@ -740,7 +750,7 @@ bool LevelEditor::init()
 	tiles_in_toolbox_ = std::vector<TileComponent>();
 	for (int i = 0; i < TileSetSingleton::get_instance()->tiletypes.size(); ++i)
 	{
-		tiles_in_toolbox_.push_back(TileComponent(x, y, k_tile_width_, k_tile_height_, i));
+		tiles_in_toolbox_.emplace_back(x, y, k_tile_width_, k_tile_height_, i);
 		x += 40;
 		if (x > 1230) {
 			x = 1180;
@@ -752,8 +762,8 @@ bool LevelEditor::init()
 
 	InitObjects();
 	InitRoom();
-	menu_item_dungeon_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Dungeon Editor"));
-	menu_item_room_ = std::make_unique<Texture>(*Engine::LoadText("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Room Editor"));
+	menu_item_dungeon_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Dungeon Editor"));
+	menu_item_room_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Room Editor"));
 
 	Engine::StartTextInput();
 	return true;
@@ -780,16 +790,16 @@ void LevelEditor::InitObjects()
 
 	int x = 1140;
 	int y = 25;
-	for (int i = 0; i < objects_in_toolbox_.size(); ++i)
+	for (auto& i : objects_in_toolbox_)
 	{
-		objects_in_toolbox_[i].x = x;
-		objects_in_toolbox_[i].y = y;
+		i.x = x;
+		i.y = y;
 		x += 60;
 		if (x > 1230) {
 			x = 1140;
 			y += 50;
 		}
-		objects_in_toolbox_[i].image = std::make_shared<Texture>(*Engine::LoadTileset("Sprites/" + objects_in_toolbox_[i].file_path));
+		i.image = std::make_shared<Texture>(*Engine::load_tileset("Sprites/" + i.file_path));
 	}
 }
 
@@ -801,21 +811,21 @@ void LevelEditor::InitRoom()
 	rooms_in_toolbox_.push_back(EditorObject{
 		"",
 		"",
-		std::make_shared<Texture>(*Engine::LoadTileset("./Sprites/delete.png")),
+		std::make_shared<Texture>(*Engine::load_tileset("./Sprites/delete.png")),
 		x,
 		y,
 		160,
 		120
 		});
 	x += 170;
-	for (auto i = file_names_.begin(); i != file_names_.end(); ++i)
+	for (auto& file_name : file_names_)
 	{
-		std::string name = *i;
+		std::string name = file_name;
 		name.erase(name.length() - 4);
 		rooms_in_toolbox_.push_back(EditorObject{
 			name,
-			*i,
-			std::make_shared<Texture>(*Engine::LoadTileset("Levels/" + name + ".png")),
+			file_name,
+			std::make_shared<Texture>(*Engine::load_tileset("Levels/" + name + ".png")),
 			x,
 			y,
 			160,

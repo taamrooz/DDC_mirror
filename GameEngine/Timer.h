@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL_hints.h>
+#include "SDL_hints.h"
 
 class Timer
 {
@@ -15,7 +15,7 @@ public:
 	void Unpause();
 
 	//Gets the timer's time
-	Uint32 GetTicks();
+	uint32_t GetTicks();
 
 	//Checks the status of the timer
 	bool IsStarted();
@@ -23,10 +23,10 @@ public:
 
 private:
 	//The clock time when the timer started
-	Uint32 mStartTicks;
+	uint32_t mStartTicks;
 
 	//The ticks stored when the timer was paused
-	Uint32 mPausedTicks;
+	uint32_t mPausedTicks;
 
 	//The timer status
 	bool mPaused;
