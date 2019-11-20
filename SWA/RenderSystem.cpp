@@ -67,6 +67,8 @@ void RenderSystem::update(double dt)
 			Engine::RenderHealthBar(position_component->x, position_component->y, friendly, health_component->max_health, health_component->current_health);
 		}
 	}
+
+	//Render inventory
 	auto invId = manager_->get_all_entities_from_current_room<InventoryComponent>().front();
 	auto inv = manager_->get_component<InventoryComponent>(invId);
 	int x = 25;
@@ -84,9 +86,7 @@ void RenderSystem::update(double dt)
 		if (selected) {
 			x += 16;
 		}
-	}
-	//render inventory
-	
+	}	
 
 	//render minimap (placeholder until full dungeon gets loaded in)
 	Engine::ClearRectangles();
