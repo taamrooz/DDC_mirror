@@ -95,8 +95,11 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 			}
 		}
 	}
-
-	UpdateVelocity(entity1, entity2, manager);
+	auto coll = manager->get_component<CollisionComponent>(entity2);
+	if (coll->solid) {
+		UpdateVelocity(entity1, entity2, manager);
+	}
+	
 }
 
 void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager) {
@@ -111,6 +114,7 @@ void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMana
 
 			manager->remove_component_from_entity<CollisionComponent>(entity1);
 			manager->remove_component_from_entity<AnimationComponent>(entity1);
+			manager->remove_component_from_entity<PositionComponent>(entity1);
 			manager->remove_component_from_entity<VelocityComponent>(entity1);
 		}
 		
