@@ -1,6 +1,8 @@
-#include "QuadTree.h";
+#include "QuadTree.h"
 #include <vector>
 #include <tuple>
+
+using namespace Engine;
 
 Point::Point(int _x, int _y) {
 	x = _x;
@@ -10,8 +12,8 @@ Point::Point(int _x, int _y) {
 Node::Node(Point _position, uint32_t _id, int _width, int _height) : position(_position), id(_id), width(_width), height(_height) {
 }
 
-QuadTree::QuadTree(Point topL, Point botR) : 
-    topLeftTree(nullptr), topRightTree(nullptr), botLeftTree(nullptr), botRightTree(nullptr),
+QuadTree::QuadTree(Point topL, Point botR) :
+	topLeftTree(nullptr), topRightTree(nullptr), botLeftTree(nullptr), botRightTree(nullptr),
 	topLeft(topL), botRight(botR) {
 }
 
@@ -128,7 +130,7 @@ void QuadTree::divide(Node* node, Point* p) {
 		// Indicates topRightTree 
 		if ((topLeft.y + botRight.y) / 2 >= p->y)
 		{
-			if (!topRightTree) 
+			if (!topRightTree)
 			{
 				topRightTree = new QuadTree(
 					Point{ (topLeft.x + botRight.x) / 2,
@@ -268,7 +270,7 @@ std::vector<std::tuple<Node*, Node*>> QuadTree::get_collisions() {
 							int node_a_y2 = node_a_y1 + nodes[i]->height;
 
 							int node_b_y1 = nodes[x]->position.y;
-							int node_b_y2 = node_b_y1+ nodes[x]->height;
+							int node_b_y2 = node_b_y1 + nodes[x]->height;
 
 
 							if (node_a_x1 < node_b_x2 && node_a_x2 > node_b_x1&&

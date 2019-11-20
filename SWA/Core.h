@@ -1,30 +1,23 @@
 #pragma once
-#include <iostream>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <cstdio>
-#include <string>
 #include "EntityManager.h"
 #include "BaseSystem.h"
-#include "Audio.h"
 #include "AnimationComponent.h"
-#include "VelocityComponent.h"
-#include "PositionComponent.h"
 #include "BaseScene.h"
 #include "SceneManager.h"
 
-class Core : virtual public BaseScene
+class Core : virtual public Engine::BaseScene
 {
 private:
 	std::vector<std::unique_ptr<BaseSystem>> systems_;
-	std::unique_ptr<EntityManager> manager_ = nullptr;
+	std::unique_ptr<Engine::EntityManager<Component>> manager_ = nullptr;
+	bool is_paused_ = false;
 	/*
 	 * Loops through all systems and calls their respective update function.
 	 */
 	void update();
 	
 public:
-	Core(SceneManager* manager);
+	Core(Engine::SceneManager* manager);
 	~Core();
 	/*
 	 * Initializes the core by creating the entity manager, systems and components.
@@ -42,5 +35,14 @@ public:
 	 * Sets is_running to false, which will stop rendering.
 	 */
 	void StopGameLoop();
+	/**
+	 * \brief Returns true if the game is in a pause state.
+	 * @return value of is_paused_
+	 */
+	bool get_is_paused() const;
+	/**
+	 * \brief Toggles the games pause state.
+	 */
+	void toggle_pause();
 };
 

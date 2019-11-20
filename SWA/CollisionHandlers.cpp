@@ -6,10 +6,12 @@
 #include "CharacterComponent.h"
 #include "RoomSingleton.h"
 #include "LadderComponent.h"
+#include "AnimationComponent.h"
+#include "Renderer.h"
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 
-	int currentTick = Engine::GetTicks();
+	int currentTick = Engine::get_ticks();
 	if (health->invulnerable_until < currentTick) {
 		std::cout << "HIT" << std::endl;
 		health->current_health -= dmg->damage_amount;
@@ -17,7 +19,7 @@ void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 	}
 }
 
-void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
+void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
 {
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	if (player == nullptr) {
@@ -25,7 +27,7 @@ void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 	}
 }
 
-void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
+void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
 {
   //stop player from moving into a wall
 
@@ -49,7 +51,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 	if (dmg != nullptr && ani != nullptr) {
 		
 		ani->currentState = State::HIT;
-		ani->lock_until = Engine::GetTicks() + 250;
+		ani->lock_until = Engine::get_ticks() + 250;
 
 		const auto health = manager->get_component<HealthComponent>(entity1);
 		if(health != nullptr)
@@ -67,13 +69,13 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* m
 	UpdateVelocity(entity1, entity2, manager);
 }
 
-void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManager* manager)
+void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
 {
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
 	if (dmg != nullptr) {
 		auto ani = manager->get_component<AnimationComponent>(entity1);
 		ani->currentState = State::HIT;
-		ani->lock_until = Engine::GetTicks() + 250;
+		ani->lock_until = Engine::get_ticks() + 250;
 
 		auto health = manager->get_component<HealthComponent>(entity1);
 		DamageHandler(health, dmg);
@@ -84,7 +86,7 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, EntityManag
 	}
 }
 
-void UpdateVelocity(uint32_t entity1, uint32_t entity2, EntityManager* manager)
+void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager)
 {
 	auto first_node_velocity_component = manager->get_component<VelocityComponent>(entity1);
 	auto first_node_position_component = manager->get_component<PositionComponent>(entity1);

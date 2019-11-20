@@ -3,7 +3,7 @@
 #include "VelocityComponent.h"
 #include "CharacterComponent.h"
 
-MoveSystem::MoveSystem(EntityManager* manager) : BaseSystem(manager) {}
+MoveSystem::MoveSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {}
 
 void MoveSystem::update(double dt)
 {
