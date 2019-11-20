@@ -4,7 +4,7 @@
 #include "InventoryComponent.h"
 #include "CharacterComponent.h"
 
-InventorySystem::InventorySystem(EntityManager* manager) : BaseSystem(manager)
+InventorySystem::InventorySystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
 {}
 
 void InventorySystem::update(double dt)

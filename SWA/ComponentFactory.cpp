@@ -40,11 +40,11 @@ ComponentFactory* ComponentFactory::get_instance() {
 	return instance_;
 }
 
-int ComponentFactory::CreateEntity(std::string name, int id, EntityManager* em) {
+int ComponentFactory::CreateEntity(std::string const& name, int id, Engine::EntityManager<Component>* em) {
 	return CreateEntity(Convert(name), id, em);
 }
 
-int ComponentFactory::CreateEntity(string_code name, int id, EntityManager* em)
+int ComponentFactory::CreateEntity(string_code name, int id, Engine::EntityManager<Component>* em)
 {
 	switch (name) {
 	case cPlayer: {
@@ -74,14 +74,14 @@ int ComponentFactory::CreateEntity(string_code name, int id, EntityManager* em)
 	return -1;
 }
 
-void ComponentFactory::AddChestComponents(int id, EntityManager* em) {
+void ComponentFactory::AddChestComponents(int id, Engine::EntityManager<Component>* em) {
 	auto coll = std::make_unique<CollisionComponent>(48, 48, ChestCollisionHandler);
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->room_names[RoomSingleton::get_instance()->current_room_index]);
-	std::map<State, Animation> animations;
+	std::unordered_map<State, std::unique_ptr<Animation>> animations;
 	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/chest_full_open.png", 3) )));
 	animations.at(State::DEFAULT)->pause = true;
 	animations.at(State::DEFAULT)->scale = 3;
-	animations.at(State::DEFAULT).loop = false;
+	animations.at(State::DEFAULT)->loop = false;
 	auto ani = std::make_unique<AnimationComponent>(animations);
 	auto dmg = std::make_unique<DamagingComponent>(1, false);
 	em->add_component_to_entity(id, std::move(ani));
