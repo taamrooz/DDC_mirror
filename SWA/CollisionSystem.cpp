@@ -7,13 +7,10 @@
 #include <vector>
 #include <tuple>
 #include "CollisionComponent.h"
-#include "ShootingComponent.h"
-#include "CharacterComponent.h"
 #include "RoomComponent.h"
-#include "RoomSingleton.h"
 
 
-CollisionSystem::CollisionSystem(EntityManager* manager, Core& core) : BaseSystem(manager) {
+CollisionSystem::CollisionSystem(Engine::EntityManager<Component>* manager, Core& core) : BaseSystem(manager) {
 	CollisionSystem::core = &core;
 }
 
@@ -21,9 +18,9 @@ void CollisionSystem::update(double dt)
 {
 
 	//Starting points of the quadtree
-	Point leftTop{ 0, 0 };
-	Point botRight{ 1280, 960 }; // TODO: make this not hardcoded
-	QuadTree quadTree{ leftTop, botRight };
+	Engine::Point leftTop{ 0, 0 };
+	Engine::Point botRight{ 1280, 960 }; // TODO: make this not hardcoded
+	Engine::QuadTree quadTree{ leftTop, botRight };
 
 	//// <----- TEST SCENARIO ----->  ////
 	/*
@@ -74,14 +71,15 @@ void CollisionSystem::update(double dt)
 			y = positionComponent->y + velocityComponent->dy;
 		}
 
-		quadTree.insert(new Node{ Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
+
+		quadTree.insert(new Engine::Node{ Engine::Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
 	}
 
-	std::vector<std::tuple<Node*, Node*>> collisions = quadTree.get_collisions();
+	std::vector<std::tuple<Engine::Node*, Engine::Node*>> collisions = quadTree.get_collisions();
 
 	for (auto const& node_tuple : collisions) {
-		Node* first_node = std::get<0>(node_tuple);
-		Node* second_node = std::get<1>(node_tuple);
+		Engine::Node* first_node = std::get<0>(node_tuple);
+		Engine::Node* second_node = std::get<1>(node_tuple);
 
 		//handle collision
 		//gebruikt nu entity 0 omdat er nog test data in staat

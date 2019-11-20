@@ -3,67 +3,64 @@
 #include "Renderer.h"
 #include "UserInput.h"
 #include "Core.h"
-#include "KeyBindingSingleton.h"
-#include "Credits.h"
 
 MainMenu::~MainMenu() = default;
 
-MainMenu::MainMenu(SceneManager* manager) : BaseScene(manager) { }
+MainMenu::MainMenu(Engine::SceneManager* manager) : BaseScene(manager) { }
 
 void MainMenu::render()
 {
-	const auto timer = Engine::PreUpdate();
+	const auto timer = Engine::pre_update();
 	input();
 
-	Engine::UpdateAnimation(background_, 0, 0);
-	Engine::RenderTexture(title_, 250, 200, nullptr);
-	Engine::RenderTexture(start_, 500, 350, nullptr);
-	Engine::RenderTexture(settings_, 500, 450, nullptr);
-	Engine::RenderTexture(level_editor_, 500, 550, nullptr);
-	Engine::RenderTexture(credits_, 500, 650, nullptr);
-	Engine::RenderTexture(help_, 500, 750, nullptr);
-	Engine::RenderTexture(quit_, 500, 850, nullptr);
-	Engine::RenderTexture(helper, 115, 900, nullptr);
+	Engine::update_animation(background_.get(), 0, 0);
+	Engine::render_texture(title_.get(), 250, 200, nullptr);
+	Engine::render_texture(start_.get(), 550, 320, nullptr);
+	Engine::render_texture(settings_.get(), 550, 400, nullptr);
+	Engine::render_texture(level_editor_.get(), 550, 480, nullptr);
+	Engine::render_texture(credits_.get(), 550, 560, nullptr);
+	Engine::render_texture(help_.get(), 550, 640, nullptr);
+	Engine::render_texture(quit_.get(), 550, 720, nullptr);
+	Engine::render_texture(helper.get(), 115, 900, nullptr);
 	if (current_action_ == 0)
 	{
-		Engine::RenderTexture(selector_, 480, 350, nullptr);
+		Engine::render_texture(selector_.get(), 530, 320, nullptr);
 	}
 	else if (current_action_ == 1)
 	{
-		Engine::RenderTexture(selector_, 480, 450, nullptr);
+		Engine::render_texture(selector_.get(), 530, 400, nullptr);
 	}
 	else if (current_action_ == 2)
 	{
-		Engine::RenderTexture(selector_, 480, 550, nullptr);
+		Engine::render_texture(selector_.get(), 530, 480, nullptr);
 	}
 	else if (current_action_ == 3)
 	{
-		Engine::RenderTexture(selector_, 480, 650, nullptr);
+		Engine::render_texture(selector_.get(), 530, 560, nullptr);
 	}
 	else if (current_action_ == 4)
 	{
-		Engine::RenderTexture(selector_, 480, 750, nullptr);
+		Engine::render_texture(selector_.get(), 530, 640, nullptr);
 	}
 	else if (current_action_ == 5)
 	{
-		Engine::RenderTexture(selector_, 480, 850, nullptr);
+		Engine::render_texture(selector_.get(), 530, 720, nullptr);
 	}
-	Engine::Render(timer);
+	
+	Engine::render(timer);
 
 }
 
 void MainMenu::input()
 {
-	const int k_keydown = 0;
-	const int k_keyup = 1;
-	const int k_stop = 2;
+	constexpr static int k_keydown = 0;
+	constexpr static int k_stop = 2;
 
 	auto inputs = Engine::GetInputs();
 
 	//Quit if user wants to exit
 	if (!std::get<k_stop>(inputs)) {
-		//core->StopGameLoop();
-		is_running = false;
+		is_running_ = false;
 		return;
 	}
 
@@ -89,34 +86,28 @@ void MainMenu::input()
 		{
 			switch (current_action_) {
 			case 0:
-				Engine::StopMusic();
+				Engine::stop_music();
 				scene_manager_->push_scene();
-				Engine::PlayMusic("ingame.wav");
+				Engine::play_music("ingame.wav");
 				break;
 			case 1:
 				break;
 			case 2:
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
+				scene_manager_->push_scene().push_scene();
 				break;
 			case 3:
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
+				scene_manager_->push_scene().push_scene().push_scene();
 				break;
 			case 4:
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
-				scene_manager_->push_scene();
+				scene_manager_->push_scene().push_scene().push_scene().push_scene();
 				break;
 			case 5:
-				is_running = false;
+				is_running_ = false;
 				scene_manager_->pop_scene();
 				break;
 			}
 			
-			if (!is_running) {
+			if (!is_running_) {
 				break;
 			}
 		}
@@ -126,39 +117,32 @@ void MainMenu::input()
 
 void MainMenu::cleanup()
 {
-	delete background_;
-	delete title_;
-	delete start_;
-	delete settings_;
-	delete credits_;
-	delete quit_;
-	delete helper;
-	delete selector_;
-	Engine::DestroyRenderer();
-	Engine::CloseAudio();
+	Engine::destroy_renderer();
+	Engine::close_audio();
 }
 
 bool MainMenu::init()
 {
-	if (!Engine::InitRenderer("Demonic Dungeon Castle", false, 1280, 960)) {
+	if (!Engine::init_renderer("Demonic Dungeon Castle", false, 1280, 960)) {
 		return false;
 	}
-	if (!Engine::InitAudio()) {
+	if (!Engine::init_audio()) {
+		Engine::destroy_renderer();
 		return false;
 	}
-	title_ = Engine::LoadText("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle");
-	background_ = &Engine::LoadAnimation("mainmenu.png", 3);
+	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
+	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
 	background_->scale = 1280.0 / 960.0;
-	start_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game");
-	settings_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings");
-	credits_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits");
-	help_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Help");
-	level_editor_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Level Editor");
-	quit_ = Engine::LoadText("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop");
-	selector_ = Engine::LoadText("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">");
-	helper = Engine::LoadText("manaspc.ttf", 24, {255, 255, 255, 255},
-	                          "Use the arrow keys ^` to navigate the menu and press ENTER to confirm");
-	Engine::PlayMusic("mainmenu.wav");
+	start_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game"));
+	settings_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings"));
+	credits_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits"));
+	help_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Help"));
+	level_editor_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Level Editor"));
+	quit_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop"));
+	selector_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">"));
+	helper = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, {255, 255, 255, 255},
+	                          "Use the arrow keys ^` to navigate the menu and press ENTER to confirm"));
+	Engine::play_music("mainmenu.wav");
 	return true;
 }
 

@@ -1,21 +1,20 @@
 #pragma once
 #include "BaseScene.h"
-#include "SceneManager.h"
 #include "Texture.h"
 #include "Animation.h"
+#include <memory>
 
 class Pause :
-	virtual public BaseScene
+	virtual public Engine::BaseScene
 {
 private:
-	Texture* title_ = nullptr;
-	Texture* pausedTexture_ = nullptr;
-	Texture* helper_ = nullptr;
-	Animation* background_ = nullptr;
-	uint8_t current_action_ = 0;
+	std::unique_ptr<Texture> title_ = nullptr;
+	std::unique_ptr<Texture> paused_texture_ = nullptr;
+	std::unique_ptr<Texture> helper_ = nullptr;
+	std::unique_ptr<Animation> background_ = nullptr;
 public:
 	~Pause();
-	Pause(SceneManager* manager);
+	Pause(Engine::SceneManager* manager);
 	void render() override;
 	void cleanup() override;
 	bool init() override;

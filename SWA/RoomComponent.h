@@ -1,7 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "Animation.h"
-#include "Renderer.h"
 #include <string>
 
 struct RoomComponent : Component
