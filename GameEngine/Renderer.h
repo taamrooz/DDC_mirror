@@ -104,7 +104,7 @@ namespace Engine {
 	* \brief Renders to the screen supplied by the tick before the textures and animations were updated.
 	* @param framestart The tick.
 	*/
-	ENGINE_API void render(int framestart);
+	ENGINE_API void render(int framestart, int speed = 1);
 	/**
 	 * \brief Gets the number of ms after the renderer's initialization.
 	 * @return milliseconds
@@ -144,6 +144,4 @@ namespace Engine {
 	 */
 	ENGINE_API void destroy_renderer();
 
-	
-	
 };
