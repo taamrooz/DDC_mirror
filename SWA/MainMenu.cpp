@@ -87,23 +87,22 @@ void MainMenu::input()
 			switch (current_action_) {
 			case 0:
 				Engine::stop_music();
-				scene_manager_->push_scene();
+				scene_manager_->set_scene("game");
 				Engine::play_music("ingame.wav");
 				break;
 			case 1:
 				break;
 			case 2:
-				scene_manager_->push_scene().push_scene();
+				scene_manager_->set_scene("leveleditor");
 				break;
 			case 3:
-				scene_manager_->push_scene().push_scene().push_scene();
+				scene_manager_->set_scene("credits");
 				break;
 			case 4:
-				scene_manager_->push_scene().push_scene().push_scene().push_scene();
+				scene_manager_->set_scene("help");
 				break;
 			case 5:
 				is_running_ = false;
-				scene_manager_->pop_scene();
 				break;
 			}
 			

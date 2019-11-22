@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include "BaseScene.h"
+#include <unordered_map>
 
 #ifdef ENGINE_EXPORTS
 #define ENGINE_API __declspec(dllexport)
@@ -15,8 +16,8 @@ namespace Engine {
 	class SceneManager
 	{
 	private:
-		std::vector<std::unique_ptr<BaseScene>> active_scenes_;
-		unsigned int current_scene_{0};
+		std::unordered_map<std::string, std::unique_ptr<BaseScene>> active_scenes_;
+		std::string current_scene_;
 	public:
 		ENGINE_API SceneManager();
 		ENGINE_API ~SceneManager();
@@ -29,24 +30,14 @@ namespace Engine {
 		 * @param scene Pointer to the scene being added, the SceneManager claims ownership of this pointer.
 		 * @param init: Boolean to indicate whether or not the scene's init function should be called.
 		 */
-		ENGINE_API void add_scene(BaseScene* scene, bool init);
+		ENGINE_API void add_scene(BaseScene* scene, bool init, std::string);
 
 		/**
 		 * \brief Deletes the last scene in the active scenes collection.
 		 */
-		ENGINE_API void delete_scene();
+		ENGINE_API void delete_scene(std::string name);
 
-		/**
-		 * \brief Increases the current scene by 1.
-		 * @return Returns reference of SceneManager to allow for chaining (i.e. manager_->push_scene().push_scene(); )
-		 */
-		ENGINE_API SceneManager& push_scene();
-
-		/**
-		 * \brief Decreases the current scene by 1.
-		 * @return Returns reference to SceneManager to allow for chaining (i.e. manager_->pop_scene().pop_scene(); )
-		 */
-		ENGINE_API SceneManager& pop_scene();
+		ENGINE_API void set_scene(std::string name);
 
 		/**
 		 * \brief Based on the currently active scene, that scene will render.

@@ -7,37 +7,26 @@ namespace Engine {
 		active_scenes_.clear();
 	}
 
-	void SceneManager::add_scene(BaseScene* scene, bool init)
+	void SceneManager::add_scene(BaseScene* scene, bool init, std::string name)
 	{
-		active_scenes_.push_back(std::unique_ptr<BaseScene>(scene));
+		active_scenes_.insert(std::make_pair(name, std::unique_ptr<BaseScene>(scene)));
 		if (init)
 		{
-			active_scenes_.back()->init();
+			active_scenes_.at(name)->init();
 		}
 	}
 
-	void SceneManager::delete_scene()
+	void SceneManager::delete_scene(std::string name)
 	{
-		active_scenes_.back()->cleanup();
-		active_scenes_.pop_back();
+		active_scenes_.at(name)->cleanup();
+		active_scenes_.erase(name);
 	}
 
-	SceneManager& SceneManager::push_scene()
+	void SceneManager::set_scene(std::string name)
 	{
-		if (current_scene_ < active_scenes_.size())
-		{
-			++current_scene_;
+		if (active_scenes_.find(name) != active_scenes_.end()) {
+			current_scene_ = name;
 		}
-		return *this;
-	}
-
-	SceneManager& SceneManager::pop_scene()
-	{
-		if (current_scene_ > 0)
-		{
-			--current_scene_;
-		}
-		return *this;
 	}
 
 	void SceneManager::render()
@@ -56,7 +45,7 @@ namespace Engine {
 	{
 		for (auto& scene : active_scenes_)
 		{
-			scene->cleanup();
+			scene.second->cleanup();
 		}
 	}
 

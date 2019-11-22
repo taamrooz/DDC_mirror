@@ -44,7 +44,7 @@ void Help::input() {
 	{
 		if (keycode == SDLK_RETURN)
 		{
-			scene_manager_->pop_scene().pop_scene().pop_scene().pop_scene();
+			scene_manager_->set_scene("mainmenu");
 			break;
 		}
 	}

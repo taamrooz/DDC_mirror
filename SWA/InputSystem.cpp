@@ -28,7 +28,7 @@ void InputSystem::update(double dt)
 		if (keycode == SDLK_q)
 		{
 			Engine::stop_music();
-			core_->scene_manager_->pop_scene();
+			core_->scene_manager_->set_scene("mainmenu");
 			Engine::play_music("mainmenu.wav");
 			break;
 		}

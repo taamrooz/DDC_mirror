@@ -24,14 +24,15 @@ void init_scenes()
 	auto pause = new Pause(sm.get());
 	auto endgamewin = new EndGameWin(sm.get());
 	auto endgamelose = new EndGameLose(sm.get());
-	sm->add_scene(mm, true);
-	sm->add_scene(core, true);
-	sm->add_scene(level, true);
-	sm->add_scene(credits, true);
-	sm->add_scene(help, true);
-	sm->add_scene(pause, true);
-	sm->add_scene(endgamewin, true);
-	sm->add_scene(endgamelose, true);
+	sm->add_scene(mm, true, "mainmenu");
+	sm->add_scene(core, true, "game");
+	sm->add_scene(level, true, "leveleditor");
+	sm->add_scene(credits, true, "credits");
+	sm->add_scene(help, true, "help");
+	sm->add_scene(pause, true, "pause");
+	sm->add_scene(endgamewin, true, "win");
+	sm->add_scene(endgamelose, true, "lose");
+	sm->set_scene("mainmenu");
 	sm->render();
 	sm->cleanup();
 }
