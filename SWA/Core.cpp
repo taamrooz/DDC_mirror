@@ -47,19 +47,19 @@ void Core::update()
 			if (is_paused_) {
 				Engine::stop_music();
 				is_paused_ = false;
-				scene_manager_->push_scene().push_scene().push_scene();
+				scene_manager_->set_scene("pause");
 			}
 
 			if (is_winner_) {
 				Engine::stop_music();
 				is_winner_ = false;
-				scene_manager_->push_scene().push_scene().push_scene().push_scene().push_scene();
+				scene_manager_->set_scene("win");
 			}
 
 			if (is_loser_) {
 				Engine::stop_music();
 				is_loser_ = false;
-				scene_manager_->push_scene().push_scene().push_scene().push_scene().push_scene().push_scene();
+				scene_manager_->set_scene("lose");
 			}
 		}else
 		{

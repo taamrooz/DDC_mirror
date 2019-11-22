@@ -30,7 +30,7 @@ void Pause::input() {
 		if (keycode == SDLK_p)
 		{
 			Engine::play_music("ingame.wav");
-			scene_manager_->pop_scene().pop_scene().pop_scene();
+			scene_manager_->set_scene("game");
 			break;
 		}
 	}
