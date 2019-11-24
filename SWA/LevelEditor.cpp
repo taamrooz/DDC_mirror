@@ -748,7 +748,7 @@ bool LevelEditor::init()
 		}
 	}
 
-	x = 1180;
+	x = 1140;
 	y = 25;
 	tiles_in_toolbox_ = std::vector<TileComponent>();
 	for (int i = 0; i < TileSetSingleton::get_instance()->tiletypes.size(); ++i)
@@ -756,7 +756,7 @@ bool LevelEditor::init()
 		tiles_in_toolbox_.emplace_back(x, y, k_tile_width_, k_tile_height_, i);
 		x += 40;
 		if (x > 1230) {
-			x = 1180;
+			x = 1140;
 			y += 40;
 		}
 	}

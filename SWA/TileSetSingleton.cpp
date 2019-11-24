@@ -12,7 +12,7 @@ TileSetSingleton::TileSetSingleton() {
 		tiletypes[i][3] = k_tile_height_;
 
 		y += k_tile_height_;
-		if (y >= 364)
+		if (y >= 448)
 		{
 			y = 0;
 			x += k_tile_width_;
