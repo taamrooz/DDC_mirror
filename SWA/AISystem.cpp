@@ -112,8 +112,8 @@ void AISystem::update(double dt)
 			if (predecessors[current] == currentTile) {
 				for (std::size_t i = 0; i < tileComp->adjecent_tiles.size(); ++i) {
 					if (tileComp->adjecent_tiles[i] == current) {
-						vel->dx = tileComp->x_pos - comp->x_pos > 0 ? -2 : 2;
-						vel->dy = tileComp->y_pos - comp->y_pos > 0 ? -2 : 2;
+						vel->dx = tileComp->x_pos - comp->x_pos > 0 ? -2 : tileComp->x_pos - comp->x_pos == 0 ? 0 : 2;
+						vel->dy = tileComp->y_pos - comp->y_pos > 0 ? -2 : tileComp->y_pos - comp->y_pos == 0 ? 0 : 2;
 						break;
 					}
 				}
