@@ -10,6 +10,7 @@
 #include "RoomComponent.h"
 #include "DamagingComponent.h"
 #include "LevelSingleton.h"
+#include <queue>
 
 RoomSystem::RoomSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
 {}
@@ -147,6 +148,9 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 		auto pos = std::make_unique<PositionComponent>(i[0], i[1]);
 		auto tile = std::make_unique<TileComponent>(i[0], i[1], tile_width, tile_height, i[2]);
 		auto id = manager_->create_entity();
+		if (id == 258) {
+			auto s = manager_->get_all_entities<Component>();
+		}
 		manager_->add_component_to_entity(id, std::move(pos));
 		manager_->add_component_to_entity(id, std::move(tile));
 		manager_->add_component_to_entity(id, std::move(room));
@@ -154,6 +158,49 @@ void RoomSystem::LoadTiles(std::string path, int total_tiles, int total_sprites,
 			if (k_collision_tiles[a] == i[2]) {
 				auto coll = std::make_unique<CollisionComponent>(63, 63, nullptr);
 				manager_->add_component_to_entity(id, std::move(coll));
+			}
+		}
+	}
+
+	std::vector<uint32_t> tileComponents = manager_->get_all_entities_from_current_room<TileComponent>();
+	sort(tileComponents.begin(), tileComponents.end());
+	for (int i = 0; i < tileComponents.size(); i++) {
+		if (i == 118) {
+			int k = 5;
+		}
+		auto tile = manager_->get_component<TileComponent>(i);
+		if (i + 1 % (k_level_width_ / k_tile_width_) != 0 && tileComponents.size() > i + 1) {
+			auto coll = manager_->get_component<CollisionComponent>(tileComponents[i + 1]);
+			if (coll == nullptr || !coll->solid) {
+				tile->adjecent_tiles.push_back(tileComponents[i + 1]);
+			}
+		}
+		if (i % (k_level_width_ / k_tile_width_) != 0 && i > 0) {
+			auto coll = manager_->get_component<CollisionComponent>(tileComponents[i - 1]);
+			if (coll == nullptr || !coll->solid) {
+				tile->adjecent_tiles.push_back(tileComponents[i - 1]);
+			}
+		}
+		if (tileComponents.size() > i + (k_level_width_ / k_tile_width_)) {
+			auto coll = manager_->get_component<CollisionComponent>(tileComponents[i + k_level_width_ / k_tile_width_]);
+			if (coll == nullptr || !coll->solid) {
+				tile->adjecent_tiles.push_back(tileComponents[i + (k_level_width_ / k_tile_width_)]);
+			}
+		}
+		if (i >= k_level_width_ / k_tile_width_) {
+			auto coll = manager_->get_component<CollisionComponent>(tileComponents[i - k_level_width_ / k_tile_width_]);
+			if (coll == nullptr || !coll->solid) {
+				tile->adjecent_tiles.push_back(tileComponents[i - (k_level_width_ / k_tile_width_)]);
+			}
+		}
+	}
+
+	for (int i : tileComponents) {
+		auto tile = manager_->get_component<TileComponent>(i);
+		for (int j : tile->adjecent_tiles) {
+			auto nextTile = manager_->get_component<TileComponent>(j);
+			if (nextTile->x_pos != tile->x_pos + tile->width && nextTile->x_pos != tile->x_pos - tile->width && nextTile->y_pos != tile->y_pos + tile->width && nextTile->y_pos != tile->y_pos - tile->width) {
+				int k = 0;
 			}
 		}
 	}

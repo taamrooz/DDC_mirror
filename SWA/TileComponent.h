@@ -10,5 +10,6 @@ struct TileComponent : Component
 	int width;
 	int height;
 	int tiletype;
+	std::vector<int> adjecent_tiles;
 };
 

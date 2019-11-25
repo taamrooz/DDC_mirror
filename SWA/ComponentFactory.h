@@ -8,7 +8,8 @@ enum string_code {
 	cMonster,
 	cladder,
 	cFlask_Blue,
-	cBoss
+	cBoss,
+	cBig_Demon
 };
 class ComponentFactory
 {
@@ -22,6 +23,7 @@ private:
 	void AddPlayerComponents(int, Engine::EntityManager<Component>*);
 	void AddChestComponents(int id, Engine::EntityManager<Component>* em);
 	void AddBlueFlaskComponents(int id, Engine::EntityManager<Component>* em);
+	void AddBigDemonComponents(int id, Engine::EntityManager<Component>* em);
 	void AddLadderComponents(int id, Engine::EntityManager<Component>* em);
 	void AddEnemyComponents(int id, Engine::EntityManager<Component>*, bool level_boss);
 public:

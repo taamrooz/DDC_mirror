@@ -132,6 +132,9 @@
     <ClCompile Include="EndGameLose.cpp">
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
+    <ClCompile Include="AISystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -260,5 +263,16 @@
     <ClInclude Include="EndGameLose.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
+    <ClInclude Include="AISystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="AIComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\Animations\big_demon_idle.png">
+      <Filter>Resource Files\Animations</Filter>
+    </Image>
   </ItemGroup>
 </Project>

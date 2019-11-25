@@ -17,6 +17,7 @@
 #include "LevelBossComponent.h"
 #include "LevelSingleton.h"
 #include "Renderer.h"
+#include "AIComponent.h"
 
 ComponentFactory::ComponentFactory() {
 
@@ -32,6 +33,7 @@ string_code Convert(std::string const& inString) {
 	if (inString == "Flask_Blue") return cFlask_Blue;
 	if (inString == "monster") return cMonster;
 	if (inString == "boss") return cBoss;
+	if (inString == "big_demon") return cBig_Demon;
 	return cWall;
 }
 
@@ -72,6 +74,10 @@ int ComponentFactory::CreateEntity(string_code name, int id, Engine::EntityManag
 	}
 	case cBoss: {
 		AddEnemyComponents(id, em, true);
+		break;
+	}
+	case cBig_Demon: {
+		AddBigDemonComponents(id, em);
 		break;
 	}
 	default: {
@@ -172,6 +178,26 @@ void ComponentFactory::AddBlueFlaskComponents(int id, Engine::EntityManager<Comp
 	auto coll = std::make_unique<CollisionComponent>(32, 32, ItemCollisionHandler, false);
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
+	em->add_component_to_entity(id, std::move(room));
+
+}
+
+void ComponentFactory::AddBigDemonComponents(int id, Engine::EntityManager<Component>* em) {
+
+	std::unordered_map<State, std::unique_ptr<Animation>> animations;
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/big_demon_idle.png", 4))));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/big_demon_run.png", 4))));
+	animations.at(State::DEFAULT)->scale = 2;
+	animations.at(State::RUN)->scale = 2;
+	auto ani = std::make_unique<AnimationComponent>(animations);
+	auto ai = std::make_unique<AIComponent>();
+	auto vel = std::make_unique<VelocityComponent>();
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
+	auto coll = std::make_unique<CollisionComponent>(32 * 2, 36 * 2, nullptr);
+	em->add_component_to_entity(id, std::move(ani));
+	em->add_component_to_entity(id, std::move(ai));
+	em->add_component_to_entity(id, std::move(vel));
+	 em->add_component_to_entity(id, std::move(coll));
 	em->add_component_to_entity(id, std::move(room));
 
 }
