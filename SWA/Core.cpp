@@ -14,6 +14,7 @@
 #include "ComponentFactory.h"
 #include "InventorySystem.h"
 #include "Audio.h"
+#include "KeyBindingSingleton.h"
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -103,9 +104,11 @@ void Core::toggle_pause()
 void Core::toggle_game_won()
 {
 	is_winner_ = !is_winner_;
+	KeyBindingSingleton::get_instance()->reset_properties();
 }
 
 void Core::toggle_game_lost()
 {
 	is_loser_ = !is_loser_;
+	KeyBindingSingleton::get_instance()->reset_properties();
 }

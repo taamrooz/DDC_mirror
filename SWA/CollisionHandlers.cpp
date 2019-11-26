@@ -136,6 +136,7 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::Ent
 			if (level_boss_component != nullptr) {
 				manager->remove_component_from_entity<AnimationComponent>(entity1);
 				manager->remove_component_from_entity<CollisionComponent>(entity1);
+				manager->remove_component_from_entity<VelocityComponent>(entity1);
 			}
 			else {
 				manager->remove_entity(entity1);

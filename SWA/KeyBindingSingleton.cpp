@@ -13,10 +13,6 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 	{
 		//Initialization of a KeyBindingSingleton instance and filling of keybinds (Later maybe through a filereader)
 		instance = new KeyBindingSingleton();
-		//instance->keybindings.insert(std::make_pair(SDLK_1, "high.wav"));
-		//instance->keybindings.insert(std::make_pair(SDLK_2, "medium.wav"));
-		//instance->keybindings.insert(std::make_pair(SDLK_3, "low.wav"));
-		//instance->keybindings.insert(std::make_pair(SDLK_4, "scratch.wav"));
 		instance->keybindings.insert(std::make_pair(SDLK_1, "1"));
 		instance->keybindings.insert(std::make_pair(SDLK_2, "2"));
 		instance->keybindings.insert(std::make_pair(SDLK_3, "3"));
@@ -39,10 +35,6 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keybindings.insert(std::make_pair(SDLK_RIGHT, instance->get_shoot_right_key_binding()));
 		instance->keybindings.insert(std::make_pair(SDLK_DOWN, instance->get_shoot_down_key_binding()));
 
-		//instance->keys_down.insert(std::make_pair("high.wav", false));
-		//instance->keys_down.insert(std::make_pair("medium.wav", false));
-		//instance->keys_down.insert(std::make_pair("low.wav", false));
-		//instance->keys_down.insert(std::make_pair("scratch.wav", false));
 		instance->keys_down.insert(std::make_pair(instance->get_pause_game_key_binding(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_move_up_key_binding(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_move_left_key_binding() , false));
@@ -105,8 +97,6 @@ std::string KeyBindingSingleton::get_shoot_down_key_binding() {
 	return "shootDown";
 }
 
-// TO-DO: map SDL_keys to strings!!
-
 std::string KeyBindingSingleton::get_pause_game_key() {
 	return "p";
 }
@@ -141,4 +131,10 @@ std::string KeyBindingSingleton::get_shoot_right_key() {
 
 std::string KeyBindingSingleton::get_shoot_down_key() {
 	return "`";
+}
+
+void KeyBindingSingleton::reset_properties() {
+	for (auto& key_down : get_instance()->keys_down) {
+		key_down.second = false;
+	}
 }
