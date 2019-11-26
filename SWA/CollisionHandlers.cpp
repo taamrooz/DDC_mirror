@@ -54,7 +54,6 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 			const auto boss_health = manager->get_component<HealthComponent>(boss_entity);
 			const auto boss_room = manager->get_component<RoomComponent>(boss_entity);
 
-			/* rewrite this!! */
 			if (boss_room->room_name.compare(RoomSingleton::get_instance()->get_current_room_name()) == 0) {
 				// current room is where levelBoss is living
 				if (boss_health->current_health <= 0) {
@@ -133,7 +132,14 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::Ent
 		DamageHandler(health, dmg);
 
 		if (health->current_health <= 0) {
-			manager->remove_entity(entity1);
+			auto level_boss_component = manager->get_component<LevelBossComponent>(entity1);
+			if (level_boss_component != nullptr) {
+				manager->remove_component_from_entity<AnimationComponent>(entity1);
+				manager->remove_component_from_entity<CollisionComponent>(entity1);
+			}
+			else {
+				manager->remove_entity(entity1);
+			}
 			core->toggle_game_won();
 		}
 	}

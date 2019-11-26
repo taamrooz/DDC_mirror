@@ -9,6 +9,7 @@
 #include "HealthComponent.h"
 #include "InventoryComponent.h"
 #include "TextureComponent.h"
+#include "LevelSingleton.h"
 
 RenderSystem::RenderSystem(Engine::EntityManager<Component>* manager)
 	: BaseSystem(manager) {
@@ -41,10 +42,11 @@ void RenderSystem::update(double dt)
 	for (auto entityid : manager_->get_all_entities_from_current_room<AnimationComponent>()) {
 		auto animation_component = manager_->get_component<AnimationComponent>(entityid);
 		auto position_component = manager_->get_component<PositionComponent>(entityid);
-		if(animation_component->animations.find(animation_component->currentState) != animation_component->animations.end())
+		if (animation_component->animations.find(animation_component->currentState) != animation_component->animations.end())
 		{
 			Engine::update_animation(animation_component->animations.at(animation_component->currentState).get(), position_component->x, position_component->y, animation_component->flip_horizontally);
-		}else
+		}
+		else
 		{
 			Engine::update_animation(animation_component->animations.at(animation_component->animations.begin()->first).get(), position_component->x, position_component->y, animation_component->flip_horizontally);
 		}
@@ -117,4 +119,10 @@ void RenderSystem::update(double dt)
 			}
 		}
 	}
+
+	//render current level information
+	int current_level_number = LevelSingleton::get_instance()->get_current_level_number();
+	std::string text = "Level " + std::to_string(current_level_number);
+	_level_hud = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 0,255,0, 255 }, text.c_str()));
+	Engine::render_texture(_level_hud.get(), 550, 15, nullptr);
 }
