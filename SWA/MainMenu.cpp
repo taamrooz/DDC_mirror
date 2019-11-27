@@ -3,6 +3,8 @@
 #include "Renderer.h"
 #include "UserInput.h"
 #include "Core.h"
+#include <mutex>
+#include <chrono>
 
 MainMenu::~MainMenu() = default;
 
@@ -84,6 +86,10 @@ void MainMenu::input()
 		}
 		else if (keycode == SDLK_RETURN)
 		{
+			Engine::stop_music();
+			Engine::play_music("low.wav");
+			std::this_thread::sleep_for(std::chrono::milliseconds(112));
+
 			switch (current_action_) {
 			case 0:
 				Engine::stop_music();
@@ -93,13 +99,19 @@ void MainMenu::input()
 			case 1:
 				break;
 			case 2:
+				Engine::stop_music();
 				scene_manager_->set_scene("leveleditor");
+				Engine::play_music("leveleditor.wav");
 				break;
 			case 3:
+				Engine::stop_music();
 				scene_manager_->set_scene("credits");
+				Engine::play_music("credits.wav");
 				break;
 			case 4:
+				Engine::stop_music();
 				scene_manager_->set_scene("help");
+				Engine::play_music("help.wav");
 				break;
 			case 5:
 				is_running_ = false;

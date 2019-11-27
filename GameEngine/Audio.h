@@ -34,6 +34,14 @@ namespace Engine {
 	 */
 	ENGINE_API void stop_music();
 	/*
+	 * Pause the music that is playing.
+	 */
+	ENGINE_API void pause_music();
+	/*
+	 * Resume the music that is paused.
+	 */
+	ENGINE_API void resume_music();
+	/*
 	 * Destroys the audio system.
 	 */
 	ENGINE_API void close_audio();

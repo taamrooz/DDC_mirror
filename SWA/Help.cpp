@@ -3,6 +3,8 @@
 #include "UserInput.h"
 #include "Core.h"
 #include "KeyBindingSingleton.h"
+#include <Audio.h>
+#include <mutex>
 
 Help::~Help() = default;
 
@@ -44,7 +46,13 @@ void Help::input() {
 	{
 		if (keycode == SDLK_RETURN)
 		{
+			Engine::stop_music();
+			Engine::play_music("low.wav");
+			std::this_thread::sleep_for(std::chrono::milliseconds(112));
+
+			Engine::stop_music();
 			scene_manager_->set_scene("mainmenu");
+			Engine::play_music("mainmenu.wav");
 			break;
 		}
 	}
