@@ -14,6 +14,7 @@
 #include "LevelSingleton.h"
 #include "AnimationComponent.h"
 #include <Renderer.h>
+#include <Audio.h>
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 
@@ -65,7 +66,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 			}
 			else {
 				if (!RoomSingleton::get_instance()->reload_room) {
-					// load next level
+					// load next room
 					RoomSingleton::get_instance()->init_next_room();
 					RoomSingleton::get_instance()->reload_room = true;
 				}
@@ -73,7 +74,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 		}
 		else {
 			if (!RoomSingleton::get_instance()->reload_room) {
-				// load next level
+				// load next room
 				RoomSingleton::get_instance()->init_next_room();
 				RoomSingleton::get_instance()->reload_room = true;
 			}
@@ -137,11 +138,13 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::Ent
 				manager->remove_component_from_entity<AnimationComponent>(entity1);
 				manager->remove_component_from_entity<CollisionComponent>(entity1);
 				manager->remove_component_from_entity<VelocityComponent>(entity1);
+				Engine::stop_music();
+				Engine::play_music("ingame.wav");
+				core->toggle_game_won();
 			}
 			else {
 				manager->remove_entity(entity1);
 			}
-			core->toggle_game_won();
 		}
 	}
 }

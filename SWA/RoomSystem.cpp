@@ -10,6 +10,8 @@
 #include "RoomComponent.h"
 #include "DamagingComponent.h"
 #include "LevelSingleton.h"
+#include <Audio.h>
+#include "LevelBossComponent.h"
 
 RoomSystem::RoomSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
 {}
@@ -23,10 +25,13 @@ void RoomSystem::update(double dt)
 
 		RoomSingleton::get_instance()->reload_room = false;
 		LevelSingleton::get_instance()->reload_level = false;
-	}
-	else {
-		if (RoomSingleton::get_instance()->reload_room) {
-			//Check if a new room needs to be loaded
+
+		const auto boss_entities = manager_->get_all_entities_from_current_room<LevelBossComponent>();
+		bool is_boss_room = !boss_entities.empty();
+
+		if (is_boss_room) {
+			Engine::stop_music();
+			Engine::play_music("danger.wav");
 		}
 	}
 }
