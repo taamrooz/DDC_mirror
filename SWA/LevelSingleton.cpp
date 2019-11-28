@@ -25,3 +25,7 @@ void LevelSingleton::init_next_level() {
 		RoomSingleton::get_instance()->init_first_room();
 	}
 }
+
+int LevelSingleton::get_current_level_number() const {
+	return (1 + current_level_index);
+}

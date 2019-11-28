@@ -59,6 +59,14 @@ void Engine::play_music(const std::string filename) {
 	}
 }
 
+void Engine::pause_music() {
+	Mix_PauseMusic();
+}
+
+void Engine::resume_music() {
+	Mix_ResumeMusic();
+}
+
 void Engine::stop_music() {
 	Mix_HaltMusic();
 }

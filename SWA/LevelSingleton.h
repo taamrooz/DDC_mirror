@@ -13,4 +13,5 @@ public:
 	std::string get_current_room_name_from_current_level(const int current_room_index) const;
 	void init_next_level();
 	bool reload_level;
+	int get_current_level_number() const;
 };
