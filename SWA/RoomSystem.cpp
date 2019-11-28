@@ -27,9 +27,7 @@ void RoomSystem::update(double dt)
 		LevelSingleton::get_instance()->reload_level = false;
 
 		const auto boss_entities = manager_->get_all_entities_from_current_room<LevelBossComponent>();
-		bool is_boss_room = !boss_entities.empty();
-
-		if (is_boss_room) {
+		if (!boss_entities.empty()) {
 			Engine::stop_music();
 			Engine::play_music("danger.wav");
 		}
