@@ -9,4 +9,5 @@ struct VelocityComponent : Component
 	double dy{};
 	double deaceleration = 3;
 	double dropOff{};
+	double maxSpeed = 10;
 };
