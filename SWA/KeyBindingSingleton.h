@@ -34,4 +34,5 @@ public:
 	std::string get_shoot_down_key();
 	std::map<SDL_Keycode, std::string> keybindings;
 	std::map<std::string, bool> keys_down;
+	void reset_properties();
 };
