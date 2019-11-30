@@ -7,7 +7,7 @@ class TileSetSingleton
 private:
 	const int k_tile_width_ = 64;
 	const int k_tile_height_ = 64;
-	const int k_total_tiles_ = 36;
+	const int k_total_tiles_ = 49;
 	/* The instance will be stored here. */
 	static TileSetSingleton* instance;
 
