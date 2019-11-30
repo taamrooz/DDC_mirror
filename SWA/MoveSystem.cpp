@@ -3,6 +3,8 @@
 #include "VelocityComponent.h"
 #include "CharacterComponent.h"
 #include "EnemyComponent.h"
+#include <vector2d.h>
+
 
 MoveSystem::MoveSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {}
 
