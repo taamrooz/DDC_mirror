@@ -14,6 +14,7 @@
 #include "LevelSingleton.h"
 #include "AnimationComponent.h"
 #include <Renderer.h>
+#include "EnemyComponent.h"
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 
@@ -121,10 +122,11 @@ void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMana
 	}
 }
 
-void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
-{
+void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
+	
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
-	if (dmg != nullptr) {
+	auto enemy = manager->get_component<EnemyComponent>(entity2);
+	if (dmg != nullptr && enemy == nullptr) {
 		auto ani = manager->get_component<AnimationComponent>(entity1);
 		ani->currentState = State::HIT;
 		ani->lock_until = Engine::get_ticks() + 250;

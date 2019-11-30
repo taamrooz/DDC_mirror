@@ -260,5 +260,8 @@
     <ClInclude Include="EndGameLose.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

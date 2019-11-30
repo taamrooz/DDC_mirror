@@ -7,5 +7,6 @@ struct VelocityComponent : Component
 	VelocityComponent(double dx, double dy, double dropOff = 0.0) : dx{ dx }, dy{ dy }, dropOff{ dropOff } {}
 	double dx{};
 	double dy{};
+	double deaceleration = 1;
 	double dropOff{};
 };
