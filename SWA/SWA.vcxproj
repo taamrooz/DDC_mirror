@@ -178,6 +178,7 @@
     <ClCompile Include="ShootSystem.cpp" />
     <ClCompile Include="RoomSingleton.cpp" />
     <ClCompile Include="RoomSystem.cpp" />
+    <ClCompile Include="SteeringBehaviors.cpp" />
     <ClCompile Include="TileSetSingleton.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +221,8 @@
     <ClInclude Include="InventorySystem.h" />
     <ClInclude Include="ShootingComponent.h" />
     <ClInclude Include="ShootSystem.h" />
+    <ClInclude Include="SteeringBehaviors.h" />
+    <ClInclude Include="SteeringComponent.h" />
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TileSetSingleton.h" />

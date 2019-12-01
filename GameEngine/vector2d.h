@@ -138,3 +138,9 @@ constexpr auto distance2(basic_vector2d<Scalar> from,
 	basic_vector2d<Scalar> to) {
 	return norm2(from - to);
 }
+template <typename Scalar>
+basic_vector2d<Scalar> rotate(basic_vector2d<Scalar> v, float radians) {
+	auto s = sin(radians);
+	auto c = cos(radians);
+	return { c * v.x() - s * v.y(), s * v.x() + c * v.y() };
+}

@@ -4,4 +4,5 @@
 struct EnemyComponent : Component
 {
 	EnemyComponent() = default;
+	float mass = 30;
 };

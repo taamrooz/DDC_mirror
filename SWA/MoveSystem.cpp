@@ -4,18 +4,45 @@
 #include "CharacterComponent.h"
 #include "EnemyComponent.h"
 #include <vector2d.h>
+#include "SteeringBehaviors.h"
 
 
 MoveSystem::MoveSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {}
 
 void MoveSystem::update(double dt)
 {
-	//Get enemy characters
 	auto enemies = manager_->get_all_entities_from_current_room<EnemyComponent>();
+
+	//Get player character
+	auto player = manager_->get_all_entities_from_current_room<CharacterComponent>();
+
+	if (!enemies.empty() && !player.empty()) {
+		for (auto enemyEntity : enemies)
+		{
+			auto enemyMass = manager_->get_component<EnemyComponent>(enemyEntity);
+			auto vel = manager_->get_component<VelocityComponent>(enemyEntity);
+			auto pos = manager_->get_component<PositionComponent>(enemyEntity);
+			vel->steer_force = WallAvoidance(player.front() , manager_);
+			const vector2d acceleration = vel->steer_force / enemyMass->mass;
+			vector2d velocity = vector2d(vel->dx, vel->dy);
+			velocity += acceleration * dt;
+
+			if (velocity.x() > vel->maxSpeed) {
+				velocity = { trunc(vel->maxSpeed), velocity.y()};
+			}
+			if (velocity.y() > vel->maxSpeed) {
+				velocity = { velocity.y(), trunc(vel->maxSpeed) };
+			}
+			vel->dx = velocity.x();
+			vel->dy = velocity.y();
+		}
+
+	}
+	//Get enemy characters
+	/*auto enemies = manager_->get_all_entities_from_current_room<EnemyComponent>();
 	if (!enemies.empty())
 	{
-		auto enemyEntity = enemies.front();
-		for (auto enemyEntity : manager_->get_all_entities_from_current_room<EnemyComponent>())
+		for (auto enemyEntity :enemies)
 		{
 			auto entities = manager_->get_all_entities_from_current_room<CharacterComponent>();
 			if (!entities.empty())
@@ -53,11 +80,10 @@ void MoveSystem::update(double dt)
 			}
 		}
 
-	}
-	//Get player character
-	auto entities = manager_->get_all_entities_from_current_room<CharacterComponent>();
-	if (!entities.empty()) {
-		auto characterEntity = entities.front();
+	}*/
+
+	if (!player.empty()) {
+		auto characterEntity = player.front();
 
 		//Resolve velocity
 		for (auto entity : manager_->get_all_entities_from_current_room<VelocityComponent>())
