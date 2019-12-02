@@ -32,6 +32,10 @@ public:
 	std::string get_shoot_left_key();
 	std::string get_shoot_right_key();
 	std::string get_shoot_down_key();
+	std::string get_speedhack_key();
+	std::string get_invincible_key();
+	std::string get_teleport_key();
+	std::string get_next_room_key();
 	std::map<SDL_Keycode, std::string> keybindings;
 	std::map<std::string, bool> keys_down;
 	void reset_properties();

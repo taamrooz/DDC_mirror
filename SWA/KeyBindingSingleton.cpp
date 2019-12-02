@@ -34,6 +34,10 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keybindings.insert(std::make_pair(SDLK_LEFT, instance->get_shoot_left_key_binding()));
 		instance->keybindings.insert(std::make_pair(SDLK_RIGHT, instance->get_shoot_right_key_binding()));
 		instance->keybindings.insert(std::make_pair(SDLK_DOWN, instance->get_shoot_down_key_binding()));
+		instance->keybindings.insert(std::make_pair(SDLK_INSERT, instance->get_speedhack_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_DELETE, instance->get_invincible_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_PAGEUP, instance->get_teleport_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_PAGEDOWN, instance->get_next_room_key()));
 
 		instance->keys_down.insert(std::make_pair(instance->get_pause_game_key_binding(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_move_up_key_binding(), false));
@@ -44,6 +48,10 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keys_down.insert(std::make_pair(instance->get_shoot_left_key_binding(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_shoot_right_key_binding(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_shoot_down_key_binding(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_speedhack_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_invincible_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_teleport_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_next_room_key(), false));
 
 		instance->keys_down.insert(std::make_pair("1", false));
 		instance->keys_down.insert(std::make_pair("2", false));
@@ -131,6 +139,26 @@ std::string KeyBindingSingleton::get_shoot_right_key() {
 
 std::string KeyBindingSingleton::get_shoot_down_key() {
 	return "`";
+}
+
+std::string KeyBindingSingleton::get_speedhack_key()
+{
+	return "insert";
+}
+
+std::string KeyBindingSingleton::get_invincible_key()
+{
+	return "delete";
+}
+
+std::string KeyBindingSingleton::get_teleport_key()
+{
+	return "pageUp";
+}
+
+std::string KeyBindingSingleton::get_next_room_key()
+{
+	return "pageDown";
 }
 
 void KeyBindingSingleton::reset_properties() {

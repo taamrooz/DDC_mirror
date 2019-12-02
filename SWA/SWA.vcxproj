@@ -155,6 +155,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
+    <ClCompile Include="CheatScene.cpp" />
+    <ClCompile Include="CheatSystem.cpp" />
     <ClCompile Include="CollisionHandlers.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -185,6 +187,8 @@
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="CharacterComponent.h" />
+    <ClInclude Include="CheatScene.h" />
+    <ClInclude Include="CheatSystem.h" />
     <ClInclude Include="ChestComponent.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionHandlers.h" />

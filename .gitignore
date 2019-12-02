@@ -58,7 +58,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-
+build/
 
 
 # Files built by Visual Studio
