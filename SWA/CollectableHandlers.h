@@ -4,4 +4,4 @@
 #include "BaseSystem.h"
 #include "Core.h"
 
-void BlueFlaskUtilizeHandler(uint32_t collector, uint32_t collectable, Engine::EntityManager<Component>* manager, Core* core);
+void BlueFlaskCollectableHandler(uint32_t collector, uint32_t collectable, Engine::EntityManager<Component>* manager);
