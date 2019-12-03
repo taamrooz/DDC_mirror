@@ -8,6 +8,7 @@
 #include "HealthComponent.h"
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
+#include "CollectableHandlers.h"
 #include "LadderComponent.h"
 #include "RoomComponent.h"
 #include "RoomSingleton.h"
@@ -17,6 +18,7 @@
 #include "LevelBossComponent.h"
 #include "LevelSingleton.h"
 #include "Renderer.h"
+#include "CollectableComponent.h"
 
 ComponentFactory::ComponentFactory() {
 
@@ -170,6 +172,7 @@ void ComponentFactory::AddBlueFlaskComponents(int id, Engine::EntityManager<Comp
 	auto ani = std::make_unique<AnimationComponent>(animations);
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
 	auto coll = std::make_unique<CollisionComponent>(32, 32, ItemCollisionHandler, false);
+	auto util = std::make_unique<CollectableComponent>(BlueFlaskUtilizeHandler, false);
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
 	em->add_component_to_entity(id, std::move(room));
