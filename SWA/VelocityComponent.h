@@ -8,4 +8,11 @@ struct VelocityComponent : Component
 	double dx{};
 	double dy{};
 	double dropOff{};
+
+	void ToJson(json& j, int id) override
+	{
+		j[id]["VelocityComponent"]["dx"] = dx;
+		j[id]["VelocityComponent"]["dy"] = dy;
+		j[id]["VelocityComponent"]["dropOff"] = dropOff;
+	}
 };

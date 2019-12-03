@@ -15,4 +15,12 @@ struct ShootingComponent : Component
 	BulletShape bullet_shape{};
 	int fire_rate{};
 	int last_shot{};
+
+	void ToJson(json& j, int id) override
+	{
+		j[id]["ShootingComponent"]["bullet_size"] = bullet_size;
+		j[id]["ShootingComponent"]["bullet_shape"] = bullet_shape;
+		j[id]["ShootingComponent"]["fire_rate"] = fire_rate;
+		j[id]["ShootingComponent"]["last_shot"] = last_shot;
+	}
 };

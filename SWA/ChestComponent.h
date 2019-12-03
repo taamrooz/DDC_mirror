@@ -6,4 +6,9 @@ enum class DropTypes {
 struct ChestComponent : Component {
 	ChestComponent(string_code contains) : contains{ contains } {}
 		string_code contains;
+
+		void ToJson(json& j, int id) override
+		{
+			j[id]["ChestComponent"]["contains"] = contains;
+		}
 };

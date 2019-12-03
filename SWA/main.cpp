@@ -7,6 +7,7 @@
 #include "Help.h"
 #include "Pause.h"
 #include "LevelEditor.h"
+#include "JsonHelper.h"
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>

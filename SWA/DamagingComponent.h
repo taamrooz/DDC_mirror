@@ -8,4 +8,10 @@ struct DamagingComponent : Component
 	int damage_amount{};
 	bool remove_entity_on_damage{};
 	//When entity deals damage, remove it from the game. Eg. bullets that do not pierce (default:False)
+
+	void ToJson(json& j, int id) override
+	{
+		j[id]["DamagingComponent"]["remove_entity_on_damage"] = remove_entity_on_damage;
+		j[id]["DamagingComponent"]["damage_amount"] = damage_amount;
+	}
 };

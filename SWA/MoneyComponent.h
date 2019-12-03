@@ -6,4 +6,9 @@ struct MoneyComponent : Component
 	MoneyComponent() = default;
 	MoneyComponent(int current_money) : current_money{ current_money } {}
 	int current_money{};
+
+	void ToJson(json& j, int id) override
+	{
+		j[id]["MoneyComponent"]["current_money"] = current_money;
+	}
 };

@@ -69,6 +69,24 @@ namespace Engine {
 			return list;
 		}
 
+		[[nodiscard]] std::vector<uint32_t> get_all_entities() const
+		{
+			return entities_;
+		}
+
+		std::vector<Component> get_all_components_from_entity(uint32_t id)
+		{
+			std::vector<Component> components {};
+			for(auto i = components_by_class_.begin(); i != components_by_class_.end(); ++i)
+			{
+				auto id_component_map = i->second;
+				auto component = id_component_map.find(id);
+				if(component != id_component_map.end())
+					components.emplace_back(component);
+;			}
+			return components;
+		}
+
 		uint32_t create_entity()
 		{
 			entities_.push_back(++id_);

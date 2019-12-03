@@ -10,5 +10,14 @@ struct TileComponent : Component
 	int width;
 	int height;
 	int tiletype;
+
+	void ToJson(json& j, int id) override
+	{
+		j[id]["TileComponent"]["x_pos"] = x_pos;
+		j[id]["TileComponent"]["y_pos"] = y_pos;
+		j[id]["TileComponent"]["width"] = width;
+		j[id]["TileComponent"]["height"] = height;
+		j[id]["TileComponent"]["tiletype"] = tiletype;
+	}
 };
 
