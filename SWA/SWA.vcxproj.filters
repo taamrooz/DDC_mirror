@@ -55,6 +55,12 @@
     <Filter Include="Header Files\LevelEditor">
       <UniqueIdentifier>{9ce8f00b-35f7-42a6-a63f-26c9a1d5ae5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Helpers">
+      <UniqueIdentifier>{42c3ed66-fe54-4ded-8504-36c85066cb6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Helpers">
+      <UniqueIdentifier>{8fd60082-043d-4617-a76c-3ec2ca541c4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -131,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="EndGameLose.cpp">
       <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveHelper.cpp">
+      <Filter>Source Files\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="EndGameLose.h">
       <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveHelper.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

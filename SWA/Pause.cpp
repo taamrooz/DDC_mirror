@@ -33,6 +33,10 @@ void Pause::input() {
 			scene_manager_->set_scene("game");
 			break;
 		}
+		else if(keycode == SDLK_RETURN)
+		{
+			//TODO: Save game
+		}
 	}
 }
 
