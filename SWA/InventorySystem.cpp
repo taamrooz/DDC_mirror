@@ -3,6 +3,7 @@
 #include "KeyBindingSingleton.h"
 #include "InventoryComponent.h"
 #include "CharacterComponent.h"
+#include "CollectableComponent.h"
 
 InventorySystem::InventorySystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
 {}
@@ -15,8 +16,18 @@ void InventorySystem::update(double dt)
 	{
 		if (i->first.compare("1") == 0) {
 			if (i->second) {
+				if (inv->selected == 1) {
+					// use this inventory item
+					if (inv->items.size() > 0) {
+						auto collectable_entity_id = inv->items[0];
+						auto collectable = manager_->get_component<CollectableComponent>(collectable_entity_id);
+						collectable->utilizeHandler(entity, collectable_entity_id, manager_);
+					}
+				}
+
 				inv->selected = 1;
 				i->second = false;
+
 			}
 		}
 		if (i->first.compare("2") == 0) {
