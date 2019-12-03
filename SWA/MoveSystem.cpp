@@ -19,11 +19,21 @@ void MoveSystem::update(double dt)
 	if (!enemies.empty() && !player.empty()) {
 		for (auto enemyEntity : enemies)
 		{
-			auto enemyMass = manager_->get_component<EnemyComponent>(enemyEntity);
+			auto enemy = manager_->get_component<EnemyComponent>(enemyEntity);
 			auto vel = manager_->get_component<VelocityComponent>(enemyEntity);
 			auto pos = manager_->get_component<PositionComponent>(enemyEntity);
-			vel->steer_force = WallAvoidance(player.front() , manager_);
-			const vector2d acceleration = vel->steer_force / enemyMass->mass;
+
+			switch (enemy->state) {
+			case Fleeing :
+				vel->steer_force = Flee(enemyEntity, player.front(), manager_);
+				break;
+			case Pursuing:
+				vel->steer_force = Pursuit(enemyEntity, player.front(), manager_);
+				break;
+			}
+
+
+			const vector2d acceleration = vel->steer_force / enemy->mass;
 			vector2d velocity = vector2d(vel->dx, vel->dy);
 			velocity += acceleration * dt;
 
@@ -38,50 +48,6 @@ void MoveSystem::update(double dt)
 		}
 
 	}
-	//Get enemy characters
-	/*auto enemies = manager_->get_all_entities_from_current_room<EnemyComponent>();
-	if (!enemies.empty())
-	{
-		for (auto enemyEntity :enemies)
-		{
-			auto entities = manager_->get_all_entities_from_current_room<CharacterComponent>();
-			if (!entities.empty())
-			{
-				auto characterEntity = entities.front();
-				auto enemyPosition = manager_->get_component<PositionComponent>(enemyEntity);
-				auto enemyVelocity = manager_->get_component<VelocityComponent>(enemyEntity);
-				auto playerPosition = manager_->get_component<PositionComponent>(characterEntity);
-				if (playerPosition->x - enemyPosition->x > 0) {
-					if (enemyVelocity->dx <= 0 ) {
-						enemyVelocity->dx += enemyVelocity->deaceleration;
-					}
-				}
-				else if (playerPosition->x - enemyPosition->x < 0) {
-					if (enemyVelocity->dx >= 0) {
-						enemyVelocity->dx -= enemyVelocity->deaceleration;
-					}
-				}
-				else {
-					enemyVelocity->dx -= enemyVelocity->deaceleration;
-				}
-				if (playerPosition->y - enemyPosition->y > 0) {
-					if (enemyVelocity->dy <= 0) {
-						enemyVelocity->dy += enemyVelocity->deaceleration;
-					}
-				}
-				else if (playerPosition->y - enemyPosition->y < 0) {
-					if (enemyVelocity->dy >= 0) {
-						enemyVelocity->dy -= enemyVelocity->deaceleration;
-					}
-				}
-				else {
-					enemyVelocity->dy -= enemyVelocity->deaceleration;
-				}
-			}
-		}
-
-	}*/
-
 	if (!player.empty()) {
 		auto characterEntity = player.front();
 

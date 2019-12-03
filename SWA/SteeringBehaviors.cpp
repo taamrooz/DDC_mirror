@@ -22,7 +22,12 @@ vector2d Seek(const int entity, vector2d TargetPos, EntityManager<Component>* ma
 
 vector2d Flee(const int entity, const int evader, EntityManager<Component>* manager)
 {
-	return vector2d(0, 0);
+	auto pos = manager->get_component<PositionComponent>(entity);
+	auto evaderPos = manager->get_component<PositionComponent>(evader);
+	auto evaderVelocity = manager->get_component<VelocityComponent>(entity);
+	vector2d DesiredVelocity = normalize(vector2d(pos->x, pos->y) - vector2d(evaderPos->x, evaderPos->y))
+		* evaderVelocity->maxSpeed;
+	return (DesiredVelocity - vector2d(evaderVelocity->dx, evaderVelocity->dy));
 }
 
 vector2d Pursuit(const int entity, const int evader, EntityManager<Component>* manager)
@@ -81,10 +86,8 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
 			//run through each wall checking for any intersection points 
 			for (int w = 0; w < walls.size(); ++w) {
 				auto wall = manager->get_component<PositionComponent>(walls[w]);
-				if(normalize(vector2d(wall->x, wall->y)) == normalize()
-				if (LineIntersection(manager, m_Feelers[flr], walls[w], DistToThisIP, point))
+				if(normalize(vector2d(wall->x - pos->x, wall->y - pos->y)) == normalize(m_Feelers[flr]))
 				{ 
-
 					//is this the closest found so far? If so keep a record 
 					if (DistToThisIP < DistToClosestIP) {
 						DistToClosestIP = DistToThisIP;
@@ -93,15 +96,15 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
 					}
 				}
 			}//next wall
-		//if an intersection point has been detected, calculate a force 
-		//that will direct the agent away 
-			if (ClosestWall >=0) { 
-				//calculate by what distance the projected position of the agent 
-				//will overshoot the wall Vector2D 
-				OverShoot = m_Feelers[flr] - ClosestPoint;
-				//create a force in the direction of the wall normal, with a magnitude of the overshoot 
-				SteeringForce = walls[ClosestWall].Normal() * OverShoot.Length();
-			}
+		////if an intersection point has been detected, calculate a force 
+		////that will direct the agent away 
+		//	if (ClosestWall >=0) { 
+		//		//calculate by what distance the projected position of the agent 
+		//		//will overshoot the wall Vector2D 
+		//		OverShoot = m_Feelers[flr] - ClosestPoint;
+		//		//create a force in the direction of the wall normal, with a magnitude of the overshoot 
+		//		SteeringForce = walls[ClosestWall].Normal() * OverShoot.Length();
+		//	}
 		}//next feeler
 	return SteeringForce;
 }

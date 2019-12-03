@@ -14,16 +14,19 @@
 #include "LevelSingleton.h"
 #include "AnimationComponent.h"
 #include <Renderer.h>
-#include "EnemyComponent.h"
 #include <Audio.h>
 
-void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
+void DamageHandler(HealthComponent* health, DamagingComponent* dmg, EnemyComponent* enemy) {
 
 	int currentTick = Engine::get_ticks();
 	if (health->invulnerable_until < currentTick) {
 		std::cout << "HIT" << std::endl;
 		health->current_health -= dmg->damage_amount;
 		health->invulnerable_until = health->time_invulnerable + currentTick;
+
+		if (health->current_health < 3 && enemy != nullptr) {
+			enemy->state = Fleeing;
+		}
 	}
 }
 
@@ -91,7 +94,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 		const auto health = manager->get_component<HealthComponent>(entity1);
 		if (health != nullptr)
 		{
-			DamageHandler(health, dmg);
+			DamageHandler(health, dmg, nullptr);
 			if (health->current_health <= 0) {
 				core->toggle_game_lost();
 			}
@@ -132,7 +135,8 @@ void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 		ani->lock_until = Engine::get_ticks() + 250;
 
 		auto health = manager->get_component<HealthComponent>(entity1);
-		DamageHandler(health, dmg);
+		auto enemy = manager->get_component<EnemyComponent>(entity1);
+		DamageHandler(health, dmg, enemy);
 
 		if (health->current_health <= 0) {
 			auto level_boss_component = manager->get_component<LevelBossComponent>(entity1);
