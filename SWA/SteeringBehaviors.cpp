@@ -54,56 +54,57 @@ vector2d Pursuit(const int entity, const int evader, EntityManager<Component>* m
 
 vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
 
-	auto pos = manager->get_component<PositionComponent>(entity);
+	//auto pos = manager->get_component<PositionComponent>(entity);
 
-	//the feelers are contained in a 
-	std::vector<vector2d> m_Feelers = CreateFeelers(entity, manager);
-	double DistToThisIP = 0.0;
-	double DistToClosestIP = 100000.0;
-	//this will hold an index into the vector of walls 
-	int ClosestWall = -1;
-	std::vector<int> walls;
+	////the feelers are contained in a 
+	//std::vector<vector2d> m_Feelers = CreateFeelers(entity, manager);
+	//double DistToThisIP = 0.0;
+	//double DistToClosestIP = 100000.0;
+	////this will hold an index into the vector of walls 
+	//int ClosestWall = -1;
+	//std::vector<int> walls;
 
-	auto tiles = manager->get_all_entities_from_current_room<TileComponent>();
-	for (int tile : tiles) {
-		auto coll = manager->get_component<CollisionComponent>(tile);
-		if (coll != nullptr) {
-			walls.push_back(tile);
-		}
-	}
+	//auto tiles = manager->get_all_entities_from_current_room<TileComponent>();
+	//for (int tile : tiles) {
+	//	auto coll = manager->get_component<CollisionComponent>(tile);
+	//	if (coll != nullptr) {
+	//		walls.push_back(tile);
+	//	}
+	//}
 
-	vector2d SteeringForce,
-		point, //used for storing temporary info 
-		ClosestPoint; //holds the closest intersection point
-	//examine each feeler in turn 
-		for (int flr = 0; flr < m_Feelers.size(); ++flr)
-		{ 
-			//run through each wall checking for any intersection points 
-			for (int w = 0; w < walls.size(); ++w) {
-				auto wall = manager->get_component<PositionComponent>(walls[w]);
-				if(normalize(vector2d(wall->x, wall->y)) == normalize()
-				if (LineIntersection(manager, m_Feelers[flr], walls[w], DistToThisIP, point))
-				{ 
+	//vector2d SteeringForce,
+	//	point, //used for storing temporary info 
+	//	ClosestPoint; //holds the closest intersection point
+	////examine each feeler in turn 
+	//	for (int flr = 0; flr < m_Feelers.size(); ++flr)
+	//	{ 
+	//		//run through each wall checking for any intersection points 
+	//		for (int w = 0; w < walls.size(); ++w) {
+	//			auto wall = manager->get_component<PositionComponent>(walls[w]);
+	//			if(normalize(vector2d(wall->x, wall->y)) == normalize()
+	//			if (LineIntersection(manager, m_Feelers[flr], walls[w], DistToThisIP, point))
+	//			{ 
 
-					//is this the closest found so far? If so keep a record 
-					if (DistToThisIP < DistToClosestIP) {
-						DistToClosestIP = DistToThisIP;
-						ClosestWall = w;
-						ClosestPoint = point;
-					}
-				}
-			}//next wall
-		//if an intersection point has been detected, calculate a force 
-		//that will direct the agent away 
-			if (ClosestWall >=0) { 
-				//calculate by what distance the projected position of the agent 
-				//will overshoot the wall Vector2D 
-				OverShoot = m_Feelers[flr] - ClosestPoint;
-				//create a force in the direction of the wall normal, with a magnitude of the overshoot 
-				SteeringForce = walls[ClosestWall].Normal() * OverShoot.Length();
-			}
-		}//next feeler
-	return SteeringForce;
+	//				//is this the closest found so far? If so keep a record 
+	//				if (DistToThisIP < DistToClosestIP) {
+	//					DistToClosestIP = DistToThisIP;
+	//					ClosestWall = w;
+	//					ClosestPoint = point;
+	//				}
+	//			}
+	//		}//next wall
+	//	//if an intersection point has been detected, calculate a force 
+	//	//that will direct the agent away 
+	//		if (ClosestWall >=0) { 
+	//			//calculate by what distance the projected position of the agent 
+	//			//will overshoot the wall Vector2D 
+	//			OverShoot = m_Feelers[flr] - ClosestPoint;
+	//			//create a force in the direction of the wall normal, with a magnitude of the overshoot 
+	//			SteeringForce = walls[ClosestWall].Normal() * OverShoot.Length();
+	//		}
+	//	}//next feeler
+	//return SteeringForce;
+	return vector2d();
 }
 
 std::vector<vector2d> CreateFeelers(const int entity, EntityManager<Component>* manager) {
