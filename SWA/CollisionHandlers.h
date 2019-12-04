@@ -5,6 +5,12 @@
 #include "DamagingComponent.h"
 #include "HealthComponent.h"
 #include "Core.h"
+enum class HandlerNames
+{
+	DamageHandler,
+	BulletCollisionHandler,
+	
+};
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg);
 void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core);

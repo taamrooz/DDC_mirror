@@ -12,6 +12,7 @@ struct CollisionComponent : Component
 	int height{};
 	int owner{};
 	bool solid{};
+	HandlerNames function_name{};
 	std::function<void(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)> collisionHandler;
 	//Width and height of hitboxes (measured in pixels, so int is fine)
 
@@ -21,5 +22,6 @@ struct CollisionComponent : Component
 		j[id]["CollisionComponent"]["height"] = height;
 		j[id]["CollisionComponent"]["owner"] = owner;
 		j[id]["CollisionComponent"]["solid"] = solid;
+		j[id]["CollisionComponent"]["function_name"] = function_name;
 	}
 };

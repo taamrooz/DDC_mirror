@@ -74,9 +74,9 @@ namespace Engine {
 			return entities_;
 		}
 
-		std::vector<Component> get_all_components_from_entity(uint32_t id)
+		std::vector<T> get_all_components_from_entity(uint32_t id)
 		{
-			std::vector<Component> components {};
+			std::vector<T> components {};
 			for(auto i = components_by_class_.begin(); i != components_by_class_.end(); ++i)
 			{
 				auto id_component_map = i->second;
