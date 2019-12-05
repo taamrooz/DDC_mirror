@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include "EntityManager.h"
+#include "CollisionHandlers.h"
+
 enum string_code {
 	cPlayer,
 	cWall,
@@ -19,6 +21,7 @@ private:
 	ComponentFactory& operator=(const ComponentFactory& entityFactory) = delete; // Assignment operator
 	ComponentFactory& operator=(const ComponentFactory&& entityFactory) = delete; // Move operator
 	static ComponentFactory* instance_;
+	CollisionHandlers collision_handlers_;
 	void AddPlayerComponents(int, Engine::EntityManager<Component>*);
 	void AddChestComponents(int id, Engine::EntityManager<Component>* em);
 	void AddBlueFlaskComponents(int id, Engine::EntityManager<Component>* em);

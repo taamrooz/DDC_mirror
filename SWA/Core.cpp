@@ -33,7 +33,6 @@ bool Core::init()
 	systems_.push_back(std::make_unique<ShootSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
-
 	return true;
 }
 
