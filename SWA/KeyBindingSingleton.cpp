@@ -5,11 +5,11 @@ KeyBindingSingleton::KeyBindingSingleton()
 {}
 
 /* Null, because instance will be initialized on demand. */
-KeyBindingSingleton* KeyBindingSingleton::instance = 0;
+KeyBindingSingleton* KeyBindingSingleton::instance = nullptr;
 
 KeyBindingSingleton* KeyBindingSingleton::get_instance()
 {
-	if (instance == 0)
+	if (instance == nullptr)
 	{
 		//Initialization of a KeyBindingSingleton instance and filling of keybinds (Later maybe through a filereader)
 		instance = new KeyBindingSingleton();
@@ -25,33 +25,35 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keybindings.insert(std::make_pair(SDLK_0, "10"));
 
 
-		instance->keybindings.insert(std::make_pair(SDLK_p, "pauseGame"));
-		instance->keybindings.insert(std::make_pair(SDLK_w, instance->get_move_up_key_binding()));
-		instance->keybindings.insert(std::make_pair(SDLK_a, instance->get_move_left_key_binding()));
-		instance->keybindings.insert(std::make_pair(SDLK_d, instance->get_move_right_key_binding()));
-		instance->keybindings.insert(std::make_pair(SDLK_s, instance->get_move_down_key_binding()));
-		instance->keybindings.insert(std::make_pair(SDLK_UP, instance->get_shoot_up_key_binding()));
-		instance->keybindings.insert(std::make_pair(SDLK_LEFT, instance->get_shoot_left_key_binding()));
-		instance->keybindings.insert(std::make_pair(SDLK_RIGHT, instance->get_shoot_right_key_binding()));
-		instance->keybindings.insert(std::make_pair(SDLK_DOWN, instance->get_shoot_down_key_binding()));
+		instance->keybindings.insert(std::make_pair(SDLK_p, instance->get_pause_game_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_w, instance->get_move_up_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_a, instance->get_move_left_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_d, instance->get_move_right_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_s, instance->get_move_down_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_UP, instance->get_shoot_up_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_LEFT, instance->get_shoot_left_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_RIGHT, instance->get_shoot_right_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_DOWN, instance->get_shoot_down_key()));
 		instance->keybindings.insert(std::make_pair(SDLK_INSERT, instance->get_speedhack_key()));
-		instance->keybindings.insert(std::make_pair(SDLK_DELETE, instance->get_invincible_key()));
-		instance->keybindings.insert(std::make_pair(SDLK_PAGEUP, instance->get_teleport_key()));
-		instance->keybindings.insert(std::make_pair(SDLK_PAGEDOWN, instance->get_next_room_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_h, instance->get_invincible_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_t, instance->get_teleport_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_n, instance->get_next_room_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_k, instance->get_kill_all_key()));
 
-		instance->keys_down.insert(std::make_pair(instance->get_pause_game_key_binding(), false));
-		instance->keys_down.insert(std::make_pair(instance->get_move_up_key_binding(), false));
-		instance->keys_down.insert(std::make_pair(instance->get_move_left_key_binding() , false));
-		instance->keys_down.insert(std::make_pair(instance->get_move_right_key_binding(), false));
-		instance->keys_down.insert(std::make_pair(instance->get_move_down_key_binding(), false));
-		instance->keys_down.insert(std::make_pair(instance->get_shoot_up_key_binding(), false));
-		instance->keys_down.insert(std::make_pair(instance->get_shoot_left_key_binding(), false));
-		instance->keys_down.insert(std::make_pair(instance->get_shoot_right_key_binding(), false));
-		instance->keys_down.insert(std::make_pair(instance->get_shoot_down_key_binding(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_pause_game_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_move_up_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_move_left_key() , false));
+		instance->keys_down.insert(std::make_pair(instance->get_move_right_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_move_down_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_shoot_up_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_shoot_left_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_shoot_right_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_shoot_down_key(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_speedhack_key(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_invincible_key(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_teleport_key(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_next_room_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_kill_all_key(), false));
 
 		instance->keys_down.insert(std::make_pair("1", false));
 		instance->keys_down.insert(std::make_pair("2", false));
@@ -68,97 +70,71 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 	return instance;
 }
 
-
-std::string KeyBindingSingleton::get_pause_game_key_binding() {
-	return "pauseGame";
-}
-
-std::string KeyBindingSingleton::get_move_up_key_binding() {
-	return "moveUP";
-}
-
-std::string KeyBindingSingleton::get_move_left_key_binding() {
-	return "moveLeft";
-}
-
-std::string KeyBindingSingleton::get_move_right_key_binding() {
-	return "moveRight";
-}
-
-std::string KeyBindingSingleton::get_move_down_key_binding() {
-	return "moveDown";
-}
-
-std::string KeyBindingSingleton::get_shoot_up_key_binding() {
-	return "shootUp";
-}
-
-std::string KeyBindingSingleton::get_shoot_left_key_binding() {
-	return "shootLeft";
-}
-
-std::string KeyBindingSingleton::get_shoot_right_key_binding() {
-	return "shootRight";
-}
-
-std::string KeyBindingSingleton::get_shoot_down_key_binding() {
-	return "shootDown";
-}
-
-std::string KeyBindingSingleton::get_pause_game_key() {
+std::string KeyBindingSingleton::get_pause_game_key() const {
 	return "p";
 }
 
-std::string KeyBindingSingleton::get_move_up_key() {
+std::string KeyBindingSingleton::get_move_up_key() const {
 	return "W";
 }
 
-std::string KeyBindingSingleton::get_move_left_key() {
+std::string KeyBindingSingleton::get_move_left_key() const {
 	return "A";
 }
 
-std::string KeyBindingSingleton::get_move_right_key() {
+std::string KeyBindingSingleton::get_move_right_key() const {
 	return "D";
 }
 
-std::string KeyBindingSingleton::get_move_down_key() {
+std::string KeyBindingSingleton::get_move_down_key() const {
 	return "S";
 }
 
-std::string KeyBindingSingleton::get_shoot_up_key() {
+std::string KeyBindingSingleton::get_shoot_up_key() const {
 	return "^";
 }
 
-std::string KeyBindingSingleton::get_shoot_left_key() {
+std::string KeyBindingSingleton::get_shoot_left_key() const {
 	return "<";
 }
 
-std::string KeyBindingSingleton::get_shoot_right_key() {
+std::string KeyBindingSingleton::get_shoot_right_key() const {
 	return ">";
 }
 
-std::string KeyBindingSingleton::get_shoot_down_key() {
+std::string KeyBindingSingleton::get_shoot_down_key() const {
 	return "`";
 }
 
-std::string KeyBindingSingleton::get_speedhack_key()
+std::string KeyBindingSingleton::get_speedhack_key() const
 {
 	return "insert";
 }
 
-std::string KeyBindingSingleton::get_invincible_key()
+std::string KeyBindingSingleton::get_invincible_key() const
 {
-	return "delete";
+	return "H";
 }
 
-std::string KeyBindingSingleton::get_teleport_key()
+std::string KeyBindingSingleton::get_teleport_key() const
 {
-	return "pageUp";
+	return "T";
 }
 
-std::string KeyBindingSingleton::get_next_room_key()
+std::string KeyBindingSingleton::get_next_room_key() const
 {
-	return "pageDown";
+	return "N";
+}
+
+std::string KeyBindingSingleton::get_kill_all_key() const
+{
+	return "K";
+}
+
+bool KeyBindingSingleton::is_key_down(const std::string& key)
+{
+	if (keys_down.find(key) == keys_down.end()) return false;
+	return keys_down.find(key)->second;
 }
 
 void KeyBindingSingleton::reset_properties() {

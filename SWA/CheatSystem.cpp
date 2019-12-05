@@ -17,28 +17,14 @@ void CheatSystem::update(double dt)
 	auto health = manager_->get_component<HealthComponent>(entity);
 	auto velocity = manager_->get_component<VelocityComponent>(entity);
 	auto position = manager_->get_component<PositionComponent>(entity);
-	bool move_up, move_right, move_down;
-	bool move_left = (move_up = move_right = move_down = false);
 	for (auto& i : KeyBindingSingleton::get_instance()->keys_down)
 	{
 		if (i.second) {
-			if (i.first == KeyBindingSingleton::get_instance()->get_move_up_key_binding()) {
-				move_up = true;
-			}
-			else if (i.first == KeyBindingSingleton::get_instance()->get_move_left_key_binding()) {
-				move_left = true;
-			}
-			else if (i.first == KeyBindingSingleton::get_instance()->get_move_down_key_binding()) {
-				move_down = true;
-			}
-			else if (i.first == KeyBindingSingleton::get_instance()->get_move_right_key_binding()) {
-				move_right = true;
-			}
-			else if (i.first == KeyBindingSingleton::get_instance()->get_speedhack_key()) {
-				if (move_left) velocity->dx -= 10;
-				if (move_up) velocity->dy -= 10;
-				if (move_right) velocity->dx += 10;
-				if (move_down) velocity->dy += 10;
+			if (i.first == KeyBindingSingleton::get_instance()->get_speedhack_key()) {
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_left_key())) velocity->dx -= 10;
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_up_key())) velocity->dy -= 10;
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_right_key())) velocity->dx += 10;
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_down_key())) velocity->dy += 10;
 			}
 			else if (i.first == KeyBindingSingleton::get_instance()->get_invincible_key())
 			{
@@ -46,15 +32,24 @@ void CheatSystem::update(double dt)
 			}
 			else if (i.first == KeyBindingSingleton::get_instance()->get_teleport_key())
 			{
-				if (move_left) position->x -= 50;
-				if (move_up) position->y -= 50;
-				if (move_right) position->x += 50;
-				if (move_down) position->y += 50;
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_left_key())) position->x -= 50;
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_up_key())) position->y -= 50;
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_right_key())) position->x += 50;
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_down_key())) position->y += 50;
 			}
 			else if(i.first == KeyBindingSingleton::get_instance()->get_next_room_key())
 			{
 				RoomSingleton::get_instance()->init_next_room();
 				RoomSingleton::get_instance()->reload_room = true;
+			}
+			else if(i.first == KeyBindingSingleton::get_instance()->get_kill_all_key())
+			{
+				auto h_entities = manager_->get_all_entities_from_current_room<HealthComponent>();
+				for (auto h_entity : h_entities)
+				{
+					if (h_entity == entity) continue;
+					manager_->remove_entity(h_entity);
+				}
 			}
 		}
 	}

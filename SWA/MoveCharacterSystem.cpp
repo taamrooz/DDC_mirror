@@ -23,20 +23,19 @@ void MoveCharacterSystem::update(double dt) {
 	for (auto& i : KeyBindingSingleton::get_instance()->keys_down)
 	{
 		if (i.second) {
-			if (i.first == KeyBindingSingleton::get_instance()->get_move_up_key_binding()) {
-
+			if (i.first == KeyBindingSingleton::get_instance()->get_move_up_key()) {
 				counter++;
 			}
 
-			if (i.first == KeyBindingSingleton::get_instance()->get_move_left_key_binding()) {
+			if (i.first == KeyBindingSingleton::get_instance()->get_move_left_key()) {
 				counter++;
 			}
 
-			if (i.first == KeyBindingSingleton::get_instance()->get_move_down_key_binding()) {
+			if (i.first == KeyBindingSingleton::get_instance()->get_move_down_key()) {
 				counter++;
 			}
 
-			if (i.first == KeyBindingSingleton::get_instance()->get_move_right_key_binding()) {
+			if (i.first == KeyBindingSingleton::get_instance()->get_move_right_key()) {
 				counter++;
 			}
 		}
@@ -47,14 +46,14 @@ void MoveCharacterSystem::update(double dt) {
 	{
 		if (i.second)
 		{
-			if (i.first == KeyBindingSingleton::get_instance()->get_move_up_key_binding()) {
+			if (i.first == KeyBindingSingleton::get_instance()->get_move_up_key()) {
 				if (animation->lock_until < Engine::get_ticks()) {
 					animation->currentState = State::RUN;
 				}
 				velocity->dy = (counter > 1) ? velocity->dy = -1 * diagonal_move_velocity : velocity->dy = -1 * move_velocity;
 			}
 
-			if (i.first == KeyBindingSingleton::get_instance()->get_move_left_key_binding()) {
+			if (i.first == KeyBindingSingleton::get_instance()->get_move_left_key()) {
 				if (animation->lock_until < Engine::get_ticks()) {
 					animation->currentState = State::RUN;
 				}
@@ -62,14 +61,14 @@ void MoveCharacterSystem::update(double dt) {
 				animation->flip_horizontally = true;
 			}
 
-			if (i.first == KeyBindingSingleton::get_instance()->get_move_down_key_binding()) {
+			if (i.first == KeyBindingSingleton::get_instance()->get_move_down_key()) {
 				if (animation->lock_until < Engine::get_ticks()) {
 					animation->currentState = State::RUN;
 				}
 				velocity->dy = (counter > 1) ? velocity->dy = diagonal_move_velocity : velocity->dy = move_velocity;
 			}
 
-			if (i.first == KeyBindingSingleton::get_instance()->get_move_right_key_binding()) {
+			if (i.first == KeyBindingSingleton::get_instance()->get_move_right_key()) {
 				if (animation->lock_until < Engine::get_ticks()) {
 					animation->currentState = State::RUN;
 				}

@@ -11,9 +11,9 @@ private:
 	std::unique_ptr<Texture> sub_title_ = nullptr;
 	std::unique_ptr<Animation> background_ = nullptr;
 	std::unique_ptr<Texture> regain_health_ = nullptr;
-	std::unique_ptr<Texture> move_left_ = nullptr;
-	std::unique_ptr<Texture> move_right_ = nullptr;
-	std::unique_ptr<Texture> move_down_ = nullptr;
+	std::unique_ptr<Texture> teleport_ = nullptr;
+	std::unique_ptr<Texture> next_room_ = nullptr;
+	std::unique_ptr<Texture> kill_all_ = nullptr;
 	std::unique_ptr<Texture> return_ = nullptr;
 public:
 	CheatScene(Engine::SceneManager* manager);
