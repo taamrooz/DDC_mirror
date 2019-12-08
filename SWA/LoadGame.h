@@ -21,7 +21,9 @@ public:
 	LoadGame(Engine::SceneManager* manager);
 	void render() override;
 	void cleanup() override;
+	bool init() override;
 	void get_files(const char* path, const std::string extension);
 	void input_load_game(SDL_Keycode keycode, std::string& text);
+	bool open_game_file(std::string& path);
 	void input();
 };

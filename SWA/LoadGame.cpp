@@ -1,6 +1,10 @@
 #include "LoadGame.h"
 #include <filesystem>
 #include <UserInput.h>
+#include <mutex>
+#include "Core.h"
+#include <Audio.h>
+#include <fstream> 
 
 LoadGame::~LoadGame() = default;
 
@@ -29,7 +33,12 @@ void LoadGame::input()
 	{
 		if (keycode == SDLK_ESCAPE)
 		{
-			//scene_manager_->set_scene("mainmenu");
+			Engine::stop_music();
+			Engine::play_music("low.wav");
+			std::this_thread::sleep_for(std::chrono::milliseconds(112));
+			Engine::stop_music();
+			scene_manager_->set_scene("mainmenu");
+			Engine::play_music("mainmenu.wav");
 		}
 
 		input_load_game(keycode, std::get<k_text>(inputs));
@@ -43,9 +52,10 @@ void LoadGame::get_files(const char* path, const std::string extension)
 	{
 		if (entry.path().extension().string() == "." + extension)
 		{
-			std::string filename = entry.path().filename().string();
-			file_names_.emplace_back(filename);
-			file_name_textures_.push_back(std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, filename.c_str())));
+			std::string file_name = entry.path().filename().string();
+			file_name = file_name.substr(0, file_name.size() - 5);
+			file_names_.emplace_back(file_name);
+			file_name_textures_.push_back(std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, file_name.c_str())));
 		}
 	}
 }
@@ -53,16 +63,36 @@ void LoadGame::get_files(const char* path, const std::string extension)
 void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 {
 	if (keycode == SDLK_BACKSPACE && text_.length() > 0)
-		load_game_file_name_.pop_back();
+		text_.pop_back();
 	if (keycode == SDLK_RETURN)
-		// open load_game_file_name_
-	load_game_file_name_.append(text);
+		if (open_game_file(text_))
+		{
+			Engine::StopTextInput();
+
+			// TO-DO: switch scenemaneger to game scene with currently loaded game! (Other Userstory)
+			Engine::stop_music();
+			scene_manager_->set_scene("game");
+			Engine::play_music("ingame.wav");
+		}
+	text_.append(text);
+}
+
+bool LoadGame::open_game_file(std::string& path) {
+	std::ifstream game("./assets/Levels/" + path);
+	if (game.fail())
+	{
+		return false;
+	}
+	
+	// TO-DO: write logic of loading game here! (Other Userstory)
+
+	return true;
 }
 
 void LoadGame::render() {
 	const auto timer = Engine::pre_update();
 
-	get_files("./assets/Levels", "map");
+	get_files("./assets/Levels", "json");
 	if (text_.length() > 0)
 	{
 		text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
@@ -85,4 +115,9 @@ void LoadGame::render() {
 
 	Engine::render(timer);
 	input();
+}
+
+bool LoadGame::init() {
+
+	return true;
 }
