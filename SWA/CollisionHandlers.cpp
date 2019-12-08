@@ -271,7 +271,6 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 
 CollisionHandlers::CollisionHandlers()
 {
-	name_function_map_.try_emplace(HandlerNames::DamageHandler, DamageHandler);
 	name_function_map_.try_emplace(HandlerNames::BulletCollisionHandler, BulletCollisionHandler);
 	name_function_map_.try_emplace(HandlerNames::PlayerCollisionHandler, PlayerCollisionHandler);
 	name_function_map_.try_emplace(HandlerNames::ItemCollisionHandler, ItemCollisionHandler);

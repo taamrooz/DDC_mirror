@@ -9,6 +9,6 @@ struct MoneyComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["MoneyComponent"]["current_money"] = current_money;
+		j[std::to_string(id)]["MoneyComponent"]["current_money"] = current_money;
 	}
 };

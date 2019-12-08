@@ -19,10 +19,10 @@ struct CollisionComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["CollisionComponent"]["width"] = width;
-		j[id]["CollisionComponent"]["height"] = height;
-		j[id]["CollisionComponent"]["owner"] = owner;
-		j[id]["CollisionComponent"]["solid"] = solid;
-		j[id]["CollisionComponent"]["function_name"] = function_name;
+		j[std::to_string(id)]["CollisionComponent"]["width"] = width;
+		j[std::to_string(id)]["CollisionComponent"]["height"] = height;
+		j[std::to_string(id)]["CollisionComponent"]["owner"] = owner;
+		j[std::to_string(id)]["CollisionComponent"]["solid"] = solid;
+		j[std::to_string(id)]["CollisionComponent"]["function_name"] = function_name;
 	}
 };

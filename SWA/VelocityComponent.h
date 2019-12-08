@@ -11,8 +11,8 @@ struct VelocityComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["VelocityComponent"]["dx"] = dx;
-		j[id]["VelocityComponent"]["dy"] = dy;
-		j[id]["VelocityComponent"]["dropOff"] = dropOff;
+		j[std::to_string(id)]["VelocityComponent"]["dx"] = dx;
+		j[std::to_string(id)]["VelocityComponent"]["dy"] = dy;
+		j[std::to_string(id)]["VelocityComponent"]["dropOff"] = dropOff;
 	}
 };

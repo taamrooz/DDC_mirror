@@ -9,8 +9,8 @@ struct PositionComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["PositionComponent"]["x"] = x;
-		j[id]["PositionComponent"]["y"] = y;
+		j[std::to_string(id)]["PositionComponent"]["x"] = x;
+		j[std::to_string(id)]["PositionComponent"]["y"] = y;
 	}
 };
 

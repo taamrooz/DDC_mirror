@@ -8,6 +8,6 @@ struct LevelBossComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["LevelBossComponent"]["present"] = true;
+		j[std::to_string(id)]["LevelBossComponent"]["present"] = true;
 	}
 };

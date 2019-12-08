@@ -7,7 +7,7 @@
 #include "Core.h"
 enum class HandlerNames
 {
-	DamageHandler,
+	None,
 	BulletCollisionHandler,
 	PlayerCollisionHandler,
 	ItemCollisionHandler,

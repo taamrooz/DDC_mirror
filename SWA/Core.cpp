@@ -15,6 +15,10 @@
 #include "InventorySystem.h"
 #include "Audio.h"
 #include "KeyBindingSingleton.h"
+#include "EndGameLose.h"
+#include "EndGameWin.h"
+#include "Pause.h"
+#include "SaveHelper.h"
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -24,6 +28,13 @@ bool Core::init()
 {
 	manager_ = std::make_unique<Engine::EntityManager<Component>>();
 
+	auto pause = new Pause(scene_manager_, this);
+	auto endgamewin = new EndGameWin(scene_manager_);
+	auto endgamelose = new EndGameLose(scene_manager_);
+	scene_manager_->add_scene(pause, true, "pause");
+	scene_manager_->add_scene(endgamewin, true, "win");
+	scene_manager_->add_scene(endgamelose, true, "lose");
+	
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));
@@ -110,4 +121,10 @@ void Core::toggle_game_lost()
 {
 	is_loser_ = !is_loser_;
 	KeyBindingSingleton::get_instance()->reset_properties();
+}
+
+void Core::save_game()
+{
+	auto sh = SaveHelper{};
+	sh.SaveGameToFile(manager_.get());
 }

@@ -9,6 +9,6 @@ struct ChestComponent : Component {
 
 		void ToJson(json& j, int id) override
 		{
-			j[id]["ChestComponent"]["contains"] = contains;
+			j[std::to_string(id)]["ChestComponent"]["contains"] = contains;
 		}
 };

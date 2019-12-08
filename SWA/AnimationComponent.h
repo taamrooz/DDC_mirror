@@ -27,9 +27,9 @@ struct AnimationComponent : Component
 	void ToJson(json& j, int id) override
 	{
 		//TODO: Daadwerkelijk opslaan van de animatie op een of andere manier (waarschijnlijk path)
-		j[id]["AnimationComponent"]["flip_horizontally"] = flip_horizontally;
-		j[id]["AnimationComponent"]["currentState"] = currentState;
-		j[id]["AnimationComponent"]["lock_until"] = lock_until;
-		j[id]["AnimationComponent"]["visible"] = visible;
+		j[std::to_string(id)]["AnimationComponent"]["flip_horizontally"] = flip_horizontally;
+		j[std::to_string(id)]["AnimationComponent"]["currentState"] = currentState;
+		j[std::to_string(id)]["AnimationComponent"]["lock_until"] = lock_until;
+		j[std::to_string(id)]["AnimationComponent"]["visible"] = visible;
 	}
 };

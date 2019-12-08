@@ -8,6 +8,6 @@ struct TextureComponent : Component {
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["TextureComponent"]["path"] = path;
+		j[std::to_string(id)]["TextureComponent"]["path"] = path;
 	}
 };

@@ -13,11 +13,11 @@ struct TileComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["TileComponent"]["x_pos"] = x_pos;
-		j[id]["TileComponent"]["y_pos"] = y_pos;
-		j[id]["TileComponent"]["width"] = width;
-		j[id]["TileComponent"]["height"] = height;
-		j[id]["TileComponent"]["tiletype"] = tiletype;
+		j[std::to_string(id)]["TileComponent"]["x_pos"] = x_pos;
+		j[std::to_string(id)]["TileComponent"]["y_pos"] = y_pos;
+		j[std::to_string(id)]["TileComponent"]["width"] = width;
+		j[std::to_string(id)]["TileComponent"]["height"] = height;
+		j[std::to_string(id)]["TileComponent"]["tiletype"] = tiletype;
 	}
 };
 

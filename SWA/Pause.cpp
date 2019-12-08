@@ -6,7 +6,10 @@
 
 Pause::~Pause() = default;
 
-Pause::Pause(Engine::SceneManager* manager) : BaseScene(manager) { }
+Pause::Pause(Engine::SceneManager* manager, Core* core) : BaseScene(manager)
+{
+	core_ = core;
+}
 
 void Pause::render()
 {
@@ -35,7 +38,7 @@ void Pause::input() {
 		}
 		else if(keycode == SDLK_RETURN)
 		{
-			//TODO: Save game
+			core_->save_game();
 		}
 	}
 }

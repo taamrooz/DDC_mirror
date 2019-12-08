@@ -12,8 +12,8 @@ struct HealthComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["HealthComponent"]["current_health"] = current_health;
-		j[id]["HealthComponent"]["max_health"] = max_health;
-		j[id]["HealthComponent"]["time_invulnerable"] = time_invulnerable;
+		j[std::to_string(id)]["HealthComponent"]["current_health"] = current_health;
+		j[std::to_string(id)]["HealthComponent"]["max_health"] = max_health;
+		j[std::to_string(id)]["HealthComponent"]["time_invulnerable"] = time_invulnerable;
 	}
 };

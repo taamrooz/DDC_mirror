@@ -9,7 +9,7 @@ struct RoomComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["RoomComponent"]["room_name"] = room_name;
+		j[std::to_string(id)]["RoomComponent"]["room_name"] = room_name;
 	}
 };
 

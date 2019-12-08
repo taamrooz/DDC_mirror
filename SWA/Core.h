@@ -54,5 +54,9 @@ public:
 	 * \brief Toggles the games lose state.
 	 */
 	void toggle_game_lost();
+	/**
+	 * \brief Saves the game
+	 */
+	void save_game();
 };
 

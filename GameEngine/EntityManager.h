@@ -74,15 +74,14 @@ namespace Engine {
 			return entities_;
 		}
 
-		std::vector<T> get_all_components_from_entity(uint32_t id)
+		std::vector<T*> get_all_components_from_entity(uint32_t id)
 		{
-			std::vector<T> components {};
-			for(auto i = components_by_class_.begin(); i != components_by_class_.end(); ++i)
+			std::vector<T*> components {};
+			for(auto &&i = components_by_class_.begin(); i != components_by_class_.end(); ++i)
 			{
-				auto id_component_map = i->second;
-				auto component = id_component_map.find(id);
-				if(component != id_component_map.end())
-					components.emplace_back(component);
+				auto component_iterator = i->second.find(id);
+				if(component_iterator != i->second.end())
+					components.emplace_back(component_iterator->second.get());
 ;			}
 			return components;
 		}

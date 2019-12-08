@@ -5,6 +5,9 @@
 #include "Core.h"
 #include <mutex>
 #include <chrono>
+#include "Help.h"
+#include "Credits.h"
+#include "LevelEditor.h"
 
 MainMenu::~MainMenu() = default;
 
@@ -141,6 +144,17 @@ bool MainMenu::init()
 		Engine::destroy_renderer();
 		return false;
 	}
+
+	auto core = new Core(scene_manager_);
+	auto level = new LevelEditor(scene_manager_);
+	auto credits = new Credits(scene_manager_);
+	auto help = new Help(scene_manager_);
+
+	scene_manager_->add_scene(core, true, "game");
+	scene_manager_->add_scene(level, true, "leveleditor");
+	scene_manager_->add_scene(credits, true, "credits");
+	scene_manager_->add_scene(help, true, "help");
+	
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
 	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
 	background_->scale = 1280.0 / 960.0;

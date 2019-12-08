@@ -9,7 +9,7 @@ struct InventoryComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["InventoryComponent"]["selected"] = selected;
-		j[id]["InventoryComponent"]["items"] = items;
+		j[std::to_string(id)]["InventoryComponent"]["selected"] = selected;
+		j[std::to_string(id)]["InventoryComponent"]["items"] = items;
 	}
 };

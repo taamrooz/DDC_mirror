@@ -7,6 +7,6 @@ struct LadderComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["LadderComponent"]["present"] = true;
+		j[std::to_string(id)]["LadderComponent"]["present"] = true;
 	}
 };

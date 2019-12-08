@@ -18,9 +18,9 @@ struct ShootingComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["ShootingComponent"]["bullet_size"] = bullet_size;
-		j[id]["ShootingComponent"]["bullet_shape"] = bullet_shape;
-		j[id]["ShootingComponent"]["fire_rate"] = fire_rate;
-		j[id]["ShootingComponent"]["last_shot"] = last_shot;
+		j[std::to_string(id)]["ShootingComponent"]["bullet_size"] = bullet_size;
+		j[std::to_string(id)]["ShootingComponent"]["bullet_shape"] = bullet_shape;
+		j[std::to_string(id)]["ShootingComponent"]["fire_rate"] = fire_rate;
+		j[std::to_string(id)]["ShootingComponent"]["last_shot"] = last_shot;
 	}
 };

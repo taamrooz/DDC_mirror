@@ -17,22 +17,8 @@
 void init_scenes()
 {
 	auto sm = std::make_unique<Engine::SceneManager>();
-	auto mm = new MainMenu(sm.get());
-	auto core = new Core(sm.get());
-	auto level = new LevelEditor(sm.get());
-	auto credits = new Credits(sm.get());
-	auto help = new Help(sm.get());
-	auto pause = new Pause(sm.get());
-	auto endgamewin = new EndGameWin(sm.get());
-	auto endgamelose = new EndGameLose(sm.get());
-	sm->add_scene(mm, true, "mainmenu");
-	sm->add_scene(core, true, "game");
-	sm->add_scene(level, true, "leveleditor");
-	sm->add_scene(credits, true, "credits");
-	sm->add_scene(help, true, "help");
-	sm->add_scene(pause, true, "pause");
-	sm->add_scene(endgamewin, true, "win");
-	sm->add_scene(endgamelose, true, "lose");
+	auto mm = new MainMenu(sm.get());	
+	sm->add_scene(mm, true, "mainmenu");	
 	sm->set_scene("mainmenu");
 	sm->render();
 	sm->cleanup();

@@ -11,7 +11,7 @@ struct DamagingComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["DamagingComponent"]["remove_entity_on_damage"] = remove_entity_on_damage;
-		j[id]["DamagingComponent"]["damage_amount"] = damage_amount;
+		j[std::to_string(id)]["DamagingComponent"]["remove_entity_on_damage"] = remove_entity_on_damage;
+		j[std::to_string(id)]["DamagingComponent"]["damage_amount"] = damage_amount;
 	}
 };

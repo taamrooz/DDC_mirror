@@ -7,7 +7,7 @@ struct CharacterComponent : Component
 
 	void ToJson(json& j, int id) override
 	{
-		j[id]["CharacterComponent"]["present"] = true;
+		j[std::to_string(id)]["CharacterComponent"]["present"] = true;
 	}
 };
 

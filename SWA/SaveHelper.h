@@ -1,10 +1,9 @@
 #pragma once
+#include "EntityManager.h"
+
 class SaveHelper
 {
 public:
-	void SaveGameToFile()
-	{
-		
-	}
+	void SaveGameToFile(Engine::EntityManager<Component>* manager_);
 };
 
