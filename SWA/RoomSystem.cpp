@@ -8,7 +8,6 @@
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
 #include "RoomComponent.h"
-#include "DamagingComponent.h"
 #include "LevelSingleton.h"
 #include <Audio.h>
 #include "LevelBossComponent.h"
