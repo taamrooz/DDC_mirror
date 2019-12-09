@@ -24,7 +24,7 @@ void MoveSystem::update(double dt)
 			auto pos = manager_->get_component<PositionComponent>(enemyEntity);
 
 			switch (enemy->state) {
-			case Fleeing :
+			case Fleeing:
 				vel->steer_force = Flee(enemyEntity, player.front(), manager_);
 				break;
 			case Pursuing:
@@ -38,7 +38,7 @@ void MoveSystem::update(double dt)
 			velocity += acceleration * dt;
 
 			if (velocity.x() > vel->maxSpeed) {
-				velocity = { trunc(vel->maxSpeed), velocity.y()};
+				velocity = { trunc(vel->maxSpeed), velocity.y() };
 			}
 			if (velocity.y() > vel->maxSpeed) {
 				velocity = { velocity.y(), trunc(vel->maxSpeed) };
@@ -56,24 +56,14 @@ void MoveSystem::update(double dt)
 		{
 			auto playerPosition = manager_->get_component<PositionComponent>(entity);
 
-		auto velocity = manager_->get_component<VelocityComponent>(entity);
-		playerPosition->x = playerPosition->x + velocity->dx;
-		playerPosition->y = playerPosition->y + velocity->dy;
-		if(velocity->dropOff != 0) {
-			if (velocity->dx < 0) {
-				velocity->dx = velocity->dx + velocity->dropOff > 0 ? 0 : velocity->dx + velocity->dropOff;
+			auto velocity = manager_->get_component<VelocityComponent>(entity);
+			playerPosition->x = playerPosition->x + velocity->dx;
+			playerPosition->y = playerPosition->y + velocity->dy;
+			if (velocity->dropOff != 0) {
+				if (velocity->dx < 0) {
+					velocity->dx = velocity->dx + velocity->dropOff > 0 ? 0 : velocity->dx + velocity->dropOff;
+				}
 			}
-			if (velocity->dx > 0) {
-				velocity->dx = velocity->dx - velocity->dropOff < 0 ? 0 : velocity->dx - velocity->dropOff;
-			}
-			if (velocity->dy < 0) {
-				velocity->dy = velocity->dy + velocity->dropOff > 0 ? 0 : velocity->dy + velocity->dropOff;
-			}
-			if (velocity->dy > 0) {
-				velocity->dy = velocity->dy - velocity->dropOff < 0 ? 0 : velocity->dy - velocity->dropOff;
-			}
-		}
-
 			if (characterEntity == entity) {
 				velocity->dx = 0;
 				velocity->dy = 0;
