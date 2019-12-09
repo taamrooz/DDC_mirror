@@ -7,6 +7,66 @@
 #include "Renderer.h"
 #include <memory>
 
+class LevelEditor;
+
+class LevelEditorState
+{
+public:
+	virtual ~LevelEditorState() = default;
+	LevelEditorState(LevelEditor* l);
+	virtual void render() = 0;
+	virtual void input(SDL_Keycode keycode, std::string& text) = 0;
+private:
+	LevelEditor* owner;
+};
+class ModeSelectionState : LevelEditorState
+{
+	ModeSelectionState(LevelEditor* l);
+	void render() override;
+	void input(SDL_Keycode keycode, std::string& text) override;
+};
+class DungeonFilePickerState : LevelEditorState
+{
+	DungeonFilePickerState(LevelEditor& l);
+	void render() override;
+	void input(SDL_Keycode keycode, std::string& text) override;
+};
+class RoomFilePickerState : LevelEditorState
+{
+	RoomFilePickerState(LevelEditor& l);
+	void render() override;
+	void input(SDL_Keycode keycode, std::string& text) override;
+};
+class DungeonEditorState : LevelEditorState
+{
+	DungeonEditorState(LevelEditor& l);
+	void render() override;
+	void input(SDL_Keycode keycode, std::string& text) override;
+};
+class TileEditorState : LevelEditorState
+{
+	TileEditorState(LevelEditor& l);
+	void render() override;
+	void input(SDL_Keycode keycode, std::string& text) override;
+};
+class ObjectEditorState : LevelEditorState
+{
+	ObjectEditorState(LevelEditor& l);
+	void render() override;
+	void input(SDL_Keycode keycode, std::string& text) override;
+};
+class SaveRoomState : LevelEditorState
+{
+	SaveRoomState(LevelEditor& l);
+	void render() override;
+	void input(SDL_Keycode keycode, std::string& text) override;
+};
+class SaveDungeonState : LevelEditorState
+{
+	SaveDungeonState(LevelEditor& l);
+	void render() override;
+	void input(SDL_Keycode keycode, std::string& text) override;
+};
 enum state
 {
 	mode_selection,
@@ -22,7 +82,7 @@ class LevelEditor :
 	public virtual Engine::BaseScene
 {
 private:
-	state state = mode_selection;
+	std::unique_ptr<LevelEditorState> state_;
 	int selected_tile_type_ = 0;
 	int selected_room_template_ = 0;
 	std::vector<TileComponent> tiles_on_grid_;
@@ -89,5 +149,4 @@ public:
 	void InitObjects();
 	void InitRoom();
 };
-
 

@@ -11,7 +11,9 @@
 #include <Audio.h>
 
 LevelEditor::LevelEditor(Engine::SceneManager* manager) : BaseScene(manager)
-{}
+{
+	state_ = std::make_unique<ModeSelectionState>(this);
+}
 
 void LevelEditor::render()
 {
@@ -869,3 +871,5 @@ void LevelEditor::InitRoom()
 		}
 	}
 }
+
+
