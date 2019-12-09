@@ -172,6 +172,7 @@
     <ClCompile Include="LoadGame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MoveEnemySystem.cpp" />
     <ClCompile Include="Pause.cpp" />
     <ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="LevelEditor.h" />
     <ClInclude Include="LoadGame.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MoveEnemySystem.h" />
     <ClInclude Include="RoomComponent.h" />
     <ClInclude Include="Pause.h" />
     <ClInclude Include="MoneyComponent.h" />

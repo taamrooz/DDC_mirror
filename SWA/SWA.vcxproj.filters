@@ -134,9 +134,12 @@
     </ClCompile>
     <ClCompile Include="LoadGame.cpp">
       <Filter>Source Files\Menus</Filter>
-      </ClCompile>
+    </ClCompile>
     <ClCompile Include="SteeringBehaviors.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveEnemySystem.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="SteeringBehaviors.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveEnemySystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
