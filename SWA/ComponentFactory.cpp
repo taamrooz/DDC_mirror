@@ -144,14 +144,14 @@ void ComponentFactory::AddEnemyComponents(int id, Engine::EntityManager<Componen
 	auto vel = std::make_unique<VelocityComponent>();
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
 	std::unordered_map<State, std::unique_ptr<Animation>> animations;
-	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/wizard_m_idle.png", 4)) ));
-	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/wizard_m_run.png", 4) )));
-	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::HIT, std::make_unique<Animation>(*Engine::load_animation("Animations/wizard_m_hit.png", 1) )));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/chort_idle.png", 4)) ));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/chort_run.png", 4) )));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::HIT, std::make_unique<Animation>(*Engine::load_animation("Animations/chort_hit.png", 1) )));
 	animations.at(State::DEFAULT)->scale = 3;
 	animations.at(State::RUN)->scale = 3;
 	animations.at(State::HIT)->scale = 3;
 	auto ani = std::make_unique<AnimationComponent>(animations);
-	auto coll = std::make_unique<CollisionComponent>(48, 84, EnemyBulletCollisionHandler);
+	auto coll = std::make_unique<CollisionComponent>(48, 63, EnemyBulletCollisionHandler);
 	em->add_component_to_entity(id, std::move(hea));
 	em->add_component_to_entity(id, std::move(vel));
 	em->add_component_to_entity(id, std::move(ani));
