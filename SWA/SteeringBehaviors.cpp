@@ -11,7 +11,7 @@ vector2d Wander()
 	return vector2d(0, 0);
 }
 
-vector2d Seek(const int entity, vector2d TargetPos, EntityManager<Component>* manager)
+vector2d Seek(int entity, vector2d TargetPos, EntityManager<Component>* manager)
 {
 	auto pos = manager->get_component<PositionComponent>(entity);
 	auto velocity = manager->get_component<VelocityComponent>(entity);
@@ -20,7 +20,7 @@ vector2d Seek(const int entity, vector2d TargetPos, EntityManager<Component>* ma
 	return (DesiredVelocity - vector2d(velocity->dx, velocity->dy));
 }
 
-vector2d Flee(const int entity, const int evader, EntityManager<Component>* manager)
+vector2d Flee(int entity, const int evader, EntityManager<Component>* manager)
 {
 	auto pos = manager->get_component<PositionComponent>(entity);
 	auto evaderPos = manager->get_component<PositionComponent>(evader);
@@ -30,7 +30,7 @@ vector2d Flee(const int entity, const int evader, EntityManager<Component>* mana
 	return (DesiredVelocity - vector2d(evaderVelocity->dx, evaderVelocity->dy));
 }
 
-vector2d Pursuit(const int entity, const int evader, EntityManager<Component>* manager)
+vector2d Pursuit(int entity, const int evader, EntityManager<Component>* manager)
 {
 	auto loc = manager->get_component<PositionComponent>(entity);
 	auto evaderLoc = manager->get_component<PositionComponent>(evader);
@@ -57,7 +57,7 @@ vector2d Pursuit(const int entity, const int evader, EntityManager<Component>* m
 	return Seek(entity, evaderPos + vector2d(evaderVelocity->dx, evaderVelocity->dy) * LookAheadTime, manager);
 }
 
-vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
+vector2d WallAvoidance(int entity, EntityManager<Component>* manager) {
 
 	auto pos = manager->get_component<PositionComponent>(entity);
 
@@ -109,7 +109,7 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
 	return SteeringForce;
 }
 
-std::vector<vector2d> CreateFeelers(const int entity, EntityManager<Component>* manager) {
+std::vector<vector2d> CreateFeelers(int entity, EntityManager<Component>* manager) {
 
 	std::vector<vector2d> m_Feelers;
 
