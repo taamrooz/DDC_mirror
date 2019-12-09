@@ -6,8 +6,6 @@
 #include <Audio.h>
 #include <mutex>
 
-Help::~Help() = default;
-
 Help::Help(Engine::SceneManager* manager) : BaseScene(manager) { }
 
 void Help::render()
@@ -62,6 +60,10 @@ void Help::input() {
 			Engine::play_music("mainmenu.wav");
 			break;
 		}
+		if(keycode == SDLK_c)
+		{
+			scene_manager_->set_scene("cheats");
+		}
 	}
 }
 
@@ -88,6 +90,5 @@ bool Help::init() {
 	sub_title_in_game_controls_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 40, { 255,0,0, 255 }, "In game controls"));
 	pause_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, ("Pause game:        P")));
 	quit_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, ("Quit game:         Q")));
-	std::unique_ptr<Texture> quit_ = nullptr;
 	return true;
 }
