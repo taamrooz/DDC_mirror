@@ -96,15 +96,13 @@ void MainMenu::input()
 			switch (current_action_) {
 			case 0:
 				Engine::stop_music();
-				scene_manager_->set_scene("game");
-				Engine::play_music("ingame.wav");
+				start_new_game();
 				break;
 			case 1:
 				break;
 			case 2:
 				Engine::stop_music();
-				scene_manager_->set_scene("leveleditor");
-				Engine::play_music("leveleditor.wav");
+				start_level_editor();
 				break;
 			case 3:
 				Engine::stop_music();
@@ -128,6 +126,21 @@ void MainMenu::input()
 	}
 }
 
+void MainMenu::start_new_game()
+{
+	auto core = new Core(scene_manager_);;
+	scene_manager_->add_scene(core, true, "game");
+	scene_manager_->set_scene("game");
+	Engine::play_music("ingame.wav");
+}
+
+void MainMenu::start_level_editor()
+{
+	auto leveleditor = new LevelEditor(scene_manager_);
+	scene_manager_->add_scene(leveleditor, true, "leveleditor");
+	scene_manager_->set_scene("leveleditor");
+	Engine::play_music("leveleditor.wav");
+}
 
 void MainMenu::cleanup()
 {
@@ -143,16 +156,11 @@ bool MainMenu::init()
 	if (!Engine::init_audio()) {
 		Engine::destroy_renderer();
 		return false;
-	}
-
-	auto core = new Core(scene_manager_);
-	auto level = new LevelEditor(scene_manager_);
+	}	
 	auto credits = new Credits(scene_manager_);
-	auto help = new Help(scene_manager_);
-
-	scene_manager_->add_scene(core, true, "game");
-	scene_manager_->add_scene(level, true, "leveleditor");
 	scene_manager_->add_scene(credits, true, "credits");
+	
+	auto help = new Help(scene_manager_);
 	scene_manager_->add_scene(help, true, "help");
 	
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));

@@ -8,6 +8,7 @@
 #include <ppltasks.h>
 #include <sstream>
 #include "SceneManager.h"
+#include "Audio.h"
 
 LevelEditor::LevelEditor(Engine::SceneManager* manager) : BaseScene(manager)
 {}
@@ -219,6 +220,9 @@ void LevelEditor::input()
 		if (keycode == SDLK_ESCAPE)
 		{
 			scene_manager_->set_scene("mainmenu");
+			Engine::play_music("mainmenu.wav");
+			cleanup();
+			scene_manager_->delete_scene("leveleditor");
 		}
 
 		switch (state)

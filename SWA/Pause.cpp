@@ -34,6 +34,7 @@ void Pause::input() {
 		{
 			Engine::resume_music();
 			scene_manager_->set_scene("game");
+			Engine::play_music("mainmenu.wav");
 			break;
 		}
 		else if(keycode == SDLK_RETURN)
