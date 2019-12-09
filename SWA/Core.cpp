@@ -32,8 +32,8 @@ bool Core::init()
 	systems_.push_back(std::make_unique<CollisionSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<AudioSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<ShootSystem>(manager_.get()));
-	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<CheatSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
 	LevelSingleton::get_instance()->load_all_dungeons();
 	std::cout << "Starting room: " << (int)LevelSingleton::get_instance()->get_starting_room() << std::endl;

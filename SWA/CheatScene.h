@@ -10,6 +10,7 @@ private:
 	std::unique_ptr<Texture> title_ = nullptr;
 	std::unique_ptr<Texture> sub_title_ = nullptr;
 	std::unique_ptr<Animation> background_ = nullptr;
+	std::unique_ptr<Texture> speedhack_ = nullptr;
 	std::unique_ptr<Texture> regain_health_ = nullptr;
 	std::unique_ptr<Texture> teleport_ = nullptr;
 	std::unique_ptr<Texture> next_room_ = nullptr;

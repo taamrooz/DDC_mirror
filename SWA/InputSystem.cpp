@@ -2,6 +2,7 @@
 #include "UserInput.h"
 #include "KeyBindingSingleton.h"
 #include "Audio.h"
+#include <thread>
 
 InputSystem::InputSystem(Engine::EntityManager<Component>* manager, Core &core) : BaseSystem(manager) {
 	core_ = &core;
@@ -27,6 +28,10 @@ void InputSystem::update(double dt)
 	{
 		if (keycode == SDLK_q)
 		{
+			Engine::stop_music();
+			Engine::play_music("low.wav");
+			std::this_thread::sleep_for(std::chrono::milliseconds(112));
+
 			Engine::stop_music();
 			core_->scene_manager_->set_scene("mainmenu");
 			Engine::play_music("mainmenu.wav");
