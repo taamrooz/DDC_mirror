@@ -16,12 +16,17 @@
 #include <Renderer.h>
 #include <Audio.h>
 
-void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
+
+void DamageHandler(HealthComponent* health, DamagingComponent* dmg, EnemyComponent* enemy) {
 	int currentTick = Engine::get_ticks();
 	if (health->invulnerable_until < currentTick) {
 		std::cout << "HIT" << std::endl;
 		health->current_health -= dmg->damage_amount;
 		health->invulnerable_until = health->time_invulnerable + currentTick;
+
+		if (health->current_health < 3 && enemy != nullptr) {
+			enemy->state = Fleeing;
+		}
 	}
 }
 
@@ -53,7 +58,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 			const auto boss_health = manager->get_component<HealthComponent>(boss_entity);
 			const auto boss_room = manager->get_component<RoomComponent>(boss_entity);
 
-			if (boss_room->room_name.compare(RoomSingleton::get_instance()->get_current_room_name()) == 0) {
+			if (boss_room->room_name == RoomSingleton::get_instance()->get_current_room_name()) {
 				// current room is where levelBoss is living
 				if (boss_health->current_health <= 0) {
 					if (!LevelSingleton::get_instance()->reload_level) {
@@ -88,7 +93,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 		const auto health = manager->get_component<HealthComponent>(entity1);
 		if (health != nullptr)
 		{
-			DamageHandler(health, dmg);
+			DamageHandler(health, dmg, nullptr);
 			if (health->current_health <= 0) {
 				core->toggle_game_lost();
 			}
@@ -119,16 +124,18 @@ void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMana
 	}
 }
 
-void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
-{
+void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
+	
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
-	if (dmg != nullptr) {
+	auto enemy = manager->get_component<EnemyComponent>(entity2);
+	if (dmg != nullptr && enemy == nullptr) {
 		auto ani = manager->get_component<AnimationComponent>(entity1);
 		ani->currentState = State::HIT;
 		ani->lock_until = Engine::get_ticks() + 250;
 
 		auto health = manager->get_component<HealthComponent>(entity1);
-		DamageHandler(health, dmg);
+		auto enemy = manager->get_component<EnemyComponent>(entity1);
+		DamageHandler(health, dmg, enemy);
 
 		if (health->current_health <= 0) {
 			auto level_boss_component = manager->get_component<LevelBossComponent>(entity1);
@@ -144,6 +151,10 @@ void EnemyBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::Ent
 				manager->remove_entity(entity1);
 			}
 		}
+	}
+	auto coll = manager->get_component<CollisionComponent>(entity2);
+	if (coll != nullptr && coll->solid) {
+		UpdateVelocity(entity1, entity2, manager, core);
 	}
 }
 
@@ -191,21 +202,25 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 		}
 		else {
 			if (first_node_velocity_component->dx > 0) {
-				xDiff = (first_node_position_component->x + first_node_collision_component->width - second_node_position_component->x) + 1;
+				xDiff = (first_node_position_component->x + first_node_collision_component->width - second_node_position_component->x);
 				xd = xDiff / first_node_velocity_component->dx;
+				xDiff++;
 			}
 			if (first_node_velocity_component->dx < 0) {
 				//diff between xpos and collision xpos;
-				xDiff = (first_node_position_component->x - (second_node_position_component->x + second_node_collision_component->width)) - 1;
+				xDiff = (first_node_position_component->x - (second_node_position_component->x + second_node_collision_component->width));
 				xd = xDiff / first_node_velocity_component->dx;
+				xDiff--;
 			}
 			if (first_node_velocity_component->dy > 0) {
-				yDiff = (first_node_position_component->y + first_node_collision_component->height - second_node_position_component->y) + 1;
+				yDiff = (first_node_position_component->y + first_node_collision_component->height - second_node_position_component->y);
 				yd = yDiff / first_node_velocity_component->dy;
+				yDiff++;
 			}
 			if (first_node_velocity_component->dy < 0) {
-				yDiff = (first_node_position_component->y - (second_node_position_component->y + second_node_collision_component->height)) - 1;
+				yDiff = (first_node_position_component->y - (second_node_position_component->y + second_node_collision_component->height));
 				yd = yDiff / first_node_velocity_component->dy;
+				yDiff--;
 			}
 			if (xd < yd) {
 				first_node_position_component->x -= xDiff;
