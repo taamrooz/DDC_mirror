@@ -11,7 +11,8 @@ LoadGame::~LoadGame() = default;
 LoadGame::LoadGame(Engine::SceneManager* manager) : BaseScene(manager) { }
 
 void LoadGame::cleanup() {
-
+	file_names_.clear();
+	file_name_textures_.clear();
 }
 
 void LoadGame::input()
@@ -24,7 +25,7 @@ void LoadGame::input()
 
 	if (!std::get<k_stop>(inputs)) {
 		Engine::StopTextInput();
-		//is_running_ = false;
+		is_running_ = false;
 		return;
 	}
 
@@ -62,12 +63,16 @@ void LoadGame::get_files(const char* path, const std::string extension)
 
 void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 {
+	constexpr static int k_stop = 2;
+	auto inputs = Engine::GetInputs();
+
 	if (keycode == SDLK_BACKSPACE && text_.length() > 0)
 		text_.pop_back();
 	if (keycode == SDLK_RETURN)
 		if (open_game_file(text_))
 		{
 			Engine::StopTextInput();
+			cleanup();
 
 			// TO-DO: switch scenemaneger to game scene with currently loaded game! (Other Userstory)
 			Engine::stop_music();
@@ -91,8 +96,6 @@ bool LoadGame::open_game_file(std::string& path) {
 
 void LoadGame::render() {
 	const auto timer = Engine::pre_update();
-
-	get_files("./assets/Levels", "json");
 	if (text_.length() > 0)
 	{
 		text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
@@ -112,12 +115,11 @@ void LoadGame::render() {
 	if (text_.length() > 0)
 		Engine::render_texture(text_texture_.get(), 450, 800, nullptr);
 
-
 	Engine::render(timer);
 	input();
 }
 
 bool LoadGame::init() {
-
+	get_files("./assets/Levels", "json");
 	return true;
 }

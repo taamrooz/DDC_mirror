@@ -99,6 +99,7 @@ void MainMenu::input()
 			case 1:
 				Engine::stop_music();
 				scene_manager_->set_scene("load_game");
+				scene_manager_->init();
 				Engine::play_music("ingame.wav");
 				break;
 			case 2:
