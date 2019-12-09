@@ -59,7 +59,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 			const auto boss_health = manager->get_component<HealthComponent>(boss_entity);
 			const auto boss_room = manager->get_component<RoomComponent>(boss_entity);
 
-			if (boss_room->room_name.compare(RoomSingleton::get_instance()->get_current_room_name()) == 0) {
+			if (boss_room->room_name == RoomSingleton::get_instance()->get_current_room_name()) {
 				// current room is where levelBoss is living
 				if (boss_health->current_health <= 0) {
 					if (!LevelSingleton::get_instance()->reload_level) {

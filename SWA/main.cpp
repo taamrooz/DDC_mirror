@@ -8,6 +8,7 @@
 #include "Help.h"
 #include "Pause.h"
 #include "LevelEditor.h"
+#include "CheatScene.h"
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
@@ -25,6 +26,7 @@ void init_scenes()
 	auto pause = new Pause(sm.get());
 	auto endgamewin = new EndGameWin(sm.get());
 	auto endgamelose = new EndGameLose(sm.get());
+	auto cheats = new CheatScene(sm.get());
 	auto load_game = new LoadGame(sm.get());
 	sm->add_scene(mm, true, "mainmenu");
 	sm->add_scene(core, true, "game");
@@ -34,6 +36,7 @@ void init_scenes()
 	sm->add_scene(pause, true, "pause");
 	sm->add_scene(endgamewin, true, "win");
 	sm->add_scene(endgamelose, true, "lose");
+	sm->add_scene(cheats, true, "cheats");
 	sm->add_scene(load_game, true, "load_game");
 	sm->set_scene("mainmenu");
 	sm->render();
