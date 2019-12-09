@@ -169,6 +169,7 @@
     <ClCompile Include="KeyBindingSingleton.cpp" />
     <ClCompile Include="LevelEditor.cpp" />
     <ClCompile Include="LevelSingleton.cpp" />
+    <ClCompile Include="LoadGame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Pause.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="LevelBossComponent.h" />
     <ClInclude Include="LevelSingleton.h" />
     <ClInclude Include="LevelEditor.h" />
+    <ClInclude Include="LoadGame.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="RoomComponent.h" />
     <ClInclude Include="Pause.h" />

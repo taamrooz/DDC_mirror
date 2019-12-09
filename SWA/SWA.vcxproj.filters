@@ -132,6 +132,9 @@
     <ClCompile Include="EndGameLose.cpp">
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
+    <ClCompile Include="LoadGame.cpp">
+      <Filter>Source Files\Menus</Filter>
+      </ClCompile>
     <ClCompile Include="SteeringBehaviors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -261,6 +264,9 @@
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
     <ClInclude Include="EndGameLose.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadGame.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
     <ClInclude Include="EnemyComponent.h">
