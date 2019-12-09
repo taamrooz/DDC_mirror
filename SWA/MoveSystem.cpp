@@ -3,12 +3,13 @@
 #include "VelocityComponent.h"
 #include "CharacterComponent.h"
 #include "EnemyComponent.h"
-#include <vector2d.h>
 #include "SteeringBehaviors.h"
 #include <QuadTree.h>
 #include "TileComponent.h"
 #include "CollisionComponent.h"
 #include <Renderer.h>
+#include <iostream>
+#include <algorithm>
 
 
 MoveSystem::MoveSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {}
@@ -54,14 +55,20 @@ void MoveSystem::update(double dt)
 	int i = 0;
 	int j = 0;
 	auto vel = manager_->get_component<VelocityComponent>(enemyEnt);
-	vel->steer_force = Pursuit(enemyEnt, player.front(), manager_);
+	
 	double dist = 1000000000.0;
 	vector2d shortest = vector2d();
 	PositionComponent tilePos;
+	vector2d start = vector2d();
+	vector2d end = vector2d();
 	vector2d enemyVec = normalize(vel->steer_force);
+	vector2d target = vector2d();
+	vector2d diff = vector2d();
+	vector2d intersection = vector2d();
 	for (auto const& node_tuple : collisions) {
 		Engine::Node* first_node = std::get<0>(node_tuple);
 		Engine::Node* second_node = std::get<1>(node_tuple);
+
 		auto collisionComponent = manager_->get_component<CollisionComponent>(second_node->id);
 		if (collisionComponent != nullptr) {
 			auto enemyComponent = manager_->get_component<EnemyComponent>(first_node->id);
@@ -74,98 +81,155 @@ void MoveSystem::update(double dt)
 				auto enemyColl = manager_->get_component<CollisionComponent>(first_node->id);
 				auto playerPos = manager_->get_component<PositionComponent>(player.front());
 
-				vector2d vec1 = normalize(vector2d(wallPos->x + tileComponent->width - enemyPos->x, (wallPos->y - enemyPos->y)));
-				vector2d vec2 = normalize(vector2d(wallPos->x - enemyPos->x, (wallPos->y + tileComponent->height) - enemyPos->y));
-				vector2d vec3 = normalize(vector2d(wallPos->x - enemyPos->x, wallPos->y - enemyPos->y));
-				vector2d vec4 = normalize(vector2d(wallPos->x + tileComponent->width - enemyPos->x, wallPos->y + tileComponent->height - enemyPos->y));
-				Engine::render_line(wallPos->x + tileComponent->width, wallPos->y, wallPos->x, wallPos->y + tileComponent->height);
-				Engine::render_line(wallPos->x, wallPos->y, wallPos->x + tileComponent->width, wallPos->y + tileComponent->height);
-				Engine::set_render_draw_color(255, 255, 255, 255);
+				vector2d vec1 = vector2d(wallPos->x, wallPos->y);
+				vector2d vec2 = vector2d(wallPos->x + collisionComponent->width, wallPos->y);
+				vector2d vec3 = vector2d(wallPos->x + collisionComponent->width, wallPos->y + collisionComponent->height);
+				vector2d vec4 = vector2d(wallPos->x, wallPos->y + collisionComponent->height);
+				vector2d enemyVec0 = vector2d(enemyPos->x + (enemyColl->width / 2), enemyPos->y + (enemyColl->height / 2));
+				vector2d enemyVec1 = enemyVec0 + (normalize(vel->steer_force) * 150);
+
 				Engine::set_render_draw_color(0, 255, 0, 255);
+				//Engine::render_line(enemyVec0.x(), enemyVec0.y(), enemyVec1.x(), enemyVec1.y());
 
-				if ((enemyVec.x() <= vec1.x() && enemyVec.x() >= vec2.x() && enemyVec.y() >= vec1.y() && enemyVec.y() <= vec2.y()) ||
-					(enemyVec.x() >= vec1.x() && enemyVec.x() <= vec2.x() && enemyVec.y() <= vec1.y() && enemyVec.y() >= vec2.y()) ||
-					(enemyVec.x() >= vec3.x() && enemyVec.x() <= vec4.x() && enemyVec.y() >= vec3.y() && enemyVec.y() <= vec4.y()) ||
-					(enemyVec.x() <= vec3.x() && enemyVec.x() >= vec4.x() && enemyVec.y() <= vec3.y() && enemyVec.y() >= vec4.y())) {
-					vector2d wallVector = vector2d(((enemyPos->x + enemyColl->width) - wallPos->x), 1);
-					if (length(vector2d(wallPos->x - enemyPos->x, wallPos->y - enemyPos->y)) < dist) {
-						dist = length(vector2d(wallPos->x - enemyPos->x, wallPos->y - enemyPos->y));
+				vector2d currentIntersect = vector2d();
+				if (intersects(enemyVec0, enemyVec1, vec1, vec2, currentIntersect)) {
+					//Engine::render_line(wallPos->x, wallPos->y, wallPos->x + 64, wallPos->y);
+					//intersects(enemyVec0, enemyVec1, vec1, vec2, currentIntersect);
+					vector2d oneY = vel->steer_force / vel->steer_force.y();
+					int yDiff = wallPos->y - enemyVec0.y();
+					vector2d collVector = oneY * yDiff;
+					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d rest = fullForce - collVector;
+					if (length(collVector) < dist) {
+						dist = length(collVector);
+						intersection = currentIntersect;
+						start = vec1;
+						end = vec2;
+						if (vel->steer_force.x() > 0) {
+							//left
+							vector2d down = normalize(vector2d(0, -1)) * length(rest);
+							diff = down;
+							vector2d collLoc = enemyVec0 + collVector;
+							//Engine::render_line(collLoc.x(), collLoc.y(), collLoc.x() + down.x(), collLoc.y() + down.y());
+							target = normalize(vel->steer_force + (down)) * length(vel->steer_force);
+						}
+						else {
+							vector2d down = normalize(vector2d(0, -1)) * length(rest);
+							diff = down;
+							vector2d collLoc = enemyVec0 + collVector;
+							//Engine::render_line(collLoc.x(), collLoc.y(), collLoc.x() + down.x(), collLoc.y() + down.y());
+							target = normalize(vel->steer_force + (down)) * length(vel->steer_force);
+						}
+					}
+				}
+				if (intersects(enemyVec0, enemyVec1, vec2, vec3, currentIntersect) && enemyVec0.x() != vec2.x()) {
+					//Engine::render_line(wallPos->x + 64, wallPos->y, wallPos->x + 64, wallPos->y + tileComponent->height);
+					vector2d oneX = vel->steer_force / vel->steer_force.x();
+					int xDiff = wallPos->x + collisionComponent->width - enemyVec0.x();
+					vector2d collVector = oneX * xDiff;
+					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d rest = fullForce - collVector;
+					if (length(collVector) < dist && (enemyVec0 + collVector).y() != vec2.y()) {
+						dist = length(collVector);
+						intersection = currentIntersect;
+						start = vec2;
+						end = vec3;
+						if (vel->steer_force.y() > 0) {
+							//left
+							vector2d down = normalize(vector2d(1, 0)) * length(rest);
+							diff = down;
+							vector2d collLoc = enemyVec0 + collVector;
+							//Engine::render_line(collLoc.x(), collLoc.y(), collLoc.x() + down.x(), collLoc.y() + down.y());
+							target = normalize(vel->steer_force + (down)) * length(vel->steer_force);
+						}
+						else {
+							vector2d down = normalize(vector2d(1, 0)) * length(rest);
+							diff = down;
+							vector2d collLoc = enemyVec0 + collVector;
+							//Engine::render_line(collLoc.x(), collLoc.y(), collLoc.x() + down.x(), collLoc.y() + down.y());
+							target = normalize(vel->steer_force + (down)) * length(vel->steer_force);
+						}
+					}
+				}
+				if (intersects(enemyVec0, enemyVec1, vec4, vec3, currentIntersect)) {
+					//Engine::render_line(wallPos->x, wallPos->y + 64, wallPos->x + 64, wallPos->y + tileComponent->height);
 
-						tilePos = *wallPos;
-						shortest = vector2d(wallPos->x + tileComponent->width - enemyPos->x, wallPos->y + tileComponent->height - enemyPos->y);
+					vector2d oneY = vel->steer_force / vel->steer_force.y();
+					int yDiff = wallPos->y + collisionComponent->height - enemyVec0.y();
+					vector2d collVector = oneY * yDiff;
+					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d rest = fullForce - collVector;
+
+					if (length(collVector) < dist) {
+
+						dist = length(collVector);
+						intersection = currentIntersect;
+						start = vec4;
+						end = vec3;
+						if (vel->steer_force.x() > 0) {
+							//left
+							vector2d down = normalize(vector2d(0, 1)) * length(rest);
+							diff = down;
+							vector2d collLoc = enemyVec0 + collVector;
+							//Engine::render_line(collLoc.x(), collLoc.y(), collLoc.x() + down.x(), collLoc.y() + down.y());
+							target = normalize(vel->steer_force + (down)) * length(vel->steer_force);
+						}
+						else {
+							vector2d down = normalize(vector2d(0, 1)) * length(rest);
+							diff = down;
+							vector2d collLoc = enemyVec0 + collVector;
+							//Engine::render_line(collLoc.x(), collLoc.y(), collLoc.x() + down.x(), collLoc.y() + down.y());
+							target = normalize(vel->steer_force + (down)) * length(vel->steer_force);
+							
+						}
+					}
+				}
+				if (intersects(enemyVec0, enemyVec1, vec4, vec1, currentIntersect)) {
+					//Engine::render_line(wallPos->x, wallPos->y, wallPos->x, wallPos->y + tileComponent->height);
+					vector2d oneX = vel->steer_force / vel->steer_force.x();
+					int xDiff = wallPos->x - enemyVec0.x();
+					vector2d collVector = oneX * xDiff;
+					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d rest = fullForce - collVector;
+					if (length(collVector) < dist) {
+						dist = length(collVector);
+						intersection = currentIntersect;
+						start = vec1;
+						end = vec4;
+						if (vel->steer_force.y() > 0) {
+							//left
+							vector2d down = normalize(vector2d(-1, 0)) * length(rest);
+							diff = down;
+							vector2d collLoc = enemyVec0 + collVector;
+							//Engine::render_line(collLoc.x(), collLoc.y(), collLoc.x() + down.x(), collLoc.y() + down.y());
+							target = normalize(vel->steer_force + (down)) * length(vel->steer_force);
+						}
+						else {
+							vector2d down = normalize(vector2d(-1, 0)) * length(rest);
+							diff = down;
+							vector2d collLoc = enemyVec0 + collVector;
+							//Engine::render_line(collLoc.x(), collLoc.y(), collLoc.x() + down.x(), collLoc.y() + down.y());
+							target = normalize(vel->steer_force + (down)) * length(vel->steer_force);
+						}
 					}
 				}
 			}
 		}
 	}
-
-	//Todo: calculate steer force
-	Engine::draw_rectangle(rect2d(tilePos.x, tilePos.y, 64, 64));
-	//vector2d desiredVel = perp(vel->steer_force);
-	auto pos = manager_->get_component<PositionComponent>(enemyEnt);
-	//if (pos->x > tilePos.x) {
-	//	desiredVel = vector2d(desiredVel.x() * -1, desiredVel.y());
-	//}
-	//if (pos->y > tilePos.y) {
-	//	desiredVel = vector2d(desiredVel.x(), desiredVel.y() * -1);
-	//}
-
-	//vel->steer_force += desiredVel;
-	vector2d overshoot = (normalize(vel->steer_force) * 150) - shortest;
-	//vector2d desiredForce = vector2d(tilePos.x, tilePos.y + 64 + (diff * -1));
-	//vector2d desiredVel = normalize(desiredForce - vector2d(pos->x, pos->y)) * 20;
-	vector2d target = vector2d();
-	double distance = 100000.0;
-	if (tilePos.x != 0) {
-		if (length(vector2d(tilePos.x + 32 - pos->x, tilePos.y - pos->y)) < distance) {
-			//top
-			distance = length(vector2d(tilePos.x + 32 - pos->x, tilePos.y - pos->y));
-			if (vel->steer_force.x() < 0) {
-				target = vector2d(length(vel->steer_force) * -1, 0);
-			}
-			else {
-				target = vector2d(length(vel->steer_force), 0);
-			}
-		}
-		if (length(vector2d(tilePos.x - pos->x, tilePos.y + 32 - pos->y)) < distance) {
-			//left
-			distance = length(vector2d(tilePos.x - pos->x, tilePos.y + 32 - pos->y));
-			if (vel->steer_force.y() < 0) {
-				target = vector2d(0, length(vel->steer_force) * -1);
-			}
-			else {
-				target = vector2d(0, length(vel->steer_force));
-			}
-		}
-		if (length(vector2d(tilePos.x + 64 - pos->x, tilePos.y + 32 - pos->y)) < distance) {
-			//right
-			distance = length(vector2d(tilePos.x + 64 - pos->x, tilePos.y + 32 - pos->y));
-
-			if (vel->steer_force.y() < 0) {
-				target = vector2d(0, length(vel->steer_force) * -1);
-			}
-			else {
-				target = vector2d(0, length(vel->steer_force));
-			}
-
-		}
-		if (length(vector2d(tilePos.x + 32 - pos->x, tilePos.y + 64 - pos->y)) < distance) {
-			//bot
-			distance = length(vector2d(tilePos.x + 32 - pos->x, tilePos.y + 64 - pos->y));
-
-			if (vel->steer_force.x() < 0) {
-				target = vector2d(length(vel->steer_force) * -1, 0);
-			}
-			else {
-				target = vector2d(length(vel->steer_force), 0);
-			}
-
-		}
-		vel->steer_force = target;
+	if (target.x() != 0 || target.y() != 0) {
+		vel->steer_force = diff * 0.20;
 	}
+	else {
+		vel->steer_force = Pursuit(enemyEnt, player.front(), manager_) * 0.20;
+	}
+	vel->steer_force += Pursuit(enemyEnt, player.front(), manager_) * 0.80;
 
-	Engine::render_line(pos->x, pos->y, pos->x + vel->steer_force.x() * 100, pos->y + vel->steer_force.y() * 100);
-
+	auto pos = manager_->get_component<PositionComponent>(enemyEnt);
+	//Engine::render_line(pos->x, pos->y, intersection.x(), intersection.y());
+	Engine::set_render_draw_color(0, 255, 0, 255);
+	//Engine::render_line(pos->x, pos->y, pos->x + vel->steer_force.x() * 100, pos->y + vel->steer_force.y() * 100);
+	Engine::render_line(start.x(), start.y(), end.x(), end.y());
+	Engine::render_line(start.x(), start.y(), start.x() + diff.x(), start.y() + diff.y());
 
 	if (!enemies.empty() && !player.empty()) {
 		for (auto enemyEntity : enemies)
@@ -272,4 +336,48 @@ void MoveSystem::update(double dt)
 			}
 		}
 	}
+}
+
+bool onLine(vector2d p1, vector2d p2, vector2d p) {   //check whether p is on the line or not
+	if (p.x() <= std::max(p1.x(), p2.x()) && p.x() <= std::min(p1.x(), p2.x()) &&
+		(p.y() <= std::max(p1.y(), p2.y()) && p.y() <= std::min(p1.y(), p2.y())))
+		return true;
+
+	return false;
+}
+
+int MoveSystem::direction(vector2d a, vector2d b, vector2d c)
+{
+	int val = (b.y() - a.y()) * (c.x() - b.x()) - (b.x() - a.x()) * (c.y() - b.y());
+	if (val == 0)
+		return 0;     //colinear
+	else if (val < 0)
+		return 2;    //anti-clockwise direction
+	return 1;    //clockwise direction
+}
+
+bool MoveSystem::intersects(vector2d a1, vector2d a2, vector2d b1, vector2d b2, vector2d& intersection)
+{
+	Engine::render_line(a1.x(), a1.y(), a2.x(), a2.y());
+	int dir1 = direction(a1, a2, b1);
+	int dir2 = direction(a1, a2, b2);
+	int dir3 = direction(b1, b2, a1);
+	int dir4 = direction(b1, b2, a2);
+
+	if (dir1 != dir2 && dir3 != dir4)
+		return true; //they are intersecting
+
+	if (dir1 == 0 && onLine(a1, a2, b1)) //when p2 of line2 are on the line1
+		return true;
+
+	if (dir2 == 0 && onLine(a1, a2, b2)) //when p1 of line2 are on the line1
+		return true;
+
+	if (dir3 == 0 && onLine(b1, b2, a1)) //when p2 of line1 are on the line2
+		return true;
+
+	if (dir4 == 0 && onLine(b1, b2, a2)) //when p1 of line1 are on the line2
+		return true;
+
+	return false;
 }
