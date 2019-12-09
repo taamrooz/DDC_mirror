@@ -8,5 +8,3 @@ vector2d Wander();
 vector2d Seek(const int entity, vector2d TargetPos, EntityManager<Component>* manager);
 vector2d Flee(const int entity, const int evader, EntityManager<Component>* manager);
 vector2d Pursuit(const int entity, const int evader, EntityManager<Component>* manager);
-vector2d WallAvoidance(const int entity, EntityManager<Component>* manager);
-std::vector<vector2d> CreateFeelers(const int entity, EntityManager<Component>* manager);
