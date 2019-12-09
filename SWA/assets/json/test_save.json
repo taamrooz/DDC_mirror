@@ -4284,8 +4284,8 @@
             "selected": 1
         },
         "PositionComponent": {
-            "x": 415,
-            "y": 491
+            "x": 400,
+            "y": 460
         },
         "RoomComponent": {
             "room_name": "lazy"
@@ -4294,7 +4294,7 @@
             "bullet_shape": 0,
             "bullet_size": 7,
             "fire_rate": 200,
-            "last_shot": 184892
+            "last_shot": 0
         },
         "VelocityComponent": {
             "dropOff": 0.0,

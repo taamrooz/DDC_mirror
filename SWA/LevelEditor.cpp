@@ -27,6 +27,7 @@ void LevelEditor::render()
 	case dungeon_filepicker: RenderDungeonFilepicker(); break;
 	case dungeon_editor: RenderDungeonEditor(); break;
 	case save_dungeon: RenderDungeonSave(); break;
+	case exit_editor: scene_manager_->set_scene("mainmenu"); scene_manager_->delete_scene("level_editor"); Engine::play_music("mainmenu.wav"); break;
 	}
 
 	Engine::render(timer);
@@ -298,7 +299,7 @@ void LevelEditor::InputDungeonSave(SDL_Keycode keycode, std::string& text)
 	if (keycode == SDLK_RETURN)
 		if (SaveDungeonFile())
 		{
-			state = mode_selection;
+			state = exit_editor;
 			Engine::StartTextInput();
 		}
 	save_file_name_.append(text);
@@ -312,7 +313,7 @@ void LevelEditor::InputRoomSave(SDL_Keycode keycode, std::string& text)
 		if (SaveRoomFile())
 		{
 			rename("./assets/Levels/temp_screenshot.png", ("./assets/Levels/" + save_file_name_ + ".png").c_str());
-			state = room_filepicker;
+			state = exit_editor;
 			Engine::StartTextInput();
 		}
 	save_file_name_.append(text);

@@ -16,7 +16,8 @@ enum state
 	tile_editor,
 	object_editor,
 	save_room,
-	save_dungeon
+	save_dungeon,
+	exit_editor
 };
 class LevelEditor :
 	public virtual Engine::BaseScene
