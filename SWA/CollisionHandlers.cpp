@@ -250,7 +250,7 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 			xv = -5;
 		}
 		else if (pPos->x + pColl->width <= cPos->x) {
-			xv = 5;
+			xv = -5;
 		}
 		else if (pPos->y > cPos->y) {
 			yv = -5;

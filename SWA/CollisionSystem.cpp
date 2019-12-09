@@ -16,7 +16,6 @@ CollisionSystem::CollisionSystem(Engine::EntityManager<Component>* manager, Core
 
 void CollisionSystem::update(double dt)
 {
-
 	//Starting points of the quadtree
 	Engine::Point leftTop{ 0, 0 };
 	Engine::Point botRight{ 1280, 960 }; // TODO: make this not hardcoded
@@ -71,15 +70,16 @@ void CollisionSystem::update(double dt)
 			y = positionComponent->y + velocityComponent->dy;
 		}
 
+		std::shared_ptr<Engine::Node> node{ new Engine::Node{Engine::Point{ x, y }, entity, collisionComponent->width, collisionComponent->height} };
 
-		quadTree.insert(new Engine::Node{ Engine::Point{ x, y }, entity, collisionComponent->width, collisionComponent->height });
+		quadTree.insert(node);
 	}
 
-	std::vector<std::tuple<Engine::Node*, Engine::Node*>> collisions = quadTree.get_collisions();
+	std::vector<std::tuple<std::shared_ptr<Engine::Node>, std::shared_ptr<Engine::Node>>> collisions = quadTree.get_collisions();
 
 	for (auto const& node_tuple : collisions) {
-		Engine::Node* first_node = std::get<0>(node_tuple);
-		Engine::Node* second_node = std::get<1>(node_tuple);
+		std::shared_ptr<Engine::Node> first_node = std::get<0>(node_tuple);
+		std::shared_ptr<Engine::Node> second_node = std::get<1>(node_tuple);
 
 		//handle collision
 		//gebruikt nu entity 0 omdat er nog test data in staat
