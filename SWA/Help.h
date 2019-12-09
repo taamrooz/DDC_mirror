@@ -28,7 +28,6 @@ private:
 	std::unique_ptr<Texture> quit_ = nullptr;
 	std::unique_ptr<Texture> helper = nullptr;
 public:
-	~Help();
 	Help(Engine::SceneManager* manager);
 	void render() override;
 	void cleanup() override;

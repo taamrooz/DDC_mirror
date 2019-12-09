@@ -15,7 +15,7 @@ private:
 	std::unique_ptr<Texture> title_ = nullptr;
 	std::unique_ptr<Animation> background_ = nullptr;
 	std::unique_ptr<Texture> start_ = nullptr;
-	std::unique_ptr<Texture> settings_ = nullptr;
+	std::unique_ptr<Texture> load_game_ = nullptr;
 	std::unique_ptr<Texture> credits_ = nullptr;
 	std::unique_ptr<Texture> help_ = nullptr;
 	std::unique_ptr<Texture> level_editor_ = nullptr;

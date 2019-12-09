@@ -21,7 +21,7 @@ void MainMenu::render()
 	Engine::update_animation(background_.get(), 0, 0);
 	Engine::render_texture(title_.get(), 250, 200, nullptr);
 	Engine::render_texture(start_.get(), 550, 320, nullptr);
-	Engine::render_texture(settings_.get(), 550, 400, nullptr);
+	Engine::render_texture(load_game_.get(), 550, 400, nullptr);
 	Engine::render_texture(level_editor_.get(), 550, 480, nullptr);
 	Engine::render_texture(credits_.get(), 550, 560, nullptr);
 	Engine::render_texture(help_.get(), 550, 640, nullptr);
@@ -99,6 +99,10 @@ void MainMenu::input()
 				start_new_game();
 				break;
 			case 1:
+				Engine::stop_music();
+				scene_manager_->set_scene("load_game");
+				scene_manager_->init();
+				Engine::play_music("ingame.wav");
 				break;
 			case 2:
 				Engine::stop_music();
@@ -167,7 +171,7 @@ bool MainMenu::init()
 	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
 	background_->scale = 1280.0 / 960.0;
 	start_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game"));
-	settings_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings"));
+	load_game_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Load game"));
 	credits_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits"));
 	help_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Help"));
 	level_editor_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Level Editor"));
