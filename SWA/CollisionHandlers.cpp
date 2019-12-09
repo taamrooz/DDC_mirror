@@ -17,7 +17,6 @@
 #include <Audio.h>
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
-
 	int currentTick = Engine::get_ticks();
 	if (health->invulnerable_until < currentTick) {
 		std::cout << "HIT" << std::endl;
@@ -26,8 +25,7 @@ void DamageHandler(HealthComponent* health, DamagingComponent* dmg) {
 	}
 }
 
-void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
-{
+void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	if (player == nullptr) {
 		manager->remove_entity(entity1);
