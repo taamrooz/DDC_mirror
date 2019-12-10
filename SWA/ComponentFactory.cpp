@@ -115,7 +115,7 @@ void ComponentFactory::AddPlayerComponents(int id, Engine::EntityManager<Compone
 	animations.at(State::HIT)->scale = 3;
 	auto ani = std::make_unique<AnimationComponent>(animations);
 	auto cha = std::make_unique<CharacterComponent>();
-	auto coll = std::make_unique<CollisionComponent>(48, 63, PlayerCollisionHandler);
+	auto coll = std::make_unique<CollisionComponent>(48, 62, PlayerCollisionHandler);
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
 	auto inv = std::make_unique<InventoryComponent>();
 	em->add_component_to_entity(id, std::move(hea));
