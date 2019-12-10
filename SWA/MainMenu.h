@@ -18,6 +18,7 @@ private:
 	std::unique_ptr<Texture> quit_ = nullptr;
 	std::unique_ptr<Texture> selector_ = nullptr;
 	std::unique_ptr<Texture> helper = nullptr;
+	std::unique_ptr<Texture> highscore_ = nullptr;
 	uint8_t current_action_ = 0;
 public:
 	~MainMenu();

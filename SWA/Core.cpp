@@ -16,6 +16,7 @@
 #include "KeyBindingSingleton.h"
 #include "MoveEnemySystem.h"
 #include "CheatSystem.h"
+#include <chrono>
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -36,6 +37,8 @@ bool Core::init()
 	systems_.push_back(std::make_unique<CheatSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
+
+	timer_start_ = std::clock();
 
 	return true;
 }
@@ -58,6 +61,9 @@ void Core::update()
 				Engine::stop_music();
 				is_winner_ = false;
 				scene_manager_->set_scene("win");
+				auto timer_end = std::chrono::high_resolution_clock::now();
+				timer_end_ = std::clock();
+				double elapsed_secs = double(timer_start_ - timer_end_) / CLOCKS_PER_SEC;
 			}
 
 			if (is_loser_) {
