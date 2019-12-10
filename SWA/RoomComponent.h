@@ -6,11 +6,12 @@
 struct RoomComponent : Component
 {
 public:
-	RoomComponent(std::string _room_name) : room_name{std::move(_room_name)} {}
+	RoomComponent(std::string _room_name, uint8_t _room_index) : room_name{ std::move(_room_name) }, room_index{ _room_index } {}
 	std::string room_name;
-	RoomComponent* top;
-	RoomComponent* right;
-	RoomComponent* down;
-	RoomComponent* left;
+	uint8_t room_index;
+	RoomComponent* top{nullptr};
+	RoomComponent* right{ nullptr };
+	RoomComponent* down{ nullptr };
+	RoomComponent* left{ nullptr };
 };
 
