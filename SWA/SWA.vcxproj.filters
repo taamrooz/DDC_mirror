@@ -132,6 +132,9 @@
     <ClCompile Include="EndGameLose.cpp">
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
+    <ClCompile Include="CollectableHandlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="CheatSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -277,6 +280,12 @@
     </ClInclude>
     <ClInclude Include="EndGameLose.h">
       <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectableComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectableHandlers.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CheatSystem.h">
       <Filter>Header Files\Systems</Filter>
