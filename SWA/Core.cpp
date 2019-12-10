@@ -16,7 +16,6 @@
 #include "KeyBindingSingleton.h"
 #include "MoveEnemySystem.h"
 #include "CheatSystem.h"
-#include <chrono>
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -37,8 +36,8 @@ bool Core::init()
 	systems_.push_back(std::make_unique<CheatSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
-
-	timer_start_ = std::clock();
+	elapsed_secs_ = 0;
+	timer_.Start();
 
 	return true;
 }
@@ -54,22 +53,21 @@ void Core::update()
 			if (is_paused_) {
 				Engine::pause_music();
 				is_paused_ = false;
-				scene_manager_->set_scene("pause");
+				scene_manager_->set_scene("pause");				
 			}
 
 			if (is_winner_) {
 				Engine::stop_music();
 				is_winner_ = false;
-				scene_manager_->set_scene("win");
-				auto timer_end = std::chrono::high_resolution_clock::now();
-				timer_end_ = std::clock();
-				double elapsed_secs = double(timer_start_ - timer_end_) / CLOCKS_PER_SEC;
+				timer_.Stop();
+				elapsed_secs_ += timer_.GetTicks();
 			}
 
 			if (is_loser_) {
 				Engine::stop_music();
 				is_loser_ = false;
 				scene_manager_->set_scene("lose");
+				timer_.Stop();
 			}
 		}else
 		{
@@ -107,6 +105,9 @@ bool Core::get_is_paused() const
 
 void Core::toggle_pause()
 {
+	if (!is_paused_) {
+		timer_.Pause();
+	}
 	is_paused_ = !is_paused_;
 }
 

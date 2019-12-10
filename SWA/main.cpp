@@ -31,7 +31,7 @@ void init_scenes()
 	auto load_game = new LoadGame(sm.get());
 	auto highscores = new Highscores(sm.get());
 	sm->add_scene(mm, true, "mainmenu");
-	sm->add_scene(core, true, "game");
+	sm->add_scene(core, false, "game");
 	sm->add_scene(level, true, "leveleditor");
 	sm->add_scene(credits, true, "credits");
 	sm->add_scene(help, true, "help");

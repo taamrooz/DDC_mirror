@@ -4,7 +4,7 @@
 #include "AnimationComponent.h"
 #include "BaseScene.h"
 #include "SceneManager.h"
-#include <ctime>
+#include "Timer.h"
 
 class Core : virtual public Engine::BaseScene
 {
@@ -14,8 +14,8 @@ private:
 	bool is_paused_ = false;
 	bool is_winner_ = false;
 	bool is_loser_ = false;
-	std::clock_t timer_start_;
-	std::clock_t timer_end_;
+	double elapsed_secs_ = 0;
+	Engine::Timer timer_{};
 	/*
 	 * Loops through all systems and calls their respective update function.
 	 */

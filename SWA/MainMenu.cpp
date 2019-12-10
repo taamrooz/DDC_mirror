@@ -101,6 +101,7 @@ void MainMenu::input()
 				Engine::stop_music();
 				scene_manager_->set_scene("game");
 				Engine::play_music("ingame.wav");
+				scene_manager_->init();
 				break;
 			case 1:
 				Engine::stop_music();
