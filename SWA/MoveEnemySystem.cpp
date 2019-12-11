@@ -38,8 +38,6 @@ void MoveEnemySystem::update(double dt)
 			if (velocity.y() > vel->maxSpeed) {
 				velocity = { velocity.y(), trunc(vel->maxSpeed) };
 			}
-			vel->dx = velocity.x();
-			vel->dy = velocity.y();
 		}
 
 	}

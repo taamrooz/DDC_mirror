@@ -43,7 +43,7 @@ void MoveSystem::update(double dt)
 
 		int x = positionComponent->x;
 		int y = positionComponent->y;
-		std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ x - 150, y - 150 }, enemy, collisionComponent->width + 200, collisionComponent->height + 200 } };
+		std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ x + (collisionComponent->width / 2) - 200, y + (collisionComponent->height / 2) - 200 }, enemy, 400, 400 } };
 		quadTree.insert(node);
 
 	}
@@ -52,7 +52,15 @@ void MoveSystem::update(double dt)
 	//Get player character
 	std::vector<std::tuple<std::shared_ptr<Engine::Node>, std::shared_ptr<Engine::Node>>> collisions = quadTree.get_collisions();
 	auto vel = manager_->get_component<VelocityComponent>(enemyEnt);
-	vel->steer_force = Pursuit(enemyEnt, player.front(), manager_) * 0.50;
+	auto enemy = manager_->get_component<EnemyComponent>(enemyEnt);
+	switch (enemy->state) {
+	case Fleeing:
+		vel->steer_force = Flee(enemyEnt, player.front(), manager_);
+		break;
+	case Pursuing:
+		vel->steer_force = Pursuit(enemyEnt, player.front(), manager_);
+		break;
+	}
 	double dist = 1000000000.0;
 	PositionComponent tilePos;
 	vector2d start = vector2d();
@@ -79,7 +87,7 @@ void MoveSystem::update(double dt)
 				vector2d vec3 = vector2d(wallPos->x + collisionComponent->width, wallPos->y + collisionComponent->height);
 				vector2d vec4 = vector2d(wallPos->x, wallPos->y + collisionComponent->height);
 				vector2d enemyVec0 = vector2d(enemyPos->x + (enemyColl->width / 2), enemyPos->y + (enemyColl->height / 2));
-				vector2d enemyVec1 = enemyVec0 + (normalize(vel->steer_force) * 150);
+				vector2d enemyVec1 = enemyVec0 + (normalize(vel->steer_force) * 200);
 
 				Engine::set_render_draw_color(0, 255, 0, 255);
 
@@ -87,7 +95,7 @@ void MoveSystem::update(double dt)
 					vector2d oneY = vel->steer_force / vel->steer_force.y();
 					int yDiff = wallPos->y - enemyVec0.y();
 					vector2d collVector = oneY * yDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
 					if (length(collVector) < dist) {
 						dist = length(collVector);
@@ -95,11 +103,11 @@ void MoveSystem::update(double dt)
 						end = vec2;
 						if (playerPos->x > enemyPos->x) {
 							//left
-							vector2d down = normalize(vector2d(rest.y(), length(rest) * 5 * -1)) * length(rest);
+							vector2d down = normalize(vector2d(rest.y(), length(rest) * -1)) * length(rest);
 							diff = down;
 						}
 						else {
-							vector2d down = normalize(vector2d(rest.y() * -1, length(rest) * 5 * -1)) * length(rest);
+							vector2d down = normalize(vector2d(rest.y() * -1, length(rest) * -1)) * length(rest);
 							diff = down;
 						}
 					}
@@ -109,19 +117,19 @@ void MoveSystem::update(double dt)
 					vector2d oneX = vel->steer_force / vel->steer_force.x();
 					int xDiff = wallPos->x + collisionComponent->width - enemyVec0.x();
 					vector2d collVector = oneX * xDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
-					if (length(collVector) < dist && (enemyVec0 + collVector).y() != vec2.y()) {
+					if (length(collVector) < dist) {
 						dist = length(collVector);
 						start = vec2;
 						end = vec3;
 						if (playerPos->y > enemyPos->y) {
 							//left
-							vector2d down = normalize(vector2d(length(rest) * 5, rest.x() * -1)) * length(rest);
+							vector2d down = normalize(vector2d(length(rest) * 1, rest.x() * -1)) * length(rest);
 							diff = down;
 						}
 						else {
-							vector2d down = normalize(vector2d(length(rest) * 5, rest.x()) * length(rest));
+							vector2d down = normalize(vector2d(length(rest) * 1, rest.x())) * length(rest);
 							diff = down;
 						}
 					}
@@ -130,7 +138,7 @@ void MoveSystem::update(double dt)
 					vector2d oneY = vel->steer_force / vel->steer_force.y();
 					int yDiff = wallPos->y + collisionComponent->height - enemyVec0.y();
 					vector2d collVector = oneY * yDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
 
 					if (length(collVector) < dist) {
@@ -140,11 +148,11 @@ void MoveSystem::update(double dt)
 						end = vec3;
 						if (playerPos->x > enemyPos->x) {
 							//left
-							vector2d down = normalize(vector2d(rest.y() * -1, length(rest) * 5)) * length(rest);
+							vector2d down = normalize(vector2d(rest.y() * -1, length(rest) * 1)) * length(rest);
 							diff = down;
 						}
 						else {
-							vector2d down = normalize(vector2d(rest.y(), length(rest) * 5)) * length(rest);
+							vector2d down = normalize(vector2d(rest.y(), length(rest) * 1)) * length(rest);
 							diff = down;
 							
 						}
@@ -155,7 +163,7 @@ void MoveSystem::update(double dt)
 					vector2d oneX = vel->steer_force / vel->steer_force.x();
 					int xDiff = wallPos->x - enemyVec0.x();
 					vector2d collVector = oneX * xDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
 					if (length(collVector) < dist) {
 						dist = length(collVector);
@@ -163,11 +171,11 @@ void MoveSystem::update(double dt)
 						end = vec4;
 						if (playerPos->y > enemyPos->y) {
 							//left
-							vector2d down = normalize(vector2d(length(rest) * 5 * -1, rest.x())) * length(rest);
+							vector2d down = normalize(vector2d(length(rest) * 1 * -1, rest.x())) * length(rest);
 							diff = down;
 						}
 						else {
-							vector2d down = normalize(vector2d(length(rest) * 5 * -1, rest.x() * -1)) * length(rest);
+							vector2d down = normalize(vector2d(length(rest) * 1 * -1, rest.x() * -1)) * length(rest);
 							diff = down;
 						}
 					}
@@ -176,12 +184,12 @@ void MoveSystem::update(double dt)
 		}
 	}
 	if (diff.x() != 0 || diff.y() != 0) {
-		vel->steer_force = normalize(diff) * length(vel->steer_force);
+		vel->steer_force = (diff) * 0.07 + (vel->steer_force * 0.93);
 	}
 	
 
 	auto pos = manager_->get_component<PositionComponent>(enemyEnt);
-	//Engine::render_line(pos->x, pos->y, intersection.x(), intersection.y());
+
 	Engine::set_render_draw_color(0, 255, 0, 255);
 	Engine::render_line(pos->x, pos->y, pos->x + vel->steer_force.x() * 100, pos->y + vel->steer_force.y() * 100);
 	Engine::render_line(start.x(), start.y(), end.x(), end.y());
@@ -212,53 +220,6 @@ void MoveSystem::update(double dt)
 		}
 
 	}
-
-
-
-
-	//Get enemy characters
-	/*auto enemies = manager_->get_all_entities_from_current_room<EnemyComponent>();
-	if (!enemies.empty())
-	{
-		for (auto enemyEntity :enemies)
-		{
-			auto entities = manager_->get_all_entities_from_current_room<CharacterComponent>();
-			if (!entities.empty())
-			{
-				auto characterEntity = entities.front();
-				auto enemyPosition = manager_->get_component<PositionComponent>(enemyEntity);
-				auto enemyVelocity = manager_->get_component<VelocityComponent>(enemyEntity);
-				auto playerPosition = manager_->get_component<PositionComponent>(characterEntity);
-				if (playerPosition->x - enemyPosition->x > 0) {
-					if (enemyVelocity->dx <= 0 ) {
-						enemyVelocity->dx += enemyVelocity->deaceleration;
-					}
-				}
-				else if (playerPosition->x - enemyPosition->x < 0) {
-					if (enemyVelocity->dx >= 0) {
-						enemyVelocity->dx -= enemyVelocity->deaceleration;
-					}
-				}
-				else {
-					enemyVelocity->dx -= enemyVelocity->deaceleration;
-				}
-				if (playerPosition->y - enemyPosition->y > 0) {
-					if (enemyVelocity->dy <= 0) {
-						enemyVelocity->dy += enemyVelocity->deaceleration;
-					}
-				}
-				else if (playerPosition->y - enemyPosition->y < 0) {
-					if (enemyVelocity->dy >= 0) {
-						enemyVelocity->dy -= enemyVelocity->deaceleration;
-					}
-				}
-				else {
-					enemyVelocity->dy -= enemyVelocity->deaceleration;
-				}
-			}
-		}
-
-	}*/
 
 	if (!player.empty()) {
 		auto characterEntity = player.front();
