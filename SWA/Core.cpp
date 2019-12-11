@@ -122,3 +122,10 @@ void Core::toggle_game_lost()
 	is_loser_ = !is_loser_;
 	KeyBindingSingleton::get_instance()->reset_properties();
 }
+
+void Core::unpauzeTimer()
+{
+	if (timer_.IsPaused()) {
+	timer_.Unpause();
+	}
+}

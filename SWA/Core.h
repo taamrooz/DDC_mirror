@@ -57,5 +57,9 @@ public:
 	 * \brief Toggles the games lose state.
 	 */
 	void toggle_game_lost();
+	/**
+	* \Unpauzes the timer which counts your highscore
+	*/
+	void unpauzeTimer();
 };
 
