@@ -13,10 +13,11 @@ private:
 	bool is_paused_ = false;
 	bool is_winner_ = false;
 	bool is_loser_ = false;
+	double previous_tick = 0.0;
 	/*
 	 * Loops through all systems and calls their respective update function.
 	 */
-	void update();
+	void update(double dt);
 	
 public:
 	Core(Engine::SceneManager* manager);

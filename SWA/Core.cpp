@@ -40,7 +40,7 @@ bool Core::init()
 	return true;
 }
 
-void Core::update()
+void Core::update(double dt)
 {
 	for (auto& system : systems_)
 	{
@@ -77,8 +77,13 @@ void Core::render()
 {
 	auto timer = Engine::pre_update();
 	//Engine::Clear();
-	update();
+
+	double diff = timer - previous_tick;
+
+	update(timer);
 	Engine::render(timer);
+
+	previous_tick = timer;
 }
 
 void Core::cleanup()
