@@ -138,6 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)GameEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,6 +156,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
+    <ClCompile Include="CollectableHandlers.cpp" />
+    <ClCompile Include="CheatScene.cpp" />
+    <ClCompile Include="CheatSystem.cpp" />
     <ClCompile Include="CollisionHandlers.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -169,8 +173,10 @@
     <ClCompile Include="KeyBindingSingleton.cpp" />
     <ClCompile Include="LevelEditor.cpp" />
     <ClCompile Include="LevelSingleton.cpp" />
+    <ClCompile Include="LoadGame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MoveEnemySystem.cpp" />
     <ClCompile Include="Pause.cpp" />
     <ClCompile Include="MoveCharacterSystem.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
@@ -186,7 +192,11 @@
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="CharacterComponent.h" />
+    <ClInclude Include="CheatScene.h" />
+    <ClInclude Include="CheatSystem.h" />
     <ClInclude Include="ChestComponent.h" />
+    <ClInclude Include="CollectableComponent.h" />
+    <ClInclude Include="CollectableHandlers.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionHandlers.h" />
     <ClInclude Include="CollisionSystem.h" />
@@ -208,7 +218,9 @@
     <ClInclude Include="LevelBossComponent.h" />
     <ClInclude Include="LevelSingleton.h" />
     <ClInclude Include="LevelEditor.h" />
+    <ClInclude Include="LoadGame.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MoveEnemySystem.h" />
     <ClInclude Include="RoomComponent.h" />
     <ClInclude Include="Pause.h" />
     <ClInclude Include="MoneyComponent.h" />

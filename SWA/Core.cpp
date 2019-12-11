@@ -11,10 +11,11 @@
 #include "MoveCharacterSystem.h"
 #include "CollisionComponent.h"
 #include "SceneManager.h"
-#include "ComponentFactory.h"
 #include "InventorySystem.h"
 #include "Audio.h"
 #include "KeyBindingSingleton.h"
+#include "MoveEnemySystem.h"
+#include "CheatSystem.h"
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -27,10 +28,12 @@ bool Core::init()
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<MoveEnemySystem>(manager_.get()));
 	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<CollisionSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<AudioSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<ShootSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<CheatSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
 
