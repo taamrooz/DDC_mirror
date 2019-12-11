@@ -154,7 +154,7 @@ const int kFPSCounterPositionOffset = 5;
 const int kframeDelay = 1000 / kFPS;
 uint32_t frameStart;
 uint32_t frameTime;
-Timer frameTimer{};
+Engine::Timer frameTimer{};
 std::string timeText;
 int countedFrames = 0;
 bool render_fps = true;

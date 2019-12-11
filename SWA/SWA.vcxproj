@@ -168,6 +168,7 @@
     <ClCompile Include="EndGameWin.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Help.cpp" />
+    <ClCompile Include="Highscores.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="InventorySystem.cpp" />
     <ClCompile Include="KeyBindingSingleton.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="DamagingComponent.h" />
     <ClInclude Include="EndGameLose.h" />
     <ClInclude Include="EnemyComponent.h" />
+    <ClInclude Include="Highscores.h" />
     <ClInclude Include="LadderComponent.h" />
     <ClInclude Include="EditorObject.h" />
     <ClInclude Include="EndGameWin.h" />
