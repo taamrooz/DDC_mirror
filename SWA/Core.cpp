@@ -11,10 +11,12 @@
 #include "MoveCharacterSystem.h"
 #include "CollisionComponent.h"
 #include "SceneManager.h"
-#include "ComponentFactory.h"
 #include "InventorySystem.h"
 #include "Audio.h"
 #include "KeyBindingSingleton.h"
+#include "MoveEnemySystem.h"
+#include "CheatSystem.h"
+#include <ctime>
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -27,12 +29,19 @@ bool Core::init()
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<MoveEnemySystem>(manager_.get()));
 	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<CollisionSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<AudioSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<ShootSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<CheatSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
+	auto pause = new Pause(scene_manager_,this);
+	scene_manager_->add_scene(pause, false, "pause");
+
+	elapsed_secs_ = 0;
+	timer_.Start();
 
 	return true;
 }
@@ -48,19 +57,23 @@ void Core::update()
 			if (is_paused_) {
 				Engine::pause_music();
 				is_paused_ = false;
-				scene_manager_->set_scene("pause");
+				timer_.Pause();
+				scene_manager_->set_scene("pause");		
+				scene_manager_->init();
 			}
 
 			if (is_winner_) {
 				Engine::stop_music();
-				is_winner_ = false;
-				scene_manager_->set_scene("win");
+				is_winner_ = false;				
+				elapsed_secs_ += (timer_.GetTicks() / (double) CLOCKS_PER_SEC);
+				timer_.Stop();
 			}
 
 			if (is_loser_) {
 				Engine::stop_music();
 				is_loser_ = false;
 				scene_manager_->set_scene("lose");
+				timer_.Stop();			
 			}
 		}else
 		{
@@ -98,6 +111,9 @@ bool Core::get_is_paused() const
 
 void Core::toggle_pause()
 {
+	if (!is_paused_) {
+		timer_.Pause();
+	}
 	is_paused_ = !is_paused_;
 }
 
@@ -111,4 +127,11 @@ void Core::toggle_game_lost()
 {
 	is_loser_ = !is_loser_;
 	KeyBindingSingleton::get_instance()->reset_properties();
+}
+
+void Core::unpauzeTimer()
+{
+	if (timer_.IsPaused()) {
+	timer_.Unpause();
+	}
 }

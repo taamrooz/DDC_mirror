@@ -9,7 +9,6 @@ class CollisionSystem :
 public:
 	CollisionSystem(Engine::EntityManager<Component>* manager, Core& core);
 	void update(double dt) override;
-	void update_velocity(Engine::Node* first_node, Engine::Node* second_node);
 private:
 	Core* core;
 };

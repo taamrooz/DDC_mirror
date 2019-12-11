@@ -16,13 +16,14 @@ private:
 	std::unique_ptr<Animation> nike_advertisement_ = nullptr;
 	std::unique_ptr<Animation> phone_advertisement_ = nullptr;
 	std::unique_ptr<Texture> start_ = nullptr;
-	std::unique_ptr<Texture> settings_ = nullptr;
+	std::unique_ptr<Texture> load_game_ = nullptr;
 	std::unique_ptr<Texture> credits_ = nullptr;
 	std::unique_ptr<Texture> help_ = nullptr;
 	std::unique_ptr<Texture> level_editor_ = nullptr;
 	std::unique_ptr<Texture> quit_ = nullptr;
 	std::unique_ptr<Texture> selector_ = nullptr;
 	std::unique_ptr<Texture> helper = nullptr;
+	std::unique_ptr<Texture> highscore_ = nullptr;
 	uint8_t current_action_ = 0;
 	Engine::Timer timer_{};
 public:

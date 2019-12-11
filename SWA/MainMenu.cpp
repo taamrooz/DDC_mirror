@@ -26,12 +26,14 @@ void MainMenu::render()
 	Engine::update_animation(banner[current_advertisement_index].get(), 10, 300);
 	Engine::render_texture(title_.get(), 250, 200, nullptr);
 	Engine::render_texture(start_.get(), 550, 320, nullptr);
-	Engine::render_texture(settings_.get(), 550, 400, nullptr);
+	Engine::render_texture(load_game_.get(), 550, 400, nullptr);
 	Engine::render_texture(level_editor_.get(), 550, 480, nullptr);
 	Engine::render_texture(credits_.get(), 550, 560, nullptr);
 	Engine::render_texture(help_.get(), 550, 640, nullptr);
-	Engine::render_texture(quit_.get(), 550, 720, nullptr);
+	Engine::render_texture(highscore_.get(), 550, 720, nullptr);
+	Engine::render_texture(quit_.get(), 550, 800, nullptr);
 	Engine::render_texture(helper.get(), 115, 900, nullptr);
+	
 	if (current_action_ == 0)
 	{
 		Engine::render_texture(selector_.get(), 530, 320, nullptr);
@@ -55,6 +57,10 @@ void MainMenu::render()
 	else if (current_action_ == 5)
 	{
 		Engine::render_texture(selector_.get(), 530, 720, nullptr);
+	}
+	else if (current_action_ == 6) 
+	{
+		Engine::render_texture(selector_.get(), 530, 800, nullptr);
 	}
 	
 	Engine::render(timer);
@@ -87,7 +93,7 @@ void MainMenu::input()
 		}
 		else if (keycode == SDLK_DOWN)
 		{
-			if (current_action_ < 5)
+			if (current_action_ < 6)
 			{
 				++current_action_;
 			}
@@ -103,9 +109,14 @@ void MainMenu::input()
 				Engine::stop_music();
 				scene_manager_->set_scene("game");
 				Engine::play_music("ingame.wav");
+				scene_manager_->init();
 				timer_.Pause();
 				break;
 			case 1:
+				Engine::stop_music();
+				scene_manager_->set_scene("load_game");
+				scene_manager_->init();
+				Engine::play_music("ingame.wav");
 				break;
 			case 2:
 				Engine::stop_music();
@@ -126,6 +137,11 @@ void MainMenu::input()
 				timer_.Pause();
 				break;
 			case 5:
+				Engine::stop_music();
+				scene_manager_->set_scene("highscores");
+				Engine::play_music("credits.wav");
+				break;
+			case 6:
 				is_running_ = false;
 				break;
 			}
@@ -163,12 +179,13 @@ bool MainMenu::init()
 	banner.push_back(nike_advertisement_);
 	banner.push_back(phone_advertisement_);
 	start_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game"));
-	settings_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings"));
+	load_game_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Load game"));
 	credits_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits"));
 	help_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Help"));
 	level_editor_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Level Editor"));
 	quit_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop"));
 	selector_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">"));
+	highscore_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Highscores"));
 	helper = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, {255, 255, 255, 255},
 	                          "Use the arrow keys ^` to navigate the menu and press ENTER to confirm"));
 	Engine::play_music("mainmenu.wav");

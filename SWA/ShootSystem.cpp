@@ -26,24 +26,24 @@ void ShootSystem::update(double dt)
 				auto sComponent = manager_->get_component<ShootingComponent>(entity);
 				auto collision = manager_->get_component<CollisionComponent>(entity);
 				auto position = manager_->get_component<PositionComponent>(entity);
-				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_up_key_binding()) {
+				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_up_key()) {
 					int xPos = position->x + collision->width / 2;
 					int yPos = (position->y - sComponent->bullet_size + 20) - 1;
 					createBullet(0, -1 * bullet_velocity, xPos, yPos);
 				}
-				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_left_key_binding()) {
+				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_left_key()) {
 					int xPos = position->x - sComponent->bullet_size;
 					int yPos = position->y + (collision->height / 2) + 15;
 					createBullet(-1 * bullet_velocity, 0, xPos, yPos);
 				}
 
-				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_down_key_binding()) {
+				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_down_key()) {
 					int xPos = position->x + collision->width / 2;
 					int yPos = position->y + collision->height + 1 + 20;
 					createBullet(0, bullet_velocity, xPos, yPos);
 				}
 
-				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_right_key_binding()) {
+				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_right_key()) {
 					int xPos = position->x + collision->width + 1;
 					int yPos = position->y + collision->height / 2 + 15;
 					createBullet(bullet_velocity, 0, xPos, yPos);
@@ -70,10 +70,10 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 		auto vComponent = std::make_unique<VelocityComponent>(xV, yV);
 		auto pComponent = std::make_unique<PositionComponent>(x, y);
 		std::unordered_map<State, std::unique_ptr<Animation>> animations;
-		animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Projectile.png", 1, false))));
+		animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Projectile1.png", 1))));
 		animations.at(State::DEFAULT)->scale = 2;
 		auto aComponent = std::make_unique<AnimationComponent>(animations);
-		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size * 2, shoot->bullet_size * 2, BulletCollisionHandler, entity);
+		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size * 2, shoot->bullet_size * 2, BulletCollisionHandler, false, entity);
 		manager_->add_component_to_entity(id, std::move(vComponent));
 		manager_->add_component_to_entity(id, std::move(pComponent));
 		manager_->add_component_to_entity(id, std::move(aComponent));

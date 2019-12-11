@@ -5,14 +5,14 @@
 #include "Animation.h"
 #include "rect2d.h"
 
+
+
+namespace Engine {
 #ifdef ENGINE_EXPORTS
 #define ENGINE_API __declspec(dllexport)
 #else
 #define ENGINE_API __declspec(dllimport)
 #endif
-
-namespace Engine {
-
 	/**
 	 * \brief Initializes the renderer and all of its features.
 	 * @param window_title Title of the window.
