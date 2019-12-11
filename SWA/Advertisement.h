@@ -8,8 +8,9 @@ class Advertisement :
 	virtual public Engine::BaseScene
 {
 private:
-	std::unique_ptr<Texture> exit_ = nullptr;
+	std::unique_ptr<Animation> exit_ = nullptr;
 	std::unique_ptr<Animation> advertisement_ = nullptr;
+	constexpr static int k_lmb_ = 1;
 public:
 	~Advertisement();
 	Advertisement(Engine::SceneManager* manager);

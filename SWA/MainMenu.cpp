@@ -5,10 +5,15 @@
 #include "Core.h"
 #include <mutex>
 #include <chrono>
+#include <ctime>
 
 MainMenu::~MainMenu() = default;
 
-MainMenu::MainMenu(Engine::SceneManager* manager) : BaseScene(manager) { }
+MainMenu::MainMenu(Engine::SceneManager* manager) : BaseScene(manager) 
+{
+	current_advertisement_index = 0;
+	banner = std::vector<std::unique_ptr<Animation>>();
+}
 
 void MainMenu::render()
 {
@@ -16,7 +21,9 @@ void MainMenu::render()
 	input();
 
 	Engine::update_animation(background_.get(), 0, 0);
-	Engine::update_animation(advertisement_.get(), 1000, 0);
+	Engine::update_animation(nike_advertisement_.get(), 900, 300);
+	Engine::update_animation(phone_advertisement_.get(), 10, 300);
+	Engine::update_animation(banner[current_advertisement_index].get(), 10, 300);
 	Engine::render_texture(title_.get(), 250, 200, nullptr);
 	Engine::render_texture(start_.get(), 550, 320, nullptr);
 	Engine::render_texture(settings_.get(), 550, 400, nullptr);
@@ -96,6 +103,7 @@ void MainMenu::input()
 				Engine::stop_music();
 				scene_manager_->set_scene("game");
 				Engine::play_music("ingame.wav");
+				timer_.Pause();
 				break;
 			case 1:
 				break;
@@ -103,16 +111,19 @@ void MainMenu::input()
 				Engine::stop_music();
 				scene_manager_->set_scene("leveleditor");
 				Engine::play_music("leveleditor.wav");
+				timer_.Pause();
 				break;
 			case 3:
 				Engine::stop_music();
 				scene_manager_->set_scene("credits");
-				Engine::play_music("credits.wav");
+				Engine::play_music("centuryfox.wav");
+				timer_.Pause();
 				break;
 			case 4:
 				Engine::stop_music();
 				scene_manager_->set_scene("help");
 				Engine::play_music("help.wav");
+				timer_.Pause();
 				break;
 			case 5:
 				is_running_ = false;
@@ -135,6 +146,7 @@ void MainMenu::cleanup()
 
 bool MainMenu::init()
 {
+	timer_.Start();
 	if (!Engine::init_renderer("Demonic Dungeon Castle", false, 1280, 960)) {
 		return false;
 	}
@@ -145,8 +157,11 @@ bool MainMenu::init()
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
 	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3, false));
 	background_->scale = 1280.0 / 960.0;
-	advertisement_ = std::make_unique<Animation>(*Engine::load_animation("nike.png", 1, true));
-	advertisement_->scale = 0.25;
+	phone_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("iphone_11.png", 1, true));
+	nike_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("nike.png", 1, true));
+	nike_advertisement_->scale = 0.30;
+	banner.push_back(nike_advertisement_);
+	banner.push_back(phone_advertisement_);
 	start_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game"));
 	settings_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings"));
 	credits_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits"));

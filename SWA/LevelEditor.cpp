@@ -212,6 +212,7 @@ void LevelEditor::input()
 		Engine::StopTextInput();
 		is_running_ = false;
 		return;
+
 	}
 	//Handle all key down events
 	for (const auto& keycode : std::get<k_keydown>(inputs))

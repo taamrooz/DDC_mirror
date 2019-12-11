@@ -3,6 +3,8 @@
 #include "UserInput.h"
 #include "Core.h"
 #include <Audio.h>
+#include <iostream>
+#include <thread>
 
 Advertisement::~Advertisement() = default;
 
@@ -12,8 +14,9 @@ void Advertisement::render() {
 	const auto timer = Engine::pre_update();
 	input();
 
-	Engine::update_animation(advertisement_.get(), 250, 50);
-	Engine::render_texture(exit_.get(), 250, 200, nullptr);
+	Engine::update_animation(advertisement_.get(), 300, 30);
+	Engine::update_animation(exit_.get(), 1200, 30);
+	Engine::render(timer);
 }
 
 void Advertisement::input() {
@@ -31,10 +34,19 @@ void Advertisement::input() {
 	//Handle all key down events
 	for (const auto& keycode : std::get<k_keydown>(inputs))
 	{
-		if (keycode == SDLK_RETURN)
-		{
-			break;
-		}
+			auto mouse_pos = Engine::GetMouseState();
+			if (mouse_pos.first >= 1205 && mouse_pos.first <= 1225 &&
+				mouse_pos.second >= 30 && mouse_pos.second <= 55) 
+			{
+				Engine::stop_music();
+				Engine::play_music("low.wav");
+				std::this_thread::sleep_for(std::chrono::milliseconds(112));
+
+				Engine::stop_music();
+				scene_manager_->set_scene("mainmenu");
+				Engine::play_music("mainmenu.wav");
+				break;
+			}
 	}
 }
 
@@ -42,6 +54,8 @@ void Advertisement::cleanup() {}
 
 bool Advertisement::init() {
 	advertisement_ = std::make_unique<Animation>(*Engine::load_animation("mediamarkt.png", 1, true));
-	exit_ = std::make_unique<Texture>(*Engine::load_tileset("Sprites/delete.png"));
+	advertisement_->scale = 0.75;
+	exit_ = std::make_unique<Animation>(*Engine::load_animation("Sprites/delete.png", 1, false));
+	exit_->scale = 1.25;
 	return true;
 }
