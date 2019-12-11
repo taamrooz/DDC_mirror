@@ -284,16 +284,16 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 
 CollisionHandlers::CollisionHandlers()
 {
-	name_function_map_.try_emplace(HandlerNames::BulletCollisionHandler, BulletCollisionHandler);
-	name_function_map_.try_emplace(HandlerNames::PlayerCollisionHandler, PlayerCollisionHandler);
-	name_function_map_.try_emplace(HandlerNames::ItemCollisionHandler, ItemCollisionHandler);
-	name_function_map_.try_emplace(HandlerNames::ChestCollisionHandler, ChestCollisionHandler);
-	name_function_map_.try_emplace(HandlerNames::EnemyBulletCollisionHandler, EnemyBulletCollisionHandler);
-	name_function_map_.try_emplace(HandlerNames::UpdateVelocity, UpdateVelocity);
+	name_function_map_.try_emplace(CollisionHandlerNames::BulletCollisionHandler, BulletCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::PlayerCollisionHandler, PlayerCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::ItemCollisionHandler, ItemCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::ChestCollisionHandler, ChestCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::EnemyCollisionHandler, EnemyCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::UpdateVelocity, UpdateVelocity);
 }
 
 std::function<void(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component> * manager, Core * core)>
-CollisionHandlers::GetFunction(HandlerNames name)
+CollisionHandlers::GetFunction(CollisionHandlerNames name)
 {
 	auto find_return = name_function_map_.find(name);
 	return find_return->second;

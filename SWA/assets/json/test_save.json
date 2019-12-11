@@ -4261,7 +4261,7 @@
         "AnimationComponent": {
             "currentState": 0,
             "flip_horizontally": false,
-            "lock_until": 0,
+            "lock_until": 20103,
             "visible": true
         },
         "CharacterComponent": {
@@ -4269,13 +4269,13 @@
         },
         "CollisionComponent": {
             "function_name": 2,
-            "height": 84,
+            "height": 63,
             "owner": -1,
             "solid": true,
             "width": 48
         },
         "HealthComponent": {
-            "current_health": 5,
+            "current_health": 1,
             "max_health": 5,
             "time_invulnerable": 500
         },
@@ -4284,8 +4284,54 @@
             "selected": 1
         },
         "PositionComponent": {
-            "x": 400,
-            "y": 460
+            "x": 749,
+            "y": 752
+        },
+        "RoomComponent": {
+            "room_name": "lazy"
+        },
+        "ShootingComponent": {
+            "bullet_shape": 0,
+            "bullet_size": 7,
+            "fire_rate": 200,
+            "last_shot": 18568
+        },
+        "VelocityComponent": {
+            "dropOff": 0.0,
+            "dx": 0.0,
+            "dy": 0.0
+        }
+    },
+    "303": {
+        "AnimationComponent": {
+            "currentState": 0,
+            "flip_horizontally": false,
+            "lock_until": 13549,
+            "visible": true
+        },
+        "CollisionComponent": {
+            "function_name": 5,
+            "height": 63,
+            "owner": -1,
+            "solid": false,
+            "width": 48
+        },
+        "DamagingComponent": {
+            "damage_amount": 1,
+            "remove_entity_on_damage": false
+        },
+        "EnemyComponent": {
+            "mass": 30.0,
+            "state": 1
+        },
+        "HealthComponent": {
+            "current_health": 3,
+            "max_health": 5,
+            "time_invulnerable": 500
+        },
+        "PositionComponent": {
+            "x": 706,
+            "y": -63
         },
         "RoomComponent": {
             "room_name": "lazy"
@@ -4298,19 +4344,16 @@
         },
         "VelocityComponent": {
             "dropOff": 0.0,
-            "dx": 0.0,
-            "dy": 0.0
+            "dx": 0.5265527367591858,
+            "dy": 0.3328714668750763
         }
     },
-    "301": {
+    "304": {
         "AnimationComponent": {
             "currentState": 0,
             "flip_horizontally": false,
             "lock_until": 0,
             "visible": true
-        },
-        "ChestComponent": {
-            "contains": 5
         },
         "CollisionComponent": {
             "function_name": 4,
@@ -4319,13 +4362,9 @@
             "solid": true,
             "width": 48
         },
-        "DamagingComponent": {
-            "damage_amount": 1,
-            "remove_entity_on_damage": false
-        },
         "PositionComponent": {
             "x": 500,
-            "y": 500
+            "y": 520
         },
         "RoomComponent": {
             "room_name": "lazy"

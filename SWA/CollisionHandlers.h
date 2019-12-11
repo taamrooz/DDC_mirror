@@ -6,14 +6,14 @@
 #include "HealthComponent.h"
 #include "EnemyComponent.h"
 #include "Core.h"
-enum class HandlerNames
+enum class CollisionHandlerNames
 {
 	None,
 	BulletCollisionHandler,
 	PlayerCollisionHandler,
 	ItemCollisionHandler,
 	ChestCollisionHandler,
-	EnemyBulletCollisionHandler,
+	EnemyCollisionHandler,
 	UpdateVelocity
 };
 
@@ -28,8 +28,8 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 class CollisionHandlers
 {
 private:
-	std::unordered_map<HandlerNames, std::function<void(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component> * manager, Core * core)>> name_function_map_;
+	std::unordered_map<CollisionHandlerNames, std::function<void(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component> * manager, Core * core)>> name_function_map_;
 public:
 	CollisionHandlers();
-	std::function<void(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component> * manager, Core * core)> GetFunction(HandlerNames name);
+	std::function<void(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component> * manager, Core * core)> GetFunction(CollisionHandlerNames name);
 };

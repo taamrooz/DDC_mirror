@@ -23,3 +23,16 @@ void BlueFlaskCollectableHandler(uint32_t collector, uint32_t collectable, Engin
 	// Cleanup collectable
 	RemoveCollectable(collector, collectable, manager);
 }
+
+CollectableHandlers::CollectableHandlers()
+{
+	name_function_map_.try_emplace(CollectableHandlerNames::BlueFlaskCollectableHandler, BlueFlaskCollectableHandler);
+	name_function_map_.try_emplace(CollectableHandlerNames::RemoveCollectable, RemoveCollectable);
+}
+
+std::function<void(uint32_t collector, uint32_t collectable, Engine::EntityManager<Component>* manager)>
+CollectableHandlers::GetFunction(CollectableHandlerNames name)
+{
+	auto find_return = name_function_map_.find(name);
+	return find_return->second;
+}

@@ -21,8 +21,6 @@ void init_scenes()
 	auto sm = std::make_unique<Engine::SceneManager>();
 	auto mm = new MainMenu(sm.get());	
 	sm->add_scene(mm, true, "mainmenu");
-	auto cheats = new CheatScene(sm.get());
-	sm->add_scene(cheats, true, "cheats");
 	sm->set_scene("mainmenu");
 	sm->render();
 	sm->cleanup();

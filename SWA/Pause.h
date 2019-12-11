@@ -15,6 +15,7 @@ private:
 	std::unique_ptr<Texture> paused_texture_ = nullptr;
 	std::unique_ptr<Texture> helper_ = nullptr;
 	std::unique_ptr<Animation> background_ = nullptr;
+	std::string save_text_;
 public:
 	~Pause();
 	Pause(Engine::SceneManager* manager, Core* core);

@@ -5,6 +5,7 @@
 #include "KeyBindingSingleton.h"
 #include <Audio.h>
 #include <mutex>
+#include "CheatScene.h"
 
 Help::Help(Engine::SceneManager* manager) : BaseScene(manager) { }
 
@@ -70,6 +71,8 @@ void Help::input() {
 void Help::cleanup() { }
 
 bool Help::init() {
+	auto cheats = new CheatScene(scene_manager_);
+	scene_manager_->add_scene(cheats, true, "cheats");
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
 	sub_title_moving_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 40, { 255,0,0, 255 }, "Moving controls"));
 	sub_title_shooting_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 40, { 255,0,0, 255 }, "Shooting controls"));
