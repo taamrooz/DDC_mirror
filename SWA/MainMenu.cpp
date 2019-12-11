@@ -16,6 +16,7 @@ void MainMenu::render()
 	input();
 
 	Engine::update_animation(background_.get(), 0, 0);
+	Engine::update_animation(advertisement_.get(), 1000, 0);
 	Engine::render_texture(title_.get(), 250, 200, nullptr);
 	Engine::render_texture(start_.get(), 550, 320, nullptr);
 	Engine::render_texture(settings_.get(), 550, 400, nullptr);
@@ -142,8 +143,10 @@ bool MainMenu::init()
 		return false;
 	}
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
-	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
+	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3, false));
 	background_->scale = 1280.0 / 960.0;
+	advertisement_ = std::make_unique<Animation>(*Engine::load_animation("nike.png", 1, true));
+	advertisement_->scale = 0.25;
 	start_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game"));
 	settings_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Settings"));
 	credits_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits"));

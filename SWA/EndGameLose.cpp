@@ -41,7 +41,7 @@ void EndGameLose::cleanup() {
 bool EndGameLose::init() {
 	title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "You didnt make it."));
 	sub_title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 40, { 255,196,0,255 }, "LOSER LOSER DOUBLE LOSER :p!"));
-	background_ = std::unique_ptr<Animation>(Engine::load_animation("mainmenu.png", 3));
+	background_ = std::unique_ptr<Animation>(Engine::load_animation("mainmenu.png", 3, false));
 	background_->scale = 1280.0 / 960.0;
 	helper_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 255, 255, 255 },
 		"Press ENTER to quit to main menu"));

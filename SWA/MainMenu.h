@@ -10,6 +10,7 @@ class MainMenu :
 private:
 	std::unique_ptr<Texture> title_ = nullptr;
 	std::unique_ptr<Animation> background_ = nullptr;
+	std::unique_ptr<Animation> advertisement_ = nullptr;
 	std::unique_ptr<Texture> start_ = nullptr;
 	std::unique_ptr<Texture> settings_ = nullptr;
 	std::unique_ptr<Texture> credits_ = nullptr;
