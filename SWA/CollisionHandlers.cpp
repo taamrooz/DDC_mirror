@@ -16,8 +16,8 @@
 #include <Renderer.h>
 #include <Audio.h>
 
-void DamageHandler(HealthComponent* health, DamagingComponent* dmg, EnemyComponent* enemy) {
 
+void DamageHandler(HealthComponent* health, DamagingComponent* dmg, EnemyComponent* enemy) {
 	int currentTick = Engine::get_ticks();
 	if (health->invulnerable_until < currentTick) {
 		std::cout << "HIT" << std::endl;
@@ -30,8 +30,7 @@ void DamageHandler(HealthComponent* health, DamagingComponent* dmg, EnemyCompone
 	}
 }
 
-void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
-{
+void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	if (player == nullptr) {
 		manager->remove_entity(entity1);
@@ -196,21 +195,25 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 		}
 		else {
 			if (first_node_velocity_component->dx > 0) {
-				xDiff = (first_node_position_component->x + first_node_collision_component->width - second_node_position_component->x) + 1;
+				xDiff = (first_node_position_component->x + first_node_collision_component->width - second_node_position_component->x);
 				xd = xDiff / first_node_velocity_component->dx;
+				xDiff++;
 			}
 			if (first_node_velocity_component->dx < 0) {
 				//diff between xpos and collision xpos;
-				xDiff = (first_node_position_component->x - (second_node_position_component->x + second_node_collision_component->width)) - 1;
+				xDiff = (first_node_position_component->x - (second_node_position_component->x + second_node_collision_component->width));
 				xd = xDiff / first_node_velocity_component->dx;
+				xDiff--;
 			}
 			if (first_node_velocity_component->dy > 0) {
-				yDiff = (first_node_position_component->y + first_node_collision_component->height - second_node_position_component->y) + 1;
+				yDiff = (first_node_position_component->y + first_node_collision_component->height - second_node_position_component->y);
 				yd = yDiff / first_node_velocity_component->dy;
+				yDiff++;
 			}
 			if (first_node_velocity_component->dy < 0) {
-				yDiff = (first_node_position_component->y - (second_node_position_component->y + second_node_collision_component->height)) - 1;
+				yDiff = (first_node_position_component->y - (second_node_position_component->y + second_node_collision_component->height));
 				yd = yDiff / first_node_velocity_component->dy;
+				yDiff--;
 			}
 			if (xd < yd) {
 				first_node_position_component->x -= xDiff;
@@ -253,7 +256,7 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 			xv = -5;
 		}
 		else if (pPos->x + pColl->width <= cPos->x) {
-			xv = 5;
+			xv = -5;
 		}
 		else if (pPos->y > cPos->y) {
 			yv = -5;

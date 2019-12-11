@@ -74,12 +74,13 @@ void RenderSystem::update(double dt)
 
 			// Healthbar outline
 			int bar_length = 50;
-			Engine::rect2d health_bar_outline = { position_component->x, position_component->y, bar_length, 10 };
+			int bar_height = 10;
+			Engine::rect2d health_bar_outline = { position_component->x, position_component->y - bar_height, bar_length, bar_height };
 			Engine::draw_rectangle(health_bar_outline);
 
 			// Current health
 			float health_bar_length = (float)health_component->current_health / (float)health_component->max_health * (float)bar_length;
-			Engine::rect2d health_bar = { position_component->x, position_component->y, (int)health_bar_length, 10 };
+			Engine::rect2d health_bar = { position_component->x, position_component->y - bar_height, (int)health_bar_length, bar_height };
 			Engine::fill_rectangle(health_bar);
 		}
 	}

@@ -18,7 +18,5 @@ public:
 	//If reload_room is true, load the map from at the room_path location
 	bool reload_room;
 	static RoomSingleton* get_instance();
-	std::string object_suffix;
-	std::string room_suffix;
 	void load_room(Engine::EntityManager<Component>* manager, RoomComponent* room);
 };

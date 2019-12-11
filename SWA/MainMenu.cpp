@@ -5,6 +5,7 @@
 #include "Core.h"
 #include <mutex>
 #include <chrono>
+#include "Constants.h"
 
 MainMenu::~MainMenu() = default;
 
@@ -138,7 +139,7 @@ void MainMenu::cleanup()
 
 bool MainMenu::init()
 {
-	if (!Engine::init_renderer("Demonic Dungeon Castle", false, 1280, 960)) {
+	if (!Engine::init_renderer("Demonic Dungeon Castle", false, Constants::k_window_width, Constants::k_window_height)) {
 		return false;
 	}
 	if (!Engine::init_audio()) {

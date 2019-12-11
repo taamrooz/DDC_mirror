@@ -2,6 +2,7 @@
 #include "RoomSingleton.h"
 #include <fstream>
 #include <filesystem>
+#include "Constants.h"
 
 DungeonSingleton::DungeonSingleton() {
 	current_room_ = 0;
@@ -68,10 +69,6 @@ void DungeonSingleton::load_dungeon(const std::string& path)
 		}
 		++last_row_index;
 	}
-	//if (std::adjacent_find(level_rooms_[path].begin(), level_rooms_[path].end(), std::not_equal_to<>()) == level_rooms_[path].end())
-	//{
-	//	level_rooms_.erase(path);
-	//}
 	map.close();
 }
 
@@ -79,13 +76,13 @@ void DungeonSingleton::load_all_dungeons()
 {
 	for (const auto& entry : std::filesystem::directory_iterator("./assets/Levels/Dungeons/"))
 	{
-		if (entry.path().extension().string() == ".dungeon")
+		if (entry.path().extension().string() == Constants::k_dungeon_suffix)
 		{
 			levels_.push_back(entry.path().filename().string());
-			
 		}
 	}
-	load_dungeon(levels_[0]);
+	load_dungeon(levels_.front());
+	
 	get_starting_room();
 }
 

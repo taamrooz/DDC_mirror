@@ -10,15 +10,13 @@
 
 RoomSingleton::RoomSingleton() {
 	reload_room = true;
-	room_suffix = ".map";
-	object_suffix = ".objects";
 }
 
 RoomSingleton* RoomSingleton::instance = 0;
 
 void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComponent* room)
 {
-	auto path = room->room_name + get_instance()->room_suffix;
+	auto path = room->room_name + Constants::k_map_suffix;
 	//tiles vector
 	std::vector<std::vector<int>> tiles;
 
@@ -139,7 +137,7 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 void RoomSingleton::load_objects(Engine::EntityManager<Component>* manager, RoomComponent* room)
 {
 	//Get file path for object map
-	auto object_path = room->room_name + object_suffix;
+	auto object_path = room->room_name + Constants::k_object_suffix;
 	std::ifstream objects("./assets/Levels/" + object_path);
 
 	if (objects.fail())
