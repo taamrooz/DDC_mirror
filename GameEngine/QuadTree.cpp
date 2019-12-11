@@ -12,27 +12,16 @@ Point::Point(int _x, int _y) {
 Node::Node(Point _position, uint32_t _id, int _width, int _height) : position(_position), id(_id), width(_width), height(_height) {
 }
 
-QuadTree::QuadTree(Point topL, Point botR) :
-	topLeftTree(nullptr), topRightTree(nullptr), botLeftTree(nullptr), botRightTree(nullptr),
-	topLeft(topL), botRight(botR) {
+QuadTree::QuadTree(Point top_l, Point bot_r) :
+	top_left_tree(nullptr), top_right_tree(nullptr), bot_left_tree(nullptr), bot_right_tree(nullptr),
+	topLeft(top_l), botRight(bot_r) {
 }
 
 QuadTree::~QuadTree() {
-	for (size_t i = 0; i < capacity; i++)
-	{
-		if (nodes[i]) {
-			delete nodes[i];
-			nodes[i] = nullptr;
-		}
-	}
 
-	delete topLeftTree;
-	delete topRightTree;
-	delete botLeftTree;
-	delete botRightTree;
 }
 
-void QuadTree::insert(Node* node) {
+void QuadTree::insert(std::shared_ptr<Node> node) {
 	if (!node) {
 		return;
 	}
@@ -51,107 +40,97 @@ void QuadTree::insert(Node* node) {
 		}
 
 		if (nodes[i]->id == node->id) {
-			delete node;
+			//delete node;
 			return;
 		}
 	}
 
 	if (!added) {
-		if (!topLeftTree && !topRightTree && !botLeftTree && !botRightTree) {
+		if (!top_left_tree && !top_right_tree && !bot_left_tree && !bot_right_tree) {
 			// subdivide all nodes
 			for (int i = 0; i < capacity; ++i) {
 				//divide(nodes[i], &nodes[i]->position);
-				divideNode(nodes[i]);
+				divide_node(nodes[i]);
 			}
 		}
 
 		// subdivde node
 		//divide(node, &node->position);
-		divideNode(node);
-		delete node;
+		divide_node(node);
+		// delete node;
 	}
 }
 
-void QuadTree::divideNode(Node* node) {
+void QuadTree::divide_node(std::shared_ptr<Node> node) {
 	// subdivde node
-	Point* topLeft = new Point{ node->position.x, node->position.y };
-	Point* topRight = new Point{ (node->position.x + node->width), node->position.y };
-	Point* botLeft = new Point{ node->position.x, (node->position.y + node->height) };
-	Point* botRight = new Point{ (node->position.x + node->width), (node->position.y + node->height) };
+	Point topLeft{ node->position.x, node->position.y } ;
+	Point topRight{ (node->position.x + node->width), node->position.y } ;
+	Point botLeft{ node->position.x, (node->position.y + node->height) } ;
+	Point botRight{ (node->position.x + node->width), (node->position.y + node->height) } ;
 
-	Node* topLeftNode = new Node(node->position, node->id, node->width, node->height);
-	Node* topRightNode = new Node(node->position, node->id, node->width, node->height);
-	Node* botLetNode = new Node(node->position, node->id, node->width, node->height);
-	Node* botRightNode = new Node(node->position, node->id, node->width, node->height);
-
-	divide(topLeftNode, topLeft);
-	divide(topRightNode, topRight);
-	divide(botLetNode, botLeft);
-	divide(botRightNode, botRight);
-
-	delete topLeft;
-	delete topRight;
-	delete botLeft;
-	delete botRight;
+	divide(node, topLeft);
+	divide(node, topRight);
+	divide(node, botLeft);
+	divide(node, botRight);
 }
 
-void QuadTree::divide(Node* node, Point* p) {
-	if ((topLeft.x + botRight.x) / 2 >= p->x)
+void QuadTree::divide(std::shared_ptr<Node> node, Point& p) {
+	if ((topLeft.x + botRight.x) / 2 >= p.x)
 	{
 		// Indicates topLeftTree 
-		if ((topLeft.y + botRight.y) / 2 >= p->y)
+		if ((topLeft.y + botRight.y) / 2 >= p.y)
 		{
-			if (!topLeftTree)
+			if (!top_left_tree)
 			{
-				topLeftTree = new QuadTree(
+				top_left_tree = std::make_unique<QuadTree>(
 					Point{ topLeft.x, topLeft.y },
 					Point{ (topLeft.x + botRight.x) / 2,
 					(topLeft.y + botRight.y) / 2 });
 			}
-			topLeftTree->insert(node);
+			top_left_tree->insert(node);
 		}
 
 		// Indicates botLeftTree 
 		else
 		{
-			if (!botLeftTree)
+			if (!bot_left_tree)
 			{
-				botLeftTree = new QuadTree(
+				bot_left_tree = std::make_unique<QuadTree>(
 					Point{ topLeft.x,
 					(topLeft.y + botRight.y) / 2 },
 					Point{ (topLeft.x + botRight.x) / 2,
 						botRight.y });
 			}
-			botLeftTree->insert(node);
+			bot_left_tree->insert(node);
 		}
 	}
 	else
 	{
 		// Indicates topRightTree 
-		if ((topLeft.y + botRight.y) / 2 >= p->y)
+		if ((topLeft.y + botRight.y) / 2 >= p.y)
 		{
-			if (!topRightTree)
+			if (!top_right_tree)
 			{
-				topRightTree = new QuadTree(
+				top_right_tree = std::make_unique<QuadTree>(
 					Point{ (topLeft.x + botRight.x) / 2,
 						topLeft.y },
 					Point{ botRight.x,
 					(topLeft.y + botRight.y) / 2 });
 			}
-			topRightTree->insert(node);
+			top_right_tree->insert(node);
 		}
 
 		// Indicates botRightTree 
 		else
 		{
-			if (!botRightTree)
+			if (!bot_right_tree)
 			{
-				botRightTree = new QuadTree(
+				bot_right_tree = std::make_unique<QuadTree>(
 					Point{ (topLeft.x + botRight.x) / 2,
 					(topLeft.y + botRight.y) / 2 },
 					Point{ botRight.x, botRight.y });
 			}
-			botRightTree->insert(node);
+			bot_right_tree->insert(node);
 		}
 	}
 }
@@ -161,23 +140,23 @@ std::vector<std::tuple<Point, Point>> QuadTree::get_bounds() {
 	std::tuple<Point, Point> coordinates{ topLeft, botRight };
 	boundsList.push_back(coordinates);
 
-	if (topLeftTree != nullptr) {
-		auto sourceMap = topLeftTree->get_bounds();
+	if (top_left_tree != nullptr) {
+		auto sourceMap = top_left_tree->get_bounds();
 		boundsList.insert(boundsList.end(), sourceMap.begin(), sourceMap.end());
 	}
 
-	if (topRightTree != nullptr) {
-		auto sourceMap = topRightTree->get_bounds();
+	if (top_right_tree != nullptr) {
+		auto sourceMap = top_right_tree->get_bounds();
 		boundsList.insert(boundsList.end(), sourceMap.begin(), sourceMap.end());
 	}
 
-	if (botLeftTree != nullptr) {
-		auto sourceMap = botLeftTree->get_bounds();
+	if (bot_left_tree != nullptr) {
+		auto sourceMap = bot_left_tree->get_bounds();
 		boundsList.insert(boundsList.end(), sourceMap.begin(), sourceMap.end());
 	}
 
-	if (botRightTree != nullptr) {
-		auto sourceMap = botRightTree->get_bounds();
+	if (bot_right_tree != nullptr) {
+		auto sourceMap = bot_right_tree->get_bounds();
 		boundsList.insert(boundsList.end(), sourceMap.begin(), sourceMap.end());
 	}
 
@@ -185,13 +164,13 @@ std::vector<std::tuple<Point, Point>> QuadTree::get_bounds() {
 }
 
 
-std::vector<std::tuple<Node*, Node*>> QuadTree::get_collisions() {
-	std::vector<std::tuple<Node*, Node*>> collisions_list{};
+std::vector<std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>>> QuadTree::get_collisions() {
+	std::vector<std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>>> collisions_list{};
 
 	bool shouldFindCollision = true;
-	if (topLeftTree)
+	if (top_left_tree)
 	{
-		std::vector<std::tuple<Node*, Node*>> tree_collisions = topLeftTree->get_collisions();
+		std::vector<std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>>> tree_collisions = top_left_tree->get_collisions();
 		if (!tree_collisions.empty()) {
 			if (collisions_list.empty()) {
 				collisions_list = tree_collisions;
@@ -203,9 +182,9 @@ std::vector<std::tuple<Node*, Node*>> QuadTree::get_collisions() {
 		shouldFindCollision = false;
 	}
 
-	if (topRightTree)
+	if (top_right_tree)
 	{
-		std::vector<std::tuple<Node*, Node*>> tree_collisions = topRightTree->get_collisions();
+		std::vector<std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>>> tree_collisions = top_right_tree->get_collisions();
 		if (!tree_collisions.empty()) {
 			if (collisions_list.empty()) {
 				collisions_list = tree_collisions;
@@ -219,9 +198,9 @@ std::vector<std::tuple<Node*, Node*>> QuadTree::get_collisions() {
 		shouldFindCollision = false;
 	}
 
-	if (botLeftTree)
+	if (bot_left_tree)
 	{
-		std::vector<std::tuple<Node*, Node*>> tree_collisions = botLeftTree->get_collisions();
+		std::vector<std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>>> tree_collisions = bot_left_tree->get_collisions();
 		if (!tree_collisions.empty()) {
 			if (collisions_list.empty()) {
 				collisions_list = tree_collisions;
@@ -233,9 +212,9 @@ std::vector<std::tuple<Node*, Node*>> QuadTree::get_collisions() {
 		shouldFindCollision = false;
 	}
 
-	if (botRightTree)
+	if (bot_right_tree)
 	{
-		std::vector<std::tuple<Node*, Node*>> tree_collisions = botRightTree->get_collisions();
+		std::vector<std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>>> tree_collisions = bot_right_tree->get_collisions();
 		if (!tree_collisions.empty()) {
 			if (collisions_list.empty()) {
 				collisions_list = tree_collisions;
@@ -275,7 +254,7 @@ std::vector<std::tuple<Node*, Node*>> QuadTree::get_collisions() {
 
 							if (node_a_x1 < node_b_x2 && node_a_x2 > node_b_x1&&
 								node_a_y1 < node_b_y2 && node_a_y2 > node_b_y1) {
-								std::tuple<Node*, Node*> collision{ nodes[i], nodes[x] };
+								std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>> collision{ nodes[i], nodes[x] };
 								collisions_list.push_back(collision);
 							}
 						}
@@ -289,7 +268,7 @@ std::vector<std::tuple<Node*, Node*>> QuadTree::get_collisions() {
 	return collisions_list;
 }
 
-bool QuadTree::in_boundary(Node* node) {
+bool QuadTree::in_boundary(std::shared_ptr<Node> node) {
 	// check if something of object is in boundary
 
 	// Check if something in this range is between topLeft and botRight:

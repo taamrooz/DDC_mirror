@@ -8,6 +8,7 @@
 #include "HealthComponent.h"
 #include "CollisionComponent.h"
 #include "CollisionHandlers.h"
+#include "CollectableHandlers.h"
 #include "LadderComponent.h"
 #include "RoomComponent.h"
 #include "RoomSingleton.h"
@@ -17,6 +18,7 @@
 #include "LevelBossComponent.h"
 #include "LevelSingleton.h"
 #include "Renderer.h"
+#include "CollectableComponent.h"
 #include "EnemyComponent.h"
 
 ComponentFactory::ComponentFactory() {
@@ -113,7 +115,7 @@ void ComponentFactory::AddPlayerComponents(int id, Engine::EntityManager<Compone
 	animations.at(State::HIT)->scale = 3;
 	auto ani = std::make_unique<AnimationComponent>(animations);
 	auto cha = std::make_unique<CharacterComponent>();
-	auto coll = std::make_unique<CollisionComponent>(48, 84, PlayerCollisionHandler, HandlerNames::PlayerCollisionHandler);
+	auto coll = std::make_unique<CollisionComponent>(48, 63, PlayerCollisionHandler, HandlerNames::PlayerCollisionHandler);
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
 	auto inv = std::make_unique<InventoryComponent>();
 	em->add_component_to_entity(id, std::move(hea));
@@ -143,14 +145,17 @@ void ComponentFactory::AddEnemyComponents(int id, Engine::EntityManager<Componen
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
 	auto damage = std::make_unique<DamagingComponent>(1);
 	std::unordered_map<State, std::unique_ptr<Animation>> animations;
-	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/orc_shaman_idle.png", 4)) ));
-	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/orc_shaman_run.png", 4) )));
-	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::HIT, std::make_unique<Animation>(*Engine::load_animation("Animations/orc_shaman_idle.png", 4) )));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/chort_idle.png", 4)) ));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/chort_run.png", 4) )));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::HIT, std::make_unique<Animation>(*Engine::load_animation("Animations/chort_hit.png", 1) )));
+	//animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/orc_shaman_idle.png", 4)) ));
+	//animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/orc_shaman_run.png", 4) )));
+	//animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::HIT, std::make_unique<Animation>(*Engine::load_animation("Animations/orc_shaman_idle.png", 4) )));
 	animations.at(State::DEFAULT)->scale = 3;
 	animations.at(State::RUN)->scale = 3;
 	animations.at(State::HIT)->scale = 3;
 	auto ani = std::make_unique<AnimationComponent>(animations);
-	auto coll = std::make_unique<CollisionComponent>(48, 84, EnemyCollisionHandler, false);
+	auto coll = std::make_unique<CollisionComponent>(48, 63, EnemyCollisionHandler, false);
 	em->add_component_to_entity(id, std::move(damage));
 	em->add_component_to_entity(id, std::move(emc));
 	auto coll = std::make_unique<CollisionComponent>(48, 84, EnemyBulletCollisionHandler, HandlerNames::EnemyBulletCollisionHandler);
@@ -173,9 +178,10 @@ void ComponentFactory::AddBlueFlaskComponents(int id, Engine::EntityManager<Comp
 	animations.at(State::DEFAULT)->scale = 2;
 	auto ani = std::make_unique<AnimationComponent>(animations);
 	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
-	auto coll = std::make_unique<CollisionComponent>(32, 32, ItemCollisionHandler, HandlerNames::ItemCollisionHandler, false);
+	auto collisi = std::make_unique<CollisionComponent>(32, 32, ItemCollisionHandler, false);
+	auto collect = std::make_unique<CollectableComponent>(BlueFlaskCollectableHandler);
 	em->add_component_to_entity(id, std::move(ani));
-	em->add_component_to_entity(id, std::move(coll));
+	em->add_component_to_entity(id, std::move(collisi));
 	em->add_component_to_entity(id, std::move(room));
-
+	em->add_component_to_entity(id, std::move(collect));
 }
