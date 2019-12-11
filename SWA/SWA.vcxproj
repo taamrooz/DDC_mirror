@@ -154,6 +154,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Advertisement.cpp" />
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="CollisionHandlers.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
@@ -181,6 +182,7 @@
     <ClCompile Include="TileSetSingleton.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Advertisement.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseSystem.h" />
