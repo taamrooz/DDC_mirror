@@ -16,7 +16,7 @@
 #include "KeyBindingSingleton.h"
 #include "MoveEnemySystem.h"
 #include "CheatSystem.h"
-#include "LevelSingleton.h"
+#include "DungeonSingleton.h"
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -25,7 +25,7 @@ Core::~Core() = default;
 bool Core::init()
 {
 	manager_ = std::make_unique<Engine::EntityManager<Component>>();
-	LevelSingleton::get_instance()->load_all_dungeons();
+	DungeonSingleton::get_instance()->load_all_dungeons();
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));

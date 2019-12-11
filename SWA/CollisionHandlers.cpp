@@ -11,7 +11,7 @@
 #include "InventoryComponent.h"
 #include "TextureComponent.h"
 #include "LevelBossComponent.h"
-#include "LevelSingleton.h"
+#include "DungeonSingleton.h"
 #include "AnimationComponent.h"
 #include <Renderer.h>
 #include <Audio.h>
@@ -40,12 +40,12 @@ void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 
 void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
 {
-  //stop player from moving into a wall
+	//stop player from moving into a wall
 
-	//take damage if entity2 has damagecomponent
+	  //take damage if entity2 has damagecomponent
 
-	//etc.
-  
+	  //etc.
+
 
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	auto ladder = manager->get_component<LadderComponent>(entity1);
@@ -59,29 +59,22 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 			const auto boss_health = manager->get_component<HealthComponent>(boss_entity);
 			const auto boss_room = manager->get_component<RoomComponent>(boss_entity);
 
-			if (boss_room->room_index == LevelSingleton::get_instance()->get_current_room_number()) {
+			if (boss_room->room_index == DungeonSingleton::get_instance()->get_current_room_number()) {
 				// current room is where levelBoss is living
 				if (boss_health->current_health <= 0) {
-					if (!LevelSingleton::get_instance()->reload_level) {
-						LevelSingleton::get_instance()->init_next_level();
-						LevelSingleton::get_instance()->reload_level = true;
-					}
+					DungeonSingleton::get_instance()->move_dungeon_down();
 				}
 			}
 			else {
 				if (!RoomSingleton::get_instance()->reload_room) {
 					// load next room
-					RoomSingleton::get_instance()->init_next_room();
+					//RoomSingleton::get_instance()->move_dungeon_down();
 					RoomSingleton::get_instance()->reload_room = true;
 				}
 			}
 		}
 		else {
-			if (!RoomSingleton::get_instance()->reload_room) {
-				// load next room
-				RoomSingleton::get_instance()->init_next_room();
-				RoomSingleton::get_instance()->reload_room = true;
-			}
+			DungeonSingleton::get_instance()->move_dungeon_down();
 		}
 	}
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
@@ -104,7 +97,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 	if (coll != nullptr && coll->solid) {
 		UpdateVelocity(entity1, entity2, manager, core);
 	}
-	
+
 }
 
 void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
@@ -126,7 +119,7 @@ void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMana
 }
 
 void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
-	
+
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
 	auto enemy = manager->get_component<EnemyComponent>(entity2);
 	if (dmg != nullptr && enemy == nullptr) {

@@ -1,15 +1,15 @@
 #include "RoomSingleton.h"
-#include "LevelSingleton.h"
+#include "DungeonSingleton.h"
 #include <fstream>
 #include <sstream>
 #include "PositionComponent.h"
 #include "ComponentFactory.h"
 #include "CollisionComponent.h"
 #include "TileComponent.h"
+#include "Constants.h"
 
 RoomSingleton::RoomSingleton() {
 	reload_room = true;
-	current_room_index = 0;
 	room_suffix = ".map";
 	object_suffix = ".objects";
 }
@@ -36,7 +36,7 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 	else
 	{
 		//Initialize the tiles
-		for (int i = 0; i < k_total_tiles_; ++i)
+		for (int i = 0; i < Constants::k_total_tiles; ++i)
 		{
 			//Determines what kind of tile will be made
 			int tileType = -1;
@@ -53,7 +53,7 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 			}
 
 			//If the number is a valid tile number
-			if ((tileType >= 0) && (tileType < k_total_sprites_))
+			if ((tileType >= 0) && (tileType < Constants::k_total_sprites))
 			{
 				std::vector<int> row(3);
 				tiles.push_back(row);
@@ -62,22 +62,22 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 				if (room != nullptr)
 				{
 					//up
-					if (y <= k_tile_height_ * 2 && x >= 7 * k_tile_width_ && x <= 11 * k_tile_width_ && room->top != nullptr)
+					if (y <= Constants::k_tile_height * 2 && x >= 7 * Constants::k_tile_width && x <= 11 * Constants::k_tile_width && room->top != nullptr)
 					{
 						tiles[i][2] = 0;
 					}
 					//left
-					else if (x == 0 && y >= 6 * k_tile_height_ && y <= 8 * k_tile_height_ && room->left != nullptr)
+					else if (x == 0 && y >= 6 * Constants::k_tile_height && y <= 8 * Constants::k_tile_height && room->left != nullptr)
 					{
 						tiles[i][2] = 0;
 					}
 					//right
-					else if (x == k_tile_width_ * 19 && y >= 6 * k_tile_height_ && y <= 8 * k_tile_height_ && room->right != nullptr)
+					else if (x == Constants::k_tile_width * 19 && y >= 6 * Constants::k_tile_height && y <= 8 * Constants::k_tile_height && room->right != nullptr)
 					{
 						tiles[i][2] = 0;
 					}
 					//down
-					else if (y == k_tile_height_ * 14 && x >= 7 * k_tile_width_ && x <= 11 * k_tile_width_ && room->down != nullptr) {
+					else if (y == Constants::k_tile_height * 14 && x >= 7 * Constants::k_tile_width && x <= 11 * Constants::k_tile_width && room->down != nullptr) {
 						tiles[i][2] = 0;
 					}
 					else
@@ -102,16 +102,16 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 
 
 			//Move to next tile spot
-			x += k_tile_width_;
+			x += Constants::k_tile_width;
 
 			//If we've gone too far
-			if (x >= k_level_width_)
+			if (x >= Constants::k_level_width)
 			{
 				//Move back
 				x = 0;
 
 				//Move to the next row
-				y += k_tile_height_;
+				y += Constants::k_tile_height;
 			}
 		}
 	}
@@ -120,15 +120,15 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 	map.close();
 
 	for (auto& i : tiles) {
-		auto room_component = std::make_unique<RoomComponent>(get_current_room_name(), LevelSingleton::get_instance()->get_current_room_number());
+		auto room_component = std::make_unique<RoomComponent>(room->room_name, room->room_index);
 		auto pos = std::make_unique<PositionComponent>(i[0], i[1]);
-		auto tile = std::make_unique<TileComponent>(i[0], i[1], k_tile_width_, k_tile_height_, i[2]);
+		auto tile = std::make_unique<TileComponent>(i[0], i[1], Constants::k_tile_width, Constants::k_tile_height, i[2]);
 		auto id = manager->create_entity();
 		manager->add_component_to_entity(id, std::move(pos));
 		manager->add_component_to_entity(id, std::move(tile));
 		manager->add_component_to_entity(id, std::move(room_component));
-		for (unsigned int a = 0; a < sizeof(k_collision_tiles) / sizeof(k_collision_tiles[0]); a = a + 1) {
-			if (k_collision_tiles[a] == i[2]) {
+		for (unsigned int a = 0; a < sizeof(Constants::k_collision_tiles) / sizeof(Constants::k_collision_tiles[0]); a = a + 1) {
+			if (Constants::k_collision_tiles[a] == i[2]) {
 				auto coll = std::make_unique<CollisionComponent>(63, 63, nullptr);
 				manager->add_component_to_entity(id, std::move(coll));
 			}
@@ -136,10 +136,10 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 	}
 }
 
-void RoomSingleton::load_objects(Engine::EntityManager<Component>* manager)
+void RoomSingleton::load_objects(Engine::EntityManager<Component>* manager, RoomComponent* room)
 {
 	//Get file path for object map
-	auto object_path = get_current_room_name() + object_suffix;
+	auto object_path = room->room_name + object_suffix;
 	std::ifstream objects("./assets/Levels/" + object_path);
 
 	if (objects.fail())
@@ -169,8 +169,8 @@ void RoomSingleton::load_objects(Engine::EntityManager<Component>* manager)
 			}
 
 			auto id = manager->create_entity();
-			auto room = std::make_unique<RoomComponent>(get_current_room_name(), LevelSingleton::get_instance()->get_current_room_number());
-			manager->add_component_to_entity(id, std::move(room));
+			auto room_comp = std::make_unique<RoomComponent>(room->room_name, room->room_index);
+			manager->add_component_to_entity(id, std::move(room_comp));
 			manager->add_component_to_entity(id, std::make_unique<PositionComponent>(x, y));
 			ComponentFactory::get_instance()->CreateEntity(name, id, manager);
 		}
@@ -186,20 +186,8 @@ RoomSingleton* RoomSingleton::get_instance()
 	return instance;
 }
 
-std::string RoomSingleton::get_current_room_name() {
-	return LevelSingleton::get_instance()->get_current_room_name_from_current_level();
-}
-
-void RoomSingleton::init_first_room() {
-	current_room_index = 0;
-}
-
-void RoomSingleton::init_next_room() {
-	current_room_index++;
-}
-
 void RoomSingleton::load_room(Engine::EntityManager<Component>* manager, RoomComponent* room)
 {
 	load_map(manager, room);
-	load_objects(manager);
+	load_objects(manager, room);
 }
