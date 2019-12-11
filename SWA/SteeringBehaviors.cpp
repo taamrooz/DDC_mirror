@@ -3,6 +3,10 @@
 #include "VelocityComponent.h"
 #include "TileComponent.h"
 #include "CollisionComponent.h"
+#include <QuadTree.h>
+#include "EnemyComponent.h"
+#include "CharacterComponent.h"
+#include <Renderer.h>
 
 using namespace Engine;
 
@@ -58,58 +62,302 @@ vector2d Pursuit(int entity, const int evader, EntityManager<Component>* manager
 }
 
 vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
+	
+	auto enemies = manager->get_all_entities_from_current_room<EnemyComponent>();
+	auto tiles = manager->get_all_entities_from_current_room<TileComponent>();
 
-	//auto pos = manager->get_component<PositionComponent>(entity);
+	auto player = manager->get_all_entities_from_current_room<CharacterComponent>();
+	auto enemyEnt = enemies.front();
 
-	////the feelers are contained in a 
-	//std::vector<vector2d> m_Feelers = CreateFeelers(entity, manager);
-	//double DistToThisIP = 0.0;
-	//double DistToClosestIP = 100000.0;
-	////this will hold an index into the vector of walls 
-	//int ClosestWall = -1;
-	//std::vector<int> walls;
 
-	//auto tiles = manager->get_all_entities_from_current_room<TileComponent>();
-	//for (int tile : tiles) {
-	//	auto coll = manager->get_component<CollisionComponent>(tile);
-	//	if (coll != nullptr) {
-	//		walls.push_back(tile);
-	//	}
-	//}
+		double dist = 1000000000.0;
+		PositionComponent tilePos;
+		vector2d start = vector2d();
+		vector2d end = vector2d();
+		vector2d diff = vector2d();
+		auto vel = manager->get_component<VelocityComponent>(entity);
+		for (auto tile : tiles) {
+			auto collisionComponent = manager->get_component<CollisionComponent>(tile);
+			if (collisionComponent != nullptr) { //checks whether the tile is a wall
+				auto enemyComponent = manager->get_component<EnemyComponent>(entity);
+				auto tileComponent = manager->get_component<TileComponent>(tile);
 
-	//vector2d SteeringForce,
-	//	point, //used for storing temporary info 
-	//	ClosestPoint; //holds the closest intersection point
-	////examine each feeler in turn 
-	//	for (int flr = 0; flr < m_Feelers.size(); ++flr)
-	//	{ 
-	//		//run through each wall checking for any intersection points 
-	//		for (int w = 0; w < walls.size(); ++w) {
-	//			auto wall = manager->get_component<PositionComponent>(walls[w]);
-	//			if(normalize(vector2d(wall->x, wall->y)) == normalize()
-	//			if (LineIntersection(manager, m_Feelers[flr], walls[w], DistToThisIP, point))
-	//			{ 
+				if (enemyComponent != nullptr && tileComponent != nullptr) {
 
-	//				//is this the closest found so far? If so keep a record 
-	//				if (DistToThisIP < DistToClosestIP) {
-	//					DistToClosestIP = DistToThisIP;
-	//					ClosestWall = w;
-	//					ClosestPoint = point;
-	//				}
-	//			}
-	//		}//next wall
-	//	//if an intersection point has been detected, calculate a force 
-	//	//that will direct the agent away 
-	//		if (ClosestWall >=0) { 
-	//			//calculate by what distance the projected position of the agent 
-	//			//will overshoot the wall Vector2D 
-	//			OverShoot = m_Feelers[flr] - ClosestPoint;
-	//			//create a force in the direction of the wall normal, with a magnitude of the overshoot 
-	//			SteeringForce = walls[ClosestWall].Normal() * OverShoot.Length();
-	//		}
-	//	}//next feeler
-	//return SteeringForce;
-	return vector2d();
+					auto wallPos = manager->get_component<PositionComponent>(tile);
+					auto enemyPos = manager->get_component<PositionComponent>(entity);
+
+					auto enemyColl = manager->get_component<CollisionComponent>(entity);
+					auto playerPos = manager->get_component<PositionComponent>(player.front());
+
+					vector2d vec1 = vector2d(wallPos->x, wallPos->y);
+					vector2d vec2 = vector2d(wallPos->x + collisionComponent->width, wallPos->y);
+					vector2d vec3 = vector2d(wallPos->x + collisionComponent->width, wallPos->y + collisionComponent->height);
+					vector2d vec4 = vector2d(wallPos->x, wallPos->y + collisionComponent->height);
+					vector2d enemyVec0 = vector2d(enemyPos->x + (enemyColl->width / 2), enemyPos->y + (enemyColl->height / 2));
+					vector2d enemyVec1 = enemyVec0 + (normalize(vel->steer_force) * 200);
+
+					if (intersects(enemyVec0, enemyVec1, vec1, vec2)) {
+						vector2d oneY = vel->steer_force / vel->steer_force.y();
+						int yDiff = wallPos->y - enemyVec0.y();
+						vector2d collVector = oneY * yDiff;
+						vector2d fullForce = normalize(vel->steer_force) * 200;
+						vector2d rest = fullForce - collVector;
+						if (length(collVector) < dist) {
+							dist = length(collVector);
+							start = vec1;
+							end = vec2;
+							if (playerPos->x > enemyPos->x) {
+								//left
+								vector2d down = normalize(vector2d(rest.y(), length(rest) * -1)) * length(rest);
+								diff = down;
+							}
+							else {
+								vector2d down = normalize(vector2d(rest.y() * -1, length(rest) * -1)) * length(rest);
+								diff = down;
+							}
+						}
+					}
+					if (intersects(enemyVec0, enemyVec1, vec2, vec3) && enemyVec0.x() != vec2.x()) {
+						//Engine::render_line(wallPos->x + 64, wallPos->y, wallPos->x + 64, wallPos->y + tileComponent->height);
+						vector2d oneX = vel->steer_force / vel->steer_force.x();
+						int xDiff = wallPos->x + collisionComponent->width - enemyVec0.x();
+						vector2d collVector = oneX * xDiff;
+						vector2d fullForce = normalize(vel->steer_force) * 200;
+						vector2d rest = fullForce - collVector;
+						if (length(collVector) < dist) {
+							dist = length(collVector);
+							start = vec2;
+							end = vec3;
+							if (playerPos->y > enemyPos->y) {
+								//left
+								vector2d down = normalize(vector2d(length(rest) * 1, rest.x() * -1)) * length(rest);
+								diff = down;
+							}
+							else {
+								vector2d down = normalize(vector2d(length(rest) * 1, rest.x())) * length(rest);
+								diff = down;
+							}
+						}
+					}
+					if (intersects(enemyVec0, enemyVec1, vec4, vec3)) {
+						vector2d oneY = vel->steer_force / vel->steer_force.y();
+						int yDiff = wallPos->y + collisionComponent->height - enemyVec0.y();
+						vector2d collVector = oneY * yDiff;
+						vector2d fullForce = normalize(vel->steer_force) * 200;
+						vector2d rest = fullForce - collVector;
+
+						if (length(collVector) < dist) {
+
+							dist = length(collVector);
+							start = vec4;
+							end = vec3;
+							if (playerPos->x > enemyPos->x) {
+								//left
+								vector2d down = normalize(vector2d(rest.y() * -1, length(rest) * 1)) * length(rest);
+								diff = down;
+							}
+							else {
+								vector2d down = normalize(vector2d(rest.y(), length(rest) * 1)) * length(rest);
+								diff = down;
+
+							}
+						}
+					}
+					if (intersects(enemyVec0, enemyVec1, vec4, vec1)) {
+						//Engine::render_line(wallPos->x, wallPos->y, wallPos->x, wallPos->y + tileComponent->height);
+						vector2d oneX = vel->steer_force / vel->steer_force.x();
+						int xDiff = wallPos->x - enemyVec0.x();
+						vector2d collVector = oneX * xDiff;
+						vector2d fullForce = normalize(vel->steer_force) * 200;
+						vector2d rest = fullForce - collVector;
+						if (length(collVector) < dist) {
+							dist = length(collVector);
+							start = vec1;
+							end = vec4;
+							if (playerPos->y > enemyPos->y) {
+								//left
+								vector2d down = normalize(vector2d(length(rest) * 1 * -1, rest.x())) * length(rest);
+								diff = down;
+							}
+							else {
+								vector2d down = normalize(vector2d(length(rest) * 1 * -1, rest.x() * -1)) * length(rest);
+								diff = down;
+							}
+						}
+					}
+				}
+			}
+
+		}
+		if (diff.x() != 0 || diff.y() != 0) {
+			return (diff) * 0.07 + (vel->steer_force * 0.93);
+		}
+		return vel->steer_force;
+
+
+	/*Engine::Point leftTop{ 0, 0 };
+	Engine::Point botRight{ 1280, 960 }; // TODO: make this not hardcoded
+	Engine::QuadTree quadTree{ leftTop, botRight };
+
+	auto enemies = manager->get_all_entities_from_current_room<EnemyComponent>();
+	auto tiles = manager->get_all_entities_from_current_room<TileComponent>();
+
+	for (auto tile : tiles) {
+		auto collisionComponent = manager->get_component<CollisionComponent>(tile);
+		if (collisionComponent != nullptr) {
+			auto positionComponent = manager->get_component<PositionComponent>(tile);
+
+			int x = positionComponent->x;
+			int y = positionComponent->y;
+			std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ x, y }, tile, collisionComponent->width, collisionComponent->height } };
+			quadTree.insert(node);
+		}
+	}
+	auto player = manager->get_all_entities_from_current_room<CharacterComponent>();
+	auto enemyEnt = manager->get_all_entities_from_current_room<EnemyComponent>().front();
+	for (auto enemy : enemies)
+	{
+		auto collisionComponent = manager->get_component<CollisionComponent>(enemy);
+		auto positionComponent = manager->get_component<PositionComponent>(enemy);
+
+		int x = positionComponent->x;
+		int y = positionComponent->y;
+		std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ x + (collisionComponent->width / 2) - 200, y + (collisionComponent->height / 2) - 200 }, enemy, 400, 400 } };
+		quadTree.insert(node);
+
+	}
+
+	std::vector<std::tuple<std::shared_ptr<Engine::Node>, std::shared_ptr<Engine::Node>>> collisions = quadTree.get_collisions();
+	double dist = 1000000000.0;
+	PositionComponent tilePos;
+	vector2d start = vector2d();
+	vector2d end = vector2d();
+	vector2d diff = vector2d();
+	auto vel = manager->get_component<VelocityComponent>(enemyEnt);
+	for (auto const& node_tuple : collisions) {
+		std::shared_ptr<Engine::Node> first_node = std::get<0>(node_tuple);
+		std::shared_ptr<Engine::Node> second_node = std::get<1>(node_tuple);
+
+		auto collisionComponent = manager->get_component<CollisionComponent>(second_node->id);
+		if (collisionComponent != nullptr) {
+			auto enemyComponent = manager->get_component<EnemyComponent>(first_node->id);
+			auto tileComponent = manager->get_component<TileComponent>(second_node->id);
+
+			if (enemyComponent != nullptr && tileComponent != nullptr) {
+				
+				auto wallPos = manager->get_component<PositionComponent>(second_node->id);
+				auto enemyPos = manager->get_component<PositionComponent>(first_node->id);
+
+				auto enemyColl = manager->get_component<CollisionComponent>(first_node->id);
+				auto playerPos = manager->get_component<PositionComponent>(player.front());
+
+				vector2d vec1 = vector2d(wallPos->x, wallPos->y);
+				vector2d vec2 = vector2d(wallPos->x + collisionComponent->width, wallPos->y);
+				vector2d vec3 = vector2d(wallPos->x + collisionComponent->width, wallPos->y + collisionComponent->height);
+				vector2d vec4 = vector2d(wallPos->x, wallPos->y + collisionComponent->height);
+				vector2d enemyVec0 = vector2d(enemyPos->x + (enemyColl->width / 2), enemyPos->y + (enemyColl->height / 2));
+				vector2d enemyVec1 = enemyVec0 + (normalize(vel->steer_force) * 200);
+
+				Engine::set_render_draw_color(0, 255, 0, 255);
+
+				if (intersects(enemyVec0, enemyVec1, vec1, vec2)) {
+					vector2d oneY = vel->steer_force / vel->steer_force.y();
+					int yDiff = wallPos->y - enemyVec0.y();
+					vector2d collVector = oneY * yDiff;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
+					vector2d rest = fullForce - collVector;
+					if (length(collVector) < dist) {
+						dist = length(collVector);
+						start = vec1;
+						end = vec2;
+						if (playerPos->x > enemyPos->x) {
+							//left
+							vector2d down = normalize(vector2d(rest.y(), length(rest) * -1)) * length(rest);
+							diff = down;
+						}
+						else {
+							vector2d down = normalize(vector2d(rest.y() * -1, length(rest) * -1)) * length(rest);
+							diff = down;
+						}
+					}
+				}
+				if (intersects(enemyVec0, enemyVec1, vec2, vec3) && enemyVec0.x() != vec2.x()) {
+					//Engine::render_line(wallPos->x + 64, wallPos->y, wallPos->x + 64, wallPos->y + tileComponent->height);
+					vector2d oneX = vel->steer_force / vel->steer_force.x();
+					int xDiff = wallPos->x + collisionComponent->width - enemyVec0.x();
+					vector2d collVector = oneX * xDiff;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
+					vector2d rest = fullForce - collVector;
+					if (length(collVector) < dist) {
+						dist = length(collVector);
+						start = vec2;
+						end = vec3;
+						if (playerPos->y > enemyPos->y) {
+							//left
+							vector2d down = normalize(vector2d(length(rest) * 1, rest.x() * -1)) * length(rest);
+							diff = down;
+						}
+						else {
+							vector2d down = normalize(vector2d(length(rest) * 1, rest.x())) * length(rest);
+							diff = down;
+						}
+					}
+				}
+				if (intersects(enemyVec0, enemyVec1, vec4, vec3)) {
+					vector2d oneY = vel->steer_force / vel->steer_force.y();
+					int yDiff = wallPos->y + collisionComponent->height - enemyVec0.y();
+					vector2d collVector = oneY * yDiff;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
+					vector2d rest = fullForce - collVector;
+
+					if (length(collVector) < dist) {
+
+						dist = length(collVector);
+						start = vec4;
+						end = vec3;
+						if (playerPos->x > enemyPos->x) {
+							//left
+							vector2d down = normalize(vector2d(rest.y() * -1, length(rest) * 1)) * length(rest);
+							diff = down;
+						}
+						else {
+							vector2d down = normalize(vector2d(rest.y(), length(rest) * 1)) * length(rest);
+							diff = down;
+
+						}
+					}
+				}
+				if (intersects(enemyVec0, enemyVec1, vec4, vec1)) {
+					//Engine::render_line(wallPos->x, wallPos->y, wallPos->x, wallPos->y + tileComponent->height);
+					vector2d oneX = vel->steer_force / vel->steer_force.x();
+					int xDiff = wallPos->x - enemyVec0.x();
+					vector2d collVector = oneX * xDiff;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
+					vector2d rest = fullForce - collVector;
+					if (length(collVector) < dist) {
+						dist = length(collVector);
+						start = vec1;
+						end = vec4;
+						if (playerPos->y > enemyPos->y) {
+							//left
+							vector2d down = normalize(vector2d(length(rest) * 1 * -1, rest.x())) * length(rest);
+							diff = down;
+						}
+						else {
+							vector2d down = normalize(vector2d(length(rest) * 1 * -1, rest.x() * -1)) * length(rest);
+							diff = down;
+						}
+					}
+				}
+			}
+		}
+	}
+	if (diff.x() != 0 || diff.y() != 0) {
+		return (diff) * 0.07 + (vel->steer_force * 0.93);
+	}
+
+	return vel->steer_force;*/
 }
 
 std::vector<vector2d> CreateFeelers(const int entity, EntityManager<Component>* manager) {

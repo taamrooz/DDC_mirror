@@ -27,6 +27,8 @@ void MoveEnemySystem::update(double dt)
 				break;
 			}
 
+			vel->steer_force = WallAvoidance(enemyEntity, manager_);
+
 
 			const vector2d acceleration = vel->steer_force / enemy->mass;
 			vector2d velocity = vector2d(vel->dx, vel->dy);
@@ -38,6 +40,9 @@ void MoveEnemySystem::update(double dt)
 			if (velocity.y() > vel->maxSpeed) {
 				velocity = { velocity.y(), trunc(vel->maxSpeed) };
 			}
+
+			vel->dx = velocity.x();
+			vel->dy = velocity.y();
 		}
 
 	}
