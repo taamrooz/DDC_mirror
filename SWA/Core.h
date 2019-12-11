@@ -5,6 +5,7 @@
 #include "BaseScene.h"
 #include "SceneManager.h"
 #include "Timer.h"
+#include "Pause.h"
 
 class Core : virtual public Engine::BaseScene
 {

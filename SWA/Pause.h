@@ -5,6 +5,8 @@
 #include "Core.h"
 #include <memory>
 
+class Core;
+
 class Pause :
 	virtual public Engine::BaseScene
 {
