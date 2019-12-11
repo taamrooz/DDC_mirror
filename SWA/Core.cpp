@@ -28,8 +28,9 @@ bool Core::init()
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));
-	systems_.push_back(std::make_unique<MoveEnemySystem>(manager_.get()));
+	
 	systems_.push_back(std::make_unique<RenderSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<MoveEnemySystem>(manager_.get()));
 	systems_.push_back(std::make_unique<CollisionSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<AudioSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<ShootSystem>(manager_.get()));

@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseSystem.h"
 #include "EntityManager.h"
-
+#include "QuadTree.h"
 class MoveEnemySystem :
 	public BaseSystem
 
