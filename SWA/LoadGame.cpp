@@ -83,7 +83,7 @@ void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 }
 
 bool LoadGame::open_game_file(std::string& path) {
-	std::ifstream game("./assets/Levels/" + path);
+	std::ifstream game("./assets/json/" + path);
 	if (game.fail())
 	{
 		return false;
@@ -120,6 +120,6 @@ void LoadGame::render() {
 }
 
 bool LoadGame::init() {
-	get_files("./assets/Levels", "json");
+	get_files("./assets/json", "json");
 	return true;
 }

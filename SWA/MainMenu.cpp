@@ -8,6 +8,7 @@
 #include "Help.h"
 #include "Credits.h"
 #include "LevelEditor.h"
+#include "LoadGame.h"
 
 MainMenu::~MainMenu() = default;
 
@@ -166,6 +167,9 @@ bool MainMenu::init()
 	
 	auto help = new Help(scene_manager_);
 	scene_manager_->add_scene(help, true, "help");
+
+	auto load_game = new LoadGame(scene_manager_);
+	scene_manager_->add_scene(load_game, true, "load_game");
 	
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
 	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
