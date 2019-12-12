@@ -48,7 +48,7 @@ void MoveEnemySystem::update(double dt)
 				break;
 			}
 
-			std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ pos->x + (coll->width / 2) - 150, pos->y + (coll->height / 2) - 150 }, enemyEntity, 300, 300 } };
+			std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ pos->x + (coll->width / 2) - 200, pos->y + (coll->height / 2) - 200 }, enemyEntity, 400, 400 } };
 			quadTree.insert(node);
 			std::vector<std::tuple<std::shared_ptr<Engine::Node>, std::shared_ptr<Engine::Node>>> collisions = quadTree.get_collisions();
 			vel->steer_force = WallAvoidance(enemyEntity, manager_, collisions);

@@ -70,6 +70,7 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 	double dist = 1000000000.0;
 	vector2d diff = vector2d();
 	auto vel = manager->get_component<VelocityComponent>(entity);
+	vector2d tilePos = vector2d();
 	for (auto const& node_tuple : collisions) {
 		std::shared_ptr<Engine::Node> first_node = std::get<0>(node_tuple);
 		std::shared_ptr<Engine::Node> second_node = std::get<1>(node_tuple);
@@ -92,22 +93,23 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 				vector2d vec3 = vector2d(wallPos->x + collisionComponent->width, wallPos->y + collisionComponent->height);
 				vector2d vec4 = vector2d(wallPos->x, wallPos->y + collisionComponent->height);
 				vector2d enemyVec0 = vector2d(enemyPos->x + (enemyColl->width / 2), enemyPos->y + (enemyColl->height / 2));
-				vector2d enemyVec1 = enemyVec0 + (normalize(vel->steer_force) * 150);
+				vector2d enemyVec1 = enemyVec0 + (normalize(vel->steer_force) * 200);
 
 				if (intersects(enemyVec0, enemyVec1, vec1, vec2)) {
 					vector2d oneY = vel->steer_force / vel->steer_force.y();
 					int yDiff = wallPos->y - enemyVec0.y();
 					vector2d collVector = oneY * yDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
 					if (length(collVector) < dist) {
+						tilePos = vector2d(wallPos->x + 32, wallPos->y);
 						dist = length(collVector);
 						if ((playerPos->x > enemyPos->x && enemyComponent->state == Pursuing) || (playerPos->x < enemyPos->x && enemyComponent->state == Fleeing)) {
 							//left
-							diff = normalize(vector2d(rest.y(), length(rest) * -1)) * length(rest);
+							diff = normalize(vector2d(rest.y(), length(rest) * -1.5)) * length(rest);
 						}
 						else {
-							diff = normalize(vector2d(rest.y() * -1, length(rest) * -1)) * length(rest);
+							diff = normalize(vector2d(rest.y() * -1, length(rest) * -1.5)) * length(rest);
 						}
 					}
 				}
@@ -115,16 +117,18 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 					vector2d oneX = vel->steer_force / vel->steer_force.x();
 					int xDiff = wallPos->x + collisionComponent->width - enemyVec0.x();
 					vector2d collVector = oneX * xDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
+					
 					if (length(collVector) < dist) {
+						tilePos = vector2d(wallPos->x + 64, wallPos->y + 32);
 						dist = length(collVector);
 						if ((playerPos->y > enemyPos->y && enemyComponent->state == Pursuing) || (playerPos->y < enemyPos->y && enemyComponent->state == Fleeing)) {
 							//left
-							diff = normalize(vector2d(length(rest) * 1, rest.x() * -1)) * length(rest);
+							diff = normalize(vector2d(length(rest) * 1.5, rest.x() * -1)) * length(rest);
 						}
 						else {
-							diff = normalize(vector2d(length(rest) * 1, rest.x())) * length(rest);
+							diff = normalize(vector2d(length(rest) * 1.5, rest.x())) * length(rest);
 						}
 					}
 				}
@@ -132,42 +136,48 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 					vector2d oneY = vel->steer_force / vel->steer_force.y();
 					int yDiff = wallPos->y + collisionComponent->height - enemyVec0.y();
 					vector2d collVector = oneY * yDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
 
 					if (length(collVector) < dist) {
+						tilePos = vector2d(wallPos->x + 32, wallPos->y + 64);
 						dist = length(collVector);
 						if ((playerPos->x > enemyPos->x && enemyComponent->state == Pursuing) || (playerPos->x < enemyPos->x && enemyComponent->state == Fleeing)) {
 							//left
-							diff = normalize(vector2d(rest.y() * -1, length(rest) * 1)) * length(rest);
+							diff = normalize(vector2d(rest.y() * -1, length(rest) * 1.5)) * length(rest);
 						}
 						else {
-							diff = normalize(vector2d(rest.y(), length(rest) * 1)) * length(rest);
+							diff = normalize(vector2d(rest.y(), length(rest) * 1.5)) * length(rest);
 						}
 					}
 				}
-				if (intersects(enemyVec0, enemyVec1, vec4, vec1)) {
+				if (intersects(enemyVec0, enemyVec1, vec1, vec4)) {
 					vector2d oneX = vel->steer_force / vel->steer_force.x();
 					int xDiff = wallPos->x - enemyVec0.x();
 					vector2d collVector = oneX * xDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
 					if (length(collVector) < dist) {
+						tilePos = vector2d(wallPos->x, wallPos->y + 32);
 						dist = length(collVector);
 						if ((playerPos->y > enemyPos->y && enemyComponent->state == Pursuing) || (playerPos->y < enemyPos->y && enemyComponent->state == Fleeing)) {
 							//left
-							diff = normalize(vector2d(length(rest) * 1 * -1, rest.x())) * length(rest);
+							diff = normalize(vector2d(length(rest) * 1.5 * -1, rest.x())) * length(rest);
 						}
 						else {
-							vector2d diff = normalize(vector2d(length(rest) * 1 * -1, rest.x() * -1)) * length(rest);
+							diff = normalize(vector2d(length(rest) * 1.5 * -1, rest.x() * -1)) * length(rest);
 						}
 					}
 				}
 			}
 
 	}
+	auto pos = manager->get_component<PositionComponent>(entity);
 	if (diff.x() != 0 || diff.y() != 0) {
-		return (diff) * 0.07 + (vel->steer_force * 0.93);
+		int o = length(diff);
+		Engine::render_line(pos->x, pos->y, pos->x + vel->steer_force.x() * 100, pos->y + vel->steer_force.y() * 100);
+		Engine::render_line(tilePos.x(), tilePos.y(), tilePos.x() + diff.x(), tilePos.y() + diff.y());
+		return (diff) * 0.1 + (vel->steer_force * 0.9);
 	}
 	return vel->steer_force;
 
@@ -199,7 +209,7 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 
 		int x = positionComponent->x;
 		int y = positionComponent->y;
-		std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ x + (collisionComponent->width / 2) - 150, y + (collisionComponent->height / 2) - 150 }, enemy, 400, 400 } };
+		std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ x + (collisionComponent->width / 2) - 200, y + (collisionComponent->height / 2) - 200 }, enemy, 400, 400 } };
 		quadTree.insert(node);
 
 	}
@@ -233,7 +243,7 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 				vector2d vec3 = vector2d(wallPos->x + collisionComponent->width, wallPos->y + collisionComponent->height);
 				vector2d vec4 = vector2d(wallPos->x, wallPos->y + collisionComponent->height);
 				vector2d enemyVec0 = vector2d(enemyPos->x + (enemyColl->width / 2), enemyPos->y + (enemyColl->height / 2));
-				vector2d enemyVec1 = enemyVec0 + (normalize(vel->steer_force) * 150);
+				vector2d enemyVec1 = enemyVec0 + (normalize(vel->steer_force) * 200);
 
 				Engine::set_render_draw_color(0, 255, 0, 255);
 
@@ -241,7 +251,7 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 					vector2d oneY = vel->steer_force / vel->steer_force.y();
 					int yDiff = wallPos->y - enemyVec0.y();
 					vector2d collVector = oneY * yDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
 					if (length(collVector) < dist) {
 						dist = length(collVector);
@@ -263,7 +273,7 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 					vector2d oneX = vel->steer_force / vel->steer_force.x();
 					int xDiff = wallPos->x + collisionComponent->width - enemyVec0.x();
 					vector2d collVector = oneX * xDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
 					if (length(collVector) < dist) {
 						dist = length(collVector);
@@ -284,7 +294,7 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 					vector2d oneY = vel->steer_force / vel->steer_force.y();
 					int yDiff = wallPos->y + collisionComponent->height - enemyVec0.y();
 					vector2d collVector = oneY * yDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
 
 					if (length(collVector) < dist) {
@@ -309,7 +319,7 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 					vector2d oneX = vel->steer_force / vel->steer_force.x();
 					int xDiff = wallPos->x - enemyVec0.x();
 					vector2d collVector = oneX * xDiff;
-					vector2d fullForce = normalize(vel->steer_force) * 150;
+					vector2d fullForce = normalize(vel->steer_force) * 200;
 					vector2d rest = fullForce - collVector;
 					if (length(collVector) < dist) {
 						dist = length(collVector);
