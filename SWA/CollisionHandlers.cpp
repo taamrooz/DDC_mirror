@@ -64,13 +64,6 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 					DungeonSingleton::get_instance()->move_dungeon_down();
 				}
 			}
-			else {
-				if (!RoomSingleton::get_instance()->reload_room) {
-					// load next room
-					//RoomSingleton::get_instance()->move_dungeon_down();
-					RoomSingleton::get_instance()->reload_room = true;
-				}
-			}
 		}
 		else {
 			DungeonSingleton::get_instance()->move_dungeon_down();
@@ -133,12 +126,13 @@ void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 		if (health->current_health <= 0) {
 			auto level_boss_component = manager->get_component<LevelBossComponent>(entity1);
 			if (level_boss_component != nullptr) {
-				manager->remove_component_from_entity<AnimationComponent>(entity1);
-				manager->remove_component_from_entity<CollisionComponent>(entity1);
-				manager->remove_component_from_entity<VelocityComponent>(entity1);
-				Engine::stop_music();
-				Engine::play_music("ingame.wav");
-				core->toggle_game_won();
+				manager->remove_entity(entity1);
+				if(DungeonSingleton::get_instance()->is_last_dungeon())
+				{
+					Engine::stop_music();
+					Engine::play_music("ingame.wav");
+					core->toggle_game_won();
+				}
 			}
 			else {
 				manager->remove_entity(entity1);

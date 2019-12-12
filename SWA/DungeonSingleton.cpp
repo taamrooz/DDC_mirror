@@ -168,3 +168,8 @@ uint8_t DungeonSingleton::get_starting_room()
 uint8_t DungeonSingleton::get_current_room_number() const {
 	return current_room_;
 }
+
+bool DungeonSingleton::is_last_dungeon() const
+{
+	return levels_.size() - 1 == current_level_;
+}

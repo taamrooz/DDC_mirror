@@ -60,7 +60,7 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 				if (room != nullptr)
 				{
 					//up
-					if (y <= Constants::k_tile_height * 2 && x >= 7 * Constants::k_tile_width && x <= 11 * Constants::k_tile_width && room->top != nullptr)
+					if (y <= Constants::k_tile_height * 2 && x >= 8 * Constants::k_tile_width && x <= 10 * Constants::k_tile_width && room->top != nullptr)
 					{
 						tiles[i][2] = 0;
 					}
@@ -75,7 +75,7 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 						tiles[i][2] = 0;
 					}
 					//down
-					else if (y == Constants::k_tile_height * 14 && x >= 7 * Constants::k_tile_width && x <= 11 * Constants::k_tile_width && room->down != nullptr) {
+					else if (y == Constants::k_tile_height * 14 && x >= 8 * Constants::k_tile_width && x <= 10 * Constants::k_tile_width && room->down != nullptr) {
 						tiles[i][2] = 0;
 					}
 					else
@@ -178,7 +178,7 @@ void RoomSingleton::load_objects(Engine::EntityManager<Component>* manager, Room
 
 RoomSingleton* RoomSingleton::get_instance()
 {
-	if (instance == 0) {
+	if (instance == nullptr) {
 		instance = new RoomSingleton();
 	}
 	return instance;
