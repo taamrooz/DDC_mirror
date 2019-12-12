@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "RoomComponent.h"
 #include "RoomSingleton.h"
+#include "DungeonSingleton.h"
 
 namespace Engine {
 	template<typename T> class EntityManager
@@ -66,7 +67,7 @@ namespace Engine {
 				for(auto i = components_by_class_.at(type).begin(); i != components_by_class_.at(type).end(); ++i)
 				{
 					auto room_component = get_component<RoomComponent>(i->first);
-					if (room_component->room_name.compare(RoomSingleton::get_instance()->get_current_room_name()) == 0)
+					if (room_component->room_index == DungeonSingleton::get_instance()->get_current_room_number())
 					{
 						list.push_back(i->first);
 					}

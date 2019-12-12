@@ -129,9 +129,6 @@
     <ClCompile Include="InventorySystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="LevelSingleton.cpp">
-      <Filter>Source Files\Singletons</Filter>
-    </ClCompile>
     <ClCompile Include="EndGameWin.cpp">
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
@@ -158,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="SaveHelper.cpp">
       <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="DungeonSingleton.cpp">
+      <Filter>Source Files\Singletons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,9 +278,6 @@
     <ClInclude Include="LevelBossComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="LevelSingleton.h">
-      <Filter>Header Files\Singletons</Filter>
-    </ClInclude>
     <ClInclude Include="EndGameWin.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
@@ -313,6 +310,12 @@
     </ClInclude>
     <ClInclude Include="MoveEnemySystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="DungeonSingleton.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SaveHelper.h">
       <Filter>Header Files\Helpers</Filter>

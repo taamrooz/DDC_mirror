@@ -172,7 +172,7 @@
     <ClCompile Include="InventorySystem.cpp" />
     <ClCompile Include="KeyBindingSingleton.cpp" />
     <ClCompile Include="LevelEditor.cpp" />
-    <ClCompile Include="LevelSingleton.cpp" />
+    <ClCompile Include="DungeonSingleton.cpp" />
     <ClCompile Include="LoadGame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -207,6 +207,7 @@
     <ClInclude Include="DamagingComponent.h" />
     <ClInclude Include="EndGameLose.h" />
     <ClInclude Include="EnemyComponent.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="LadderComponent.h" />
     <ClInclude Include="EditorObject.h" />
     <ClInclude Include="EndGameWin.h" />
@@ -217,7 +218,7 @@
     <ClInclude Include="InventoryComponent.h" />
     <ClInclude Include="KeyBindingSingleton.h" />
     <ClInclude Include="LevelBossComponent.h" />
-    <ClInclude Include="LevelSingleton.h" />
+    <ClInclude Include="DungeonSingleton.h" />
     <ClInclude Include="LevelEditor.h" />
     <ClInclude Include="LoadGame.h" />
     <ClInclude Include="MainMenu.h" />

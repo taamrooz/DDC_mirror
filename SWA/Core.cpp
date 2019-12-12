@@ -20,6 +20,7 @@
 #include "SaveHelper.h"
 #include "MoveEnemySystem.h"
 #include "CheatSystem.h"
+#include "DungeonSingleton.h"
 #include "LevelSingleton.h"
 #include "TileSetSingleton.h"
 
@@ -38,6 +39,7 @@ bool Core::init()
 	scene_manager_->add_scene(endgamewin, true, "win");
 	scene_manager_->add_scene(endgamelose, true, "lose");
 	
+	DungeonSingleton::get_instance()->load_all_dungeons();
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));
@@ -49,6 +51,7 @@ bool Core::init()
 	systems_.push_back(std::make_unique<CheatSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
+	
 	return true;
 }
 

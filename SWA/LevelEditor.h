@@ -40,12 +40,6 @@ private:
 	std::unique_ptr<Texture> save_text_texture_ = nullptr;
 	std::unique_ptr<Texture> menu_item_dungeon_ = nullptr;
 	std::unique_ptr<Texture> menu_item_room_ = nullptr;
-	constexpr static int k_screen_width_ = 1280;
-	constexpr static int k_screen_height_ = 960;
-	constexpr static int k_total_tiles_ = 300;
-	constexpr static int k_tile_height_ = 64;
-	constexpr static int k_tile_width_ = 64;
-	constexpr static int k_total_sprites_ = 36;
 	constexpr static int k_lmb_ = 1;
 	constexpr static int k_rmb_ = 3;
 	const std::string k_path_ = "Tileset.png";

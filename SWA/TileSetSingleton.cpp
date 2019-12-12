@@ -1,21 +1,22 @@
 #include "TileSetSingleton.h"
+#include "Constants.h"
 
 TileSetSingleton::TileSetSingleton() {
 	int x = 0;
 	int y = 0;
-	for (int i = 0; i < k_total_tiles_; ++i) {
+	for (int i = 0; i < Constants::k_total_tiles; ++i) {
 		std::vector<int> myRow(4);
 		tiletypes.push_back(myRow);
 		tiletypes[i][0] = x;
 		tiletypes[i][1] = y;
-		tiletypes[i][2] = k_tile_width_;
-		tiletypes[i][3] = k_tile_height_;
+		tiletypes[i][2] = Constants::k_tile_width;
+		tiletypes[i][3] = Constants::k_tile_height;
 
-		y += k_tile_height_;
+		y += Constants::k_tile_height;
 		if (y >= 448)
 		{
 			y = 0;
-			x += k_tile_width_;
+			x += Constants::k_tile_width;
 		}
 	}
 
