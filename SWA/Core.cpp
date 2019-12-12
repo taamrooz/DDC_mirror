@@ -20,6 +20,8 @@
 #include "SaveHelper.h"
 #include "MoveEnemySystem.h"
 #include "CheatSystem.h"
+#include "LevelSingleton.h"
+#include "TileSetSingleton.h"
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -86,18 +88,16 @@ void Core::update()
 void Core::render()
 {
 	auto timer = Engine::pre_update();
-	//Engine::Clear();
 	update();
 	Engine::render(timer);
 }
 
 void Core::cleanup()
 {
-	if (manager_)
-	{
-		manager_ = nullptr;
-	}
-	systems_.clear();
+	KeyBindingSingleton::get_instance()->reset_properties();
+	LevelSingleton::get_instance()->delete_instance();
+	TileSetSingleton::get_instance()->delete_instance();
+	RoomSingleton::get_instance()->delete_instance();
 }
 
 void Core::StopGameLoop() {

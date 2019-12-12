@@ -241,7 +241,7 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 	if (charC != nullptr) {
 		auto ani = manager->get_component<AnimationComponent>(entity1);
 		ani->animations.erase(ani->currentState);
-		ani->animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/chest_empty_open.png", 3))));
+		ani->animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::unique_ptr<Animation>(Engine::load_animation("Animations/chest_empty_open.png", 3))));
 		ani->animations.at(ani->currentState)->pause = false;
 		ani->animations.at(ani->currentState)->loop = false;
 		ani->animations.at(ani->currentState)->scale = 3;

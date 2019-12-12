@@ -48,7 +48,7 @@ void LevelEditor::RenderDungeonFilepicker()
 	GetFiles("./assets/Levels/Dungeons", "dungeon");
 	if (text_.length() > 0)
 	{
-		text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
+		text_texture_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
 	}
 	int x = 100;
 	int y = 50;
@@ -106,7 +106,7 @@ void LevelEditor::RenderDungeonSave()
 {
 	if (save_file_name_.length() > 0)
 	{
-		save_text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, save_file_name_.c_str()));
+		save_text_texture_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, save_file_name_.c_str()));
 	}
 	auto save_text = Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Please enter dungeon name:");
 	Engine::render_texture(save_text, 400, 300, nullptr);
@@ -152,7 +152,7 @@ void LevelEditor::RenderRoomFilePicker()
 	GetFiles("./assets/Levels", "map");
 	if (text_.length() > 0)
 	{
-		text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
+		text_texture_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
 	}
 	int x = 100;
 	int y = 50;
@@ -193,7 +193,7 @@ void LevelEditor::RenderRoomSave()
 {
 	if (save_file_name_.length() > 0)
 	{
-		save_text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, save_file_name_.c_str()));
+		save_text_texture_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, save_file_name_.c_str()));
 	}
 	auto save_text = Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Please enter map name:");
 	Engine::render_texture(save_text, 400, 300, nullptr);
@@ -498,7 +498,7 @@ void LevelEditor::GetFiles(const char* path, const std::string extension)
 		{
 			std::string filename = entry.path().filename().string();
 			file_names_.emplace_back(filename);
-			file_name_textures_.push_back(std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, filename.c_str())));
+			file_name_textures_.push_back(std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, filename.c_str())));
 		}
 	}
 }
@@ -775,8 +775,8 @@ bool LevelEditor::init()
 
 	InitObjects();
 	InitRoom();
-	menu_item_dungeon_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Dungeon Editor"));
-	menu_item_room_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Room Editor"));
+	menu_item_dungeon_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Dungeon Editor"));
+	menu_item_room_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Room Editor"));
 
 	Engine::StartTextInput();
 	return true;

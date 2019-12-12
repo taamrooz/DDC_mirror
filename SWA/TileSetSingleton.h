@@ -19,4 +19,5 @@ public:
 	std::string path;
 	std::vector<std::vector<int>> tiletypes;
 	static TileSetSingleton* get_instance();
+	void delete_instance();
 };

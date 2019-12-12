@@ -124,6 +124,6 @@ void RenderSystem::update(double dt)
 	//render current level information
 	int current_level_number = LevelSingleton::get_instance()->get_current_level_number();
 	std::string text = "Level " + std::to_string(current_level_number);
-	level_hud = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 0,255,0, 255 }, text.c_str()));
+	level_hud = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 0,255,0, 255 }, text.c_str()));
 	Engine::render_texture(level_hud.get(), 550, 15, nullptr);
 }

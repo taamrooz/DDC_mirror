@@ -12,7 +12,7 @@ RoomSingleton* RoomSingleton::instance = 0;
 
 RoomSingleton* RoomSingleton::get_instance()
 {
-	if (instance == 0) {
+	if (instance == nullptr) {
 		instance = new RoomSingleton();
 	}
 	return instance;
@@ -28,4 +28,10 @@ void RoomSingleton::init_first_room() {
 
 void RoomSingleton::init_next_room() {
 	current_room_index++;
+}
+
+void RoomSingleton::delete_instance()
+{
+	delete instance;
+	instance = nullptr;
 }

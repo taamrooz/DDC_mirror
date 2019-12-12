@@ -3,6 +3,7 @@
 
 LevelSingleton::LevelSingleton() {
 	current_level_index = 0;
+	reload_level = true;
 }
 
 LevelSingleton* LevelSingleton::instance = 0;
@@ -28,4 +29,10 @@ void LevelSingleton::init_next_level() {
 
 int LevelSingleton::get_current_level_number() const {
 	return (1 + current_level_index);
+}
+
+void LevelSingleton::delete_instance()
+{
+	delete instance;
+	instance = nullptr;
 }

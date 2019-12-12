@@ -16,4 +16,5 @@ public:
 	std::string room_suffix;
 	void init_first_room();
 	void init_next_room();
+	void delete_instance();
 };

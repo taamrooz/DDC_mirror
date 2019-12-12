@@ -56,10 +56,10 @@ void Pause::input() {
 void Pause::cleanup() { }
 
 bool Pause::init() {
-	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
-	paused_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,196,0,255 }, "PAUSED"));
-	helper_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 255, 255, 255 }, "Press P to continue ..."));
-	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
+	title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
+	paused_texture_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 255,196,0,255 }, "PAUSED"));
+	helper_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 255, 255, 255 }, "Press P to continue ..."));
+	background_ = std::unique_ptr<Animation>(Engine::load_animation("mainmenu.png", 3));
 	background_->scale = 1280.0 / 960.0;
 	Engine::StartTextInput();
 	return true;

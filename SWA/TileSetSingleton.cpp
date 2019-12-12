@@ -33,3 +33,9 @@ TileSetSingleton* TileSetSingleton::get_instance()
 	}
 	return instance;
 }
+
+void TileSetSingleton::delete_instance()
+{
+	delete instance;
+	instance = nullptr;
+}

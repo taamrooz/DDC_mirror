@@ -14,4 +14,5 @@ public:
 	void init_next_level();
 	bool reload_level;
 	int get_current_level_number() const;
+	void delete_instance();
 };
