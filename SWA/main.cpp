@@ -9,6 +9,7 @@
 #include "Pause.h"
 #include "LevelEditor.h"
 #include "CheatScene.h"
+#include "Advertisement.h"
 #include "Highscores.h"
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
@@ -24,7 +25,7 @@ void init_scenes()
 	auto level = new LevelEditor(sm.get());
 	auto credits = new Credits(sm.get());
 	auto help = new Help(sm.get());
-	auto pause = new Pause(sm.get());
+	auto pause = new Pause(sm.get(), core);
 	auto endgamewin = new EndGameWin(sm.get());
 	auto endgamelose = new EndGameLose(sm.get());
 	auto cheats = new CheatScene(sm.get());

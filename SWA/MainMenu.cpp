@@ -17,12 +17,18 @@ MainMenu::MainMenu(Engine::SceneManager* manager) : BaseScene(manager)
 
 void MainMenu::render()
 {
+	if (timer_.IsPaused())
+		timer_.Start();
 	const auto timer = Engine::pre_update();
 	input();
 
+	if ((timer_.GetTicks() / (double)CLOCKS_PER_SEC) >= 5.0) {
+		current_advertisement_index++;
+		timer_.Restart();
+		if (current_advertisement_index == banner.size())
+			current_advertisement_index = 0;
+	}
 	Engine::update_animation(background_.get(), 0, 0);
-	Engine::update_animation(nike_advertisement_.get(), 900, 300);
-	Engine::update_animation(phone_advertisement_.get(), 10, 300);
 	Engine::update_animation(banner[current_advertisement_index].get(), 10, 300);
 	Engine::render_texture(title_.get(), 250, 200, nullptr);
 	Engine::render_texture(start_.get(), 550, 320, nullptr);
@@ -170,14 +176,24 @@ bool MainMenu::init()
 		Engine::destroy_renderer();
 		return false;
 	}
+
+	// init advertisement
+	phone_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("iphone_11.png", 1, true));
+	phone_advertisement_->scale = 0.30;
+	nike_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("nike.png", 1, true));
+	nike_advertisement_->scale = 0.30;
+	oral_b_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("oral_b.png", 1, true));
+	oral_b_advertisement_->scale = 0.50;
+	football_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("klassieker.png", 1, true));
+	football_advertisement_->scale = 0.30;
+	banner.push_back(std::move(phone_advertisement_));
+	banner.push_back(std::move(nike_advertisement_));
+	banner.push_back(std::move(oral_b_advertisement_));
+	banner.push_back(std::move(football_advertisement_));
+
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
 	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3, false));
 	background_->scale = 1280.0 / 960.0;
-	phone_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("iphone_11.png", 1, true));
-	nike_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("nike.png", 1, true));
-	nike_advertisement_->scale = 0.30;
-	banner.push_back(nike_advertisement_);
-	banner.push_back(phone_advertisement_);
 	start_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game"));
 	load_game_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Load game"));
 	credits_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits"));

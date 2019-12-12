@@ -15,6 +15,8 @@ private:
 	std::vector<std::unique_ptr<Animation>> banner;
 	std::unique_ptr<Animation> nike_advertisement_ = nullptr;
 	std::unique_ptr<Animation> phone_advertisement_ = nullptr;
+	std::unique_ptr<Animation> oral_b_advertisement_ = nullptr;
+	std::unique_ptr<Animation> football_advertisement_ = nullptr;
 	std::unique_ptr<Texture> start_ = nullptr;
 	std::unique_ptr<Texture> load_game_ = nullptr;
 	std::unique_ptr<Texture> credits_ = nullptr;

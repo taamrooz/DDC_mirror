@@ -33,7 +33,7 @@ bool CheatScene::init()
 {
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
 	sub_title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 40, { 255,0,0, 255 }, "Cheats"));
-	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
+	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3, false));
 	background_->scale = 1280.0 / 960.0;
 	speedhack_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, (    "Hold down to move faster: " + KeyBindingSingleton::get_instance()->get_speedhack_key()).c_str()));
 	regain_health_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, ("Regain all health:        " + KeyBindingSingleton::get_instance()->get_invincible_key()).c_str()));
