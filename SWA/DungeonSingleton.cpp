@@ -91,6 +91,7 @@ void DungeonSingleton::move_room_up()
 	if (level_rooms_[current_room_ - 5] != nullptr)
 	{
 		current_room_ -= 5;
+		RoomSingleton::get_instance()->reload_room = true;
 	}
 }
 
@@ -99,6 +100,7 @@ void DungeonSingleton::move_room_right()
 	if (level_rooms_[current_room_ + 1] != nullptr)
 	{
 		current_room_ += 1;
+		RoomSingleton::get_instance()->reload_room = true;
 	}
 }
 
@@ -107,6 +109,7 @@ void DungeonSingleton::move_room_down()
 	if (level_rooms_[current_room_ + 5] != nullptr)
 	{
 		current_room_ += 5;
+		RoomSingleton::get_instance()->reload_room = true;
 	}
 }
 
@@ -115,6 +118,7 @@ void DungeonSingleton::move_room_left()
 	if (level_rooms_[current_room_ - 1] != nullptr)
 	{
 		current_room_ -= 1;
+		RoomSingleton::get_instance()->reload_room = true;
 	}
 }
 

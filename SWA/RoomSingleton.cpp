@@ -60,23 +60,83 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 				if (room != nullptr)
 				{
 					//up
-					if (y <= Constants::k_tile_height * 2 && x >= 8 * Constants::k_tile_width && x <= 10 * Constants::k_tile_width && room->top != nullptr)
+					if (y <= Constants::k_tile_height * 2 && x >= 7 * Constants::k_tile_width && x <= 11 * Constants::k_tile_width && room->top != nullptr)
 					{
-						tiles[i][2] = 0;
+						if (y == 0 && x == 7 * Constants::k_tile_width)
+						{
+							tiles[i][2] = 45;
+						}
+						else if (y == 0 && x == 11 * Constants::k_tile_width)
+						{
+							tiles[i][2] = 38;
+						}
+						else
+						{
+							if(x >= 8 * Constants::k_tile_width && x <= 10 * Constants::k_tile_width)
+							{
+								tiles[i][2] = 0;
+							}
+							else
+							{
+								tiles[i][2] = tileType;
+							}
+						}
+
 					}
 					//left
-					else if (x == 0 && y >= 6 * Constants::k_tile_height && y <= 8 * Constants::k_tile_height && room->left != nullptr)
+					else if (x == 0 && y >= 4 * Constants::k_tile_height && y <= 9 * Constants::k_tile_height && room->left != nullptr)
 					{
-						tiles[i][2] = 0;
+						if (y == 4 * Constants::k_tile_height)
+						{
+							tiles[i][2] = 45;
+						}
+						else if(y == 5 * Constants::k_tile_height)
+						{
+							tiles[i][2] = 12;
+						}
+						else if(y == 9 * Constants::k_tile_height)
+						{
+							tiles[i][2] = 3;
+						}
+						else
+						{
+							tiles[i][2] = 0;
+						}
 					}
 					//right
-					else if (x == Constants::k_tile_width * 19 && y >= 6 * Constants::k_tile_height && y <= 8 * Constants::k_tile_height && room->right != nullptr)
+					else if (x == Constants::k_tile_width * 19 && y >= 4 * Constants::k_tile_height && y <= 9 * Constants::k_tile_height && room->right != nullptr)
 					{
-						tiles[i][2] = 0;
+						if(y == 4 * Constants::k_tile_height)
+						{
+							tiles[i][2] = 38;
+						}
+						else if (y == 5 * Constants::k_tile_height)
+						{
+							tiles[i][2] = 5;
+						}
+						else if (y == 9 * Constants::k_tile_height)
+						{
+							tiles[i][2] = 4;
+						}
+						else
+						{
+							tiles[i][2] = 0;
+						}
 					}
 					//down
-					else if (y == Constants::k_tile_height * 14 && x >= 8 * Constants::k_tile_width && x <= 10 * Constants::k_tile_width && room->down != nullptr) {
-						tiles[i][2] = 0;
+					else if (y == Constants::k_tile_height * 14 && x >= 7 * Constants::k_tile_width && x <= 11 * Constants::k_tile_width && room->down != nullptr) {
+						if (x == 7 * Constants::k_tile_width)
+						{
+							tiles[i][2] = 24;
+						}
+						else if (x == 11 * Constants::k_tile_width)
+						{
+							tiles[i][2] = 31;
+						}
+						else
+						{
+							tiles[i][2] = 0;
+						}
 					}
 					else
 					{
