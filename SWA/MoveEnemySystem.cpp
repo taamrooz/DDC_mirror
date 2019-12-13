@@ -18,8 +18,6 @@ void MoveEnemySystem::update(double dt)
 		{
 			auto enemy = manager_->get_component<EnemyComponent>(enemyEntity);
 			auto vel = manager_->get_component<VelocityComponent>(enemyEntity);
-			auto pos = manager_->get_component<PositionComponent>(enemyEntity);
-			auto coll = manager_->get_component<CollisionComponent>(enemyEntity);
 
 			switch (enemy->state) {
 			case Fleeing:
@@ -32,7 +30,6 @@ void MoveEnemySystem::update(double dt)
 
 			vel->steer_force = WallAvoidance(enemyEntity, manager_);
 
-
 			const vector2d acceleration = vel->steer_force / enemy->mass;
 			vector2d velocity = vector2d(vel->dx, vel->dy);
 			velocity += acceleration * dt;
@@ -43,10 +40,8 @@ void MoveEnemySystem::update(double dt)
 			if (velocity.y() > vel->maxSpeed) {
 				velocity = { velocity.y(), trunc(vel->maxSpeed) };
 			}
-
 			vel->dx = velocity.x();
 			vel->dy = velocity.y();
 		}
-		int k = 0;
 	}
 }
