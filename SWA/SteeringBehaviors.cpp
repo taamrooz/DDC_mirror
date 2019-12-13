@@ -61,7 +61,7 @@ vector2d Pursuit(int entity, const int evader, EntityManager<Component>* manager
 	return Seek(entity, evaderPos + vector2d(evaderVelocity->dx, evaderVelocity->dy) * LookAheadTime, manager);
 }
 
-vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std::vector<std::tuple<std::shared_ptr<Engine::Node>, std::shared_ptr<Engine::Node>>> collisions) {
+vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
 
 	auto player = manager->get_all_entities_from_current_room<CharacterComponent>();
 	auto playerPos = manager->get_component<PositionComponent>(player.front());
@@ -78,95 +78,92 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager, std:
 	const vector2d oneX = vel->steer_force / vel->steer_force.x();
 	const vector2d oneY = vel->steer_force / vel->steer_force.y();
 	auto enemyComponent = manager->get_component<EnemyComponent>(entity);
+	auto collisionComponents = manager->get_all_entities_from_current_room<CollisionComponent>();
 
-	for (auto const& node_tuple : collisions) {
-		const int tile = std::get<1>(node_tuple)->id;
+	for (auto collComp : collisionComponents) {
+		const int tile = collComp;
 		auto tileComponent = manager->get_component<TileComponent>(tile);
 
-		if (entity == std::get<0>(node_tuple)->id && tileComponent != nullptr) {
-			//Engine::set_render_draw_color(0, 255, 0, 255);
-			//Engine::draw_rectangle(Engine::rect2d(tileComponent->x_pos, tileComponent->y_pos, tileComponent->width, tileComponent->height));
+		if (tileComponent != nullptr) {
 			auto wallPos = manager->get_component<PositionComponent>(tile);
-			auto collisionComponent = manager->get_component<CollisionComponent>(tile);
 
-			const vector2d vec1 = vector2d(wallPos->x, wallPos->y);
-			const vector2d vec2 = vector2d(wallPos->x + collisionComponent->width, wallPos->y);
-			const vector2d vec3 = vector2d(wallPos->x + collisionComponent->width, wallPos->y + collisionComponent->height);
-			const vector2d vec4 = vector2d(wallPos->x, wallPos->y + collisionComponent->height);
+			if (wallPos->x > enemyPos->x - 200 && wallPos->x < enemyPos->x + 200 && wallPos->y > enemyPos->y - 200 && wallPos->y < enemyPos->y + 200) {
+				auto collisionComponent = manager->get_component<CollisionComponent>(tile);
 
-			if (intersects(enemyVec0, enemyVec1, vec1, vec2)) {
-				int yDiff = wallPos->y - enemyVec0.y();
-				vector2d collVector = oneY * yDiff;
-				vector2d rest = collRange - collVector;
-				if (length(collVector) < dist) {
-					//tilePos = vector2d(wallPos->x + 32, wallPos->y);
-					dist = length(collVector);
-					if ((playerPos->x > enemyPos->x && enemyComponent->state == Pursuing) || (playerPos->x < enemyPos->x && enemyComponent->state == Fleeing)) {
-						//left
-						diff = normalize(vector2d(rest.y(), length(rest) * -1.5)) * length(rest);
+				//vectors for every side of a wall
+				const vector2d vec1 = vector2d(wallPos->x, wallPos->y);
+				const vector2d vec2 = vector2d(wallPos->x + collisionComponent->width, wallPos->y);
+				const vector2d vec3 = vector2d(wallPos->x + collisionComponent->width, wallPos->y + collisionComponent->height);
+				const vector2d vec4 = vector2d(wallPos->x, wallPos->y + collisionComponent->height);
+
+				if (intersects(enemyVec0, enemyVec1, vec1, vec2)) { //intersects with top of the wall
+					int yDiff = wallPos->y - enemyVec0.y();
+					vector2d collVector = oneY * yDiff;
+					vector2d rest = collRange - collVector;
+					if (length(collVector) < dist) { //check whether tihs intersection is closer to the enemy than the previously found intersection
+						dist = length(collVector);
+						// check whether the excessive force should be directed downward or upward
+						if ((playerPos->x > enemyPos->x && enemyComponent->state == Pursuing) || (playerPos->x < enemyPos->x && enemyComponent->state == Fleeing)) {
+							diff = normalize(vector2d(rest.y(), length(rest) * -1.5)) * length(rest);
+						}
+						else {
+							diff = normalize(vector2d(rest.y() * -1, length(rest) * -1.5)) * length(rest);
+						}
 					}
-					else {
-						diff = normalize(vector2d(rest.y() * -1, length(rest) * -1.5)) * length(rest);
+				}
+				if (intersects(enemyVec0, enemyVec1, vec2, vec3) && enemyVec0.x() != vec2.x()) { //intersects with right of the wall
+					int xDiff = wallPos->x + collisionComponent->width - enemyVec0.x();
+					vector2d collVector = oneX * xDiff;
+					vector2d rest = collRange - collVector;
+
+					if (length(collVector) < dist) { //check whether tihs intersection is closer to the enemy than the previously found intersection
+						dist = length(collVector);
+						// check whether the excessive force should be directed left or right
+						if ((playerPos->y > enemyPos->y && enemyComponent->state == Pursuing) || (playerPos->y < enemyPos->y && enemyComponent->state == Fleeing)) {
+							diff = normalize(vector2d(length(rest) * 1.5, rest.x() * -1)) * length(rest);
+						}
+						else {
+							diff = normalize(vector2d(length(rest) * 1.5, rest.x())) * length(rest);
+						}
+					}
+				}
+				if (intersects(enemyVec0, enemyVec1, vec4, vec3)) { //intersects with bottom of the wall
+					int yDiff = wallPos->y + collisionComponent->height - enemyVec0.y();
+					vector2d collVector = oneY * yDiff;
+					vector2d rest = collRange - collVector;
+					// check whether the excessive force should be directed left or right
+					if (length(collVector) < dist) { //check whether tihs intersection is closer to the enemy than the previously found intersection
+						dist = length(collVector);
+						if ((playerPos->x > enemyPos->x && enemyComponent->state == Pursuing) || (playerPos->x < enemyPos->x && enemyComponent->state == Fleeing)) {
+							diff = normalize(vector2d(rest.y() * -1, length(rest) * 1.5)) * length(rest);
+						}
+						else {
+							diff = normalize(vector2d(rest.y(), length(rest) * 1.5)) * length(rest);
+						}
+					}
+				}
+				if (intersects(enemyVec0, enemyVec1, vec1, vec4)) { //intersects with left of the wall
+					int xDiff = wallPos->x - enemyVec0.x();
+					vector2d collVector = oneX * xDiff;
+					vector2d rest = collRange - collVector; 
+					if (length(collVector) < dist) { //check whether tihs intersection is closer to the enemy than the previously found intersection
+						dist = length(collVector);
+						// check whether the excessive force should be directed downward or upward
+						if ((playerPos->y > enemyPos->y && enemyComponent->state == Pursuing) || (playerPos->y < enemyPos->y && enemyComponent->state == Fleeing)) {
+							diff = normalize(vector2d(length(rest) * 1.5 * -1, rest.x())) * length(rest);
+						}
+						else {
+							diff = normalize(vector2d(length(rest) * 1.5 * -1, rest.x() * -1)) * length(rest);
+						}
 					}
 				}
 			}
-			if (intersects(enemyVec0, enemyVec1, vec2, vec3) && enemyVec0.x() != vec2.x()) {
-				int xDiff = wallPos->x + collisionComponent->width - enemyVec0.x();
-				vector2d collVector = oneX * xDiff;
-				vector2d rest = collRange - collVector;
-
-				if (length(collVector) < dist) {
-					//tilePos = vector2d(wallPos->x + 64, wallPos->y + 32);
-					dist = length(collVector);
-					if ((playerPos->y > enemyPos->y && enemyComponent->state == Pursuing) || (playerPos->y < enemyPos->y && enemyComponent->state == Fleeing)) {
-						//left
-						diff = normalize(vector2d(length(rest) * 1.5, rest.x() * -1)) * length(rest);
-					}
-					else {
-						diff = normalize(vector2d(length(rest) * 1.5, rest.x())) * length(rest);
-					}
-				}
-			}
-			if (intersects(enemyVec0, enemyVec1, vec4, vec3)) {
-				int yDiff = wallPos->y + collisionComponent->height - enemyVec0.y();
-				vector2d collVector = oneY * yDiff;
-				vector2d rest = collRange - collVector;
-
-				if (length(collVector) < dist) {
-					//tilePos = vector2d(wallPos->x + 32, wallPos->y + 64);
-					dist = length(collVector);
-					if ((playerPos->x > enemyPos->x && enemyComponent->state == Pursuing) || (playerPos->x < enemyPos->x && enemyComponent->state == Fleeing)) {
-						//left
-						diff = normalize(vector2d(rest.y() * -1, length(rest) * 1.5)) * length(rest);
-					}
-					else {
-						diff = normalize(vector2d(rest.y(), length(rest) * 1.5)) * length(rest);
-					}
-				}
-			}
-			if (intersects(enemyVec0, enemyVec1, vec1, vec4)) {
-				int xDiff = wallPos->x - enemyVec0.x();
-				vector2d collVector = oneX * xDiff;
-				vector2d rest = collRange - collVector;
-				if (length(collVector) < dist) {
-					//tilePos = vector2d(wallPos->x, wallPos->y + 32);
-					dist = length(collVector);
-					if ((playerPos->y > enemyPos->y && enemyComponent->state == Pursuing) || (playerPos->y < enemyPos->y && enemyComponent->state == Fleeing)) {
-						//left
-						diff = normalize(vector2d(length(rest) * 1.5 * -1, rest.x())) * length(rest);
-					}
-					else {
-						diff = normalize(vector2d(length(rest) * 1.5 * -1, rest.x() * -1)) * length(rest);
-					}
-				}
-			}
+			
 		}
 
 	}
 	if (diff.x() != 0 || diff.y() != 0) {
-		//Engine::render_line(pos->x, pos->y, pos->x + vel->steer_force.x() * 100, pos->y + vel->steer_force.y() * 100);
-		//Engine::render_line(tilePos.x(), tilePos.y(), tilePos.x() + diff.x(), tilePos.y() + diff.y());
-		return normalize((diff) * 0.1 + (vel->steer_force * 0.9)) * length(vel->steer_force);
+		return normalize(diff * 0.1 + vel->steer_force * 0.9) * length(vel->steer_force);
 	}
 	return vel->steer_force;
 }

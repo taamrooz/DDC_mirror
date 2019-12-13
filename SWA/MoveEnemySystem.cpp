@@ -11,23 +11,6 @@ MoveEnemySystem::MoveEnemySystem(Engine::EntityManager<Component>* manager) : Ba
 
 void MoveEnemySystem::update(double dt)
 {
-	Engine::Point leftTop{ 0, 0 };
-	Engine::Point botRight{ 1280, 960 }; // TODO: make this not hardcoded
-	Engine::QuadTree quadTree{ leftTop, botRight };
-
-	auto collisionComponents = manager_->get_all_entities_from_current_room<CollisionComponent>();
-
-	for (auto collComp : collisionComponents) {
-		auto tileComponent = manager_->get_component<TileComponent>(collComp);
-		if (tileComponent != nullptr) {
-			auto collisionComponent = manager_->get_component<CollisionComponent>(collComp);
-			auto positionComponent = manager_->get_component<PositionComponent>(collComp);
-
-			std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ positionComponent->x, positionComponent->y }, collComp, collisionComponent->width, collisionComponent->height } };
-			quadTree.insert(node);
-		}
-	}
-
 	auto enemies = manager_->get_all_entities_from_current_room<EnemyComponent>();
 	auto player = manager_->get_all_entities_from_current_room<CharacterComponent>();
 	if (!enemies.empty() && !player.empty()) {
@@ -47,10 +30,7 @@ void MoveEnemySystem::update(double dt)
 				break;
 			}
 
-			std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ pos->x + (coll->width / 2) - 200, pos->y + (coll->height / 2) - 200 }, enemyEntity, 400, 400 } };
-			quadTree.insert(node);
-			std::vector<std::tuple<std::shared_ptr<Engine::Node>, std::shared_ptr<Engine::Node>>> collisions = quadTree.get_collisions();
-			vel->steer_force = WallAvoidance(enemyEntity, manager_, collisions);
+			vel->steer_force = WallAvoidance(enemyEntity, manager_);
 
 
 			const vector2d acceleration = vel->steer_force / enemy->mass;
