@@ -90,19 +90,23 @@ void RenderSystem::update(double dt)
 	auto inv = manager_->get_component<InventoryComponent>(invId);
 	int x = 25;
 	for (int i = 0; i < 10; i++) {
-		bool selected = false;
+		int y = Engine::get_window_height() - 75;
+		int scale = 3;
 		if (i + 1 == inv->selected) {
-			selected = true;
+				scale = 4;
+				y -= 16;
 		}
-		Engine::render_inventory_tile(selected, x);
+		Engine::set_render_draw_color(255, 255, 255, 100);
+		Engine::rect2d rect = Engine::rect2d{ x, y, 16 * scale, 16 * scale };
+		Engine::draw_rectangle(rect);
+		Engine::fill_rectangle(rect);
 		if (inv->items.size() > i) {
 			auto texture = manager_->get_component<TextureComponent>(inv->items[i]);
-			Engine::render_inventory_item(texture->path, selected, x);
+			Engine::rect2d clip = Engine::rect2d{ 0, 0, 16 * scale, 16 * scale };
+			auto t = texture->texture.get();
+			Engine::render_texture(t, x, y, &clip);
 		}
-		x = x + (16 * 3);
-		if (selected) {
-			x += 16;
-		}
+		x = x + (16 * scale);
 	}	
 
 	//render minimap (placeholder until full dungeon gets loaded in)

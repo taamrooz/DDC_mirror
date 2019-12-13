@@ -2,7 +2,7 @@
 #include "Component.h"
 #include <Texture.h>
 struct TextureComponent : Component {
-	TextureComponent(std::string path) : path{ path } {}
+	TextureComponent(std::unique_ptr<Texture> texture) : texture{ std::move(texture) } {}
 
-	std::string path;
+	std::unique_ptr<Texture> texture;
 };
