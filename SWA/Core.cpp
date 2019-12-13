@@ -132,3 +132,9 @@ void Core::save_game()
 	auto sh = SaveHelper{};
 	sh.SaveGameToFile(manager_.get());
 }
+
+void Core::load_game()
+{
+	auto sh = SaveHelper{};
+	sh.LoadGameFromFile(manager_.get(), "assets/json/test_save");
+}

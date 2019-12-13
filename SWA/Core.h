@@ -58,5 +58,6 @@ public:
 	 * \brief Saves the game
 	 */
 	void save_game();
+	void load_game();
 };
 

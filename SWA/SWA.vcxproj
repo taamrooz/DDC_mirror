@@ -225,7 +225,6 @@
     <ClInclude Include="MoveEnemySystem.h" />
     <ClInclude Include="RoomComponent.h" />
     <ClInclude Include="Pause.h" />
-    <ClInclude Include="MoneyComponent.h" />
     <ClInclude Include="MoveCharacterSystem.h" />
     <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="PositionComponent.h" />

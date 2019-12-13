@@ -102,7 +102,7 @@ void ComponentFactory::AddChestComponents(int id, Engine::EntityManager<Componen
     em->add_component_to_entity(id, std::move(room));
 
 	//create chestComponent and add to the entity
-	auto chest = std::make_unique<ChestComponent>(string_code::cFlask_Blue);
+	auto chest = std::make_unique<ChestComponent>(cFlask_Blue);
 	em->add_component_to_entity(id, std::move(chest));
 }
 

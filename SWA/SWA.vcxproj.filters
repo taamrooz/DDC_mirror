@@ -191,9 +191,6 @@
     <ClInclude Include="HealthComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="MoneyComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ShootingComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
