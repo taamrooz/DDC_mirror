@@ -14,9 +14,14 @@
 #include "InventorySystem.h"
 #include "Audio.h"
 #include "KeyBindingSingleton.h"
+#include "EndGameLose.h"
+#include "EndGameWin.h"
+#include "Pause.h"
+#include "SaveHelper.h"
 #include "MoveEnemySystem.h"
 #include "CheatSystem.h"
-#include <ctime>
+#include "DungeonSingleton.h"
+#include "TileSetSingleton.h"
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -26,6 +31,14 @@ bool Core::init()
 {
 	manager_ = std::make_unique<Engine::EntityManager<Component>>();
 
+	auto pause = new Pause(scene_manager_, this);
+	auto endgamewin = new EndGameWin(scene_manager_);
+	auto endgamelose = new EndGameLose(scene_manager_);
+	scene_manager_->add_scene(pause, true, "pause");
+	scene_manager_->add_scene(endgamewin, true, "win");
+	scene_manager_->add_scene(endgamelose, true, "lose");
+	
+	DungeonSingleton::get_instance()->load_all_dungeons();
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));
@@ -39,10 +52,9 @@ bool Core::init()
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
 	auto pause = new Pause(scene_manager_,this);
 	scene_manager_->add_scene(pause, false, "pause");
-
 	elapsed_secs_ = 0;
 	timer_.Start();
-
+	
 	return true;
 }
 
@@ -86,18 +98,15 @@ void Core::update()
 void Core::render()
 {
 	auto timer = Engine::pre_update();
-	//Engine::Clear();
 	update();
 	Engine::render(timer);
 }
 
 void Core::cleanup()
 {
-	if (manager_)
-	{
-		manager_ = nullptr;
-	}
-	systems_.clear();
+	KeyBindingSingleton::get_instance()->reset_properties();
+	TileSetSingleton::get_instance()->delete_instance();
+	RoomSingleton::get_instance()->delete_instance();
 }
 
 void Core::StopGameLoop() {
@@ -129,9 +138,8 @@ void Core::toggle_game_lost()
 	KeyBindingSingleton::get_instance()->reset_properties();
 }
 
-void Core::unpauzeTimer()
+void Core::save_game()
 {
-	if (timer_.IsPaused()) {
-	timer_.Unpause();
-	}
+	auto sh = SaveHelper{};
+	sh.SaveGameToFile(manager_.get());
 }

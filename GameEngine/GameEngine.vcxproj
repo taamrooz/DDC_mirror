@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\SDL2_ttf-2.0.15\include;C:\SDL2_mixer-2.0.4\include;C:\SDL2_image-2.0.5\include;C:\SDL2-2.0.10\include;C:\SDL2\include;$(IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>.\include;C:\SDL2_ttf-2.0.15\include;C:\SDL2_mixer-2.0.4\include;C:\SDL2_image-2.0.5\include;C:\SDL2-2.0.10\include;C:\SDL2\include;$(IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>C:\SDL2_ttf-2.0.15\lib\x64;C:\SDL2_mixer-2.0.4\lib\x64;C:\SDL2_image-2.0.5\lib\x64;C:\SDL2-2.0.10\lib\x64;$(LibraryPath);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
     <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
@@ -96,7 +96,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;GAMEENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);ENGINE_EXPORTS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\SDL2_ttf-2.0.15\include;C:\SDL2_mixer-2.0.4\include;C:\SDL2-2.0.10\include;C:\SDL2_image-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;C:\SDL2_ttf-2.0.15\include;C:\SDL2_mixer-2.0.4\include;C:\SDL2-2.0.10\include;C:\SDL2_image-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -159,7 +159,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;GAMEENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);ENGINE_EXPORTS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\SDL2_ttf-2.0.15\include;C:\SDL2_mixer-2.0.4\include;C:\SDL2-2.0.10\include;C:\SDL2_image-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;C:\SDL2_ttf-2.0.15\include;C:\SDL2_mixer-2.0.4\include;C:\SDL2-2.0.10\include;C:\SDL2_image-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,6 +176,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="JsonHelper.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="QuadTree.h" />
@@ -191,6 +193,7 @@
     <ClInclude Include="rect2d.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JsonHelper.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="Animation.cpp" />

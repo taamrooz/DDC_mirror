@@ -56,7 +56,7 @@ void LoadGame::get_files(const char* path, const std::string extension)
 			std::string file_name = entry.path().filename().string();
 			file_name = file_name.substr(0, file_name.size() - 5);
 			file_names_.emplace_back(file_name);
-			file_name_textures_.push_back(std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, file_name.c_str())));
+			file_name_textures_.push_back(std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, file_name.c_str())));
 		}
 	}
 }
@@ -83,7 +83,7 @@ void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 }
 
 bool LoadGame::open_game_file(std::string& path) {
-	std::ifstream game("./assets/Levels/" + path);
+	std::ifstream game("./assets/json/" + path);
 	if (game.fail())
 	{
 		return false;
@@ -98,7 +98,7 @@ void LoadGame::render() {
 	const auto timer = Engine::pre_update();
 	if (text_.length() > 0)
 	{
-		text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
+		text_texture_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
 	}
 	int x = 100;
 	int y = 50;
@@ -120,6 +120,6 @@ void LoadGame::render() {
 }
 
 bool LoadGame::init() {
-	get_files("./assets/Levels", "json");
+	get_files("./assets/json", "json");
 	return true;
 }

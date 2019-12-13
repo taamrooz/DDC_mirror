@@ -1,19 +1,33 @@
 #pragma once
 #include <string>
+#include "Component.h"
+struct RoomComponent;
+
+namespace Engine {
+	template<typename T> class EntityManager;
+}
+
+enum Direction
+{
+	none,
+	up,
+	down,
+	left,
+	right
+};
 
 class RoomSingleton
 {
 private:
 	static RoomSingleton* instance;
-	RoomSingleton();	
-	int current_room_index;
+	RoomSingleton();
+	void load_map(Engine::EntityManager<Component>* manager, RoomComponent* room);
+	void load_objects(Engine::EntityManager<Component>* manager, RoomComponent* room);
 public:
 	//If reload_room is true, load the map from at the room_path location
 	bool reload_room;
+	Direction dir;
 	static RoomSingleton* get_instance();
-	std::string get_current_room_name();
-	std::string object_suffix;
-	std::string room_suffix;
-	void init_first_room();
-	void init_next_room();
+	void load_room(Engine::EntityManager<Component>* manager, RoomComponent* room);
+	void delete_instance();
 };

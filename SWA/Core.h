@@ -62,5 +62,8 @@ public:
 	* \Unpauzes the timer which counts your highscore
 	*/
 	void unpauzeTimer();
+	 * \brief Saves the game
+	 */
+	void save_game();
 };
 

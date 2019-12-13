@@ -11,7 +11,7 @@
 #include "InventoryComponent.h"
 #include "TextureComponent.h"
 #include "LevelBossComponent.h"
-#include "LevelSingleton.h"
+#include "DungeonSingleton.h"
 #include "AnimationComponent.h"
 #include <Renderer.h>
 #include <Audio.h>
@@ -39,12 +39,12 @@ void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 
 void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)
 {
-  //stop player from moving into a wall
+	//stop player from moving into a wall
 
-	//take damage if entity2 has damagecomponent
+	  //take damage if entity2 has damagecomponent
 
-	//etc.
-  
+	  //etc.
+
 
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	auto ladder = manager->get_component<LadderComponent>(entity1);
@@ -58,29 +58,15 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 			const auto boss_health = manager->get_component<HealthComponent>(boss_entity);
 			const auto boss_room = manager->get_component<RoomComponent>(boss_entity);
 
-			if (boss_room->room_name == RoomSingleton::get_instance()->get_current_room_name()) {
+			if (boss_room->room_index == DungeonSingleton::get_instance()->get_current_room_number()) {
 				// current room is where levelBoss is living
 				if (boss_health->current_health <= 0) {
-					if (!LevelSingleton::get_instance()->reload_level) {
-						LevelSingleton::get_instance()->init_next_level();
-						LevelSingleton::get_instance()->reload_level = true;
-					}
-				}
-			}
-			else {
-				if (!RoomSingleton::get_instance()->reload_room) {
-					// load next room
-					RoomSingleton::get_instance()->init_next_room();
-					RoomSingleton::get_instance()->reload_room = true;
+					DungeonSingleton::get_instance()->move_dungeon_down();
 				}
 			}
 		}
 		else {
-			if (!RoomSingleton::get_instance()->reload_room) {
-				// load next room
-				RoomSingleton::get_instance()->init_next_room();
-				RoomSingleton::get_instance()->reload_room = true;
-			}
+			DungeonSingleton::get_instance()->move_dungeon_down();
 		}
 	}
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
@@ -103,7 +89,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 	if (coll != nullptr && coll->solid) {
 		UpdateVelocity(entity1, entity2, manager, core);
 	}
-	
+
 }
 
 void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
@@ -125,7 +111,7 @@ void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMana
 }
 
 void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
-	
+
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
 	auto enemy = manager->get_component<EnemyComponent>(entity2);
 	if (dmg != nullptr && enemy == nullptr) {
@@ -140,12 +126,13 @@ void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 		if (health->current_health <= 0) {
 			auto level_boss_component = manager->get_component<LevelBossComponent>(entity1);
 			if (level_boss_component != nullptr) {
-				manager->remove_component_from_entity<AnimationComponent>(entity1);
-				manager->remove_component_from_entity<CollisionComponent>(entity1);
-				manager->remove_component_from_entity<VelocityComponent>(entity1);
-				Engine::stop_music();
-				Engine::play_music("ingame.wav");
-				core->toggle_game_won();
+				manager->remove_entity(entity1);
+				if(DungeonSingleton::get_instance()->is_last_dungeon())
+				{
+					Engine::stop_music();
+					Engine::play_music("ingame.wav");
+					core->toggle_game_won();
+				}
 			}
 			else {
 				manager->remove_entity(entity1);
@@ -241,7 +228,7 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 	if (charC != nullptr) {
 		auto ani = manager->get_component<AnimationComponent>(entity1);
 		ani->animations.erase(ani->currentState);
-		ani->animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/chest_empty_open.png", 3))));
+		ani->animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::unique_ptr<Animation>(Engine::load_animation("Animations/chest_empty_open.png", 3))));
 		ani->animations.at(ani->currentState)->pause = false;
 		ani->animations.at(ani->currentState)->loop = false;
 		ani->animations.at(ani->currentState)->scale = 3;
@@ -279,4 +266,22 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 		manager->remove_component_from_entity<ChestComponent>(entity1);
 
 	}
+}
+
+
+CollisionHandlers::CollisionHandlers()
+{
+	name_function_map_.try_emplace(CollisionHandlerNames::BulletCollisionHandler, BulletCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::PlayerCollisionHandler, PlayerCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::ItemCollisionHandler, ItemCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::ChestCollisionHandler, ChestCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::EnemyCollisionHandler, EnemyCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::UpdateVelocity, UpdateVelocity);
+}
+
+std::function<void(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component> * manager, Core * core)>
+CollisionHandlers::GetFunction(CollisionHandlerNames name)
+{
+	auto find_return = name_function_map_.find(name);
+	return find_return->second;
 }
