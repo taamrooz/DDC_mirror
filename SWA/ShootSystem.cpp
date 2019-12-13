@@ -70,9 +70,13 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 		auto vComponent = std::make_unique<VelocityComponent>(xV, yV);
 		auto pComponent = std::make_unique<PositionComponent>(x, y);
 		std::unordered_map<State, std::unique_ptr<Animation>> animations;
+		std::unordered_map<State, std::string> state_to_path;
+		std::unordered_map<State, int> state_to_frames;
 		animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::unique_ptr<Animation>(Engine::load_animation("Projectile1.png", 1))));
+		state_to_path.emplace(State::DEFAULT, "Projectile1.png");
+		state_to_frames.emplace(State::DEFAULT, 1);
 		animations.at(State::DEFAULT)->scale = 2;
-		auto aComponent = std::make_unique<AnimationComponent>(animations);
+		auto aComponent = std::make_unique<AnimationComponent>(animations, state_to_path, state_to_frames);
 		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size * 2, shoot->bullet_size * 2, BulletCollisionHandler, CollisionHandlerNames::BulletCollisionHandler, false, entity);
 		manager_->add_component_to_entity(id, std::move(vComponent));
 		manager_->add_component_to_entity(id, std::move(pComponent));

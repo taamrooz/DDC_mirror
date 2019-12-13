@@ -21,7 +21,6 @@
 #include "MoveEnemySystem.h"
 #include "CheatSystem.h"
 #include "DungeonSingleton.h"
-#include "LevelSingleton.h"
 #include "TileSetSingleton.h"
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
@@ -98,7 +97,6 @@ void Core::render()
 void Core::cleanup()
 {
 	KeyBindingSingleton::get_instance()->reset_properties();
-	LevelSingleton::get_instance()->delete_instance();
 	TileSetSingleton::get_instance()->delete_instance();
 	RoomSingleton::get_instance()->delete_instance();
 }

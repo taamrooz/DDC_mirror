@@ -18,6 +18,7 @@ private:
 public:
 	void load_dungeon(const std::string& path);
 	void load_all_dungeons();
+	void move_room(Direction dir);
 	void move_room_up();
 	void move_room_right();
 	void move_room_down();

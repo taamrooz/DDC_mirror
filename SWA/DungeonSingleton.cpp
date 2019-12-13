@@ -82,9 +82,21 @@ void DungeonSingleton::load_all_dungeons()
 		}
 	}
 	load_dungeon(levels_.front());
-	
+
 	get_starting_room();
 }
+
+void DungeonSingleton::move_room(Direction dir)
+{
+	switch (dir)
+	{
+	case down: move_room_down(); break;
+	case up: move_room_up(); break;
+	case left: move_room_left(); break;
+	case right: move_room_right(); break;
+	}
+}
+
 
 void DungeonSingleton::move_room_up()
 {
@@ -92,6 +104,7 @@ void DungeonSingleton::move_room_up()
 	{
 		current_room_ -= 5;
 		RoomSingleton::get_instance()->reload_room = true;
+		RoomSingleton::get_instance()->dir = up;
 	}
 }
 
@@ -101,6 +114,7 @@ void DungeonSingleton::move_room_right()
 	{
 		current_room_ += 1;
 		RoomSingleton::get_instance()->reload_room = true;
+		RoomSingleton::get_instance()->dir = right;
 	}
 }
 
@@ -110,6 +124,7 @@ void DungeonSingleton::move_room_down()
 	{
 		current_room_ += 5;
 		RoomSingleton::get_instance()->reload_room = true;
+		RoomSingleton::get_instance()->dir = down;
 	}
 }
 
@@ -119,6 +134,7 @@ void DungeonSingleton::move_room_left()
 	{
 		current_room_ -= 1;
 		RoomSingleton::get_instance()->reload_room = true;
+		RoomSingleton::get_instance()->dir = left;
 	}
 }
 

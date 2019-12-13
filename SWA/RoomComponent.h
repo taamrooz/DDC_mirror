@@ -16,7 +16,7 @@ public:
 
 	void ToJson(json& j, int id) override
 	{
-		j[std::to_string(id)]["RoomComponent"]["room_name"] = room_name;
+		j[std::to_string(id)]["RoomComponent"]["room_index"] = room_index;
 	}
 };
 

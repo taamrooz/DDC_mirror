@@ -10,6 +10,7 @@
 
 RoomSingleton::RoomSingleton() {
 	reload_room = true;
+	dir = none;
 }
 
 RoomSingleton* RoomSingleton::instance = 0;
@@ -187,7 +188,7 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 		manager->add_component_to_entity(id, std::move(room_component));
 		for (unsigned int a = 0; a < sizeof(Constants::k_collision_tiles) / sizeof(Constants::k_collision_tiles[0]); a = a + 1) {
 			if (Constants::k_collision_tiles[a] == i[2]) {
-				auto coll = std::make_unique<CollisionComponent>(63, 63, nullptr);
+				auto coll = std::make_unique<CollisionComponent>(63, 63, nullptr, CollisionHandlerNames::None);
 				manager->add_component_to_entity(id, std::move(coll));
 			}
 		}
