@@ -257,13 +257,13 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 
 		auto pPos = manager->get_component<PositionComponent>(entity2);
 		auto pColl = manager->get_component<CollisionComponent>(entity2);
-		int xv = pVel->dx;
-		int yv = pVel->dy;
+		int xv = 0;
+		int yv = 0;
 		if (pPos->x >= cPos->x + cColl->width) {
 			xv = -5;
 		}
 		else if (pPos->x + pColl->width <= cPos->x) {
-			xv = -5;
+			xv = 5;
 		}
 		else if (pPos->y > cPos->y) {
 			yv = -5;

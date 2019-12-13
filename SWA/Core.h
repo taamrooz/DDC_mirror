@@ -4,6 +4,8 @@
 #include "AnimationComponent.h"
 #include "BaseScene.h"
 #include "SceneManager.h"
+#include "Timer.h"
+#include "Pause.h"
 
 class Core : virtual public Engine::BaseScene
 {
@@ -13,6 +15,8 @@ private:
 	bool is_paused_ = false;
 	bool is_winner_ = false;
 	bool is_loser_ = false;
+	double elapsed_secs_ = 0;
+	Engine::Timer timer_{};
 	/*
 	 * Loops through all systems and calls their respective update function.
 	 */
@@ -54,5 +58,9 @@ public:
 	 * \brief Toggles the games lose state.
 	 */
 	void toggle_game_lost();
+	/**
+	* \Unpauzes the timer which counts your highscore
+	*/
+	void unpauzeTimer();
 };
 
