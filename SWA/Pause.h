@@ -16,7 +16,6 @@ private:
 	std::unique_ptr<Texture> paused_texture_ = nullptr;
 	std::unique_ptr<Texture> helper_ = nullptr;
 	std::unique_ptr<Animation> background_ = nullptr;
-	Core *core_;
 	std::string save_text_;
 public:
 	~Pause();

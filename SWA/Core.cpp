@@ -22,6 +22,7 @@
 #include "CheatSystem.h"
 #include "DungeonSingleton.h"
 #include "TileSetSingleton.h"
+#include <ctime>
 
 Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
 Core::~Core() = default;
@@ -50,8 +51,7 @@ bool Core::init()
 	systems_.push_back(std::make_unique<CheatSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
-	auto pause = new Pause(scene_manager_,this);
-	scene_manager_->add_scene(pause, false, "pause");
+	
 	elapsed_secs_ = 0;
 	timer_.Start();
 	
@@ -136,6 +136,13 @@ void Core::toggle_game_lost()
 {
 	is_loser_ = !is_loser_;
 	KeyBindingSingleton::get_instance()->reset_properties();
+}
+
+void Core::unpauzeTimer()
+{
+	if (timer_.IsPaused()) {
+		timer_.Unpause();
+	}
 }
 
 void Core::save_game()
