@@ -61,3 +61,19 @@ bool Highscores::init() {
 	background_->scale = 1280.0 / 960.0;
 	return true;
 }
+
+void Highscores::getHighscores()
+{
+	std::string line;
+	std::string highscorePath = "highscores.json";
+	std::ifstream highscoreFile("./assets/json/" + highscorePath);
+	if (highscoreFile.is_open())
+	{
+		while (std::getline(highscoreFile, line))
+		{
+			highscore_textures_.push_back(std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, line.c_str())));
+		}
+	}
+	highscoreFile.close();
+
+}
