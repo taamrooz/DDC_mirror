@@ -15,16 +15,15 @@ void MoveEnemySystem::update(double dt)
 	Engine::Point botRight{ 1280, 960 }; // TODO: make this not hardcoded
 	Engine::QuadTree quadTree{ leftTop, botRight };
 
-	auto tiles = manager_->get_all_entities_from_current_room<TileComponent>();
+	auto collisionComponents = manager_->get_all_entities_from_current_room<CollisionComponent>();
 
-	for (auto tile : tiles) {
-		auto collisionComponent = manager_->get_component<CollisionComponent>(tile);
-		if (collisionComponent != nullptr) {
-			auto positionComponent = manager_->get_component<PositionComponent>(tile);
+	for (auto collComp : collisionComponents) {
+		auto tileComponent = manager_->get_component<TileComponent>(collComp);
+		if (tileComponent != nullptr) {
+			auto collisionComponent = manager_->get_component<CollisionComponent>(collComp);
+			auto positionComponent = manager_->get_component<PositionComponent>(collComp);
 
-			int x = positionComponent->x;
-			int y = positionComponent->y;
-			std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ x, y }, tile, collisionComponent->width, collisionComponent->height } };
+			std::shared_ptr<Engine::Node> node{ new Engine::Node{ Engine::Point{ positionComponent->x, positionComponent->y }, collComp, collisionComponent->width, collisionComponent->height } };
 			quadTree.insert(node);
 		}
 	}
@@ -68,6 +67,6 @@ void MoveEnemySystem::update(double dt)
 			vel->dx = velocity.x();
 			vel->dy = velocity.y();
 		}
-
+		int k = 0;
 	}
 }
