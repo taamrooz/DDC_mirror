@@ -88,6 +88,7 @@ void DungeonSingleton::load_all_dungeons(Engine::EntityManager<Component>* manag
 	}
 	load_dungeon(levels_.front(), manager);
 	get_starting_room();
+	load_all_objects(manager);
 	RoomSingleton::get_instance()->reload_room = true;
 	
 }
@@ -150,6 +151,17 @@ void DungeonSingleton::load_room(Engine::EntityManager<Component>* manager)
 	RoomSingleton::get_instance()->load_objects(manager, level_rooms_[current_room_].get());
 }
 
+void DungeonSingleton::load_all_objects(Engine::EntityManager<Component>* manager)
+{
+	for(auto& obj : level_rooms_)
+	{
+		if(obj != nullptr)
+		{
+			RoomSingleton::get_instance()->load_objects(manager, obj.get());
+		}
+	}
+}
+
 void DungeonSingleton::move_dungeon_down(Engine::EntityManager<Component>* manager)
 {
 	
@@ -157,7 +169,8 @@ void DungeonSingleton::move_dungeon_down(Engine::EntityManager<Component>* manag
 	{
 		for (auto& room : manager->get_all_entities<RoomComponent>())
 		{
-			if (manager->get_component<CharacterComponent>(room) != nullptr)
+			auto check = manager->get_component<CharacterComponent>(room);
+			if (check != nullptr)
 			{
 				continue;
 			}
@@ -167,6 +180,7 @@ void DungeonSingleton::move_dungeon_down(Engine::EntityManager<Component>* manag
 		level_rooms_.clear();
 		load_dungeon(levels_[current_level_], manager);
 		get_starting_room();
+		load_all_objects(manager);
 		RoomSingleton::get_instance()->reload_room = true;
 	}
 }
