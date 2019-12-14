@@ -84,9 +84,10 @@ void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 bool LoadGame::open_game_file(std::string& path) {
 	auto core = new Core(scene_manager_);
 	scene_manager_->add_scene(core, true, "game");
-	SaveHelper{}.LoadGameFromFile(core->get_entity_manager(), "./assets/json/" + path);
-
-	return true;
+	if(SaveHelper{}.LoadGameFromFile(core->get_entity_manager(), "./assets/json/" + path))
+		return true;
+	scene_manager_->delete_scene("game");
+	return false;
 }
 
 void LoadGame::render() {

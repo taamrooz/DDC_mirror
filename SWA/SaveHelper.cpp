@@ -38,7 +38,7 @@ void SaveHelper::SaveGameToFile(Engine::EntityManager<Component>* manager_, std:
 	Engine::write_to_file(json, "assets/json/" + path);
 }
 
-void SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, std::string path)
+bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, std::string path)
 {
 	auto json = Engine::get_json();
 	Engine::read_from_file(json, path);
@@ -57,7 +57,10 @@ void SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 		{
 			auto current_room_number = it.value().find("current_room_number").value();
 			auto level_path = it.value().find("level_path").value();
-			DungeonSingleton::get_instance()->skip_until_room(level_path);
+			if(!DungeonSingleton::get_instance()->skip_until_dungeon(level_path))
+			{
+				return false;
+			}
 			DungeonSingleton::get_instance()->set_current_room_number(current_room_number);
 		}
 		else {
@@ -315,4 +318,5 @@ void SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 			}
 		}
 	}
+	return true;
 }

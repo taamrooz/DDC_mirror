@@ -148,11 +148,6 @@ void DungeonSingleton::load_room(Engine::EntityManager<Component>* manager)
 	RoomSingleton::get_instance()->load_objects(manager, level_rooms_[current_room_].get());
 }
 
-void DungeonSingleton::load_tiles(Engine::EntityManager<Component>* manager)
-{
-	RoomSingleton::get_instance()->load_tiles(manager, level_rooms_[current_room_].get());
-}
-
 void DungeonSingleton::move_dungeon_down(Engine::EntityManager<Component>* manager)
 {
 	
@@ -173,10 +168,10 @@ void DungeonSingleton::move_dungeon_down(Engine::EntityManager<Component>* manag
 	}
 }
 
-bool DungeonSingleton::skip_until_room(const std::string& path)
+bool DungeonSingleton::skip_until_dungeon(const std::string& path)
 {
-	while (!is_last_dungeon() && get_current_level_path() != path)
-		move_dungeon_down();
+	while (levels_.size() - 1 > current_level_ && get_current_level_path() != path)
+		current_level_++;
 	
 	if(is_last_dungeon() && get_current_level_path() != path)
 		return false;

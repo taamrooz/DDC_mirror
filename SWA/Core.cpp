@@ -38,7 +38,7 @@ bool Core::init()
 	scene_manager_->add_scene(endgamewin, true, "win");
 	scene_manager_->add_scene(endgamelose, true, "lose");
 
-	DungeonSingleton::get_instance()->load_all_dungeons();
+	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get());
 	
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));

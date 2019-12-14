@@ -28,7 +28,5 @@ public:
 	static RoomSingleton* get_instance();
 	void load_map(Engine::EntityManager<Component>* manager, RoomComponent* room);
 	void load_objects(Engine::EntityManager<Component>* manager, RoomComponent* room);
-	void load_room(Engine::EntityManager<Component>* manager, RoomComponent* room);
-	void load_tiles(Engine::EntityManager<Component>* manager, RoomComponent* room);
 	void delete_instance();
 };
