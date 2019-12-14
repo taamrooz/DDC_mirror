@@ -23,6 +23,20 @@ void RoomSystem::update(double dt)
 		RoomSingleton::get_instance()->load_map(manager_, DungeonSingleton::get_instance()->get_current_room());
 		RoomSingleton::get_instance()->reload_room = false;
 
+		auto player = manager_->get_all_entities<CharacterComponent>();
+		if (!player.empty())
+		{
+			auto player_room = manager_->get_component<RoomComponent>(player.front());
+			player_room->room_index = DungeonSingleton::get_instance()->get_current_room_number();
+		}
+		else
+		{
+			auto player_id = manager_->create_entity();
+			ComponentFactory::get_instance()->CreateEntity("player", player_id, manager_, DungeonSingleton::get_instance()->get_current_room());
+			auto pos = std::make_unique<PositionComponent>(650, 500);
+			manager_->add_component_to_entity(player_id, std::move(pos));
+		}
+
 		const auto boss_entities = manager_->get_all_entities_from_current_room<LevelBossComponent>();
 		if (!boss_entities.empty()) {
 			Engine::stop_music();
