@@ -10,7 +10,6 @@ Animation::Animation(int frames, Texture* texture) : gSpriteSheetTexture{ textur
 
 Animation::~Animation() {
 	delete gSpriteSheetTexture;
-	gSpriteClips.clear();
 }
 
 void Animation::UpdateAnimation(double x, double y, SDL_RendererFlip flip)
