@@ -73,7 +73,7 @@ bool Help::init() {
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
 	sub_title_moving_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 40, { 255,0,0, 255 }, "Moving controls"));
 	sub_title_shooting_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 40, { 255,0,0, 255 }, "Shooting controls"));
-	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3, false));
+	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
 	background_->scale = 1280.0 / 960.0;
 	move_up_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 },		("Move up:        " + KeyBindingSingleton::get_instance()->get_move_up_key()).c_str()));
 	move_left_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 },		("Move left:      " + KeyBindingSingleton::get_instance()->get_move_left_key()).c_str()));

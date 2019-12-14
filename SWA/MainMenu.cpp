@@ -178,13 +178,13 @@ bool MainMenu::init()
 	}
 
 	// init advertisement
-	phone_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("iphone_11.png", 1, true));
+	phone_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("Advertisement/iphone_11.png", 1));
 	phone_advertisement_->scale = 0.30;
-	nike_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("nike.png", 1, true));
+	nike_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("Advertisement/nike.png", 1));
 	nike_advertisement_->scale = 0.30;
-	oral_b_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("oral_b.png", 1, true));
+	oral_b_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("Advertisement/oral_b.png", 1));
 	oral_b_advertisement_->scale = 0.50;
-	football_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("klassieker.png", 1, true));
+	football_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("Advertisement/klassieker.png", 1));
 	football_advertisement_->scale = 0.30;
 	banner.push_back(std::move(phone_advertisement_));
 	banner.push_back(std::move(nike_advertisement_));
@@ -192,7 +192,7 @@ bool MainMenu::init()
 	banner.push_back(std::move(football_advertisement_));
 
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
-	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3, false));
+	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
 	background_->scale = 1280.0 / 960.0;
 	start_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game"));
 	load_game_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Load game"));

@@ -36,7 +36,7 @@ namespace Engine {
 	 * @param animation The pointer of the animation which the sprite sheet will be set to.
 	 * @return Returns true if sprite sheet could be loaded, else false.
 	 */
-	ENGINE_API bool load_sprite_sheet(std::string path, Animation* animation, bool advertisment);
+	ENGINE_API bool load_sprite_sheet(std::string path, Animation* animation);
 	/**
 	 * \brief Returns a texture with a font, it's font size, the text color, and the text.
 	 * @param font_path The path to the font located in the assets folder.
@@ -52,7 +52,7 @@ namespace Engine {
 	 * @param frames The amount of frames the animation has.
 	 * @return Returns a pointer to the created Animation.
 	 */
-	ENGINE_API Animation* load_animation(std::string path, int frames, bool advertisment);
+	ENGINE_API Animation* load_animation(std::string path, int frames);
 	/**
 	 * \brief Loads the tile set by specified path.
 	 * @param path The path to the tileset in the assets folder.

@@ -54,14 +54,14 @@ void Engine::update_animation(Animation* a, double x, double y, bool flip_horizo
 	a->UpdateAnimation(x, y, flip);
 }
 
-bool Engine::load_sprite_sheet(std::string path, Animation* animation, bool advertisment)
+bool Engine::load_sprite_sheet(std::string path, Animation* animation)
 
 {
 	//Loading success flag
 	bool success = true;
 
 	//Load sprite sheet texture
-	if (!animation->gSpriteSheetTexture->load_from_file(path, advertisment))
+	if (!animation->gSpriteSheetTexture->load_from_file(path))
 	{
 		printf("Failed to load walking animation texture!\n");
 		success = false;
@@ -88,7 +88,7 @@ Texture* Engine::load_text(std::string font_path, uint32_t font_size, SDL_Color 
 	return texture;
 }
 
-Animation* Engine::load_animation(std::string path, int frames, bool advertisment) {
+Animation* Engine::load_animation(std::string path, int frames) {
 
 	auto WALKING_ANIMATION_FRAMES = frames;
 	auto texture = new Texture{ renderer };
@@ -96,7 +96,7 @@ Animation* Engine::load_animation(std::string path, int frames, bool advertismen
 	texture->free();
 
 	//Load media
-	if (!load_sprite_sheet(path, animation, advertisment))
+	if (!load_sprite_sheet(path, animation))
 	{
 		printf("Failed to load media!\n");
 	}
@@ -107,7 +107,7 @@ Animation* Engine::load_animation(std::string path, int frames, bool advertismen
 Texture* Engine::load_tileset(std::string path)
 {
 	Texture* texture = new Texture(renderer);
-	texture->load_from_file(path, false);
+	texture->load_from_file(path);
 	return texture;
 }
 

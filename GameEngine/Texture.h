@@ -20,7 +20,7 @@ public:
 	bool load_text(std::string font, int font_size, SDL_Color color, std::string text);
 
 	//Loads image at specified path
-	bool load_from_file(std::string path, bool advertisment);
+	bool load_from_file(std::string path);
 
 	//Deallocate texture
 	void free();

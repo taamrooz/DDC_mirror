@@ -35,7 +35,7 @@ bool Texture::load_text(std::string font, int font_size, SDL_Color color, std::s
 	return true;
 }
 
-bool Texture::load_from_file(std::string path, bool advertisment)
+bool Texture::load_from_file(std::string path)
 {
 	//Get rid of preexisting texture
 	free();
@@ -45,7 +45,7 @@ bool Texture::load_from_file(std::string path, bool advertisment)
 
 	//Load image at specified path
 	SDL_Surface* loadedSurface;
-	loadedSurface = advertisment ? IMG_Load(("./assets/Advertisement/" + path).c_str()) : IMG_Load(("./assets/" + path).c_str());
+	loadedSurface = IMG_Load(("./assets/" + path).c_str());
 	if (loadedSurface == nullptr)
 	{
 		printf("Unable to load image %s! SDL_image Error: %s\n", ("./assets/" + path).c_str(), IMG_GetError());

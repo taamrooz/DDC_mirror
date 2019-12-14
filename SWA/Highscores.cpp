@@ -55,7 +55,7 @@ void Highscores::cleanup() { }
 
 bool Highscores::init() {
 	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
-	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3, false));
+	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
 	helper_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 255, 255, 255 }, "Press ENTER to quit to main menu"));
 	highscore_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 40, { 255, 196, 0, 255 }, "Highscores"));
 	background_->scale = 1280.0 / 960.0;

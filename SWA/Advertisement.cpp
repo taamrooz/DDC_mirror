@@ -53,9 +53,9 @@ void Advertisement::input() {
 void Advertisement::cleanup() {}
 
 bool Advertisement::init() {
-	advertisement_ = std::make_unique<Animation>(*Engine::load_animation("mediamarkt.png", 1, true));
+	advertisement_ = std::make_unique<Animation>(*Engine::load_animation("Advertisement/mediamarkt.png", 1));
 	advertisement_->scale = 0.75;
-	exit_ = std::make_unique<Animation>(*Engine::load_animation("Sprites/delete.png", 1, false));
+	exit_ = std::make_unique<Animation>(*Engine::load_animation("Sprites/delete.png", 1));
 	exit_->scale = 1.25;
 	return true;
 }
