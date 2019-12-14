@@ -183,6 +183,10 @@ bool MainMenu::init()
 
 	auto load_game = new LoadGame(scene_manager_);
 	scene_manager_->add_scene(load_game, true, "load_game");
+
+	auto highscores = new Highscores(scene_manager_);
+	scene_manager_->add_scene(highscores, true, "highscores");
+
 	
 	title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
 	background_ = std::unique_ptr<Animation>(Engine::load_animation("mainmenu.png", 3));

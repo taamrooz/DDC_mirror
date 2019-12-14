@@ -10,12 +10,19 @@ Highscores::Highscores(Engine::SceneManager* manager) : BaseScene(manager) { }
 
 void Highscores::render()
 {
+	int emplacement = 270;
 	const auto timer = Engine::pre_update();
 	input();
 	Engine::update_animation(background_.get(), 0, 0);
 	Engine::render_texture(title_.get(), 250, 125, nullptr);
 	Engine::render_texture(highscore_.get(), 490, 200, nullptr);
+	Engine::render_texture(explanation_.get(), 490, 245, nullptr);
 	Engine::render_texture(helper_.get(), 370, 850, nullptr);
+	for (auto& highscoreTexture : highscore_textures_)
+	{
+		Engine::render_texture(highscoreTexture.get(), 490, emplacement, nullptr);
+		emplacement += 25;
+	}
 	Engine::render(timer);
 }
 
@@ -58,22 +65,32 @@ bool Highscores::init() {
 	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
 	helper_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 255, 255, 255 }, "Press ENTER to quit to main menu"));
 	highscore_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 40, { 255, 196, 0, 255 }, "Highscores"));
+	explanation_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Name | Date | Achieved Time"));
 	background_->scale = 1280.0 / 960.0;
+	getHighscores();
 	return true;
 }
 
 void Highscores::getHighscores()
 {
-	std::string line;
-	std::string highscorePath = "highscores.json";
-	std::ifstream highscoreFile("./assets/json/" + highscorePath);
-	if (highscoreFile.is_open())
-	{
-		while (std::getline(highscoreFile, line))
-		{
-			highscore_textures_.push_back(std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, line.c_str())));
-		}
-	}
-	highscoreFile.close();
+	std::string highscoreString;
+	std::string highscorePath = "./assets/json/highscores";
+	auto json = Engine::get_json();
+	Engine::read_from_file(json, highscorePath);
 
+	for (json::iterator it = json.begin(); it != json.end(); ++it)
+	{
+		if (it.value().find("Name") != it.value().end()){
+			highscoreString = it.value().find("Name").value();
+			highscoreString += " ";
+		}
+		if (it.value().find("Date") != it.value().end()) {
+			highscoreString +=  it.value().find("Date").value();
+			highscoreString += " ";
+		}
+		if (it.value().find("Time") != it.value().end()) {
+			highscoreString += it.value().find("Time").value();
+		}
+		highscore_textures_.push_back(std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, highscoreString.c_str())));
+	}
 }

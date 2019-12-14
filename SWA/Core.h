@@ -1,4 +1,5 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include "EntityManager.h"
 #include "BaseSystem.h"
 #include "AnimationComponent.h"
@@ -6,6 +7,13 @@
 #include "SceneManager.h"
 #include "Timer.h"
 #include "Pause.h"
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <iostream>
+#include <stdio.h>
+#include <time.h>
 
 class Core : virtual public Engine::BaseScene
 {
@@ -21,6 +29,10 @@ private:
 	 * Loops through all systems and calls their respective update function.
 	 */
 	void update();
+	/**
+	*\Check if highscore achieved and write it to file
+	*/
+	void checkforHighscore();
 	
 public:
 	Core(Engine::SceneManager* manager);

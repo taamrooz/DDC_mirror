@@ -65,7 +65,7 @@ void Core::update()
 		if(is_running_)
 		{
 			system->update(1);
-
+			is_winner_ = true;
 			if (is_paused_) {
 				Engine::pause_music();
 				is_paused_ = false;
@@ -79,6 +79,7 @@ void Core::update()
 				is_winner_ = false;				
 				elapsed_secs_ += (timer_.GetTicks() / (double) CLOCKS_PER_SEC);
 				timer_.Stop();
+				checkforHighscore();
 			}
 
 			if (is_loser_) {
@@ -149,4 +150,65 @@ void Core::save_game()
 {
 	auto sh = SaveHelper{};
 	sh.SaveGameToFile(manager_.get());
+}
+
+void Core::checkforHighscore()
+{
+	elapsed_secs_ = 20;
+	std::string highscoreString;
+	std::vector<std::string> times;
+	std::vector<int> currentHighscoreList;
+	int counter = 0;
+	int swappedId = -1;
+	std::string highscorePath = "./assets/json/highscores";
+	auto json = Engine::get_json();
+	Engine::read_from_file(json, highscorePath);
+
+	for (json::iterator it = json.begin(); it != json.end(); ++it)
+	{
+		if (it.value().find("Time") != it.value().end()) {
+			highscoreString += it.value().find("Time").value();
+
+			std::istringstream iss(highscoreString);
+			std::copy(std::istream_iterator<std::string>(iss),
+				std::istream_iterator<std::string>(),
+				std::back_inserter(times));
+			currentHighscoreList[counter] = (atoi(times[0].c_str()) * 60) + atoi(times[1].c_str());
+			++counter;
+		}
+		for(int time : currentHighscoreList)
+		{
+			if (time > elapsed_secs_) {
+				int swap = time;
+				time = elapsed_secs_;
+				elapsed_secs_ = swap;
+				if (swappedId == -1) { swappedId = counter; }
+			}
+		}	
+	}
+	auto newJson = Engine::get_json();
+	counter = 0;
+	for (json::iterator it = json.begin(); it != json.end(); ++it) {
+		if (swappedId == counter) {
+			time_t rawtime;
+			struct tm* timeinfo;
+			char buffer[80];
+
+			time(&rawtime);
+			timeinfo = localtime(&rawtime);
+
+			strftime(buffer, sizeof(buffer), "%d-%m-%Y", timeinfo);
+			std::string str(buffer);
+
+			newJson[counter]["Name"] = "Player";
+			newJson[counter]["Date"] = str;
+			newJson[counter]["Time"] = currentHighscoreList[counter];
+		}
+		else {
+			newJson[counter]["Name"] = it.value().find("Name").value();
+			newJson[counter]["Date"] = it.value().find("Date").value();
+			newJson[counter]["Time"] = currentHighscoreList[counter];
+		}
+		counter++;
+	}
 }
