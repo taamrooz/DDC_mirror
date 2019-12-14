@@ -99,7 +99,11 @@ void RenderSystem::update(double dt)
 			Engine::render_inventory_tile(selected, x);
 			if (inv->items.size() > i) {
 				auto texture = manager_->get_component<TextureComponent>(inv->items[i]);
-				Engine::render_inventory_item(texture->path, selected, x);
+				if(texture != nullptr)
+				{
+					Engine::render_inventory_item(texture->path, selected, x);
+				}
+				
 			}
 			x = x + (16 * 3);
 			if (selected) {

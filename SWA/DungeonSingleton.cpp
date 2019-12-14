@@ -92,7 +92,7 @@ void DungeonSingleton::load_all_dungeons(Engine::EntityManager<Component>* manag
 
 void DungeonSingleton::move_room_up()
 {
-	if (level_rooms_[current_room_ - 5] != nullptr)
+	if (0 < current_room_ - 5 && level_rooms_[current_room_ - 5] != nullptr)
 	{
 		current_room_ -= 5;
 		RoomSingleton::get_instance()->reload_room = true;
@@ -101,7 +101,7 @@ void DungeonSingleton::move_room_up()
 
 void DungeonSingleton::move_room_right()
 {
-	if (level_rooms_[current_room_ + 1] != nullptr)
+	if (level_rooms_.size() > current_room_ + 1 && level_rooms_[current_room_ + 1] != nullptr)
 	{
 		current_room_ += 1;
 		RoomSingleton::get_instance()->reload_room = true;
@@ -110,7 +110,7 @@ void DungeonSingleton::move_room_right()
 
 void DungeonSingleton::move_room_down()
 {
-	if (level_rooms_[current_room_ + 5] != nullptr)
+	if (level_rooms_.size() > current_room_ + 5 && level_rooms_[current_room_ + 5] != nullptr)
 	{
 		current_room_ += 5;
 		RoomSingleton::get_instance()->reload_room = true;
@@ -119,7 +119,7 @@ void DungeonSingleton::move_room_down()
 
 void DungeonSingleton::move_room_left()
 {
-	if (level_rooms_[current_room_ - 1] != nullptr)
+	if (0 < current_room_ - 1 && level_rooms_[current_room_ - 1] != nullptr)
 	{
 		current_room_ -= 1;
 		RoomSingleton::get_instance()->reload_room = true;
@@ -145,6 +145,7 @@ void DungeonSingleton::move_dungeon_down(Engine::EntityManager<Component>* manag
 			}
 		}
 		current_level_++;
+		level_rooms_.clear();
 		load_dungeon(levels_[current_level_], manager);
 		get_starting_room();
 		RoomSingleton::get_instance()->reload_room = true;
