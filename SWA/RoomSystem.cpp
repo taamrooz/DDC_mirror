@@ -15,11 +15,19 @@ RoomSystem::RoomSystem(Engine::EntityManager<Component>* manager) : BaseSystem(m
 void RoomSystem::update(double dt)
 {
 	if (RoomSingleton::get_instance()->reload_room)
-	{
+	{					
 		auto room_entities = manager_->get_all_entities_from_current_room<PositionComponent>();
-		if (room_entities.empty())
+		auto tiles = manager_->get_all_entities<TileComponent>();
+		for (auto tile : tiles)
 		{
+			manager_->remove_entity(tile);
+		}
+		if (room_entities.empty())
+		{		
 			DungeonSingleton::get_instance()->load_room(manager_);
+		}else
+		{
+			DungeonSingleton::get_instance()->load_tiles(manager_);
 		}
 		auto player = manager_->get_all_entities<CharacterComponent>();
 		if (!player.empty())

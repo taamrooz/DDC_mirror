@@ -143,6 +143,11 @@ void DungeonSingleton::load_room(Engine::EntityManager<Component>* manager)
 	RoomSingleton::get_instance()->load_room(manager, level_rooms_[current_room_].get());
 }
 
+void DungeonSingleton::load_tiles(Engine::EntityManager<Component>* manager)
+{
+	RoomSingleton::get_instance()->load_tiles(manager, level_rooms_[current_room_].get());
+}
+
 void DungeonSingleton::move_dungeon_down()
 {
 	if (levels_.size() - 1 > current_level_)

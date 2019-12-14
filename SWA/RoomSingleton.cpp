@@ -251,6 +251,11 @@ void RoomSingleton::load_room(Engine::EntityManager<Component>* manager, RoomCom
 	load_objects(manager, room);
 }
 
+void RoomSingleton::load_tiles(Engine::EntityManager<Component>* manager, RoomComponent* room)
+{
+	load_map(manager, room);
+}
+
 void RoomSingleton::delete_instance()
 {
 	delete instance;
