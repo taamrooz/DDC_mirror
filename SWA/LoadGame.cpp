@@ -116,6 +116,7 @@ void LoadGame::render() {
 }
 
 bool LoadGame::init() {
+	Engine::StartTextInput();
 	get_files("./assets/json", "json");
 	return true;
 }

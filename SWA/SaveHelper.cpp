@@ -57,7 +57,7 @@ bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 		{
 			auto current_room_number = it.value().find("current_room_number").value();
 			auto level_path = it.value().find("level_path").value();
-			if(!DungeonSingleton::get_instance()->skip_until_dungeon(level_path))
+			if (!DungeonSingleton::get_instance()->skip_until_dungeon(level_path))
 			{
 				return false;
 			}
@@ -200,19 +200,6 @@ bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 
 				manager_->add_component_to_entity(new_entity, std::move(health));
 			}
-			//Inventory Component
-			if (it.value().find("InventoryComponent") != it.value().end())
-			{
-				auto inventory_component = it.value().find("InventoryComponent").value();
-
-				auto inv = std::make_unique<InventoryComponent>();
-
-				std::vector<uint32_t> items = inventory_component.find("items").value();
-				inv->items = items;
-				inv->selected = inventory_component.find("selected").value();
-
-				manager_->add_component_to_entity(new_entity, std::move(inv));
-			}
 			//Ladder Component
 			if (it.value().find("LadderComponent") != it.value().end())
 			{
@@ -279,8 +266,8 @@ bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 				auto texture_component = it.value().find("TextureComponent").value();
 
 				auto path = texture_component.find("path").value();
-
-				auto texture = std::make_unique<TextureComponent>(path);
+				//auto texture = std::unique_ptr<Engine::load_tileset>;
+				auto texture = std::make_unique<TextureComponent>(std::unique_ptr<Texture>(Engine::load_tileset(path)), path);
 
 				manager_->add_component_to_entity(new_entity, std::move(texture));
 			}
@@ -318,5 +305,25 @@ bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 			}
 		}
 	}
+	
+	//Inventory Component
+	auto inv = std::make_unique<InventoryComponent>();
+
+	std::vector<uint32_t> items{};
+	auto texture_c = manager_->get_all_entities<TextureComponent>();
+	auto collec_c = manager_->get_all_entities<CollectableComponent>();
+
+	for (auto c : collec_c)
+	{
+		if(std::find(texture_c.begin(), texture_c.end(), c) != texture_c.end())
+		{
+			items.emplace_back(c);
+		}
+	}
+	inv->items = items;
+	inv->selected = 1;
+
+	manager_->add_component_to_entity(manager_->get_all_entities<CharacterComponent>().front(), std::move(inv));
+	
 	return true;
 }

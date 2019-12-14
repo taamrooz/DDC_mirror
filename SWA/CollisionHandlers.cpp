@@ -91,7 +91,7 @@ void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMana
 			inv->items.push_back(entity1);
 
 			auto ani = manager->get_component<AnimationComponent>(entity1);
-			auto texture = std::make_unique<TextureComponent>(std::make_unique<Texture>(*Engine::load_tileset("flask_big_blue.png")));
+			auto texture = std::make_unique<TextureComponent>(std::unique_ptr<Texture>(Engine::load_tileset("flask_big_blue.png")), "flask_big_blue.png");
 
 			manager->add_component_to_entity(entity1, std::move(texture));
 			manager->remove_component_from_entity<CollisionComponent>(entity1);
