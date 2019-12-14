@@ -25,7 +25,7 @@ Core::~Core() = default;
 bool Core::init()
 {
 	manager_ = std::make_unique<Engine::EntityManager<Component>>();
-	DungeonSingleton::get_instance()->load_all_dungeons();
+	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get());
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));

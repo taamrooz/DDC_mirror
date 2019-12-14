@@ -3,6 +3,7 @@
 #include <fstream>
 #include <filesystem>
 #include "Constants.h"
+#include "CharacterComponent.h"
 
 DungeonSingleton::DungeonSingleton() {
 	current_room_ = 0;
@@ -18,7 +19,7 @@ DungeonSingleton* DungeonSingleton::get_instance()
 	return instance;
 }
 
-void DungeonSingleton::load_dungeon(const std::string& path)
+void DungeonSingleton::load_dungeon(const std::string& path, Engine::EntityManager<Component>* manager)
 {
 	std::ifstream map("./assets/Levels/Dungeons/" + path);
 	if (map.fail())
@@ -61,7 +62,9 @@ void DungeonSingleton::load_dungeon(const std::string& path)
 					new_room->left = left_room.get();
 				}
 			}
+			RoomSingleton::get_instance()->load_objects(manager, new_room.get());
 			level_rooms_.push_back(std::move(new_room));
+			
 		}
 		else
 		{
@@ -72,7 +75,7 @@ void DungeonSingleton::load_dungeon(const std::string& path)
 	map.close();
 }
 
-void DungeonSingleton::load_all_dungeons()
+void DungeonSingleton::load_all_dungeons(Engine::EntityManager<Component>* manager)
 {
 	for (const auto& entry : std::filesystem::directory_iterator("./assets/Levels/Dungeons/"))
 	{
@@ -81,9 +84,10 @@ void DungeonSingleton::load_all_dungeons()
 			levels_.push_back(entry.path().filename().string());
 		}
 	}
-	load_dungeon(levels_.front());
-	
+	load_dungeon(levels_.front(), manager);
 	get_starting_room();
+	RoomSingleton::get_instance()->reload_room = true;
+	
 }
 
 void DungeonSingleton::move_room_up()
@@ -124,16 +128,26 @@ void DungeonSingleton::move_room_left()
 
 void DungeonSingleton::load_room(Engine::EntityManager<Component>* manager)
 {
-	RoomSingleton::get_instance()->load_room(manager, level_rooms_[current_room_].get());
+	RoomSingleton::get_instance()->load_map(manager, level_rooms_[current_room_].get());
+	RoomSingleton::get_instance()->load_objects(manager, level_rooms_[current_room_].get());
 }
 
-void DungeonSingleton::move_dungeon_down()
+void DungeonSingleton::move_dungeon_down(Engine::EntityManager<Component>* manager)
 {
+	
 	if (levels_.size() - 1 > current_level_)
 	{
+		for (auto& room : manager->get_all_entities<RoomComponent>())
+		{
+			if (manager->get_component<CharacterComponent>(room) == nullptr)
+			{
+				manager->remove_entity(room);
+			}
+		}
 		current_level_++;
+		load_dungeon(levels_[current_level_], manager);
 		get_starting_room();
-		load_dungeon(levels_[current_level_]);
+		RoomSingleton::get_instance()->reload_room = true;
 	}
 }
 
