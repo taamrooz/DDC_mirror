@@ -77,7 +77,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 		state_to_frames.emplace(State::DEFAULT, 1);
 		animations.at(State::DEFAULT)->scale = 2;
 		auto aComponent = std::make_unique<AnimationComponent>(animations, state_to_path, state_to_frames);
-		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size * 2, shoot->bullet_size * 2, BulletCollisionHandler, CollisionHandlerNames::BulletCollisionHandler, false, entity);
+		auto cComponent = std::make_unique<CollisionComponent>(shoot->bullet_size * 2, shoot->bullet_size * 2, PlayerBulletCollisionHandler, CollisionHandlerNames::PlayerBulletCollisionHandler, false, entity);
 		manager_->add_component_to_entity(id, std::move(vComponent));
 		manager_->add_component_to_entity(id, std::move(pComponent));
 		manager_->add_component_to_entity(id, std::move(aComponent));
