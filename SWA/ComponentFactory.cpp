@@ -35,6 +35,10 @@ string_code Convert(std::string const& inString) {
 	if (inString == "Flask_Blue") return cFlask_Blue;
 	if (inString == "monster") return cMonster;
 	if (inString == "boss") return cBoss;
+	if (inString == "chort") return cChort;
+	if (inString == "imp") return cImp;
+	if (inString == "zombie") return cZombie;
+	if (inString == "ogre") return cOgre;
 	return cWall;
 }
 
@@ -70,11 +74,27 @@ int ComponentFactory::CreateEntity(string_code name, int id, Engine::EntityManag
 		break;
 	}
 	case cMonster: {
-		AddEnemyComponents(id, em, false);
+		AddChortComponents(id, em);
 		break;
 	}
 	case cBoss: {
-		AddEnemyComponents(id, em, true);
+		AddZombieComponents(id, em, true);
+		break;
+	}
+	case cChort: {
+		AddChortComponents(id, em);
+		break;
+	}
+	case cImp: {
+		AddImpComponents(id, em);
+		break;
+	}
+	case cZombie: {
+		AddZombieComponents(id, em, true);
+		break;
+	}
+	case cOgre: {
+		AddOgreComponents(id, em, true);
 		break;
 	}
 	default: {
@@ -137,8 +157,8 @@ void ComponentFactory::AddLadderComponents(int id, Engine::EntityManager<Compone
 	em->add_component_to_entity(id, std::move(room));
 }
 
-void ComponentFactory::AddEnemyComponents(int id, Engine::EntityManager<Component>* em, bool level_boss) {
-	auto hea = std::make_unique<HealthComponent>(4, 5);
+void ComponentFactory::AddChortComponents(int id, Engine::EntityManager<Component>* em) {
+	auto hea = std::make_unique<HealthComponent>(5, 5);
 	auto sho = std::make_unique<ShootingComponent>(7, 200);
 	auto vel = std::make_unique<VelocityComponent>();
 	auto emc = std::make_unique<EnemyComponent>();
@@ -148,9 +168,6 @@ void ComponentFactory::AddEnemyComponents(int id, Engine::EntityManager<Componen
 	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/chort_idle.png", 4)) ));
 	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/chort_run.png", 4) )));
 	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::HIT, std::make_unique<Animation>(*Engine::load_animation("Animations/chort_hit.png", 1) )));
-	//animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/orc_shaman_idle.png", 4)) ));
-	//animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/orc_shaman_run.png", 4) )));
-	//animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::HIT, std::make_unique<Animation>(*Engine::load_animation("Animations/orc_shaman_idle.png", 4) )));
 	animations.at(State::DEFAULT)->scale = 3;
 	animations.at(State::RUN)->scale = 3;
 	animations.at(State::HIT)->scale = 3;
@@ -163,7 +180,87 @@ void ComponentFactory::AddEnemyComponents(int id, Engine::EntityManager<Componen
 	em->add_component_to_entity(id, std::move(ani));
 	em->add_component_to_entity(id, std::move(coll));
 	em->add_component_to_entity(id, std::move(sho));
-	
+}
+
+void ComponentFactory::AddImpComponents(int id, Engine::EntityManager<Component>* em) {
+	auto hea = std::make_unique<HealthComponent>(3, 3);
+	auto sho = std::make_unique<ShootingComponent>(7, 200);
+	auto vel = std::make_unique<VelocityComponent>(12);
+	auto emc = std::make_unique<EnemyComponent>();
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
+	auto damage = std::make_unique<DamagingComponent>(0.5);
+	std::unordered_map<State, std::unique_ptr<Animation>> animations;
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/imp_idle.png", 4))));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/imp_run.png", 4))));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::HIT, std::make_unique<Animation>(*Engine::load_animation("Animations/imp_hit.png", 1))));
+	animations.at(State::DEFAULT)->scale = 3;
+	animations.at(State::RUN)->scale = 3;
+	animations.at(State::HIT)->scale = 3;
+	auto ani = std::make_unique<AnimationComponent>(animations);
+	auto coll = std::make_unique<CollisionComponent>(39, 48, EnemyCollisionHandler, false);
+	em->add_component_to_entity(id, std::move(damage));
+	em->add_component_to_entity(id, std::move(emc));
+	em->add_component_to_entity(id, std::move(hea));
+	em->add_component_to_entity(id, std::move(vel));
+	em->add_component_to_entity(id, std::move(ani));
+	em->add_component_to_entity(id, std::move(coll));
+	em->add_component_to_entity(id, std::move(sho));
+}
+
+void ComponentFactory::AddZombieComponents(int id, Engine::EntityManager<Component>* em, bool level_boss) {
+	auto hea = std::make_unique<HealthComponent>(15, 15);
+	auto sho = std::make_unique<ShootingComponent>(7, 200);
+	auto vel = std::make_unique<VelocityComponent>(5);
+	auto emc = std::make_unique<EnemyComponent>();
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
+	auto damage = std::make_unique<DamagingComponent>(3);
+	std::unordered_map<State, std::unique_ptr<Animation>> animations;
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/big_zombie_idle.png", 4))));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/big_zombie_run.png", 4))));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::HIT, std::make_unique<Animation>(*Engine::load_animation("Animations/big_zombie_hit.png", 1))));
+	animations.at(State::DEFAULT)->scale = 3;
+	animations.at(State::RUN)->scale = 3;
+	animations.at(State::HIT)->scale = 3;
+	auto ani = std::make_unique<AnimationComponent>(animations);
+	auto coll = std::make_unique<CollisionComponent>(69, 102, EnemyCollisionHandler, false);
+	em->add_component_to_entity(id, std::move(damage));
+	em->add_component_to_entity(id, std::move(emc));
+	em->add_component_to_entity(id, std::move(hea));
+	em->add_component_to_entity(id, std::move(vel));
+	em->add_component_to_entity(id, std::move(ani));
+	em->add_component_to_entity(id, std::move(coll));
+	em->add_component_to_entity(id, std::move(sho));
+
+	if (level_boss) {
+		auto boss = std::make_unique<LevelBossComponent>();
+		em->add_component_to_entity(id, std::move(boss));
+	}
+}
+
+void ComponentFactory::AddOgreComponents(int id, Engine::EntityManager<Component>* em, bool level_boss) {
+	auto hea = std::make_unique<HealthComponent>(10, 10);
+	auto sho = std::make_unique<ShootingComponent>(7, 200);
+	auto vel = std::make_unique<VelocityComponent>(7);
+	auto emc = std::make_unique<EnemyComponent>();
+	auto room = std::make_unique<RoomComponent>(RoomSingleton::get_instance()->get_current_room_name());
+	auto damage = std::make_unique<DamagingComponent>(1);
+	std::unordered_map<State, std::unique_ptr<Animation>> animations;
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::make_unique<Animation>(*Engine::load_animation("Animations/ogre_idle.png", 4))));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::make_unique<Animation>(*Engine::load_animation("Animations/ogre_run.png", 4))));
+	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::HIT, std::make_unique<Animation>(*Engine::load_animation("Animations/ogre_hit.png", 1))));
+	animations.at(State::DEFAULT)->scale = 3;
+	animations.at(State::RUN)->scale = 3;
+	animations.at(State::HIT)->scale = 3;
+	auto ani = std::make_unique<AnimationComponent>(animations);
+	auto coll = std::make_unique<CollisionComponent>(75, 96, EnemyCollisionHandler, false);
+	em->add_component_to_entity(id, std::move(damage));
+	em->add_component_to_entity(id, std::move(emc));
+	em->add_component_to_entity(id, std::move(hea));
+	em->add_component_to_entity(id, std::move(vel));
+	em->add_component_to_entity(id, std::move(ani));
+	em->add_component_to_entity(id, std::move(coll));
+	em->add_component_to_entity(id, std::move(sho));
+
 	if (level_boss) {
 		auto boss = std::make_unique<LevelBossComponent>();
 		em->add_component_to_entity(id, std::move(boss));
