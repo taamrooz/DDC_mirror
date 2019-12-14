@@ -324,6 +324,6 @@ bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 	inv->selected = 1;
 
 	manager_->add_component_to_entity(manager_->get_all_entities<CharacterComponent>().front(), std::move(inv));
-	
+
 	return true;
 }

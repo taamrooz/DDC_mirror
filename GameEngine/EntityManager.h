@@ -17,12 +17,6 @@ namespace Engine {
 		std::unordered_map <size_t, std::unordered_map<uint32_t, std::unique_ptr<T>>> components_by_class_;
 
 	public:
-
-		~EntityManager()
-		{
-			
-		}
-		
 		template<typename C>
 		void remove_component_from_entity(uint32_t id)
 		{

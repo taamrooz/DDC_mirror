@@ -1,16 +1,6 @@
-#include "Core.h"
 #include "SceneManager.h"
 #include "MainMenu.h"
-#include "Credits.h"
-#include "EndGameWin.h"
-#include "EndGameLose.h"
-#include "LoadGame.h"
-#include "Help.h"
-#include "Pause.h"
-#include "LevelEditor.h"
-#include "CheatScene.h"
-#include "Highscores.h"
-#include "JsonHelper.h"
+
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
