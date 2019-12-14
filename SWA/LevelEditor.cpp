@@ -797,6 +797,22 @@ void LevelEditor::InitObjects()
 		"health_potion_large",
 		"flask_big_red.png"
 		});
+	objects_in_toolbox_.push_back(EditorObject{
+		"zombie",
+		"big_zombie.png"
+		});
+	objects_in_toolbox_.push_back(EditorObject{
+		"ogre",
+		"ogre.png"
+		});
+	objects_in_toolbox_.push_back(EditorObject{
+		"chort",
+		"chort.png"
+		});
+	objects_in_toolbox_.push_back(EditorObject{
+		"imp",
+		"imp.png"
+		});
 
 	int x = 1140;
 	int y = 25;
