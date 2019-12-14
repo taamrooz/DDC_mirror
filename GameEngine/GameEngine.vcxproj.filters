@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Math">
       <UniqueIdentifier>{54b722ac-cde6-45a3-818a-8ba41d4fdc97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ThirdParty">
+      <UniqueIdentifier>{87e0690b-0e7f-46af-9f6a-e4dc5c6af120}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -75,6 +78,12 @@
     <ClInclude Include="rect2d.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
+    <ClInclude Include="JsonHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Header Files\ThirdParty</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -109,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonHelper.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

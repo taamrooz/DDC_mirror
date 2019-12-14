@@ -18,8 +18,10 @@ namespace Engine {
 
 	void SceneManager::delete_scene(std::string name)
 	{
-		active_scenes_.at(name)->cleanup();
-		active_scenes_.erase(name);
+		if (active_scenes_.find(name) != active_scenes_.end()) {
+			active_scenes_.at(name)->cleanup();
+			active_scenes_.erase(name);
+		}
 	}
 
 	void SceneManager::set_scene(std::string name)

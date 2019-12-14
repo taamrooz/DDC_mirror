@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "RoomComponent.h"
 #include "RoomSingleton.h"
+#include "DungeonSingleton.h"
 
 namespace Engine {
 	template<typename T> class EntityManager
@@ -55,18 +56,36 @@ namespace Engine {
 		{
 			std::vector<uint32_t> list;
 			const auto type = typeid(C).hash_code();
+			const auto current_room_number = DungeonSingleton::get_instance()->get_current_room_number();
 			if(components_by_class_.find(type) != components_by_class_.end())
 			{
 				for(auto i = components_by_class_.at(type).begin(); i != components_by_class_.at(type).end(); ++i)
 				{
 					auto room_component = get_component<RoomComponent>(i->first);
-					if (room_component->room_name.compare(RoomSingleton::get_instance()->get_current_room_name()) == 0)
+					if (room_component->room_index == current_room_number)
 					{
 						list.push_back(i->first);
 					}
 				}
 			}
 			return list;
+		}
+
+		[[nodiscard]] std::vector<uint32_t> get_all_entities() const
+		{
+			return entities_;
+		}
+
+		std::vector<T*> get_all_components_from_entity(uint32_t id)
+		{
+			std::vector<T*> components {};
+			for(auto &&i = components_by_class_.begin(); i != components_by_class_.end(); ++i)
+			{
+				auto component_iterator = i->second.find(id);
+				if(component_iterator != i->second.end())
+					components.emplace_back(component_iterator->second.get());
+;			}
+			return components;
 		}
 
 		uint32_t create_entity()

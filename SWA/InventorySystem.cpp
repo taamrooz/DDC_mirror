@@ -14,8 +14,8 @@ void InventorySystem::update(double dt)
 	auto inv = manager_->get_component<InventoryComponent>(entity);
 	for (auto i = KeyBindingSingleton::get_instance()->keys_down.begin(); i != KeyBindingSingleton::get_instance()->keys_down.end(); ++i)
 	{
-		if (i->first.compare("1") == 0) {
-			if (i->second) {
+		if (i->second) {
+			if (i->first == "1") {
 				if (inv->selected == 1) {
 					// use this inventory item
 					if (inv->items.size() > 0) {
@@ -28,60 +28,60 @@ void InventorySystem::update(double dt)
 				inv->selected = 1;
 				i->second = false;
 
+
 			}
-		}
-		if (i->first.compare("2") == 0) {
-			if (i->second) {
+
+			if (i->first == "2") {
 				inv->selected = 2;
 				i->second = false;
 			}
-		}
-		if (i->first.compare("3") == 0) {
-			if (i->second) {
+			if (i->first == "3") {
+
 				inv->selected = 3;
 				i->second = false;
+
 			}
-		}
-		if (i->first.compare("4") == 0) {
-			if (i->second) {
+			if (i->first == "4") {
+
 				inv->selected = 4;
 				i->second = false;
+
 			}
-		}
-		if (i->first.compare("5") == 0) {
-			if (i->second) {
+			if (i->first == "5") {
+
 				inv->selected = 5;
 				i->second = false;
+
 			}
-		}
-		if (i->first.compare("6") == 0) {
-			if (i->second) {
+			if (i->first == "6") {
+
 				inv->selected = 6;
 				i->second = false;
+
 			}
-		}
-		if (i->first.compare("7") == 0) {
-			if (i->second) {
+			if (i->first == "7") {
+
 				inv->selected = 7;
 				i->second = false;
+
 			}
-		}
-		if (i->first.compare("8") == 0) {
-			if (i->second) {
+			if (i->first == "8") {
+
 				inv->selected = 8;
 				i->second = false;
+
 			}
-		}
-		if (i->first.compare("9") == 0) {
-			if (i->second) {
+			if (i->first == "9") {
+
 				inv->selected = 9;
 				i->second = false;
+
 			}
-		}
-		if (i->first.compare("10") == 0) {
-			if (i->second) {
+			if (i->first == "10") {
+
 				inv->selected = 10;
 				i->second = false;
+
 			}
 		}
 	}
