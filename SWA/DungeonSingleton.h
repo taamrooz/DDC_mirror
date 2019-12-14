@@ -25,6 +25,8 @@ public:
 	void move_room_left();
 	void load_room(Engine::EntityManager<Component>* manager);
 	void move_dungeon_down();
+	bool skip_until_room(const std::string& path);
+	void set_current_room_number(int room_number);
 	static DungeonSingleton* get_instance();
 	RoomComponent* get_current_room() const;
 	std::string get_current_level_path() const;

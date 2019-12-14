@@ -37,8 +37,9 @@ bool Core::init()
 	scene_manager_->add_scene(pause, true, "pause");
 	scene_manager_->add_scene(endgamewin, true, "win");
 	scene_manager_->add_scene(endgamelose, true, "lose");
-	
+
 	DungeonSingleton::get_instance()->load_all_dungeons();
+	
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));
@@ -127,14 +128,13 @@ void Core::toggle_game_lost()
 	KeyBindingSingleton::get_instance()->reset_properties();
 }
 
-void Core::save_game()
+void Core::save_game(std::string path)
 {
 	auto sh = SaveHelper{};
-	sh.SaveGameToFile(manager_.get());
+	sh.SaveGameToFile(manager_.get(), path);
 }
 
-void Core::load_game()
+Engine::EntityManager<Component>* Core::get_entity_manager()
 {
-	auto sh = SaveHelper{};
-	sh.LoadGameFromFile(manager_.get(), "assets/json/test_save");
+	return manager_.get();
 }

@@ -14,7 +14,9 @@ private:
 	std::unique_ptr<Texture> title_ = nullptr;
 	std::unique_ptr<Texture> paused_texture_ = nullptr;
 	std::unique_ptr<Texture> helper_ = nullptr;
+	std::unique_ptr<Texture> helper2_ = nullptr;
 	std::unique_ptr<Animation> background_ = nullptr;
+	std::unique_ptr<Texture> text_texture_ = nullptr;
 	std::string save_text_;
 public:
 	~Pause();

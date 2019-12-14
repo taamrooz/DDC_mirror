@@ -56,8 +56,12 @@ public:
 	void toggle_game_lost();
 	/**
 	 * \brief Saves the game
+	 * @params path path to save to
 	 */
-	void save_game();
-	void load_game();
+	void save_game(std::string path);
+	/**
+	 * \brief Returns entity manager pointer
+	 */
+	Engine::EntityManager<Component>* get_entity_manager();
 };
 

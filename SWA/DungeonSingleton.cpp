@@ -153,6 +153,23 @@ void DungeonSingleton::move_dungeon_down()
 	}
 }
 
+bool DungeonSingleton::skip_until_room(const std::string& path)
+{
+	while (!is_last_dungeon() && get_current_level_path() != path)
+		move_dungeon_down();
+	
+	if(is_last_dungeon() && get_current_level_path() != path)
+		return false;
+	
+	return true;
+}
+
+void DungeonSingleton::set_current_room_number(int room_number)
+{
+	current_room_ = room_number;
+	RoomSingleton::get_instance()->reload_room = true;
+}
+
 RoomComponent* DungeonSingleton::get_current_room() const
 {
 	return level_rooms_.at(current_room_).get();

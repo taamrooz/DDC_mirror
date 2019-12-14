@@ -36,16 +36,19 @@ struct AnimationComponent : Component
 			j[std::to_string(id)]["AnimationComponent"]["states"]["DEFAULT"]["path"] = state_to_path.find(State::DEFAULT)->second;
 			j[std::to_string(id)]["AnimationComponent"]["states"]["DEFAULT"]["frames"] = state_to_frames.find(State::DEFAULT)->second;
 			j[std::to_string(id)]["AnimationComponent"]["states"]["DEFAULT"]["scale"] = animations.find(State::DEFAULT)->second->scale;
+			j[std::to_string(id)]["AnimationComponent"]["states"]["DEFAULT"]["pause"] = animations.find(State::DEFAULT)->second->pause;
 		}
 		if (state_to_path.find(State::RUN) != state_to_path.end()) {
 			j[std::to_string(id)]["AnimationComponent"]["states"]["RUN"]["path"] = state_to_path.find(State::RUN)->second;
 			j[std::to_string(id)]["AnimationComponent"]["states"]["RUN"]["frames"] = state_to_frames.find(State::RUN)->second;
 			j[std::to_string(id)]["AnimationComponent"]["states"]["RUN"]["scale"] = animations.find(State::RUN)->second->scale;
+			j[std::to_string(id)]["AnimationComponent"]["states"]["RUN"]["pause"] = animations.find(State::RUN)->second->pause;
 		}
 		if (state_to_path.find(State::HIT) != state_to_path.end()) {
 			j[std::to_string(id)]["AnimationComponent"]["states"]["HIT"]["path"] = state_to_path.find(State::HIT)->second;
 			j[std::to_string(id)]["AnimationComponent"]["states"]["HIT"]["frames"] = state_to_frames.find(State::HIT)->second;
 			j[std::to_string(id)]["AnimationComponent"]["states"]["HIT"]["scale"] = animations.find(State::HIT)->second->scale;
+			j[std::to_string(id)]["AnimationComponent"]["states"]["HIT"]["pause"] = animations.find(State::HIT)->second->pause;
 		}
 	}
 };
