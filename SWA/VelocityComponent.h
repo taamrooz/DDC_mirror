@@ -9,7 +9,7 @@ struct VelocityComponent : Component
 	vector2d steer_force = vector2d(0,0);
 	double dx{0};
 	double dy{0};
-	float deaceleration = 3;
+	float deceleration = 3;
 	double dropOff{};
 	float maxSpeed = 10;
 
