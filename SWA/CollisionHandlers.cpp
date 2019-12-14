@@ -18,19 +18,26 @@
 
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg, EnemyComponent* enemy) {
-	int currentTick = Engine::get_ticks();
-	if (health->invulnerable_until < currentTick) {
-		std::cout << "HIT" << std::endl;
-		health->current_health -= dmg->damage_amount;
-		health->invulnerable_until = health->time_invulnerable + currentTick;
+	std::cout << "HIT" << std::endl;
+	health->current_health -= dmg->damage_amount;
 
-		if (health->current_health < 3 && enemy != nullptr) {
-			enemy->state = Fleeing;
-		}
+	if (health->current_health < 3 && enemy != nullptr) {
+		enemy->state = Fleeing;
 	}
 }
 
 void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
+	auto enemy1 = manager->get_component<EnemyComponent>(entity1);
+	auto enemy2 = manager->get_component<EnemyComponent>(entity2);
+
+	if (enemy1 != nullptr) {
+		EnemyCollisionHandler(entity1, entity2, manager, core);
+	}
+	else if (enemy2 != nullptr) {
+		EnemyCollisionHandler(entity2, entity1, manager, core);
+	}
+
+
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	if (player == nullptr) {
 		manager->remove_entity(entity1);
@@ -125,7 +132,6 @@ void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMana
 }
 
 void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
-	
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
 	auto enemy = manager->get_component<EnemyComponent>(entity2);
 	if (dmg != nullptr && enemy == nullptr) {
@@ -139,6 +145,7 @@ void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 
 		if (health->current_health <= 0) {
 			auto level_boss_component = manager->get_component<LevelBossComponent>(entity1);
+
 			if (level_boss_component != nullptr) {
 				manager->remove_component_from_entity<AnimationComponent>(entity1);
 				manager->remove_component_from_entity<CollisionComponent>(entity1);
@@ -147,9 +154,7 @@ void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 				Engine::play_music("ingame.wav");
 				core->toggle_game_won();
 			}
-			else {
-				manager->remove_entity(entity1);
-			}
+			manager->remove_entity(entity1);
 		}
 	}
 	auto coll = manager->get_component<CollisionComponent>(entity2);
