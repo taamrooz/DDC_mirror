@@ -15,6 +15,7 @@
 #include "AnimationComponent.h"
 #include <Renderer.h>
 #include <Audio.h>
+#include <algorithm>
 
 
 void DamageHandler(HealthComponent* health, DamagingComponent* dmg, EnemyComponent* enemy) {
@@ -50,23 +51,14 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 	auto ladder = manager->get_component<LadderComponent>(entity1);
 
 	if (player != nullptr && ladder != nullptr) {
-		const auto boss_entities = manager->get_all_entities_from_current_room<LevelBossComponent>();
-		bool is_boss_room = !boss_entities.empty();
+		const auto boss_entities = manager->get_all_entities<LevelBossComponent>();
+		bool all_bosses_dead = std::all_of(boss_entities.begin(), boss_entities.end(), [&manager](uint32_t entity)
+			{
+				return manager->get_component<HealthComponent>(entity)->current_health <= 0;
+			});
 
-		if (is_boss_room) {
-			const auto boss_entity = boss_entities.front();
-			const auto boss_health = manager->get_component<HealthComponent>(boss_entity);
-			const auto boss_room = manager->get_component<RoomComponent>(boss_entity);
-
-			if (boss_room->room_index == DungeonSingleton::get_instance()->get_current_room_number()) {
-				// current room is where levelBoss is living
-				if (boss_health->current_health <= 0) {
-					DungeonSingleton::get_instance()->move_dungeon_down();
-				}
-			}
-		}
-		else {
-			DungeonSingleton::get_instance()->move_dungeon_down();
+		if (all_bosses_dead) {
+			DungeonSingleton::get_instance()->move_dungeon_down(manager);
 		}
 	}
 	auto dmg = manager->get_component<DamagingComponent>(entity2);
@@ -127,7 +119,7 @@ void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 			auto level_boss_component = manager->get_component<LevelBossComponent>(entity1);
 			if (level_boss_component != nullptr) {
 				manager->remove_entity(entity1);
-				if(DungeonSingleton::get_instance()->is_last_dungeon())
+				if (DungeonSingleton::get_instance()->is_last_dungeon())
 				{
 					Engine::stop_music();
 					Engine::play_music("ingame.wav");
@@ -236,7 +228,8 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 		//create drop
 		int drop = manager->create_entity();
 		auto chest = manager->get_component<ChestComponent>(entity1);
-		ComponentFactory::get_instance()->CreateEntity(chest->contains, drop, manager);
+		auto room = manager->get_component<RoomComponent>(entity1);
+		ComponentFactory::get_instance()->CreateEntity(chest->contains, drop, manager, room);
 		auto cPos = manager->get_component<PositionComponent>(entity1);
 		auto cColl = manager->get_component<CollisionComponent>(entity1);
 		auto pVel = manager->get_component<VelocityComponent>(entity2);
