@@ -28,8 +28,10 @@ void MainMenu::render()
 	Engine::render_texture(level_editor_.get(), 550, 480, nullptr);
 	Engine::render_texture(credits_.get(), 550, 560, nullptr);
 	Engine::render_texture(help_.get(), 550, 640, nullptr);
-	Engine::render_texture(quit_.get(), 550, 720, nullptr);
+	Engine::render_texture(highscore_.get(), 550, 720, nullptr);
+	Engine::render_texture(quit_.get(), 550, 800, nullptr);
 	Engine::render_texture(helper.get(), 115, 900, nullptr);
+	
 	if (current_action_ == 0)
 	{
 		Engine::render_texture(selector_.get(), 530, 320, nullptr);
@@ -53,6 +55,10 @@ void MainMenu::render()
 	else if (current_action_ == 5)
 	{
 		Engine::render_texture(selector_.get(), 530, 720, nullptr);
+	}
+	else if (current_action_ == 6) 
+	{
+		Engine::render_texture(selector_.get(), 530, 800, nullptr);
 	}
 	
 	Engine::render(timer);
@@ -85,7 +91,7 @@ void MainMenu::input()
 		}
 		else if (keycode == SDLK_DOWN)
 		{
-			if (current_action_ < 5)
+			if (current_action_ < 6)
 			{
 				++current_action_;
 			}
@@ -122,6 +128,11 @@ void MainMenu::input()
 				Engine::play_music("help.wav");
 				break;
 			case 5:
+				Engine::stop_music();
+				scene_manager_->set_scene("highscores");
+				Engine::play_music("credits.wav");
+				break;
+			case 6:
 				is_running_ = false;
 				break;
 			}
@@ -172,6 +183,9 @@ bool MainMenu::init()
 
 	auto load_game = new LoadGame(scene_manager_);
 	scene_manager_->add_scene(load_game, true, "load_game");
+
+	auto highscores = new Highscores(sm.get());
+	sm->add_scene(highscores, true, "highscores");
 	
 	title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
 	background_ = std::unique_ptr<Animation>(Engine::load_animation("mainmenu.png", 3));
@@ -185,6 +199,7 @@ bool MainMenu::init()
 	selector_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">"));
 	helper = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, {255, 255, 255, 255},
 	                          "Use the arrow keys ^` to navigate the menu and press ENTER to confirm"));
+	highscore_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Highscores"));
 	Engine::play_music("mainmenu.wav");
 	return true;
 }

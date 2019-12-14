@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 #include "Texture.h"
 #include "Animation.h"
+#include "Core.h"
 #include <memory>
 
 class Core;

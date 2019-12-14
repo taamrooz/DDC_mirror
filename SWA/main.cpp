@@ -9,6 +9,7 @@
 #include "Pause.h"
 #include "LevelEditor.h"
 #include "CheatScene.h"
+#include "Highscores.h"
 #include "JsonHelper.h"
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC

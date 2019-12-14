@@ -159,6 +159,9 @@
     <ClCompile Include="DungeonSingleton.cpp">
       <Filter>Source Files\Singletons</Filter>
     </ClCompile>
+    <ClCompile Include="Highscores.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -316,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="SaveHelper.h">
       <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Highscores.h">
+      <Filter>Header Files\Menus</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

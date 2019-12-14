@@ -30,6 +30,15 @@ void MoveSystem::update(double dt)
 				if (velocity->dx < 0) {
 					velocity->dx = velocity->dx + velocity->dropOff > 0 ? 0 : velocity->dx + velocity->dropOff;
 				}
+				else if (velocity->dx > 0) {
+					velocity->dx = velocity->dx - velocity->dropOff < 0 ? 0 : velocity->dx - velocity->dropOff;
+				}
+				else if (velocity->dy < 0) {
+					velocity->dy = velocity->dy + velocity->dropOff > 0 ? 0 : velocity->dy + velocity->dropOff;
+				}
+				else if (velocity->dy > 0) {
+					velocity->dy = velocity->dy - velocity->dropOff < 0 ? 0 : velocity->dy - velocity->dropOff;
+				}
 			}
 			if (characterEntity == entity) {
 				velocity->dx = 0;

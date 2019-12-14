@@ -2,14 +2,10 @@
 #include "Audio.h"
 #include "Renderer.h"
 #include "UserInput.h"
-#include "Core.h"
 
 Pause::~Pause() = default;
 
-Pause::Pause(Engine::SceneManager * manager, Core * core) : BaseScene(manager)
-{
-	core_ = core;
-}
+Pause::Pause(Engine::SceneManager * manager, Core * core) : BaseScene(manager), core_ { core } { }
 
 void Pause::render()
 {	
@@ -54,7 +50,7 @@ void Pause::input() {
 		{
 			Engine::resume_music();
 			scene_manager_->set_scene("game");
-			Engine::play_music("mainmenu.wav");
+			core_->unpauzeTimer();
 			break;
 		}
 	}
