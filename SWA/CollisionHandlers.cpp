@@ -221,6 +221,10 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 		auto ani = manager->get_component<AnimationComponent>(entity1);
 		ani->animations.erase(ani->currentState);
 		ani->animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::DEFAULT, std::unique_ptr<Animation>(Engine::load_animation("Animations/chest_empty_open.png", 3))));
+		ani->state_to_frames.erase(ani->currentState);
+		ani->state_to_frames.emplace(State::DEFAULT, 3);
+		ani->state_to_path.erase(ani->currentState);
+		ani->state_to_path.emplace(State::DEFAULT, "Animations/chest_empty_open.png");
 		ani->animations.at(ani->currentState)->pause = false;
 		ani->animations.at(ani->currentState)->loop = false;
 		ani->animations.at(ani->currentState)->scale = 3;
@@ -256,6 +260,7 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 		manager->add_component_to_entity(drop, std::move(dPos));
 		manager->add_component_to_entity(drop, std::move(dVel));
 		cColl->collisionHandler = nullptr;
+		cColl->function_name = CollisionHandlerNames::None;
 		manager->remove_component_from_entity<ChestComponent>(entity1);
 
 	}

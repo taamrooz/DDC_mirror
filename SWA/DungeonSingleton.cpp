@@ -4,6 +4,8 @@
 #include <filesystem>
 #include "Constants.h"
 #include "CharacterComponent.h"
+#include "TextureComponent.h"
+#include "CollectableComponent.h"
 
 DungeonSingleton::DungeonSingleton() {
 	current_room_ = 0;
@@ -62,7 +64,7 @@ void DungeonSingleton::load_dungeon(const std::string& path, Engine::EntityManag
 					new_room->left = left_room.get();
 				}
 			}
-			RoomSingleton::get_instance()->load_objects(manager, new_room.get());
+			//RoomSingleton::get_instance()->load_objects(manager, new_room.get());
 			level_rooms_.push_back(std::move(new_room));
 			
 		}
@@ -155,10 +157,11 @@ void DungeonSingleton::move_dungeon_down(Engine::EntityManager<Component>* manag
 	{
 		for (auto& room : manager->get_all_entities<RoomComponent>())
 		{
-			if (manager->get_component<CharacterComponent>(room) == nullptr)
+			if (manager->get_component<CharacterComponent>(room) != nullptr)
 			{
-				manager->remove_entity(room);
+				continue;
 			}
+			manager->remove_entity(room);
 		}
 		current_level_++;
 		level_rooms_.clear();
