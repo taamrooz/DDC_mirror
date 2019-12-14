@@ -231,10 +231,6 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 				first_node_velocity_component->dy = 0;
 			}
 		}
-		if (second_node_velocity_component != nullptr) {
-			second_node_velocity_component->dx = 0;
-			second_node_velocity_component->dy = 0;
-		}
 	}
 }
 
