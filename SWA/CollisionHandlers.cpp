@@ -18,22 +18,50 @@
 #include <algorithm>
 
 
-void DamageHandler(HealthComponent* health, DamagingComponent* dmg, EnemyComponent* enemy) {
+void DamageHandler(uint32_t source, uint32_t target, Engine::EntityManager<Component>* manager, Core* core) {
+	const auto health = manager->get_component<HealthComponent>(target);
+	auto ani = manager->get_component<AnimationComponent>(target);
+	auto dmg = manager->get_component<DamagingComponent>(source);
+	auto enemy = manager->get_component<EnemyComponent>(target);
+	auto player = manager->get_component<CharacterComponent>(target);
 	int currentTick = Engine::get_ticks();
-	if (health->invulnerable_until < currentTick) {
-		std::cout << "HIT" << std::endl;
+	if ( health != nullptr && health->invulnerable_until < currentTick) {
 		health->current_health -= dmg->damage_amount;
 		health->invulnerable_until = health->time_invulnerable + currentTick;
+
+		ani->currentState = State::HIT;
+		ani->lock_until = Engine::get_ticks() + 250;
 
 		if (health->current_health < 3 && enemy != nullptr) {
 			enemy->state = Fleeing;
 		}
+		if (health->current_health <= 0) {
+			if (player != nullptr) {
+				core->toggle_game_lost();
+			}
+			else if (enemy != nullptr) {
+				auto level_boss_component = manager->get_component<LevelBossComponent>(target);
+				if (level_boss_component != nullptr) {
+					manager->remove_entity(target);
+					if (DungeonSingleton::get_instance()->is_last_dungeon())
+					{
+						Engine::stop_music();
+						Engine::play_music("ingame.wav");
+						core->toggle_game_won();
+					}
+				}
+				else {
+					manager->remove_entity(target);
+				}
+			}
+		}
 	}
 }
 
-void BulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
+void PlayerBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	if (player == nullptr) {
+		DamageHandler(entity1, entity2, manager, core);
 		manager->remove_entity(entity1);
 	}
 }
@@ -61,22 +89,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 			DungeonSingleton::get_instance()->move_dungeon_down(manager);
 		}
 	}
-	auto dmg = manager->get_component<DamagingComponent>(entity2);
-	auto ani = manager->get_component<AnimationComponent>(entity1);
-	if (dmg != nullptr && ani != nullptr) {
-
-		ani->currentState = State::HIT;
-		ani->lock_until = Engine::get_ticks() + 250;
-
-		const auto health = manager->get_component<HealthComponent>(entity1);
-		if (health != nullptr)
-		{
-			//DamageHandler(health, dmg, nullptr);
-			if (health->current_health <= 0) {
-				core->toggle_game_lost();
-			}
-		}
-	}
+	
 	auto coll = manager->get_component<CollisionComponent>(entity2);
 	if (coll != nullptr && coll->solid) {
 		UpdateVelocity(entity1, entity2, manager, core);
@@ -102,33 +115,9 @@ void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMana
 }
 
 void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
-
-	auto dmg = manager->get_component<DamagingComponent>(entity2);
 	auto enemy = manager->get_component<EnemyComponent>(entity2);
-	if (dmg != nullptr && enemy == nullptr) {
-		auto ani = manager->get_component<AnimationComponent>(entity1);
-		ani->currentState = State::HIT;
-		ani->lock_until = Engine::get_ticks() + 250;
-
-		auto health = manager->get_component<HealthComponent>(entity1);
-		auto enemy = manager->get_component<EnemyComponent>(entity1);
-		DamageHandler(health, dmg, enemy);
-
-		if (health->current_health <= 0) {
-			auto level_boss_component = manager->get_component<LevelBossComponent>(entity1);
-			if (level_boss_component != nullptr) {
-				manager->remove_entity(entity1);
-				if (DungeonSingleton::get_instance()->is_last_dungeon())
-				{
-					Engine::stop_music();
-					Engine::play_music("ingame.wav");
-					core->toggle_game_won();
-				}
-			}
-			else {
-				manager->remove_entity(entity1);
-			}
-		}
+	if (enemy == nullptr) {
+		DamageHandler(entity1, entity2, manager, core);
 	}
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	auto coll = manager->get_component<CollisionComponent>(entity2);
@@ -290,7 +279,7 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 CollisionHandlers::CollisionHandlers()
 {
 	name_function_map_.try_emplace(CollisionHandlerNames::None, nullptr);
-	name_function_map_.try_emplace(CollisionHandlerNames::BulletCollisionHandler, BulletCollisionHandler);
+	name_function_map_.try_emplace(CollisionHandlerNames::PlayerBulletCollisionHandler, PlayerBulletCollisionHandler);
 	name_function_map_.try_emplace(CollisionHandlerNames::PlayerCollisionHandler, PlayerCollisionHandler);
 	name_function_map_.try_emplace(CollisionHandlerNames::ItemCollisionHandler, ItemCollisionHandler);
 	name_function_map_.try_emplace(CollisionHandlerNames::ChestCollisionHandler, ChestCollisionHandler);
