@@ -33,7 +33,7 @@ private:
 	/**
 	*\Check if highscore achieved and write it to file
 	*/
-	void checkforHighscore();
+	void check_for_highscore();
 	
 public:
 	Core(Engine::SceneManager* manager);
@@ -87,6 +87,6 @@ public:
 	/**
 	* \Unpauzes the timer which counts your highscore
 	*/
-	void unpauzeTimer();
+	void unpause_Timer();
 };
 

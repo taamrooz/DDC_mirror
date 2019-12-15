@@ -80,7 +80,7 @@ void Core::update()
 				is_winner_ = false;				
 				elapsed_secs_ += (timer_.GetTicks() / (double) CLOCKS_PER_SEC);
 				timer_.Stop();
-				checkforHighscore();
+				check_for_highscore();
 			}
 
 			if (is_loser_) {
@@ -141,7 +141,7 @@ void Core::toggle_game_lost()
 }
 
 
-void Core::unpauzeTimer()
+void Core::unpause_Timer()
 {
 	if (timer_.IsPaused()) {
 		timer_.Unpause();
@@ -166,7 +166,7 @@ void Core::unpauzeTimer()
 	}
 }
 
-void Core::checkforHighscore()
+void Core::check_for_highscore()
 {
 	std::string highscoreString;
 	std::vector<std::string> times;
