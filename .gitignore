@@ -1,5 +1,4 @@
-assets/json/
-
+**/json/*
 
 # Prerequisites
 *.d
