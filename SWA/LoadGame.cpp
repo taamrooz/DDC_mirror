@@ -5,6 +5,7 @@
 #include "Core.h"
 #include <Audio.h>
 #include <fstream> 
+#include "SaveHelper.h"
 
 LoadGame::~LoadGame() = default;
 
@@ -56,7 +57,7 @@ void LoadGame::get_files(const char* path, const std::string extension)
 			std::string file_name = entry.path().filename().string();
 			file_name = file_name.substr(0, file_name.size() - 5);
 			file_names_.emplace_back(file_name);
-			file_name_textures_.push_back(std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, file_name.c_str())));
+			file_name_textures_.push_back(std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, file_name.c_str())));
 		}
 	}
 }
@@ -73,8 +74,6 @@ void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 		{
 			Engine::StopTextInput();
 			cleanup();
-
-			// TO-DO: switch scenemaneger to game scene with currently loaded game! (Other Userstory)
 			Engine::stop_music();
 			scene_manager_->set_scene("game");
 			Engine::play_music("ingame.wav");
@@ -83,22 +82,19 @@ void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 }
 
 bool LoadGame::open_game_file(std::string& path) {
-	std::ifstream game("./assets/Levels/" + path);
-	if (game.fail())
-	{
-		return false;
-	}
-	
-	// TO-DO: write logic of loading game here! (Other Userstory)
-
-	return true;
+	auto core = new Core(scene_manager_);
+	scene_manager_->add_scene(core, true, "game");
+	if(SaveHelper{}.LoadGameFromFile(core->get_entity_manager(), "./assets/json/" + path))
+		return true;
+	scene_manager_->delete_scene("game");
+	return false;
 }
 
 void LoadGame::render() {
 	const auto timer = Engine::pre_update();
 	if (text_.length() > 0)
 	{
-		text_texture_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
+		text_texture_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, text_.c_str()));
 	}
 	int x = 100;
 	int y = 50;
@@ -120,6 +116,7 @@ void LoadGame::render() {
 }
 
 bool LoadGame::init() {
-	get_files("./assets/Levels", "json");
+	Engine::StartTextInput();
+	get_files("./assets/json", "json");
 	return true;
 }
