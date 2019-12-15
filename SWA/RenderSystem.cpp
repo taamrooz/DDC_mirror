@@ -9,7 +9,7 @@
 #include "HealthComponent.h"
 #include "InventoryComponent.h"
 #include "TextureComponent.h"
-#include "LevelSingleton.h"
+#include "DungeonSingleton.h"
 
 RenderSystem::RenderSystem(Engine::EntityManager<Component>* manager)
 	: BaseSystem(manager) {
@@ -86,23 +86,27 @@ void RenderSystem::update(double dt)
 	}
 
 	//Render inventory
-	auto invId = manager_->get_all_entities_from_current_room<InventoryComponent>().front();
+	auto invId = manager_->get_all_entities<InventoryComponent>().front();
 	auto inv = manager_->get_component<InventoryComponent>(invId);
 	int x = 25;
 	for (int i = 0; i < 10; i++) {
-		bool selected = false;
+		int y = Engine::get_window_height() - 75;
+		int scale = 3;
 		if (i + 1 == inv->selected) {
-			selected = true;
+				scale = 4;
+				y -= 16;
 		}
-		Engine::render_inventory_tile(selected, x);
+		Engine::set_render_draw_color(255, 255, 255, 100);
+		Engine::rect2d rect = Engine::rect2d{ x, y, 16 * scale, 16 * scale };
+		Engine::draw_rectangle(rect);
+		Engine::fill_rectangle(rect);
 		if (inv->items.size() > i) {
 			auto texture = manager_->get_component<TextureComponent>(inv->items[i]);
-			Engine::render_inventory_item(texture->path, selected, x);
+			Engine::rect2d clip = Engine::rect2d{ 0, 0, 16 * scale, 16 * scale };
+			auto t = texture->texture.get();
+			Engine::render_texture(t, x, y, &clip);
 		}
-		x = x + (16 * 3);
-		if (selected) {
-			x += 16;
-		}
+		x = x + (16 * scale);
 	}	
 
 	//render minimap (placeholder until full dungeon gets loaded in)
@@ -114,7 +118,7 @@ void RenderSystem::update(double dt)
 			Engine::fill_rectangle(Engine::rect2d(x, y, 48, 48));
 			Engine::set_render_draw_color(0, 0, 0, 175);
 			Engine::draw_rectangle(Engine::rect2d(x, y, 48, 48));
-			if (i == 2 && j == 2) {
+			if (i == DungeonSingleton::get_instance()->get_current_room_number() % 5 && j == DungeonSingleton::get_instance()->get_current_room_number() / 5) {
 				Engine::set_render_draw_color(225, 225, 225, 175);
 				Engine::draw_rectangle(Engine::rect2d(x, y, 48, 48));
 			}
@@ -122,8 +126,7 @@ void RenderSystem::update(double dt)
 	}
 
 	//render current level information
-	int current_level_number = LevelSingleton::get_instance()->get_current_level_number();
-	std::string text = "Level " + std::to_string(current_level_number);
+	std::string text = "Level " + std::to_string(DungeonSingleton::get_instance()->get_current_level() + 1);
 	level_hud = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 0,255,0, 255 }, text.c_str()));
 	Engine::render_texture(level_hud.get(), 550, 15, nullptr);
 }

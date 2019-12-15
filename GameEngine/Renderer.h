@@ -84,7 +84,7 @@ namespace Engine {
 	ENGINE_API void draw_rectangle(const rect2d& rectangle);
 	/**
 	 * \brief Calls the fill_rectangle method on the rectangle.
-	 * @param rectangle The pointer to the Rectangle. 
+	 * @param rectangle The pointer to the Rectangle.
 	 */
 	ENGINE_API void fill_rectangle(const rect2d& rectangle);
 	/**
@@ -113,12 +113,6 @@ namespace Engine {
 	 * @return milliseconds
 	 */
 
-	/*
-	 * Draw the items in the inventory
-	 */
-	ENGINE_API void render_inventory_item(std::string path, bool selected, int x);
-	ENGINE_API void render_inventory_tile(bool selected, int x);
-
 	ENGINE_API uint32_t get_ticks();
 	/**
 	 * \brief Sets the renderer draw color.
@@ -145,6 +139,10 @@ namespace Engine {
 	 * @param y2 The second point y.
 	 */
 	ENGINE_API void render_line(int x, int y, int x2, int y2);
+	/**
+	* \brief Return the height of the current windowkd.
+	*/
+	ENGINE_API int get_window_height();
 	/**
 	 * \brief Toggles rendering the FPS counter.
 	 */

@@ -6,6 +6,12 @@
 #include <mutex>
 #include <chrono>
 #include <ctime>
+#include "Help.h"
+#include "Credits.h"
+#include "LevelEditor.h"
+#include "LoadGame.h"
+#include "Constants.h"
+#include "Highscores.h"
 
 MainMenu::~MainMenu() = default;
 
@@ -19,6 +25,7 @@ void MainMenu::render()
 {
 	if (timer_.IsPaused())
 		timer_.Start();
+	scene_manager_->delete_scene("game");
 	const auto timer = Engine::pre_update();
 	input();
 
@@ -113,10 +120,7 @@ void MainMenu::input()
 			switch (current_action_) {
 			case 0:
 				Engine::stop_music();
-				scene_manager_->set_scene("game");
-				Engine::play_music("ingame.wav");
-				scene_manager_->init();
-				timer_.Pause();
+				start_new_game();
 				break;
 			case 1:
 				Engine::stop_music();
@@ -126,9 +130,7 @@ void MainMenu::input()
 				break;
 			case 2:
 				Engine::stop_music();
-				scene_manager_->set_scene("leveleditor");
-				Engine::play_music("leveleditor.wav");
-				timer_.Pause();
+				start_level_editor();
 				break;
 			case 3:
 				Engine::stop_music();
@@ -159,6 +161,23 @@ void MainMenu::input()
 	}
 }
 
+void MainMenu::start_new_game()
+{
+	auto core = new Core(scene_manager_);;
+	scene_manager_->add_scene(core, true, "game");
+	scene_manager_->set_scene("game");
+	Engine::play_music("ingame.wav");
+	timer_.Pause();
+}
+
+void MainMenu::start_level_editor()
+{
+	auto leveleditor = new LevelEditor(scene_manager_);
+	scene_manager_->add_scene(leveleditor, true, "leveleditor");
+	scene_manager_->set_scene("leveleditor");
+	Engine::play_music("leveleditor.wav");
+	timer_.Pause();
+}
 
 void MainMenu::cleanup()
 {
@@ -169,7 +188,7 @@ void MainMenu::cleanup()
 bool MainMenu::init()
 {
 	timer_.Start();
-	if (!Engine::init_renderer("Demonic Dungeon Castle", false, 1280, 960)) {
+	if (!Engine::init_renderer("Demonic Dungeon Castle", false, Constants::k_window_width, Constants::k_window_height)) {
 		return false;
 	}
 	if (!Engine::init_audio()) {
@@ -191,19 +210,31 @@ bool MainMenu::init()
 	banner.push_back(std::move(oral_b_advertisement_));
 	banner.push_back(std::move(football_advertisement_));
 
-	title_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
-	background_ = std::make_unique<Animation>(*Engine::load_animation("mainmenu.png", 3));
+	auto credits = new Credits(scene_manager_);
+	scene_manager_->add_scene(credits, true, "credits");
+	
+	auto help = new Help(scene_manager_);
+	scene_manager_->add_scene(help, true, "help");
+
+	auto load_game = new LoadGame(scene_manager_);
+	scene_manager_->add_scene(load_game, true, "load_game");
+
+	auto highscores = new Highscores(scene_manager_);
+	scene_manager_->add_scene(highscores, true, "highscores");
+	
+	title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
+	background_ = std::unique_ptr<Animation>(Engine::load_animation("mainmenu.png", 3));
 	background_->scale = 1280.0 / 960.0;
-	start_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game"));
-	load_game_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Load game"));
-	credits_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits"));
-	help_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Help"));
-	level_editor_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Level Editor"));
-	quit_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop"));
-	selector_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">"));
-	highscore_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Highscores"));
-	helper = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, {255, 255, 255, 255},
+	start_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Start game"));
+	load_game_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Load game"));
+	credits_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Credits"));
+	help_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Help"));
+	level_editor_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Level Editor"));
+	quit_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop"));
+	selector_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">"));
+	helper = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, {255, 255, 255, 255},
 	                          "Use the arrow keys ^` to navigate the menu and press ENTER to confirm"));
+	highscore_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Highscores"));
 	Engine::play_music("mainmenu.wav");
 	return true;
 }

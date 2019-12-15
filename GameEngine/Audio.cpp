@@ -29,33 +29,14 @@ void Engine::play_audio(const std::string filename) {
 
 void Engine::play_music(const std::string filename) {
 	//Play music
-	if (Mix_PlayingMusic() == 0)
-	{
-		const auto exists = music.find(filename);
-		if (exists != music.end()) {
-			Mix_PlayMusic(music[filename], 1);
-		}
-		else {
-			const auto audiofile = find_music("./assets/" + filename);
-			Mix_PlayMusic(audiofile, -1);
-			music.emplace(filename, audiofile);
-		}
+	const auto exists = music.find(filename);
+	if (exists != music.end()) {
+		Mix_PlayMusic(music[filename], 1);
 	}
-	//If music is being played
-	else
-	{
-		//If the music is paused
-		if (Mix_PausedMusic() == 1)
-		{
-			//Resume the music
-			Mix_ResumeMusic();
-		}
-		//If the music is playing
-		else
-		{
-			//Pause the music
-			Mix_PauseMusic();
-		}
+	else {
+		const auto audiofile = find_music("./assets/" + filename);
+		Mix_PlayMusic(audiofile, -1);
+		music.emplace(filename, audiofile);
 	}
 }
 

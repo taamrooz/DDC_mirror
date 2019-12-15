@@ -4,6 +4,10 @@
 #include "Texture.h"
 #include "Animation.h"
 #include "Timer.h"
+#include "Core.h"
+#include "LevelEditor.h"
+#include "Credits.h"
+#include "Help.h"
 
 class MainMenu :
 	virtual public Engine::BaseScene
@@ -28,6 +32,8 @@ private:
 	std::unique_ptr<Texture> highscore_ = nullptr;
 	uint8_t current_action_ = 0;
 	Engine::Timer timer_{};
+	void start_new_game();
+	void start_level_editor();
 public:
 	~MainMenu();
 	MainMenu(Engine::SceneManager* manager);

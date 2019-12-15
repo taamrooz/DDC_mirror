@@ -83,7 +83,7 @@ bool Engine::load_sprite_sheet(std::string path, Animation* animation)
 
 Texture* Engine::load_text(std::string font_path, uint32_t font_size, SDL_Color color, const char* text)
 {
-	auto* texture = new Texture(renderer);
+	auto texture = new Texture(renderer);
 	texture->load_text(std::move(font_path), font_size, color, text);
 	return texture;
 }
@@ -93,7 +93,7 @@ Animation* Engine::load_animation(std::string path, int frames) {
 	auto WALKING_ANIMATION_FRAMES = frames;
 	auto texture = new Texture{ renderer };
 	auto animation = new Animation(WALKING_ANIMATION_FRAMES, texture);
-	texture->free();
+	//texture->free();
 
 	//Load media
 	if (!load_sprite_sheet(path, animation))
@@ -257,32 +257,6 @@ void Engine::render_line(int x, int y, int x2, int y2)
 	SDL_RenderDrawLine(renderer, x, y, x2, y2);
 }
 
-void Engine::render_inventory_item(std::string path, bool selected, int x) {
-
-	int y = SDL_GetWindowSurface(window)->h - 75;
-
-	int scale = 3;
-	if (selected) {
-		scale = 4;
-		y -= 16;
-	}
-	auto t = load_tileset(path);
-	rect2d clip = rect2d{ 0, 0, 16 * scale, 16 * scale };
-	t->set_alpha(225);
-	t->render(x, y, &clip);
-}
-
-void Engine::render_inventory_tile(bool selected, int x) {
-	int y = SDL_GetWindowSurface(window)->h - 75;
-	int scale = 3;
-	if (selected) {
-		scale = 4;
-		y -= 16;
-	}
-
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
-	SDL_Rect rect = SDL_Rect{ x, y, 16 * scale, 16 * scale };
-	SDL_RenderDrawRect(renderer, &rect);
-	SDL_RenderFillRect(renderer, &rect);
-
+int Engine::get_window_height() {
+	return SDL_GetWindowSurface(window)->h;
 }
