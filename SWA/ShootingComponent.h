@@ -8,7 +8,7 @@ struct ShootingComponent : Component
 	};
 
 	ShootingComponent() = default;
-	ShootingComponent(int bullet_size, int fire_rate, BulletShape bullet_shape = BulletShape::CIRCLE ) :
+	ShootingComponent(int bullet_size, int fire_rate, BulletShape bullet_shape = BulletShape::CIRCLE) :
 		bullet_size{ bullet_size }, bullet_shape{ bullet_shape }, fire_rate{ fire_rate }, last_shot{ 0 } {}
 
 	int bullet_size{};
@@ -21,6 +21,5 @@ struct ShootingComponent : Component
 		j[std::to_string(id)]["ShootingComponent"]["bullet_size"] = bullet_size;
 		j[std::to_string(id)]["ShootingComponent"]["bullet_shape"] = bullet_shape;
 		j[std::to_string(id)]["ShootingComponent"]["fire_rate"] = fire_rate;
-		j[std::to_string(id)]["ShootingComponent"]["last_shot"] = last_shot;
 	}
 };

@@ -15,7 +15,7 @@ private:
 	std::unique_ptr<Texture> explanation_ = nullptr;
 	std::vector<std::unique_ptr<Texture>> highscore_textures_;
 	void getHighscores();
-
+  
 public:
 	Highscores(Engine::SceneManager* manager);
 	void render() override;

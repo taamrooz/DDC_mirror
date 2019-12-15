@@ -5,6 +5,7 @@
 #include "Core.h"
 #include <Audio.h>
 #include <fstream> 
+#include "SaveHelper.h"
 
 LoadGame::~LoadGame() = default;
 
@@ -73,8 +74,6 @@ void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 		{
 			Engine::StopTextInput();
 			cleanup();
-
-			// TO-DO: switch scenemaneger to game scene with currently loaded game! (Other Userstory)
 			Engine::stop_music();
 			scene_manager_->set_scene("game");
 			Engine::play_music("ingame.wav");
@@ -83,15 +82,12 @@ void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 }
 
 bool LoadGame::open_game_file(std::string& path) {
-	std::ifstream game("./assets/json/" + path);
-	if (game.fail())
-	{
-		return false;
-	}
-	
-	// TO-DO: write logic of loading game here! (Other Userstory)
-
-	return true;
+	auto core = new Core(scene_manager_);
+	scene_manager_->add_scene(core, true, "game");
+	if(SaveHelper{}.LoadGameFromFile(core->get_entity_manager(), "./assets/json/" + path))
+		return true;
+	scene_manager_->delete_scene("game");
+	return false;
 }
 
 void LoadGame::render() {
@@ -120,6 +116,7 @@ void LoadGame::render() {
 }
 
 bool LoadGame::init() {
+	Engine::StartTextInput();
 	get_files("./assets/json", "json");
 	return true;
 }

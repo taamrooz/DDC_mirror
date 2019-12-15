@@ -1,4 +1,3 @@
-#include "Core.h"
 #include "SceneManager.h"
 #include "MainMenu.h"
 #include "Credits.h"

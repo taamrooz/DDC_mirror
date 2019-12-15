@@ -16,11 +16,16 @@ void RoomSystem::update(double dt)
 {
 	if (RoomSingleton::get_instance()->reload_room)
 	{
-		auto room_entities = manager_->get_all_entities_from_current_room<PositionComponent>();
-		if (room_entities.empty())
+		for (auto& room : manager_->get_all_entities<TileComponent>())
 		{
-			DungeonSingleton::get_instance()->load_room(manager_);
+			manager_->remove_entity(room);
 		}
+		if (manager_->get_all_entities_from_current_room<PositionComponent>().empty()) {
+			RoomSingleton::get_instance()->load_objects(manager_, DungeonSingleton::get_instance()->get_current_room());
+		}
+		RoomSingleton::get_instance()->load_map(manager_, DungeonSingleton::get_instance()->get_current_room());
+		RoomSingleton::get_instance()->reload_room = false;
+
 		auto player = manager_->get_all_entities<CharacterComponent>();
 		if (!player.empty())
 		{
@@ -30,11 +35,10 @@ void RoomSystem::update(double dt)
 		else
 		{
 			auto player_id = manager_->create_entity();
-			ComponentFactory::get_instance()->CreateEntity("player", player_id, manager_);
+			ComponentFactory::get_instance()->CreateEntity("player", player_id, manager_, DungeonSingleton::get_instance()->get_current_room());
 			auto pos = std::make_unique<PositionComponent>(650, 500);
 			manager_->add_component_to_entity(player_id, std::move(pos));
 		}
-		RoomSingleton::get_instance()->reload_room = false;
 
 		const auto boss_entities = manager_->get_all_entities_from_current_room<LevelBossComponent>();
 		if (!boss_entities.empty()) {

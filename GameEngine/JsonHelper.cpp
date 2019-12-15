@@ -1,6 +1,5 @@
 #include "JsonHelper.h"
 #include <fstream>
-#include <iostream>
 #include <iomanip>
 
 /*
@@ -18,10 +17,12 @@ void Engine::write_to_file(json& j, std::string path)
 {
 	std::ofstream out(path + ".json");
 	out << std::setw(4) << j << std::endl;
+	out.close();
 }
 
 void Engine::read_from_file(json& j, std::string path)
 {
 	std::ifstream in(path + ".json");
 	in >> j;
+	in.close();
 }

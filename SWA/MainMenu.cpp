@@ -10,6 +10,7 @@
 #include "LevelEditor.h"
 #include "LoadGame.h"
 #include "Constants.h"
+#include "Highscores.h"
 
 MainMenu::~MainMenu() = default;
 
@@ -186,7 +187,6 @@ bool MainMenu::init()
 
 	auto highscores = new Highscores(scene_manager_);
 	scene_manager_->add_scene(highscores, true, "highscores");
-
 	
 	title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "Demonic Dungeon Castle"));
 	background_ = std::unique_ptr<Animation>(Engine::load_animation("mainmenu.png", 3));
@@ -201,6 +201,7 @@ bool MainMenu::init()
 	highscore_ = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Highscores"));
 	helper = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 24, {255, 255, 255, 255},
 	                          "Use the arrow keys ^` to navigate the menu and press ENTER to confirm"));
+	highscore_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Highscores"));
 	Engine::play_music("mainmenu.wav");
 	return true;
 }

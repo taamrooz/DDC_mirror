@@ -160,7 +160,7 @@
       <Filter>Source Files\Singletons</Filter>
     </ClCompile>
     <ClCompile Include="Highscores.cpp">
-      <Filter>Source Files\Singletons</Filter>
+      <Filter>Source Files\Menus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -192,9 +192,6 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="HealthComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="MoneyComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="ShootingComponent.h">

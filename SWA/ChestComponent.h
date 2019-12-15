@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "ComponentFactory.h"
 enum class DropTypes {
 	Flask_Blue
 };

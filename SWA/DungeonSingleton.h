@@ -16,15 +16,18 @@ private:
 	std::vector<std::unique_ptr<RoomComponent>> level_rooms_;
 	std::vector<std::string> levels_;
 public:
-	void load_dungeon(const std::string& path);
-	void load_all_dungeons();
+	void load_dungeon(const std::string& path, Engine::EntityManager<Component>* manager);
+	void load_all_dungeons(Engine::EntityManager<Component>* manager);
 	void move_room(Direction dir);
 	void move_room_up();
 	void move_room_right();
 	void move_room_down();
 	void move_room_left();
 	void load_room(Engine::EntityManager<Component>* manager);
-	void move_dungeon_down();
+	void load_all_objects(Engine::EntityManager<Component>* manager);
+	void move_dungeon_down(Engine::EntityManager<Component>* manager);
+	bool skip_until_dungeon(const std::string& path);
+	void set_current_room_number(int room_number);
 	static DungeonSingleton* get_instance();
 	RoomComponent* get_current_room() const;
 	std::string get_current_level_path() const;

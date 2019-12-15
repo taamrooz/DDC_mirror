@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <time.h>
 
+
 class Core : virtual public Engine::BaseScene
 {
 private:
@@ -76,7 +77,16 @@ public:
 	void unpauzeTimer();
 	/**
 	 * \brief Saves the game
+	 * @params path path to save to
 	 */
-	void save_game();
+	void save_game(std::string path);
+	/**
+	 * \brief Returns entity manager pointer
+	 */
+	Engine::EntityManager<Component>* get_entity_manager();
+	/**
+	* \Unpauzes the timer which counts your highscore
+	*/
+	void unpauzeTimer();
 };
 

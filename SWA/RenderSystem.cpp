@@ -86,27 +86,28 @@ void RenderSystem::update(double dt)
 	}
 
 	//Render inventory
-	auto entities = manager_->get_all_entities_from_current_room<InventoryComponent>();
-	if (!entities.empty()) {
-		auto invId = entities.front();
-		auto inv = manager_->get_component<InventoryComponent>(invId);
-		int x = 25;
-		for (int i = 0; i < 10; i++) {
-			bool selected = false;
-			if (i + 1 == inv->selected) {
-				selected = true;
-			}
-			Engine::render_inventory_tile(selected, x);
-			if (inv->items.size() > i) {
-				auto texture = manager_->get_component<TextureComponent>(inv->items[i]);
-				Engine::render_inventory_item(texture->path, selected, x);
-			}
-			x = x + (16 * 3);
-			if (selected) {
-				x += 16;
-			}
+	auto invId = manager_->get_all_entities<InventoryComponent>().front();
+	auto inv = manager_->get_component<InventoryComponent>(invId);
+	int x = 25;
+	for (int i = 0; i < 10; i++) {
+		int y = Engine::get_window_height() - 75;
+		int scale = 3;
+		if (i + 1 == inv->selected) {
+				scale = 4;
+				y -= 16;
 		}
-	}
+		Engine::set_render_draw_color(255, 255, 255, 100);
+		Engine::rect2d rect = Engine::rect2d{ x, y, 16 * scale, 16 * scale };
+		Engine::draw_rectangle(rect);
+		Engine::fill_rectangle(rect);
+		if (inv->items.size() > i) {
+			auto texture = manager_->get_component<TextureComponent>(inv->items[i]);
+			Engine::rect2d clip = Engine::rect2d{ 0, 0, 16 * scale, 16 * scale };
+			auto t = texture->texture.get();
+			Engine::render_texture(t, x, y, &clip);
+		}
+		x = x + (16 * scale);
+	}	
 
 	//render minimap (placeholder until full dungeon gets loaded in)
 	for (int i = 0; i < 5; i++) {

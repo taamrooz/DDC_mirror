@@ -23,6 +23,7 @@ void Highscores::render()
 		Engine::render_texture(highscoreTexture.get(), 490, emplacement, nullptr);
 		emplacement += 25;
 	}
+
 	Engine::render(timer);
 }
 

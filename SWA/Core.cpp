@@ -32,14 +32,14 @@ bool Core::init()
 {
 	manager_ = std::make_unique<Engine::EntityManager<Component>>();
 
-	auto pause = new Pause(scene_manager_, this);
+
 	auto endgamewin = new EndGameWin(scene_manager_);
 	auto endgamelose = new EndGameLose(scene_manager_);
-	scene_manager_->add_scene(pause, true, "pause");
 	scene_manager_->add_scene(endgamewin, true, "win");
 	scene_manager_->add_scene(endgamelose, true, "lose");
+
+	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get());
 	
-	DungeonSingleton::get_instance()->load_all_dungeons();
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));
@@ -51,10 +51,12 @@ bool Core::init()
 	systems_.push_back(std::make_unique<CheatSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
-	
+	auto pause = new Pause(scene_manager_,this);
+	scene_manager_->add_scene(pause, false, "pause");
+
 	elapsed_secs_ = 0;
 	timer_.Start();
-	
+
 	return true;
 }
 
@@ -138,6 +140,7 @@ void Core::toggle_game_lost()
 	KeyBindingSingleton::get_instance()->reset_properties();
 }
 
+
 void Core::unpauzeTimer()
 {
 	if (timer_.IsPaused()) {
@@ -145,10 +148,22 @@ void Core::unpauzeTimer()
 	}
 }
 
-void Core::save_game()
+void Core::save_game(std::string path)
 {
 	auto sh = SaveHelper{};
-	sh.SaveGameToFile(manager_.get());
+	sh.SaveGameToFile(manager_.get(), path);
+}
+
+Engine::EntityManager<Component>* Core::get_entity_manager()
+{
+	return manager_.get();
+}
+
+void Core::unpauzeTimer()
+{
+	if (timer_.IsPaused()) {
+	timer_.Unpause();
+	}
 }
 
 void Core::checkforHighscore()
