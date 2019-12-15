@@ -13,6 +13,7 @@
 #include "SceneManager.h"
 #include "InventorySystem.h"
 #include "Audio.h"
+#include "Advertisement.h"
 #include "KeyBindingSingleton.h"
 #include "EndGameLose.h"
 #include "EndGameWin.h"
@@ -32,11 +33,12 @@ bool Core::init()
 {
 	manager_ = std::make_unique<Engine::EntityManager<Component>>();
 
-
 	auto endgamewin = new EndGameWin(scene_manager_);
 	auto endgamelose = new EndGameLose(scene_manager_);
+	auto advertisement = new Advertisement(scene_manager_);
 	scene_manager_->add_scene(endgamewin, true, "win");
 	scene_manager_->add_scene(endgamelose, true, "lose");
+	scene_manager_->add_scene(advertisement, true, "advertisement");
 
 	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get());
 	

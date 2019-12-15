@@ -1,7 +1,6 @@
 #include "EndGameLose.h"
 #include "Renderer.h"
 #include "UserInput.h"
-#include "Advertisement.h"
 #include "Core.h"
 #include "KeyBindingSingleton.h"
 #include <Audio.h>
@@ -48,9 +47,6 @@ void EndGameLose::cleanup() {
 }
 
 bool EndGameLose::init() {
-	auto advertisement = new Advertisement(scene_manager_);
-	scene_manager_->add_scene(advertisement, true, "advertisement");
-
 	title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 50, { 255,0,0, 255 }, "You didnt make it."));
 	sub_title_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 40, { 255,196,0,255 }, "LOSER LOSER DOUBLE LOSER :p!"));
 	background_ = std::unique_ptr<Animation>(Engine::load_animation("mainmenu.png", 3));
