@@ -192,7 +192,7 @@ void ComponentFactory::AddChortComponents(int id, Engine::EntityManager<Componen
 	animations.at(State::RUN)->scale = 3;
 	animations.at(State::HIT)->scale = 3;
 	auto ani = std::make_unique<AnimationComponent>(animations, state_to_path, state_to_frames);
-	auto coll = std::make_unique<CollisionComponent>(48, 63, EnemyCollisionHandler, CollisionHandlerNames::EnemyCollisionHandler, true);
+	auto coll = std::make_unique<CollisionComponent>(48, 63, EnemyCollisionHandler, CollisionHandlerNames::EnemyCollisionHandler);
 	em->add_component_to_entity(id, std::move(damage));
 	em->add_component_to_entity(id, std::move(room_comp));
 	em->add_component_to_entity(id, std::move(emc));
@@ -226,7 +226,7 @@ void ComponentFactory::AddImpComponents(int id, Engine::EntityManager<Component>
 	animations.at(State::RUN)->scale = 3;
 	animations.at(State::HIT)->scale = 3;
 	auto ani = std::make_unique<AnimationComponent>(animations, state_to_path, state_to_frames);
-	auto coll = std::make_unique<CollisionComponent>(39, 48, EnemyCollisionHandler, CollisionHandlerNames::EnemyCollisionHandler, false);
+	auto coll = std::make_unique<CollisionComponent>(39, 48, EnemyCollisionHandler, CollisionHandlerNames::EnemyCollisionHandler);
 	em->add_component_to_entity(id, std::move(damage));
 	em->add_component_to_entity(id, std::move(room_comp));
 	em->add_component_to_entity(id, std::move(emc));
@@ -260,7 +260,7 @@ void ComponentFactory::AddZombieComponents(int id, Engine::EntityManager<Compone
 	animations.at(State::RUN)->scale = 3;
 	animations.at(State::HIT)->scale = 3;
 	auto ani = std::make_unique<AnimationComponent>(animations, state_to_path, state_to_frames);
-	auto coll = std::make_unique<CollisionComponent>(69, 102, EnemyCollisionHandler, CollisionHandlerNames::EnemyCollisionHandler, false);
+	auto coll = std::make_unique<CollisionComponent>(69, 102, EnemyCollisionHandler, CollisionHandlerNames::EnemyCollisionHandler);
 	em->add_component_to_entity(id, std::move(damage));
 	em->add_component_to_entity(id, std::move(room_comp));
 	em->add_component_to_entity(id, std::move(emc));
@@ -299,7 +299,7 @@ void ComponentFactory::AddOgreComponents(int id, Engine::EntityManager<Component
 	animations.at(State::RUN)->scale = 3;
 	animations.at(State::HIT)->scale = 3;
 	auto ani = std::make_unique<AnimationComponent>(animations, state_to_path, state_to_frames);
-	auto coll = std::make_unique<CollisionComponent>(75, 96, EnemyCollisionHandler, CollisionHandlerNames::EnemyCollisionHandler, false);
+	auto coll = std::make_unique<CollisionComponent>(75, 96, EnemyCollisionHandler, CollisionHandlerNames::EnemyCollisionHandler);
 	em->add_component_to_entity(id, std::move(damage));
 	em->add_component_to_entity(id, std::move(room_comp));
 	em->add_component_to_entity(id, std::move(emc));

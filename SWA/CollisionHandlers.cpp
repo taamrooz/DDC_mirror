@@ -117,7 +117,7 @@ void ItemCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMana
 void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
 	auto enemy = manager->get_component<EnemyComponent>(entity2);
 	if (enemy == nullptr) {
-		//DamageHandler(entity1, entity2, manager, core);
+		DamageHandler(entity1, entity2, manager, core);
 	}
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	auto coll = manager->get_component<CollisionComponent>(entity2);
@@ -134,10 +134,6 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 	auto second_node_velocity_component = manager->get_component<VelocityComponent>(entity2);
 	auto second_node_position_component = manager->get_component<PositionComponent>(entity2);
 	auto second_node_collision_component = manager->get_component<CollisionComponent>(entity2);
-
-	if (second_node_position_component->x == 1280 - 64 && second_node_position_component->y == 960 - 64) {
-		int k = 0;
-	}
 
 	if (first_node_velocity_component != nullptr && second_node_velocity_component == nullptr) {
 		int xDiff = 0;
@@ -213,12 +209,6 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 			|| (second_node_position_component->y + second_node_collision_component->height <= first_node_position_component->y && first_node_velocity_component->dy <= 0)) {
 			second_node_velocity_component->dy = first_node_velocity_component->dy;
 		}
-		//second_node_velocity_component->dy = first_node_velocity_component->dy;
-		//second_node_velocity_component->dx = first_node_velocity_component->dx;
-
-		
-		
-
 	}
 }
 
