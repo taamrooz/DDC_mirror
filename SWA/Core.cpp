@@ -24,7 +24,7 @@
 #include "TileSetSingleton.h"
 #include <ctime>
 
-Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
+Core::Core(Engine::SceneManager* manager, bool new_game) : BaseScene(manager), new_game{ new_game } {}
 Core::~Core() = default;
 
 
@@ -38,7 +38,7 @@ bool Core::init()
 	scene_manager_->add_scene(endgamewin, true, "win");
 	scene_manager_->add_scene(endgamelose, true, "lose");
 
-	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get());
+	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get(), new_game);
 	
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
@@ -109,6 +109,7 @@ void Core::cleanup()
 	KeyBindingSingleton::get_instance()->reset_properties();
 	TileSetSingleton::get_instance()->delete_instance();
 	RoomSingleton::get_instance()->delete_instance();
+	DungeonSingleton::get_instance()->delete_instance();
 }
 
 void Core::StopGameLoop() {

@@ -147,7 +147,7 @@ void MainMenu::input()
 
 void MainMenu::start_new_game()
 {
-	auto core = new Core(scene_manager_);;
+	auto core = new Core(scene_manager_, true);;
 	scene_manager_->add_scene(core, true, "game");
 	scene_manager_->set_scene("game");
 	Engine::play_music("ingame.wav");

@@ -15,6 +15,7 @@ private:
 	bool is_paused_ = false;
 	bool is_winner_ = false;
 	bool is_loser_ = false;
+	bool new_game{};
 	double elapsed_secs_ = 0;
 	Engine::Timer timer_{};
 	/*
@@ -23,7 +24,7 @@ private:
 	void update();
 	
 public:
-	Core(Engine::SceneManager* manager);
+	Core(Engine::SceneManager* manager, bool new_game);
 	~Core();
 	/*
 	 * Initializes the core by creating the entity manager, systems and components.

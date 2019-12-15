@@ -82,7 +82,7 @@ void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 }
 
 bool LoadGame::open_game_file(std::string& path) {
-	auto core = new Core(scene_manager_);
+	auto core = new Core(scene_manager_, false);
 	scene_manager_->add_scene(core, true, "game");
 	if(SaveHelper{}.LoadGameFromFile(core->get_entity_manager(), "./assets/json/" + path))
 		return true;
