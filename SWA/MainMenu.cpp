@@ -5,6 +5,7 @@
 #include "Core.h"
 #include <mutex>
 #include <chrono>
+#include <ctime>
 #include "Help.h"
 #include "Credits.h"
 #include "LevelEditor.h"
@@ -14,15 +15,28 @@
 
 MainMenu::~MainMenu() = default;
 
-MainMenu::MainMenu(Engine::SceneManager* manager) : BaseScene(manager) { }
+MainMenu::MainMenu(Engine::SceneManager* manager) : BaseScene(manager) 
+{
+	current_advertisement_index = 0;
+	banner = std::vector<std::unique_ptr<Animation>>();
+}
 
 void MainMenu::render()
 {
+	if (timer_.IsPaused())
+		timer_.Start();
 	scene_manager_->delete_scene("game");
 	const auto timer = Engine::pre_update();
 	input();
 
+	if ((timer_.GetTicks() / (double)CLOCKS_PER_SEC) >= 5.0) {
+		current_advertisement_index++;
+		timer_.Restart();
+		if (current_advertisement_index == banner.size())
+			current_advertisement_index = 0;
+	}
 	Engine::update_animation(background_.get(), 0, 0);
+	Engine::update_animation(banner[current_advertisement_index].get(), 10, 300);
 	Engine::render_texture(title_.get(), 250, 200, nullptr);
 	Engine::render_texture(start_.get(), 550, 320, nullptr);
 	Engine::render_texture(load_game_.get(), 550, 400, nullptr);
@@ -121,12 +135,14 @@ void MainMenu::input()
 			case 3:
 				Engine::stop_music();
 				scene_manager_->set_scene("credits");
-				Engine::play_music("credits.wav");
+				Engine::play_music("centuryfox.wav");
+				timer_.Pause();
 				break;
 			case 4:
 				Engine::stop_music();
 				scene_manager_->set_scene("help");
 				Engine::play_music("help.wav");
+				timer_.Pause();
 				break;
 			case 5:
 				Engine::stop_music();
@@ -151,6 +167,7 @@ void MainMenu::start_new_game()
 	scene_manager_->add_scene(core, true, "game");
 	scene_manager_->set_scene("game");
 	Engine::play_music("ingame.wav");
+	timer_.Pause();
 }
 
 void MainMenu::start_level_editor()
@@ -159,6 +176,7 @@ void MainMenu::start_level_editor()
 	scene_manager_->add_scene(leveleditor, true, "leveleditor");
 	scene_manager_->set_scene("leveleditor");
 	Engine::play_music("leveleditor.wav");
+	timer_.Pause();
 }
 
 void MainMenu::cleanup()
@@ -169,13 +187,29 @@ void MainMenu::cleanup()
 
 bool MainMenu::init()
 {
+	timer_.Start();
 	if (!Engine::init_renderer("Demonic Dungeon Castle", false, Constants::k_window_width, Constants::k_window_height)) {
 		return false;
 	}
 	if (!Engine::init_audio()) {
 		Engine::destroy_renderer();
 		return false;
-	}	
+	}
+
+	// init advertisement
+	phone_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("Advertisement/iphone_11.png", 1));
+	phone_advertisement_->scale = 0.30;
+	nike_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("Advertisement/nike.png", 1));
+	nike_advertisement_->scale = 0.30;
+	oral_b_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("Advertisement/oral_b.png", 1));
+	oral_b_advertisement_->scale = 0.50;
+	football_advertisement_ = std::make_unique<Animation>(*Engine::load_animation("Advertisement/klassieker.png", 1));
+	football_advertisement_->scale = 0.30;
+	banner.push_back(std::move(phone_advertisement_));
+	banner.push_back(std::move(nike_advertisement_));
+	banner.push_back(std::move(oral_b_advertisement_));
+	banner.push_back(std::move(football_advertisement_));
+
 	auto credits = new Credits(scene_manager_);
 	scene_manager_->add_scene(credits, true, "credits");
 	

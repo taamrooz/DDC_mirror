@@ -90,7 +90,12 @@ bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 						std::unique_ptr<Animation>>(State::DEFAULT,
 							std::unique_ptr<Animation>(Engine::load_animation(state_to_path.at(State::DEFAULT), state_to_frames.at(State::DEFAULT)))));
 					animations.find(State::DEFAULT)->second->scale = default_state.find("scale").value();
-					animations.find(State::DEFAULT)->second->pause = default_state.find("pause").value();
+					auto loop = default_state.find("loop").value();
+					animations.find(State::DEFAULT)->second->loop = loop;
+					if (loop)
+						animations.find(State::DEFAULT)->second->pause = default_state.find("pause").value();
+					else
+						animations.find(State::DEFAULT)->second->pause = false;
 				}
 				if (states.find("HIT") != states.end()) {
 					auto hit_state = states.find("HIT").value();
@@ -100,7 +105,12 @@ bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 						std::unique_ptr<Animation>>(State::HIT,
 							std::unique_ptr<Animation>(Engine::load_animation(state_to_path.at(State::HIT), state_to_frames.at(State::HIT)))));
 					animations.find(State::HIT)->second->scale = hit_state.find("scale").value();
-					animations.find(State::HIT)->second->pause = hit_state.find("pause").value();
+					auto loop = hit_state.find("loop").value();
+					animations.find(State::HIT)->second->loop = loop;
+					if (loop)
+						animations.find(State::HIT)->second->pause = hit_state.find("pause").value();
+					else
+						animations.find(State::HIT)->second->pause = false;
 				}
 				if (states.find("RUN") != states.end()) {
 					auto run_state = states.find("RUN").value();
@@ -110,7 +120,12 @@ bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 						std::unique_ptr<Animation>>(State::RUN,
 							std::unique_ptr<Animation>(Engine::load_animation(state_to_path.at(State::RUN), state_to_frames.at(State::RUN)))));
 					animations.find(State::RUN)->second->scale = run_state.find("scale").value();
-					animations.find(State::RUN)->second->pause = run_state.find("pause").value();
+					auto loop = run_state.find("loop").value();
+					animations.find(State::RUN)->second->loop = loop;
+					if (loop)
+						animations.find(State::RUN)->second->pause = run_state.find("pause").value();
+					else
+						animations.find(State::RUN)->second->pause = false;
 				}
 
 				//Component creation
