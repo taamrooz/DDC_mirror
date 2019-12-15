@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "MainMenu.h"
+#include <Windows.h>
 
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
@@ -18,7 +19,14 @@ void init_scenes()
 }
 int main(int argc, char* argv[])
 {
+#ifdef _DEBUG
+	ShowWindow(GetConsoleWindow(), SW_SHOW);
+#else
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
 	init_scenes();
+#ifdef _DEBUG
 	_CrtDumpMemoryLeaks();
+#endif
 	return 0;
 }

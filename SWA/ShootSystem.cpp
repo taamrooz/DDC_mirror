@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "VelocityComponent.h"
 #include "CollisionHandlers.h"
+#include "AnimationComponent.h"
 
 ShootSystem::ShootSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {
 }
@@ -29,24 +30,24 @@ void ShootSystem::update(double dt)
 				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_up_key()) {
 					int xPos = position->x + collision->width / 2;
 					int yPos = (position->y - sComponent->bullet_size + 20) - 1;
-					createBullet(0, -1 * bullet_velocity, xPos, yPos);
+					createBullet(0, -1 * bullet_velocity, xPos, yPos, dt);
 				}
 				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_left_key()) {
 					int xPos = position->x - sComponent->bullet_size;
 					int yPos = position->y + (collision->height / 2) + 15;
-					createBullet(-1 * bullet_velocity, 0, xPos, yPos);
+					createBullet(-1 * bullet_velocity, 0, xPos, yPos, dt);
 				}
 
 				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_down_key()) {
 					int xPos = position->x + collision->width / 2;
 					int yPos = position->y + collision->height + 1 + 20;
-					createBullet(0, bullet_velocity, xPos, yPos);
+					createBullet(0, bullet_velocity, xPos, yPos, dt);
 				}
 
 				if (i->first == KeyBindingSingleton::get_instance()->get_shoot_right_key()) {
 					int xPos = position->x + collision->width + 1;
 					int yPos = position->y + collision->height / 2 + 15;
-					createBullet(bullet_velocity, 0, xPos, yPos);
+					createBullet(bullet_velocity, 0, xPos, yPos, dt);
 				}
 
 			}
@@ -54,14 +55,14 @@ void ShootSystem::update(double dt)
 	}
 }
 
-void ShootSystem::createBullet(int xV, int yV, int x, int y) {
+void ShootSystem::createBullet(int xV, int yV, int x, int y, double dt) {
 	auto entity = manager_->get_all_entities_from_current_room<CharacterComponent>().front();
 	auto shoot = manager_->get_component<ShootingComponent>(entity);
 	auto dmg = std::make_unique<DamagingComponent>(1, false);
 	auto room = std::make_unique<RoomComponent>(DungeonSingleton::get_instance()->get_current_room()->room_name, DungeonSingleton::get_instance()->get_current_room_number());
 
 	Uint32 ticks = Engine::get_ticks();
-	if (ticks - shoot->last_shot >= shoot->fire_rate) {
+	if (ticks - shoot->last_shot >= shoot->fire_rate / dt) {
 		auto position = manager_->get_component<PositionComponent>(entity);
 		auto collision = manager_->get_component<CollisionComponent>(entity);
 

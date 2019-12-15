@@ -39,6 +39,8 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keybindings.insert(std::make_pair(SDLK_t, instance->get_teleport_key()));
 		instance->keybindings.insert(std::make_pair(SDLK_n, instance->get_next_room_key()));
 		instance->keybindings.insert(std::make_pair(SDLK_k, instance->get_kill_all_key()));
+		instance->keybindings.insert(std::make_pair(SDLK_PAGEUP, instance->get_gamespeed_increase()));
+		instance->keybindings.insert(std::make_pair(SDLK_PAGEDOWN, instance->get_gamespeed_decrease()));
 
 		instance->keys_down.insert(std::make_pair(instance->get_pause_game_key(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_move_up_key(), false));
@@ -54,6 +56,8 @@ KeyBindingSingleton* KeyBindingSingleton::get_instance()
 		instance->keys_down.insert(std::make_pair(instance->get_teleport_key(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_next_room_key(), false));
 		instance->keys_down.insert(std::make_pair(instance->get_kill_all_key(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_gamespeed_increase(), false));
+		instance->keys_down.insert(std::make_pair(instance->get_gamespeed_decrease(), false));
 
 		instance->keys_down.insert(std::make_pair("1", false));
 		instance->keys_down.insert(std::make_pair("2", false));
@@ -129,6 +133,16 @@ std::string KeyBindingSingleton::get_next_room_key() const
 std::string KeyBindingSingleton::get_kill_all_key() const
 {
 	return "K";
+}
+
+std::string KeyBindingSingleton::get_gamespeed_increase() const
+{
+	return "pageUP";
+}
+
+std::string KeyBindingSingleton::get_gamespeed_decrease() const
+{
+	return "pageDOWN";
 }
 
 bool KeyBindingSingleton::is_key_down(const std::string& key)

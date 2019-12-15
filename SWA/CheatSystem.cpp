@@ -4,8 +4,9 @@
 #include "VelocityComponent.h"
 #include "KeyBindingSingleton.h"
 #include "HealthComponent.h"
+#include "Core.h"
 
-CheatSystem::CheatSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
+CheatSystem::CheatSystem(Engine::EntityManager<Component>* manager, Core& core) : BaseSystem(manager), core_(&core)
 {
 }
 
@@ -52,6 +53,14 @@ void CheatSystem::update(double dt)
 					if (h_entity == entity) continue;
 					manager_->remove_entity(h_entity);
 				}
+			}
+			else if(i.first == KeyBindingSingleton::get_instance()->get_gamespeed_increase())
+			{
+				core_->gamespeed_increase();
+			}
+			else if(i.first == KeyBindingSingleton::get_instance()->get_gamespeed_decrease())
+			{
+				core_->gamespeed_decrease();
 			}
 		}
 	}

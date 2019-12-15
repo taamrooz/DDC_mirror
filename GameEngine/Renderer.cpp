@@ -167,10 +167,9 @@ int Engine::pre_update() {
 	}
 	if (!frameTimer.IsStarted())
 		frameTimer.Start();
-
-	auto frameStart = SDL_GetTicks();
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
+	auto frameStart = SDL_GetTicks();
 	return frameStart;
 }
 
