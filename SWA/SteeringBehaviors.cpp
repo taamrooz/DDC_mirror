@@ -15,9 +15,6 @@ vector2d Seek(int entity, vector2d TargetPos, EntityManager<Component>* manager)
 {
 	auto pos = manager->get_component<PositionComponent>(entity);
 	auto velocity = manager->get_component<VelocityComponent>(entity);
-	if (TargetPos.x() == pos->x && TargetPos.y() == pos->y) {
-		return vector2d(0, 0);
-	}
 	vector2d DesiredVelocity = normalize(TargetPos - vector2d(pos->x, pos->y))
 		* velocity->maxSpeed;
 	return (DesiredVelocity - vector2d(velocity->dx, velocity->dy));
