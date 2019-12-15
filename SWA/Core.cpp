@@ -141,7 +141,7 @@ void Core::toggle_game_lost()
 }
 
 
-void Core::unpause_Timer()
+void Core::unpause_timer()
 {
 	if (timer_.IsPaused()) {
 		timer_.Unpause();

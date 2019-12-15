@@ -87,6 +87,6 @@ public:
 	/**
 	* \Unpauzes the timer which counts your highscore
 	*/
-	void unpause_Timer();
+	void unpause_timer();
 };
 
