@@ -9,5 +9,11 @@ struct HealthComponent : Component
 	int max_health{};
 	int time_invulnerable{};
 	int invulnerable_until{};
-	//Health in integers, can always visualize as half hearts on odd numbers (more efficient)
+
+	void ToJson(json& j, int id) override
+	{
+		j[std::to_string(id)]["HealthComponent"]["current_health"] = current_health;
+		j[std::to_string(id)]["HealthComponent"]["max_health"] = max_health;
+		j[std::to_string(id)]["HealthComponent"]["time_invulnerable"] = time_invulnerable;
+	}
 };

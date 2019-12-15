@@ -39,8 +39,10 @@ void CheatSystem::update(double dt)
 			}
 			else if(i.first == KeyBindingSingleton::get_instance()->get_next_room_key())
 			{
-				RoomSingleton::get_instance()->init_next_room();
-				RoomSingleton::get_instance()->reload_room = true;
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_left_key())) DungeonSingleton::get_instance()->move_room_left();
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_up_key())) DungeonSingleton::get_instance()->move_room_up();
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_right_key())) DungeonSingleton::get_instance()->move_room_right();
+				if (KeyBindingSingleton::get_instance()->is_key_down(KeyBindingSingleton::get_instance()->get_move_down_key())) DungeonSingleton::get_instance()->move_room_down();
 			}
 			else if(i.first == KeyBindingSingleton::get_instance()->get_kill_all_key())
 			{

@@ -13,12 +13,19 @@
 #include "SceneManager.h"
 #include "InventorySystem.h"
 #include "Audio.h"
+#include "Advertisement.h"
 #include "KeyBindingSingleton.h"
+#include "EndGameLose.h"
+#include "EndGameWin.h"
+#include "Pause.h"
+#include "SaveHelper.h"
 #include "MoveEnemySystem.h"
 #include "CheatSystem.h"
+#include "DungeonSingleton.h"
+#include "TileSetSingleton.h"
 #include <ctime>
 
-Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
+Core::Core(Engine::SceneManager* manager, bool new_game) : BaseScene(manager), new_game{ new_game } {}
 Core::~Core() = default;
 
 
@@ -26,6 +33,15 @@ bool Core::init()
 {
 	manager_ = std::make_unique<Engine::EntityManager<Component>>();
 
+	auto endgamewin = new EndGameWin(scene_manager_);
+	auto endgamelose = new EndGameLose(scene_manager_);
+	auto advertisement = new Advertisement(scene_manager_);
+	scene_manager_->add_scene(endgamewin, true, "win");
+	scene_manager_->add_scene(endgamelose, true, "lose");
+	scene_manager_->add_scene(advertisement, true, "advertisement");
+
+	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get(), new_game);
+	
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveCharacterSystem>(manager_.get()));
@@ -86,18 +102,16 @@ void Core::update()
 void Core::render()
 {
 	auto timer = Engine::pre_update();
-	//Engine::Clear();
 	update();
 	Engine::render(timer);
 }
 
 void Core::cleanup()
 {
-	if (manager_)
-	{
-		manager_ = nullptr;
-	}
-	systems_.clear();
+	KeyBindingSingleton::get_instance()->reset_properties();
+	TileSetSingleton::get_instance()->delete_instance();
+	RoomSingleton::get_instance()->delete_instance();
+	DungeonSingleton::get_instance()->delete_instance();
 }
 
 void Core::StopGameLoop() {
@@ -127,6 +141,17 @@ void Core::toggle_game_lost()
 {
 	is_loser_ = !is_loser_;
 	KeyBindingSingleton::get_instance()->reset_properties();
+}
+
+void Core::save_game(std::string path)
+{
+	auto sh = SaveHelper{};
+	sh.SaveGameToFile(manager_.get(), path);
+}
+
+Engine::EntityManager<Component>* Core::get_entity_manager()
+{
+	return manager_.get();
 }
 
 void Core::unpauzeTimer()
