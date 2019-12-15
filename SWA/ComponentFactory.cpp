@@ -209,7 +209,7 @@ void ComponentFactory::AddImpComponents(int id, Engine::EntityManager<Component>
 	auto vel = std::make_unique<VelocityComponent>(12);
 	auto emc = std::make_unique<EnemyComponent>();
 	auto room_comp = std::make_unique<RoomComponent>(room->room_name, room->room_index);
-	auto damage = std::make_unique<DamagingComponent>(0.5);
+	auto damage = std::make_unique<DamagingComponent>(1);
 	std::unordered_map<State, std::unique_ptr<Animation>> animations;
 	std::unordered_map<State, std::string> state_to_path;
 	std::unordered_map<State, int> state_to_frames;
