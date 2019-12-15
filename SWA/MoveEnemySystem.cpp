@@ -14,10 +14,13 @@ void MoveEnemySystem::update(double dt)
 	if (!enemies.empty() && !player.empty()) {
 		for (auto enemyEntity : enemies)
 		{
+			
 			auto enemy = manager_->get_component<EnemyComponent>(enemyEntity);
 			auto vel = manager_->get_component<VelocityComponent>(enemyEntity);
 			auto pos = manager_->get_component<PositionComponent>(enemyEntity);
-
+			if (vel->dx == 0 && vel->dy == 0) {
+				int k = 0;
+			}
 			switch (enemy->state) {
 			case Fleeing:
 				vel->steer_force = Flee(enemyEntity, player.front(), manager_);

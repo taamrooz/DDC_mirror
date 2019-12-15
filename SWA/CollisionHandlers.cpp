@@ -71,7 +71,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 		const auto health = manager->get_component<HealthComponent>(entity1);
 		if (health != nullptr)
 		{
-			DamageHandler(health, dmg, nullptr);
+			//DamageHandler(health, dmg, nullptr);
 			if (health->current_health <= 0) {
 				core->toggle_game_lost();
 			}
@@ -130,8 +130,9 @@ void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 			}
 		}
 	}
+	auto player = manager->get_component<CharacterComponent>(entity2);
 	auto coll = manager->get_component<CollisionComponent>(entity2);
-	if (coll != nullptr && coll->solid) {
+	if (coll != nullptr && coll->solid && player == nullptr && enemy == nullptr) {
 		UpdateVelocity(entity1, entity2, manager, core);
 	}
 }
@@ -145,7 +146,11 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 	auto second_node_position_component = manager->get_component<PositionComponent>(entity2);
 	auto second_node_collision_component = manager->get_component<CollisionComponent>(entity2);
 
-	if (first_node_velocity_component != nullptr) {
+	if (second_node_position_component->x == 1280 - 64 && second_node_position_component->y == 960 - 64) {
+		int k = 0;
+	}
+
+	if (first_node_velocity_component != nullptr && second_node_velocity_component == nullptr) {
 		int xDiff = 0;
 		int yDiff = 0;
 		int xd = 0;
@@ -209,6 +214,22 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 				first_node_velocity_component->dy = 0;
 			}
 		}
+	}
+	if (first_node_velocity_component != nullptr && second_node_velocity_component != nullptr) {
+		if ((second_node_position_component->x >= first_node_position_component->x + first_node_collision_component->width && first_node_velocity_component->dx > 0)
+			|| (second_node_position_component->x + second_node_collision_component->width <= first_node_position_component->x && first_node_velocity_component->dx < 0)) {
+			second_node_velocity_component->dx = first_node_velocity_component->dx;
+		}
+		if ((second_node_position_component->y >= first_node_position_component->y + first_node_collision_component->height && first_node_velocity_component->dy > 0)
+			|| (second_node_position_component->y + second_node_collision_component->height <= first_node_position_component->y && first_node_velocity_component->dy < 0)) {
+			second_node_velocity_component->dy = first_node_velocity_component->dy;
+		}
+		//second_node_velocity_component->dy = first_node_velocity_component->dy;
+		//second_node_velocity_component->dx = first_node_velocity_component->dx;
+
+		
+		
+
 	}
 }
 
