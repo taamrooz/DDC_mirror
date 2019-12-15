@@ -28,7 +28,7 @@ void LevelEditor::render()
 	case dungeon_filepicker: RenderDungeonFilepicker(); break;
 	case dungeon_editor: RenderDungeonEditor(); break;
 	case save_dungeon: RenderDungeonSave(); break;
-	case exit_editor: scene_manager_->set_scene("mainmenu"); scene_manager_->delete_scene("level_editor"); Engine::play_music("mainmenu.wav"); break;
+	case exit_editor: scene_manager_->set_scene("mainmenu"); scene_manager_->delete_scene("leveleditor"); Engine::play_music("mainmenu.wav"); break;
 	}
 
 	Engine::render(timer);
@@ -229,7 +229,6 @@ void LevelEditor::input()
 			Engine::stop_music();
 			scene_manager_->set_scene("mainmenu");
 			Engine::play_music("mainmenu.wav");
-			cleanup();
 			scene_manager_->delete_scene("leveleditor");
 		}
 
@@ -305,7 +304,7 @@ void LevelEditor::InputDungeonSave(SDL_Keycode keycode, std::string& text)
 		save_file_name_.pop_back();
 	if (keycode == SDLK_RETURN)
 		if (SaveDungeonFile())
-		{
+		{			
 			state = exit_editor;
 			Engine::StartTextInput();
 		}
@@ -319,6 +318,7 @@ void LevelEditor::InputRoomSave(SDL_Keycode keycode, std::string& text)
 	if (keycode == SDLK_RETURN)
 		if (SaveRoomFile())
 		{
+			remove(("./assets/Levels/" + save_file_name_ + ".png").c_str());
 			rename("./assets/Levels/temp_screenshot.png", ("./assets/Levels/" + save_file_name_ + ".png").c_str());
 			state = exit_editor;
 			Engine::StartTextInput();
@@ -494,6 +494,7 @@ void LevelEditor::PlaceObject(int x, int y)
 void LevelEditor::GetFiles(const char* path, const std::string extension)
 {
 	file_name_textures_.clear();
+	file_names_.clear();
 	for (const auto& entry : std::filesystem::directory_iterator(path))
 	{
 		if (entry.path().extension().string() == "." + extension)
@@ -589,6 +590,7 @@ bool LevelEditor::SaveRoomFile()
 void LevelEditor::cleanup()
 {
 	file_name_textures_.clear();
+	file_names_.clear();
 }
 
 bool LevelEditor::OpenDungeonFile(std::string& path)
