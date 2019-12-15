@@ -150,7 +150,7 @@ void ComponentFactory::AddLadderComponents(int id, Engine::EntityManager<Compone
 }
 
 void ComponentFactory::AddEnemyComponents(int id, Engine::EntityManager<Component>* em, bool level_boss, RoomComponent* room) {
-	auto hea = std::make_unique<HealthComponent>(4, 5);
+	auto hea = std::make_unique<HealthComponent>(4, 5, 0);
 	auto sho = std::make_unique<ShootingComponent>(7, 200);
 	auto vel = std::make_unique<VelocityComponent>();
 	auto emc = std::make_unique<EnemyComponent>();
