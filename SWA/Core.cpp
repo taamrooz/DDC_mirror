@@ -50,7 +50,7 @@ bool Core::init()
 	systems_.push_back(std::make_unique<CollisionSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<AudioSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<ShootSystem>(manager_.get()));
-	systems_.push_back(std::make_unique<CheatSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<CheatSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
 	auto pause = new Pause(scene_manager_,this);
@@ -82,6 +82,7 @@ void Core::update()
 				Engine::stop_music();
 				is_winner_ = false;				
 				elapsed_secs_ += (timer_.GetTicks() / (double) CLOCKS_PER_SEC);
+				scene_manager_->set_scene("win");
 				timer_.Stop();
 			}
 

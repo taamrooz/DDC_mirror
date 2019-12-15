@@ -4,9 +4,12 @@
 #include "VelocityComponent.h"
 #include "KeyBindingSingleton.h"
 #include "HealthComponent.h"
+#include <Audio.h>
+#include "LevelBossComponent.h"
 
-CheatSystem::CheatSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
+CheatSystem::CheatSystem(Engine::EntityManager<Component>* manager, Core& core) : BaseSystem(manager)
 {
+	CheatSystem::core = &core;
 }
 
 void CheatSystem::update(double dt)
@@ -51,6 +54,22 @@ void CheatSystem::update(double dt)
 				{
 					if (h_entity == entity) continue;
 					manager_->remove_entity(h_entity);
+				}
+
+				bool all_bosses_are_dead = true;
+				const auto boss_entities = manager_->get_all_entities<LevelBossComponent>();
+				for (auto i = boss_entities.begin(); i != boss_entities.end(); ++i) {
+					if (manager_->get_component<HealthComponent>(*i)->current_health > 0) {
+						all_bosses_are_dead = false;
+						break;
+					}
+				}
+
+				if (DungeonSingleton::get_instance()->is_last_dungeon() && all_bosses_are_dead)
+				{
+					Engine::stop_music();
+					Engine::play_music("ingame.wav");
+					core->toggle_game_won();
 				}
 			}
 		}
