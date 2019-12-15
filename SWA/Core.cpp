@@ -82,6 +82,7 @@ void Core::update(double dt)
 				Engine::stop_music();
 				is_winner_ = false;				
 				elapsed_secs_ += (timer_.GetTicks() / (double) CLOCKS_PER_SEC);
+				scene_manager_->set_scene("win");
 				timer_.Stop();
 			}
 
