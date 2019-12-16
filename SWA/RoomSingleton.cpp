@@ -89,17 +89,17 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 							++i; ++barrier_tiles;
 							tiles.emplace_back(3);
 							tiles[i][0] = 8 * Constants::k_tile_width;
-							tiles[i][1] = -Constants::k_tile_height;
+							tiles[i][1] = -Constants::k_tile_height+1;
 							tiles[i][2] = 2;
 							++i; ++barrier_tiles;
 							tiles.emplace_back(3);
 							tiles[i][0] = 9 * Constants::k_tile_width;
-							tiles[i][1] = -Constants::k_tile_height;
+							tiles[i][1] = -Constants::k_tile_height+1;
 							tiles[i][2] = 2;
 							++i; ++barrier_tiles;
 							tiles.emplace_back(3);
 							tiles[i][0] = 10 * Constants::k_tile_width;
-							tiles[i][1] = -Constants::k_tile_height;
+							tiles[i][1] = -Constants::k_tile_height+1;
 							tiles[i][2] = 2;
 						}
 					}
@@ -127,17 +127,17 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 							left_bar = true;
 							++i; ++barrier_tiles;
 							tiles.emplace_back(3);
-							tiles[i][0] = -Constants::k_tile_width;
+							tiles[i][0] = -Constants::k_tile_width+1;
 							tiles[i][1] = 6 * Constants::k_tile_height;
 							tiles[i][2] = 2;
 							++i; ++barrier_tiles;
 							tiles.emplace_back(3);
-							tiles[i][0] = -Constants::k_tile_width;
+							tiles[i][0] = -Constants::k_tile_width+1;
 							tiles[i][1] = 7 * Constants::k_tile_height;
 							tiles[i][2] = 2;
 							++i; ++barrier_tiles;
 							tiles.emplace_back(3);
-							tiles[i][0] = -Constants::k_tile_width;
+							tiles[i][0] = -Constants::k_tile_width+1;
 							tiles[i][1] = 8 * Constants::k_tile_height;
 							tiles[i][2] = 2;
 						}
