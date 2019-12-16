@@ -31,6 +31,7 @@ void Help::render()
 	Engine::render_texture(sub_title_in_game_controls_.get(), 400, 650, nullptr);
 	Engine::render_texture(pause_.get(), 420, 700, nullptr);
 	Engine::render_texture(quit_.get(), 420, 750, nullptr);
+	Engine::render_texture(fps_counter_.get(), 420, 800, nullptr);
 
 	Engine::render_texture(helper.get(), 370, 850, nullptr);
 	Engine::render(timer);
@@ -87,11 +88,12 @@ bool Help::init() {
 	shoot_right_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 },	("Shoot right:    " + KeyBindingSingleton::get_instance()->get_shoot_right_key()).c_str()));
 	shoot_down_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 },	("Shoot down:     " + KeyBindingSingleton::get_instance()->get_shoot_down_key()).c_str()));
 	helper = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 255, 255, 255 }, "Press ENTER to quit to main menu"));
-	instructions_first_line = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Walk through the rooms, kill the enemies, pick up the elixirs or mysterious"));
-	instructions_second_line = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, " objects from the treasure chests and head to the last rooms of the levels"));
-	instructions_third_line = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "                       to kill the level bosses!"));
+	instructions_first_line = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "   Walk through the rooms, kill the enemies, pick up the elixirs from"));
+	instructions_second_line = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "    the treasure chests and find the way down to the next dungeon."));
+	instructions_third_line = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "    Kill all the level bosses and finish the last dungeon to win!"));
 	sub_title_in_game_controls_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 40, { 255,0,0, 255 }, "In game controls"));
-	pause_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, ("Pause game:        P")));
-	quit_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, ("Quit game:         Q")));
+	pause_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, ("Pause game:           P")));
+	quit_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, ("Quit game:            ESC")));
+	fps_counter_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, ("Toggle fps counter:   F1")));
 	return true;
 }
