@@ -36,6 +36,8 @@ bool Core::init()
 	auto endgamewin = new EndGameWin(scene_manager_);
 	auto endgamelose = new EndGameLose(scene_manager_);
 	auto advertisement = new Advertisement(scene_manager_);
+	auto pause = new Pause(scene_manager_, this);
+	scene_manager_->add_scene(pause, false, "pause");
 	scene_manager_->add_scene(endgamewin, true, "win");
 	scene_manager_->add_scene(endgamelose, true, "lose");
 	scene_manager_->add_scene(advertisement, true, "advertisement");
@@ -53,9 +55,7 @@ bool Core::init()
 	systems_.push_back(std::make_unique<CheatSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
-	auto pause = new Pause(scene_manager_,this);
-	scene_manager_->add_scene(pause, false, "pause");
-
+	
 	elapsed_secs_ = 0;
 	timer_.Start();
 
@@ -109,6 +109,10 @@ void Core::render()
 
 void Core::cleanup()
 {
+	scene_manager_->delete_scene("pause");
+	scene_manager_->delete_scene("endgamewin");
+	scene_manager_->delete_scene("endgamelose");
+	scene_manager_->delete_scene("advertisement");
 	KeyBindingSingleton::get_instance()->reset_properties();
 	TileSetSingleton::get_instance()->delete_instance();
 	RoomSingleton::get_instance()->delete_instance();

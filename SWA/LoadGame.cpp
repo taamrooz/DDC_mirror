@@ -40,6 +40,7 @@ void LoadGame::input()
 			std::this_thread::sleep_for(std::chrono::milliseconds(112));
 			Engine::stop_music();
 			scene_manager_->set_scene("mainmenu");
+			text_.clear();
 			Engine::play_music("mainmenu.wav");
 		}
 
@@ -76,6 +77,7 @@ void LoadGame::input_load_game(SDL_Keycode keycode, std::string& text)
 			cleanup();
 			Engine::stop_music();
 			scene_manager_->set_scene("game");
+			text_.clear();
 			Engine::play_music("ingame.wav");
 		}
 	text_.append(text);
