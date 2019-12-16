@@ -74,6 +74,7 @@ bool Highscores::init() {
 
 void Highscores::get_highscores()
 {
+	highscore_textures_ = std::vector<std::unique_ptr<Texture>>();
 	std::string highscoreString;
 	std::string highscorePath = "./assets/Highscores/highscores";
 	auto json = Engine::get_json();
