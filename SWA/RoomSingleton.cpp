@@ -306,11 +306,6 @@ void RoomSingleton::load_objects(Engine::EntityManager<Component>* manager, Room
 			manager->add_component_to_entity(id, std::make_unique<PositionComponent>(x, y));
 			ComponentFactory::get_instance()->CreateEntity(name, id, manager, room);
 		}
-		auto dummy = manager->create_entity();
-		auto pos = std::make_unique<PositionComponent>(0, 0);
-		auto room_comp = std::make_unique<RoomComponent>(room->room_name, room->room_index);
-		manager->add_component_to_entity(dummy, std::move(pos));
-		manager->add_component_to_entity(dummy, std::move(room_comp));
 	}
 	objects.close();
 }
