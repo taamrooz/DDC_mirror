@@ -69,7 +69,6 @@ void Core::update(double dt)
 		if(is_running_)
 		{
 			system->update(dt);
-
 			if (is_paused_) {
 				Engine::pause_music();
 				is_paused_ = false;
@@ -84,6 +83,7 @@ void Core::update(double dt)
 				elapsed_secs_ += (timer_.GetTicks() / (double) CLOCKS_PER_SEC);
 				scene_manager_->set_scene("win");
 				timer_.Stop();
+				check_for_highscore();
 			}
 
 			if (is_loser_) {
@@ -155,6 +155,13 @@ void Core::toggle_game_lost()
 	KeyBindingSingleton::get_instance()->reset_properties();
 }
 
+
+void Core::unpause_timer()
+{
+	if (timer_.IsPaused()) {
+		timer_.Unpause();
+  }
+}
 void Core::gamespeed_increase()
 {
 	if(game_speed < 2)
@@ -182,9 +189,84 @@ Engine::EntityManager<Component>* Core::get_entity_manager()
 	return manager_.get();
 }
 
-void Core::unpauzeTimer()
+
+void Core::check_for_highscore()
 {
-	if (timer_.IsPaused()) {
-	timer_.Unpause();
+	std::string highscoreString;
+	std::vector<std::string> times;
+	std::vector<int> currentHighscoreList = std::vector<int>();
+	int counter = 0;
+	int swappedId = -1;
+	std::string highscorePath = "./assets/Highscores/highscores";
+	auto json = Engine::get_json();
+	Engine::read_from_file(json, highscorePath);
+
+	for (json::iterator it = json.begin(); it != json.end(); ++it)
+	{
+		times = std::vector<std::string>();
+		if (it.value().find("Time") != it.value().end()) {
+			highscoreString = it.value().find("Time").value();
+
+			std::stringstream ss(highscoreString);
+			std::string token;
+			while (std::getline(ss, token, ':')) {
+				times.push_back(token);
+			}
+			currentHighscoreList.push_back((atoi(times[0].c_str()) * 60) + atoi(times[1].c_str()));
+
+		}
+		for(int i= 0; i < currentHighscoreList.size(); i ++)
+		{
+			if (currentHighscoreList[i] > elapsed_secs_) {
+				int swap = currentHighscoreList[i];
+				currentHighscoreList[i] = elapsed_secs_;
+				elapsed_secs_ = swap;
+				if (swappedId == -1) { swappedId = counter; }
+			}
+		}	
+		++counter;
+		
 	}
+	if (counter < 10) {
+		currentHighscoreList.push_back(elapsed_secs_);
+	}
+	auto newJson = Engine::get_json();
+	int jsonCounter = -1;
+	std::string date;
+	std::string name;
+	for (json::iterator it = json.begin(); it != json.end(); ++it) {
+		jsonCounter++;
+		std::string actualTime;
+		if (swappedId == jsonCounter) {
+			actualTime = std::to_string(currentHighscoreList[jsonCounter] / 60) + ":" + std::to_string(currentHighscoreList[jsonCounter] % 60);
+			time_t rawtime;
+			struct tm* timeinfo;
+			char buffer[80];
+
+			time(&rawtime);
+			timeinfo = localtime(&rawtime);
+
+			strftime(buffer, sizeof(buffer), "%d-%m-%Y", timeinfo);
+			std::string str(buffer);
+
+			newJson[std::to_string(jsonCounter)]["Name"] = "Player";
+			newJson[std::to_string(jsonCounter)]["Date"] = str;
+			newJson[std::to_string(jsonCounter)]["Time"] = actualTime;
+		}
+		else {
+			actualTime = std::to_string(currentHighscoreList[jsonCounter] / 60) + ":" + std::to_string(currentHighscoreList[jsonCounter] % 60);
+			newJson[std::to_string(jsonCounter)]["Name"] = it.value().find("Name").value();
+			newJson[std::to_string(jsonCounter)]["Date"] = it.value().find("Date").value();
+			newJson[std::to_string(jsonCounter)]["Time"] = actualTime;
+		}
+		name = it.value().find("Name").value();
+		date = it.value().find("Date").value();
+	}
+	if (jsonCounter != counter && counter < 10) {
+		newJson[std::to_string(counter)]["Name"] = name;
+		newJson[std::to_string(counter)]["Date"] = date;
+		newJson[std::to_string(counter)]["Time"] = std::to_string(currentHighscoreList[counter] / 60) + ":" + std::to_string(currentHighscoreList[counter] % 60);
+	}
+
+	Engine::write_to_file(newJson, highscorePath);
 }
