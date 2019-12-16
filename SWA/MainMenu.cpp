@@ -147,6 +147,7 @@ void MainMenu::input()
 			case 5:
 				Engine::stop_music();
 				scene_manager_->set_scene("highscores");
+				scene_manager_->init();
 				Engine::play_music("highscores.wav");
 				break;
 			case 6:
