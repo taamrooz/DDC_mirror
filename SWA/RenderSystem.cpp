@@ -91,8 +91,8 @@ void RenderSystem::update(double dt)
 		int y = Engine::get_window_height() - 75;
 		int scale = 3;
 		if (i + 1 == inv->selected) {
-				scale = 4;
-				y -= 16;
+			scale = 4;
+			y -= 16;
 		}
 		Engine::set_render_draw_color(255, 255, 255, 100);
 		Engine::rect2d rect = Engine::rect2d{ x, y, 16 * scale, 16 * scale };
@@ -105,26 +105,33 @@ void RenderSystem::update(double dt)
 			Engine::render_texture(t, x, y, &clip);
 		}
 		x = x + (16 * scale);
-	}	
+	}
 
 	//render minimap (placeholder until full dungeon gets loaded in)
-	for (int i = 0; i < 5; i++) {
-		int x = 25 + (48 * (i));
-		for (int j = 0; j < 5; j++) {
+	
+	for (int i = 0; i < 5; ++i) {
+		int x = 25 + (48 * i);
+		for (int j = 0; j < 5; ++j) {
 			int y = 25 + (48 * j);
-			Engine::set_render_draw_color(50, 50, 50, 150);
-			Engine::fill_rectangle(Engine::rect2d(x, y, 48, 48));
-			Engine::set_render_draw_color(0, 0, 0, 175);
-			Engine::draw_rectangle(Engine::rect2d(x, y, 48, 48));
-			if (i == DungeonSingleton::get_instance()->get_current_room_number() % 5 && j == DungeonSingleton::get_instance()->get_current_room_number() / 5) {
-				Engine::set_render_draw_color(225, 225, 225, 175);
-				Engine::draw_rectangle(Engine::rect2d(x, y, 48, 48));
+			auto rect = Engine::rect2d(x, y, 48, 48);
+			Engine::set_render_draw_color(52, 52, 52, 175);
+			Engine::fill_rectangle(rect);
+			Engine::draw_rectangle(rect);
+			if (DungeonSingleton::get_instance()->has_room_at(i + j * 5)) {
+				Engine::set_render_draw_color(80, 80, 80, 140);
+				Engine::fill_rectangle(rect);
+				Engine::set_render_draw_color(0, 0, 0, 200);
+				Engine::draw_rectangle(rect);
+				if (i + j * 5 == DungeonSingleton::get_instance()->get_current_room_number()) {
+					Engine::set_render_draw_color(225, 225, 225, 175);
+					Engine::draw_rectangle(rect);
+				}
 			}
 		}
 	}
 
 	//render current level information
-	std::string text = "Level " + std::to_string(DungeonSingleton::get_instance()->get_current_level() + 1);
+	std::string text = "Dungeon " + std::to_string(DungeonSingleton::get_instance()->get_current_level() + 1);
 	level_hud = std::make_unique<Texture>(*Engine::load_text("manaspc.ttf", 50, { 0,255,0, 255 }, text.c_str()));
 	Engine::render_texture(level_hud.get(), 550, 15, nullptr);
 }

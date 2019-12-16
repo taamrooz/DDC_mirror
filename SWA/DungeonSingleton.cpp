@@ -55,7 +55,7 @@ void DungeonSingleton::load_dungeon(const std::string& path, Engine::EntityManag
 					new_room->top = top_room.get();
 				}
 			}
-			if (i > 0)
+			if (i > 0 && i % 5 != 0)
 			{
 				auto& left_room = level_rooms_[i - 1];
 				if (left_room != nullptr)
@@ -107,7 +107,7 @@ void DungeonSingleton::move_room(Direction dir)
 
 void DungeonSingleton::move_room_up()
 {
-	if (0 < current_room_ - 5 && level_rooms_[current_room_ - 5] != nullptr)
+	if (0 <= current_room_ - 5 && level_rooms_[current_room_ - 5] != nullptr)
 	{
 		current_room_ -= 5;
 		RoomSingleton::get_instance()->reload_room = true;
@@ -241,6 +241,13 @@ uint8_t DungeonSingleton::get_current_room_number() const {
 bool DungeonSingleton::is_last_dungeon() const
 {
 	return levels_.size() - 1 == current_level_;
+}
+
+bool DungeonSingleton::has_room_at(int index) const
+{
+	if (index >= 0 && index <= 24) {
+		return level_rooms_.at(index) != nullptr;
+	}
 }
 
 void DungeonSingleton::delete_instance()
