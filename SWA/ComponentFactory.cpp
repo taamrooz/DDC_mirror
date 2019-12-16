@@ -335,10 +335,8 @@ void ComponentFactory::AddBigDemonComponents(int id, Engine::EntityManager<Compo
 	animations.emplace(std::make_pair<State, std::unique_ptr<Animation>>(State::RUN, std::unique_ptr<Animation>(Engine::load_animation("Animations/big_demon_run.png", 4))));
 	state_to_path.emplace(State::DEFAULT, "Animations/big_demon_idle.png");
 	state_to_path.emplace(State::RUN, "Animations/big_demon_run.png");
-	state_to_path.emplace(State::HIT, "Animations/big_demon_idle.png");
 	state_to_frames.emplace(State::DEFAULT, 4);
 	state_to_frames.emplace(State::RUN, 4);
-	state_to_frames.emplace(State::HIT, 1);
 	animations.at(State::DEFAULT)->scale = 3;
 	animations.at(State::RUN)->scale = 3;
 	auto ani = std::make_unique<AnimationComponent>(animations, state_to_path, state_to_frames);
