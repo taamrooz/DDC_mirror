@@ -10,6 +10,7 @@ enum enemyState
 struct EnemyComponent : Component
 {
 	EnemyComponent() = default;
+	EnemyComponent(float mass) : mass{ mass } {};
 	float mass = 50;
 	int state = Pursuing;
 
