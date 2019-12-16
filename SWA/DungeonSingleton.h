@@ -35,5 +35,6 @@ public:
 	uint8_t get_starting_room();
 	uint8_t get_current_room_number() const;
 	bool is_last_dungeon() const;
+	bool has_room_at(int index) const;
 	void delete_instance();
 };
