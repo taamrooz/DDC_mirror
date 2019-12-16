@@ -1,5 +1,5 @@
 0 0 template 0 0
-0 0 army 0 0
-0 lazy army 3_chorts 0
-boss_3 1_zombie lazy hardcore army
+0 0 army 0 hardcore
+0 lazy army 3_chorts gijs
+boss_3 1_zombie lazy army lazy
 gijs2 gijs 3_chorts secret gijs2
