@@ -25,7 +25,7 @@ void DamageHandler(uint32_t source, uint32_t target, Engine::EntityManager<Compo
 	auto enemy = manager->get_component<EnemyComponent>(target);
 	auto player = manager->get_component<CharacterComponent>(target);
 	int currentTick = Engine::get_ticks();
-	if ( health != nullptr && health->invulnerable_until < currentTick) {
+	if (health != nullptr && health->invulnerable_until < currentTick) {
 		health->current_health -= dmg->damage_amount;
 		if (player != nullptr)
 			Engine::play_audio("player_hit_sound.wav");
@@ -47,7 +47,13 @@ void DamageHandler(uint32_t source, uint32_t target, Engine::EntityManager<Compo
 				auto level_boss_component = manager->get_component<LevelBossComponent>(target);
 				if (level_boss_component != nullptr) {
 					Engine::play_audio("boss_death_sound.wav");
-					if (DungeonSingleton::get_instance()->is_last_dungeon())
+					const auto boss_entities = manager->get_all_entities<LevelBossComponent>();
+					bool all_bosses_dead = std::all_of(boss_entities.begin(), boss_entities.end(), [&manager](uint32_t entity)
+						{
+							return manager->get_component<HealthComponent>(entity)->current_health <= 0;
+						});
+
+					if (DungeonSingleton::get_instance()->is_last_dungeon() && all_bosses_dead)
 					{
 						Engine::stop_music();
 						Engine::play_music("ingame.wav");
@@ -65,7 +71,7 @@ void DamageHandler(uint32_t source, uint32_t target, Engine::EntityManager<Compo
 
 void PlayerBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
 	auto player = manager->get_component<CharacterComponent>(entity2);
-	if (player == nullptr) {		
+	if (player == nullptr) {
 		DamageHandler(entity1, entity2, manager, core);
 		manager->remove_entity(entity1);
 	}
@@ -94,7 +100,7 @@ void PlayerCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMa
 			DungeonSingleton::get_instance()->move_dungeon_down(manager);
 		}
 	}
-	
+
 	auto coll = manager->get_component<CollisionComponent>(entity2);
 	if (coll != nullptr && coll->solid) {
 		UpdateVelocity(entity1, entity2, manager, core);
@@ -282,7 +288,7 @@ CollisionHandlers::CollisionHandlers()
 	name_function_map_.try_emplace(CollisionHandlerNames::UpdateVelocity, UpdateVelocity);
 }
 
-std::function<void(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component> * manager, Core * core)>
+std::function<void(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core)>
 CollisionHandlers::GetFunction(CollisionHandlerNames name)
 {
 	auto find_return = name_function_map_.find(name);
