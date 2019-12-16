@@ -241,7 +241,7 @@ void ComponentFactory::AddZombieComponents(int id, Engine::EntityManager<Compone
 	auto hea = std::make_unique<HealthComponent>(15, 15, 0);
 	auto sho = std::make_unique<ShootingComponent>(7, 200);
 	auto vel = std::make_unique<VelocityComponent>(5);
-	auto emc = std::make_unique<EnemyComponent>(120);
+	auto emc = std::make_unique<EnemyComponent>(80);
 	auto room_comp = std::make_unique<RoomComponent>(room->room_name, room->room_index);
 	auto damage = std::make_unique<DamagingComponent>(3);
 	std::unordered_map<State, std::unique_ptr<Animation>> animations;
@@ -280,7 +280,7 @@ void ComponentFactory::AddOgreComponents(int id, Engine::EntityManager<Component
 	auto hea = std::make_unique<HealthComponent>(10, 10, 0);
 	auto sho = std::make_unique<ShootingComponent>(7, 200);
 	auto vel = std::make_unique<VelocityComponent>(7);
-	auto emc = std::make_unique<EnemyComponent>(120);
+	auto emc = std::make_unique<EnemyComponent>(100);
 	auto room_comp = std::make_unique<RoomComponent>(room->room_name, room->room_index);
 	auto damage = std::make_unique<DamagingComponent>(1);
 	std::unordered_map<State, std::unique_ptr<Animation>> animations;

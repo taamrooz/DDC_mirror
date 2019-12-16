@@ -111,10 +111,10 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
 							dist = length(collVector);
 							// check whether the excessive force should be directed downward or upward
 							if ((playerPos->x > enemyPos->x && enemyComponent->state == Pursuing) || (playerPos->x < enemyPos->x && enemyComponent->state == Fleeing)) {
-								diff = normalize(vector2d(rest.y(), length(rest) * -1.5)) * length(rest);
+								diff = normalize(vector2d(rest.y(), length(rest) * -1.25)) * length(rest);
 							}
 							else {
-								diff = normalize(vector2d(rest.y() * -1, length(rest) * -1.5)) * length(rest);
+								diff = normalize(vector2d(rest.y() * -1, length(rest) * -1.25)) * length(rest);
 							}
 						}
 					}
@@ -127,10 +127,10 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
 							dist = length(collVector);
 							// check whether the excessive force should be directed left or right
 							if ((playerPos->y > enemyPos->y && enemyComponent->state == Pursuing) || (playerPos->y < enemyPos->y && enemyComponent->state == Fleeing)) {
-								diff = normalize(vector2d(length(rest) * 1.5, rest.x() * -1)) * length(rest);
+								diff = normalize(vector2d(length(rest) * 1.25, rest.x() * -1)) * length(rest);
 							}
 							else {
-								diff = normalize(vector2d(length(rest) * 1.5, rest.x())) * length(rest);
+								diff = normalize(vector2d(length(rest) * 1.25, rest.x())) * length(rest);
 							}
 						}
 					}
@@ -142,10 +142,10 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
 						if (length(collVector) < dist) { //check whether tihs intersection is closer to the enemy than the previously found intersection
 							dist = length(collVector);
 							if ((playerPos->x > enemyPos->x && enemyComponent->state == Pursuing) || (playerPos->x < enemyPos->x && enemyComponent->state == Fleeing)) {
-								diff = normalize(vector2d(rest.y() * -1, length(rest) * 1.5)) * length(rest);
+								diff = normalize(vector2d(rest.y() * -1, length(rest) * 1.25)) * length(rest);
 							}
 							else {
-								diff = normalize(vector2d(rest.y(), length(rest) * 1.5)) * length(rest);
+								diff = normalize(vector2d(rest.y(), length(rest) * 1.25)) * length(rest);
 							}
 						}
 					}
@@ -157,10 +157,10 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
 							dist = length(collVector);
 							// check whether the excessive force should be directed downward or upward
 							if ((playerPos->y > enemyPos->y && enemyComponent->state == Pursuing) || (playerPos->y < enemyPos->y && enemyComponent->state == Fleeing)) {
-								diff = normalize(vector2d(length(rest) * 1.5 * -1, rest.x())) * length(rest);
+								diff = normalize(vector2d(length(rest) * 1.25 * -1, rest.x())) * length(rest);
 							}
 							else {
-								diff = normalize(vector2d(length(rest) * 1.5 * -1, rest.x() * -1)) * length(rest);
+								diff = normalize(vector2d(length(rest) * 1.25 * -1, rest.x() * -1)) * length(rest);
 							}
 						}
 					}
@@ -172,7 +172,7 @@ vector2d WallAvoidance(const int entity, EntityManager<Component>* manager) {
 	}
 
 	if (diff.x() != 0 || diff.y() != 0) {
-		return normalize(diff * 0.08 + vel->steer_force * 0.92) * length(vel->steer_force);
+		return normalize(diff * 0.07 + vel->steer_force * 0.93) * length(vel->steer_force);
 	}
 	return vel->steer_force;
 }
