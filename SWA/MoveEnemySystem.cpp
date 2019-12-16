@@ -4,6 +4,8 @@
 #include "PositionComponent.h"
 #include "SteeringBehaviors.h"
 #include "CharacterComponent.h"
+#include "CollisionComponent.h"
+#include "TileComponent.h"
 
 MoveEnemySystem::MoveEnemySystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {}
 
@@ -16,7 +18,6 @@ void MoveEnemySystem::update(double dt)
 		{
 			auto enemy = manager_->get_component<EnemyComponent>(enemyEntity);
 			auto vel = manager_->get_component<VelocityComponent>(enemyEntity);
-			auto pos = manager_->get_component<PositionComponent>(enemyEntity);
 
 			switch (enemy->state) {
 			case Fleeing:
@@ -27,6 +28,7 @@ void MoveEnemySystem::update(double dt)
 				break;
 			}
 
+			vel->steer_force = WallAvoidance(enemyEntity, manager_);
 
 			const vector2d acceleration = vel->steer_force / enemy->mass;
 			vector2d velocity = vector2d(vel->dx, vel->dy);
@@ -41,6 +43,5 @@ void MoveEnemySystem::update(double dt)
 			vel->dx = velocity.x();
 			vel->dy = velocity.y();
 		}
-
 	}
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseSystem.h"
+#include <vector2d.h>
 
 class MoveSystem :
 	public BaseSystem
