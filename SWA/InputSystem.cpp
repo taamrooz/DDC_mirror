@@ -26,7 +26,7 @@ void InputSystem::update(double dt)
 	//Handle all key down events
 	for (const auto& keycode : std::get<k_keydown>(inputs))
 	{
-		if (keycode == SDLK_q)
+		if (keycode == SDLK_ESCAPE)
 		{
 			Engine::stop_music();
 			Engine::play_music("low.wav");
