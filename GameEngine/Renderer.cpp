@@ -83,7 +83,7 @@ bool Engine::load_sprite_sheet(std::string path, Animation* animation)
 
 Texture* Engine::load_text(std::string font_path, uint32_t font_size, SDL_Color color, const char* text)
 {
-	auto* texture = new Texture(renderer);
+	auto texture = new Texture(renderer);
 	texture->load_text(std::move(font_path), font_size, color, text);
 	return texture;
 }
@@ -93,7 +93,7 @@ Animation* Engine::load_animation(std::string path, int frames) {
 	auto WALKING_ANIMATION_FRAMES = frames;
 	auto texture = new Texture{ renderer };
 	auto animation = new Animation(WALKING_ANIMATION_FRAMES, texture);
-	texture->free();
+	//texture->free();
 
 	//Load media
 	if (!load_sprite_sheet(path, animation))
