@@ -126,7 +126,7 @@ void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 	}
 	auto player = manager->get_component<CharacterComponent>(entity2);
 	auto coll = manager->get_component<CollisionComponent>(entity2);
-	if (coll != nullptr && coll->solid && enemy == nullptr) {
+	if (coll != nullptr && coll->solid && player == nullptr && enemy == nullptr) {
 		UpdateVelocity(entity1, entity2, manager, core);
 	}
 }
