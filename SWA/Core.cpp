@@ -110,7 +110,7 @@ void Core::render()
 	{
 		update(((timer - last_tick_) / 16) * game_speed);
 	}
-	timer_texture_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, ("Timer : " + std::to_string(int(timer_.GetTicks() / (double)CLOCKS_PER_SEC))).c_str()));
+	timer_texture_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, ("Timer " + std::to_string(int(timer_.GetTicks() / (double)CLOCKS_PER_SEC) / 60) + ":" + std::to_string(int(timer_.GetTicks() / (double)CLOCKS_PER_SEC) % 60)).c_str()));
 	Engine::render_texture(timer_texture_.get(), 300, 25, nullptr);
 	Engine::render(timer);
 	last_tick_ = timer;
