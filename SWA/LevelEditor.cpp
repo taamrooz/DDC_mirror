@@ -834,6 +834,10 @@ void LevelEditor::InitObjects()
 		"imp",
 		"imp.png"
 		});
+	objects_in_toolbox_.push_back(EditorObject{
+		"big_demon",
+		"big_demon.png"
+		});
 
 	int x = 1140;
 	int y = 25;
