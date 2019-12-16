@@ -27,6 +27,10 @@ void DamageHandler(uint32_t source, uint32_t target, Engine::EntityManager<Compo
 	int currentTick = Engine::get_ticks();
 	if ( health != nullptr && health->invulnerable_until < currentTick) {
 		health->current_health -= dmg->damage_amount;
+		if (player != nullptr)
+			Engine::play_audio("player_hit_sound.wav");
+		else
+			Engine::play_audio("enemy_hit_sound.wav");
 		health->invulnerable_until = health->time_invulnerable + currentTick;
 
 		ani->currentState = State::HIT;
@@ -42,7 +46,7 @@ void DamageHandler(uint32_t source, uint32_t target, Engine::EntityManager<Compo
 			else if (enemy != nullptr) {
 				auto level_boss_component = manager->get_component<LevelBossComponent>(target);
 				if (level_boss_component != nullptr) {
-					manager->remove_entity(target);
+					Engine::play_audio("boss_death_sound.wav");
 					if (DungeonSingleton::get_instance()->is_last_dungeon())
 					{
 						Engine::stop_music();
@@ -51,8 +55,9 @@ void DamageHandler(uint32_t source, uint32_t target, Engine::EntityManager<Compo
 					}
 				}
 				else {
-					manager->remove_entity(target);
+					Engine::play_audio("enemy_death_sound.wav");
 				}
+				manager->remove_entity(target);
 			}
 		}
 	}
@@ -60,7 +65,7 @@ void DamageHandler(uint32_t source, uint32_t target, Engine::EntityManager<Compo
 
 void PlayerBulletCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Component>* manager, Core* core) {
 	auto player = manager->get_component<CharacterComponent>(entity2);
-	if (player == nullptr) {
+	if (player == nullptr) {		
 		DamageHandler(entity1, entity2, manager, core);
 		manager->remove_entity(entity1);
 	}
@@ -261,7 +266,7 @@ void ChestCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 		cColl->collisionHandler = nullptr;
 		cColl->function_name = CollisionHandlerNames::None;
 		manager->remove_component_from_entity<ChestComponent>(entity1);
-
+		Engine::play_audio("chest_open.wav");
 	}
 }
 

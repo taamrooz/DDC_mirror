@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "VelocityComponent.h"
 #include "CollisionHandlers.h"
+#include "Audio.h"
 
 ShootSystem::ShootSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {
 }
@@ -54,7 +55,7 @@ void ShootSystem::update(double dt)
 	}
 }
 
-void ShootSystem::createBullet(int xV, int yV, int x, int y) {
+void ShootSystem::createBullet(int xV, int yV, int x, int y) {	
 	auto entity = manager_->get_all_entities_from_current_room<CharacterComponent>().front();
 	auto shoot = manager_->get_component<ShootingComponent>(entity);
 	auto dmg = std::make_unique<DamagingComponent>(1, false);
@@ -62,6 +63,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y) {
 
 	Uint32 ticks = Engine::get_ticks();
 	if (ticks - shoot->last_shot >= shoot->fire_rate) {
+		Engine::play_audio("shoot.wav");
 		auto position = manager_->get_component<PositionComponent>(entity);
 		auto collision = manager_->get_component<CollisionComponent>(entity);
 
