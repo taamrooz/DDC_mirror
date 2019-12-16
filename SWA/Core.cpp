@@ -197,7 +197,7 @@ void Core::check_for_highscore()
 	std::vector<int> currentHighscoreList = std::vector<int>();
 	int counter = 0;
 	int swappedId = -1;
-	std::string highscorePath = "./assets/json/highscores";
+	std::string highscorePath = "./assets/Highscores/highscores";
 	auto json = Engine::get_json();
 	Engine::read_from_file(json, highscorePath);
 
