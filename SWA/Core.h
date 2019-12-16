@@ -20,6 +20,7 @@ class Core : virtual public Engine::BaseScene
 private:
 	std::vector<std::unique_ptr<BaseSystem>> systems_;
 	std::unique_ptr<Engine::EntityManager<Component>> manager_ = nullptr;
+	std::unique_ptr<Texture> timer_texture_ = nullptr;
 	bool is_paused_ = false;
 	bool is_winner_ = false;
 	bool is_loser_ = false;
