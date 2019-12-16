@@ -14,7 +14,8 @@ enum string_code {
 	cChort,
 	cImp,
 	cZombie,
-	cOgre
+	cOgre,
+	cBigDemon
 };
 class ComponentFactory
 {
@@ -30,11 +31,11 @@ private:
 	void AddChestComponents(int id, Engine::EntityManager<Component>* em, RoomComponent* room);
 	void AddBlueFlaskComponents(int id, Engine::EntityManager<Component>* em, RoomComponent* room);
 	void AddLadderComponents(int id, Engine::EntityManager<Component>* em, RoomComponent* room);
-	void AddEnemyComponents(int id, Engine::EntityManager<Component>*, bool level_boss, RoomComponent* room);
 	void AddChortComponents(int id, Engine::EntityManager<Component>*, RoomComponent* room);
 	void AddZombieComponents(int id, Engine::EntityManager<Component>*, bool level_boss, RoomComponent* room);
 	void AddImpComponents(int id, Engine::EntityManager<Component>* em, RoomComponent* room);
 	void AddOgreComponents(int id, Engine::EntityManager<Component>*, bool level_boss, RoomComponent* room);
+	void AddBigDemonComponents(int id, Engine::EntityManager<Component>* em, bool level_boss, RoomComponent* room);
 public:
 	static ComponentFactory* get_instance();
 	int CreateEntity(std::string const& name, int id, Engine::EntityManager<Component>*, RoomComponent* room);
