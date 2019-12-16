@@ -74,7 +74,7 @@ public:
 	/**
 	* \Unpauzes the timer which counts your highscore
 	*/
-	void unpauzeTimer();
+	void unpause_timer();
 	/**
 	 * \brief Saves the game
 	 * @params path path to save to
@@ -84,9 +84,6 @@ public:
 	 * \brief Returns entity manager pointer
 	 */
 	Engine::EntityManager<Component>* get_entity_manager();
-	/**
-	* \Unpauzes the timer which counts your highscore
-	*/
-	void unpause_timer();
+
 };
 

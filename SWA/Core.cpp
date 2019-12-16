@@ -159,12 +159,6 @@ Engine::EntityManager<Component>* Core::get_entity_manager()
 	return manager_.get();
 }
 
-void Core::unpauzeTimer()
-{
-	if (timer_.IsPaused()) {
-	timer_.Unpause();
-	}
-}
 
 void Core::check_for_highscore()
 {
