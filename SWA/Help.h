@@ -26,6 +26,7 @@ private:
 	std::unique_ptr<Texture> sub_title_in_game_controls_ = nullptr;
 	std::unique_ptr<Texture> pause_ = nullptr;
 	std::unique_ptr<Texture> quit_ = nullptr;
+	std::unique_ptr<Texture> fps_counter_ = nullptr;
 	std::unique_ptr<Texture> helper = nullptr;
 public:
 	Help(Engine::SceneManager* manager);

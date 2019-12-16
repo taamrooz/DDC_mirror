@@ -36,7 +36,7 @@ void RoomSystem::update(double dt)
 		{
 			auto player_id = manager_->create_entity();
 			ComponentFactory::get_instance()->CreateEntity("player", player_id, manager_, DungeonSingleton::get_instance()->get_current_room());
-			auto pos = std::make_unique<PositionComponent>(700, 500);
+			auto pos = std::make_unique<PositionComponent>(550, 450);
 			manager_->add_component_to_entity(player_id, std::move(pos));
 		}
 
