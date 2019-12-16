@@ -17,7 +17,7 @@
 #include "VelocityComponent.h"
 #include "TileComponent.h"
 
-void SaveHelper::SaveGameToFile(Engine::EntityManager<Component>* manager_, std::string path)
+void SaveHelper::SaveGameToFile(Engine::EntityManager<Component>* manager_, std::string path, int timer_state)
 {
 	auto json = Engine::get_json();
 	auto entities = manager_->get_all_entities();
@@ -35,13 +35,18 @@ void SaveHelper::SaveGameToFile(Engine::EntityManager<Component>* manager_, std:
 	json["DungeonSingleton"]["current_room_number"] = DungeonSingleton::get_instance()->get_current_room_number();
 	json["DungeonSingleton"]["level_path"] = DungeonSingleton::get_instance()->get_current_level_path();
 
+	json["Timer"]["ticks"] = timer_state;
+
 	Engine::write_to_file(json, "assets/json/" + path);
 }
 
-bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, std::string path)
+bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, std::string path, Core* core)
 {
 	auto json = Engine::get_json();
-	Engine::read_from_file(json, path);
+	if(!Engine::read_from_file(json, path))
+	{
+		return false;
+	}
 
 	/*
 	 *it.key() = Entity ID
@@ -57,11 +62,16 @@ bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 		{
 			auto current_room_number = it.value().find("current_room_number").value();
 			auto level_path = it.value().find("level_path").value();
-			if (!DungeonSingleton::get_instance()->skip_until_dungeon(level_path))
+			if (!DungeonSingleton::get_instance()->skip_until_dungeon(level_path, manager_))
 			{
 				return false;
 			}
 			DungeonSingleton::get_instance()->set_current_room_number(current_room_number);
+		}
+		else if(it.key() == "Timer")
+		{
+			auto timer_ticks = it.value().find("ticks").value();
+			core->get_timer()->set_ticks(timer_ticks);
 		}
 		else {
 			auto new_entity = manager_->create_entity();

@@ -96,6 +96,6 @@ public:
 	 * \brief Returns entity manager pointer
 	 */
 	Engine::EntityManager<Component>* get_entity_manager();
-
+	Engine::Timer* get_timer();
 };
 

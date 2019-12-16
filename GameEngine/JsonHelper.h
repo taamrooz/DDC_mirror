@@ -21,5 +21,5 @@ namespace Engine {
 	* \brief reads contents from a json file and loads them into this object
 	* @param path path to file including filename, excluding extension
 	*/
-	ENGINE_API void read_from_file(json& j, std::string path);
+	ENGINE_API bool read_from_file(json& j, std::string path);
 }

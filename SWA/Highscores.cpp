@@ -66,7 +66,7 @@ bool Highscores::init() {
 	background_ = std::unique_ptr<Animation>(Engine::load_animation("mainmenu.png", 3));
 	helper_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 255, 255, 255 }, "Press ENTER to quit to main menu"));
 	highscore_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 40, { 255, 196, 0, 255 }, "Highscores"));
-	explanation_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Name | Date | Achieved Time"));
+	explanation_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 20, { 255, 196, 0, 255 }, "Date | Achieved Time"));
 	background_->scale = 1280.0 / 960.0;
 	get_highscores();
 	return true;
@@ -82,12 +82,9 @@ void Highscores::get_highscores()
 
 	for (json::iterator it = json.begin(); it != json.end(); ++it)
 	{
-		if (it.value().find("Name") != it.value().end()){
-			highscoreString = it.value().find("Name").value();
-			highscoreString += " ";
-		}
+
 		if (it.value().find("Date") != it.value().end()) {
-			highscoreString +=  it.value().find("Date").value();
+			highscoreString =  it.value().find("Date").value();
 			highscoreString += " ";
 		}
 		if (it.value().find("Time") != it.value().end()) {

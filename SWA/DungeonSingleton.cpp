@@ -185,13 +185,15 @@ void DungeonSingleton::move_dungeon_down(Engine::EntityManager<Component>* manag
 	}
 }
 
-bool DungeonSingleton::skip_until_dungeon(const std::string& path)
+bool DungeonSingleton::skip_until_dungeon(const std::string& path, Engine::EntityManager<Component>* manager)
 {
 	while (levels_.size() - 1 > current_level_ && get_current_level_path() != path)
 		current_level_++;
 
 	if (is_last_dungeon() && get_current_level_path() != path)
 		return false;
+	level_rooms_.clear();
+	load_dungeon(path, manager);
 
 	return true;
 }

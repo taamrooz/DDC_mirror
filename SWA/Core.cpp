@@ -184,7 +184,7 @@ void Core::gamespeed_decrease()
 void Core::save_game(std::string path)
 {
 	auto sh = SaveHelper{};
-	sh.SaveGameToFile(manager_.get(), path);
+	sh.SaveGameToFile(manager_.get(), path, timer_.GetTicks());
 }
 
 Engine::EntityManager<Component>* Core::get_entity_manager()
@@ -192,6 +192,10 @@ Engine::EntityManager<Component>* Core::get_entity_manager()
 	return manager_.get();
 }
 
+Engine::Timer* Core::get_timer()
+{
+	return &timer_;
+}
 
 void Core::check_for_highscore()
 {
