@@ -26,6 +26,7 @@ namespace Engine {
 		//Checks the status of the timer
 		ENGINE_API bool IsStarted();
 		ENGINE_API bool IsPaused();
+		ENGINE_API void set_ticks(int ticks);
 
 	private:
 		//The clock time when the timer started

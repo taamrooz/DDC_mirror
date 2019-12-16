@@ -20,9 +20,15 @@ void Engine::write_to_file(json& j, std::string path)
 	out.close();
 }
 
-void Engine::read_from_file(json& j, std::string path)
+bool Engine::read_from_file(json& j, std::string path)
 {
 	std::ifstream in(path + ".json");
+	if(in.fail())
+	{
+		in.close();
+		return false;;
+	}
 	in >> j;
 	in.close();
+	return true;
 }
