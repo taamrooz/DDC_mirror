@@ -75,7 +75,7 @@ bool Highscores::init() {
 void Highscores::get_highscores()
 {
 	std::string highscoreString;
-	std::string highscorePath = "./assets/json/highscores";
+	std::string highscorePath = "./assets/Highscores/highscores";
 	auto json = Engine::get_json();
 	Engine::read_from_file(json, highscorePath);
 
