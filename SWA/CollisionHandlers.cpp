@@ -119,9 +119,9 @@ void EnemyCollisionHandler(uint32_t entity1, uint32_t entity2, Engine::EntityMan
 	if (enemy == nullptr) {
 		DamageHandler(entity1, entity2, manager, core);
 	}
-	
+	auto player = manager->get_component<CharacterComponent>(entity2);
 	auto coll = manager->get_component<CollisionComponent>(entity2);
-	if (coll != nullptr && coll->solid) {
+	if (coll != nullptr && coll->solid && enemy == nullptr) {
 		UpdateVelocity(entity1, entity2, manager, core);
 	}
 }
@@ -135,7 +135,7 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 	auto second_node_position_component = manager->get_component<PositionComponent>(entity2);
 	auto second_node_collision_component = manager->get_component<CollisionComponent>(entity2);
 
-	if (first_node_velocity_component != nullptr) {
+	if (first_node_velocity_component != nullptr && second_node_velocity_component == nullptr) {
 		int xDiff = 0;
 		int yDiff = 0;
 		int xd = 0;
@@ -198,6 +198,16 @@ void UpdateVelocity(uint32_t entity1, uint32_t entity2, Engine::EntityManager<Co
 				first_node_position_component->y -= yDiff;
 				first_node_velocity_component->dy = 0;
 			}
+		}
+	}
+	if (first_node_velocity_component != nullptr && second_node_velocity_component != nullptr) {
+		if ((second_node_position_component->x >= first_node_position_component->x + first_node_collision_component->width && first_node_velocity_component->dx >= 0)
+			|| (second_node_position_component->x + second_node_collision_component->width <= first_node_position_component->x && first_node_velocity_component->dx <= 0)) {
+			second_node_velocity_component->dx = first_node_velocity_component->dx;
+		}
+		if ((second_node_position_component->y >= first_node_position_component->y + first_node_collision_component->height && first_node_velocity_component->dy >= 0)
+			|| (second_node_position_component->y + second_node_collision_component->height <= first_node_position_component->y && first_node_velocity_component->dy <= 0)) {
+			second_node_velocity_component->dy = first_node_velocity_component->dy;
 		}
 	}
 }
