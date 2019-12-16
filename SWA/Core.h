@@ -78,6 +78,7 @@ public:
 	* \Unpauzes the timer which counts your highscore
 	*/
 	void unpause_timer();
+	 /** 
 	 * \brief Increases the gamespeed by 0.1
 	 */
 	void gamespeed_increase();
