@@ -59,6 +59,18 @@ void DamageHandler(uint32_t source, uint32_t target, Engine::EntityManager<Compo
 						Engine::play_music("ingame.wav");
 						core->toggle_game_won();
 					}
+
+					// Check if all bosses in current room are dead
+					const auto current_room_boss_entities = manager->get_all_entities_from_current_room<LevelBossComponent>();
+					bool current_room_all_bosses_dead = std::all_of(current_room_boss_entities.begin(), current_room_boss_entities.end(), [&manager](uint32_t entity)
+						{
+							return manager->get_component<HealthComponent>(entity)->current_health <= 0;
+						});
+
+					if (current_room_all_bosses_dead) {
+						Engine::stop_music();
+						Engine::play_music("ingame.wav");
+					}
 				}
 				else {
 					Engine::play_audio("enemy_death_sound.wav");
