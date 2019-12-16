@@ -1,11 +1,9 @@
 #pragma once
 #include "EntityManager.h"
 #include "BaseSystem.h"
-#include "AnimationComponent.h"
 #include "BaseScene.h"
 #include "SceneManager.h"
 #include "Timer.h"
-#include "Pause.h"
 
 class Core : virtual public Engine::BaseScene
 {
@@ -15,13 +13,15 @@ private:
 	bool is_paused_ = false;
 	bool is_winner_ = false;
 	bool is_loser_ = false;
-	bool new_game{};
+	bool new_game_{};
+	double last_tick_{ 0 };
+	double game_speed{ 1 };
 	double elapsed_secs_ = 0;
 	Engine::Timer timer_{};
 	/*
 	 * Loops through all systems and calls their respective update function.
 	 */
-	void update();
+	void update(double dt);
 	
 public:
 	Core(Engine::SceneManager* manager, bool new_game);
@@ -59,6 +59,14 @@ public:
 	 * \brief Toggles the games lose state.
 	 */
 	void toggle_game_lost();
+	/**
+	 * \brief Increases the gamespeed by 0.1
+	 */
+	void gamespeed_increase();
+	/**
+	 * \brief Decreases the gamespeed by 0.1
+	 */
+	void gamespeed_decrease();
 	/**
 	 * \brief Saves the game
 	 * @params path path to save to

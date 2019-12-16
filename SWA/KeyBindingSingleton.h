@@ -28,7 +28,9 @@ public:
 	std::string get_teleport_key() const;
 	std::string get_next_room_key() const;
 	std::string get_kill_all_key() const;
-	bool is_key_down(const std::string& key);
+	std::string get_gamespeed_increase() const;
+	std::string get_gamespeed_decrease() const;
+ 	bool is_key_down(const std::string& key);
 	std::map<SDL_Keycode, std::string> keybindings;
 	std::map<std::string, bool> keys_down;
 	void reset_properties();

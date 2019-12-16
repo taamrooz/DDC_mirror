@@ -8,80 +8,82 @@
 InventorySystem::InventorySystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager)
 {}
 
+void InventorySystem::select_inventory_item(InventoryComponent* inv, uint32_t entity, int option_number) {
+	if (inv->selected == option_number) {
+		// use this inventory item
+		if (inv->items.size() >= option_number) {
+			auto collectable_entity_id = inv->items[(option_number - 1)];
+			auto collectable = manager_->get_component<CollectableComponent>(collectable_entity_id);
+			collectable->utilizeHandler(entity, collectable_entity_id, manager_);
+		}
+	}
+	inv->selected = option_number;
+}
+
 void InventorySystem::update(double dt)
 {
 	auto entity = manager_->get_all_entities<CharacterComponent>().front();
 	auto inv = manager_->get_component<InventoryComponent>(entity);
 	for (auto i = KeyBindingSingleton::get_instance()->keys_down.begin(); i != KeyBindingSingleton::get_instance()->keys_down.end(); ++i)
 	{
-		if (i->second) {
-			if (i->first == "1") {
-				if (inv->selected == 1) {
-					// use this inventory item
-					if (inv->items.size() > 0) {
-						auto collectable_entity_id = inv->items[0];
-						auto collectable = manager_->get_component<CollectableComponent>(collectable_entity_id);
-						collectable->utilizeHandler(entity, collectable_entity_id, manager_);
-					}
-				}
-
-				inv->selected = 1;
-				i->second = false;
-
-
-			}
-
-			if (i->first == "2") {
-				inv->selected = 2;
+		if (i->first.compare("1") == 0) {
+			if (i->second) {
+				select_inventory_item(inv, entity, 1);
 				i->second = false;
 			}
-			if (i->first == "3") {
-
-				inv->selected = 3;
+		}
+		if (i->first.compare("2") == 0) {
+			if (i->second) {
+				select_inventory_item(inv, entity, 2);
 				i->second = false;
-
 			}
-			if (i->first == "4") {
-
-				inv->selected = 4;
+		}
+		if (i->first.compare("3") == 0) {
+			if (i->second) {
+				select_inventory_item(inv, entity, 3);
 				i->second = false;
-
 			}
-			if (i->first == "5") {
-
-				inv->selected = 5;
+		}
+		if (i->first.compare("4") == 0) {
+			if (i->second) {
+				select_inventory_item(inv, entity, 4);
 				i->second = false;
-
 			}
-			if (i->first == "6") {
-
-				inv->selected = 6;
+		}
+		if (i->first.compare("5") == 0) {
+			if (i->second) {
+				select_inventory_item(inv, entity, 5);
 				i->second = false;
-
 			}
-			if (i->first == "7") {
-
-				inv->selected = 7;
+		}
+		if (i->first.compare("6") == 0) {
+			if (i->second) {
+				select_inventory_item(inv, entity, 6);
 				i->second = false;
-
 			}
-			if (i->first == "8") {
-
-				inv->selected = 8;
+		}
+		if (i->first.compare("7") == 0) {
+			if (i->second) {
+				select_inventory_item(inv, entity, 7);
 				i->second = false;
-
 			}
-			if (i->first == "9") {
-
-				inv->selected = 9;
+		}
+		if (i->first.compare("8") == 0) {
+			if (i->second) {
+				select_inventory_item(inv, entity, 8);
 				i->second = false;
-
 			}
-			if (i->first == "10") {
-
-				inv->selected = 10;
+		}
+		if (i->first.compare("9") == 0) {
+			if (i->second) {
+				select_inventory_item(inv, entity, 9);
 				i->second = false;
-
+			}
+		}
+		if (i->first.compare("10") == 0) {
+			if (i->second) {
+				select_inventory_item(inv, entity, 10);
+				i->second = false;
 			}
 		}
 	}

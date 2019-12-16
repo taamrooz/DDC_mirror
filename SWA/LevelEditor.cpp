@@ -74,7 +74,7 @@ void LevelEditor::RenderDungeonEditor()
 	//Render toolbox
 	int counter = 0;
 	for (const auto& i : rooms_in_toolbox_)
-	{		
+	{
 		Engine::render_tile(i.x, i.y, Engine::rect2d{ 0, 0,i.width * 4, i.height * 4, }, i.image.get(), 0.25);
 		if (selected_room_template_ == counter) {
 			Engine::set_render_draw_color(255, 255, 255, 255);
@@ -86,7 +86,7 @@ void LevelEditor::RenderDungeonEditor()
 		Engine::draw_rectangle(Engine::rect2d{ i.x - 1, i.y - 1, i.width + 4, i.height + 4 });
 		++counter;
 	}
-	
+
 	//Render grid
 	for (const auto& i : rooms_on_grid_)
 	{
@@ -99,7 +99,7 @@ void LevelEditor::RenderDungeonEditor()
 		}
 	}
 
-	
+
 
 }
 
@@ -139,7 +139,7 @@ void LevelEditor::RenderTileEditor()
 	{
 		Engine::render_tile(tile.x_pos, tile.y_pos, Engine::rect2d{ TileSetSingleton::get_instance()->tiletypes[tile.tiletype][0],
 			TileSetSingleton::get_instance()->tiletypes[tile.tiletype][1],Constants::k_tile_width, Constants::k_tile_height }, TileSetSingleton::get_instance()->tilemap, 0.5);
-		
+
 		if (tile.tiletype == selected_tile_type_) {
 			Engine::set_render_draw_color(255, 255, 255, 255);
 			Engine::draw_rectangle(Engine::rect2d{ tile.x_pos - 2, tile.y_pos - 2, tile.width / 2 + 8, tile.height / 2 + 8 });
@@ -178,7 +178,7 @@ void LevelEditor::RenderObjectEditor()
 	for (auto& i : objects_in_toolbox_)
 	{
 		Engine::render_texture(i.image.get(), i.x, i.y, nullptr);
-		
+
 		if (i.name == objects_in_toolbox_[selected_object_].name) {
 			Engine::set_render_draw_color(255, 255, 255, 255);
 			Engine::draw_rectangle(Engine::rect2d{ i.x - 1, i.y - 1, i.width / 2 + 4, i.height / 2 + 4 });
@@ -304,7 +304,7 @@ void LevelEditor::InputDungeonSave(SDL_Keycode keycode, std::string& text)
 		save_file_name_.pop_back();
 	if (keycode == SDLK_RETURN)
 		if (SaveDungeonFile())
-		{			
+		{
 			state = exit_editor;
 			Engine::StartTextInput();
 		}
@@ -548,8 +548,22 @@ bool LevelEditor::SaveRoomFile()
 		//Go through the tiles
 		for (int t = 0; t < Constants::k_total_tiles; t++)
 		{
-			if (tiles_on_grid_[t].tiletype < 10)
+			if (tiles_on_grid_[t].tiletype < 10) {
 				map << 0 << tiles_on_grid_[t].tiletype;
+				if(tiles_on_grid_[t].tiletype == 8)
+				{
+					auto ladder_object = EditorObject{
+						"ladder",
+						"",
+						nullptr,
+						tiles_on_grid_[t].x_pos,
+						tiles_on_grid_[t].y_pos,
+						tiles_on_grid_[t].width,
+						tiles_on_grid_[t].height,
+					};
+					objects_on_grid_.emplace_back(ladder_object);
+				}
+			}
 			else
 				map << tiles_on_grid_[t].tiletype;
 			if (counter < 19)
@@ -803,6 +817,22 @@ void LevelEditor::InitObjects()
 	objects_in_toolbox_.push_back(EditorObject{
 		"health_potion_large",
 		"flask_big_red.png"
+		});
+	objects_in_toolbox_.push_back(EditorObject{
+		"zombie",
+		"big_zombie.png"
+		});
+	objects_in_toolbox_.push_back(EditorObject{
+		"ogre",
+		"ogre.png"
+		});
+	objects_in_toolbox_.push_back(EditorObject{
+		"chort",
+		"chort.png"
+		});
+	objects_in_toolbox_.push_back(EditorObject{
+		"imp",
+		"imp.png"
 		});
 
 	int x = 1140;
