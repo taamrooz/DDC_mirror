@@ -107,4 +107,10 @@ namespace Engine {
 		//Timer is running and paused
 		return mPaused && mStarted;
 	}
+
+	void Timer::set_ticks(int ticks)
+	{
+		mStartTicks = SDL_GetTicks() - ticks;
+		mPausedTicks = SDL_GetTicks() - ticks;
+	}
 }
