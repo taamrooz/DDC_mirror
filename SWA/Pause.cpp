@@ -52,7 +52,7 @@ void Pause::input() {
 		{
 			Engine::resume_music();
 			scene_manager_->set_scene("game");
-			core_->unpauzeTimer();
+			core_->unpause_timer();
 			break;
 		}
 	}

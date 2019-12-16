@@ -36,7 +36,7 @@ void RoomSystem::update(double dt)
 		{
 			auto player_id = manager_->create_entity();
 			ComponentFactory::get_instance()->CreateEntity("player", player_id, manager_, DungeonSingleton::get_instance()->get_current_room());
-			auto pos = std::make_unique<PositionComponent>(700, 500);
+			auto pos = std::make_unique<PositionComponent>(550, 450);
 			manager_->add_component_to_entity(player_id, std::move(pos));
 		}
 
@@ -50,7 +50,7 @@ void RoomSystem::update(double dt)
 	auto position = manager_->get_component<PositionComponent>(entity);
 	auto current_room = DungeonSingleton::get_instance()->get_current_room();
 	//right
-	if (position->x >= 1220 && position->y >= 400 && position->y <= 800 && current_room->right != nullptr)
+	if (position->x >= 1220 && position->y >= 350 && position->y <= 800 && current_room->right != nullptr)
 	{
 		DungeonSingleton::get_instance()->move_room(right);
 		position->x = 70;
@@ -62,7 +62,7 @@ void RoomSystem::update(double dt)
 		position->y = 800;
 	}
 	//left
-	else if (position->x <= 10 && position->y >= 400 && position->y <= 800 && current_room->left != nullptr)
+	else if (position->x <= 10 && position->y >= 350 && position->y <= 800 && current_room->left != nullptr)
 	{
 		DungeonSingleton::get_instance()->move_room(left);
 		position->x = 1200;

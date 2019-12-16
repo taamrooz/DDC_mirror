@@ -147,6 +147,7 @@ void MainMenu::input()
 			case 5:
 				Engine::stop_music();
 				scene_manager_->set_scene("highscores");
+				scene_manager_->init();
 				Engine::play_music("highscores.wav");
 				break;
 			case 6:
@@ -232,6 +233,7 @@ bool MainMenu::init()
 	level_editor_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Level Editor"));
 	quit_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, "Quit to desktop"));
 	selector_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, ">"));
+	highscore_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Highscores"));
 	helper = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, {255, 255, 255, 255},
 	                          "Use the arrow keys ^` to navigate the menu and press ENTER to confirm"));
 	highscore_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 196, 0, 255 }, "Highscores"));

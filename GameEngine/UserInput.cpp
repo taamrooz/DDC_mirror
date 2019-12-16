@@ -1,5 +1,6 @@
 #include "UserInput.h"
 #include <tuple>
+#include "Renderer.h"
 
 SDL_Event event;
 
@@ -31,6 +32,8 @@ std::tuple<std::vector<SDL_Keycode>, std::vector<SDL_Keycode>, bool, std::string
 		else if (event.type == SDL_KEYUP)
 		{
 			keysup.push_back(event.key.keysym.sym);
+			if (event.key.keysym.sym == SDLK_F1)
+				toggle_fps();
 		}
 		else if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
