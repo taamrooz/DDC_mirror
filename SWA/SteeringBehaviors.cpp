@@ -15,6 +15,9 @@ vector2d Seek(int entity, vector2d TargetPos, EntityManager<Component>* manager)
 {
 	auto pos = manager->get_component<PositionComponent>(entity);
 	auto velocity = manager->get_component<VelocityComponent>(entity);
+	if (TargetPos.x() == pos->x && TargetPos.y() == pos->y) {
+		return vector2d(0, 0);
+	}
 	vector2d DesiredVelocity = normalize(TargetPos - vector2d(pos->x, pos->y))
 		* velocity->maxSpeed;
 	return (DesiredVelocity - vector2d(velocity->dx, velocity->dy));
@@ -25,6 +28,9 @@ vector2d Flee(int entity, const int evader, EntityManager<Component>* manager)
 	auto pos = manager->get_component<PositionComponent>(entity);
 	auto evaderPos = manager->get_component<PositionComponent>(evader);
 	auto evaderVelocity = manager->get_component<VelocityComponent>(entity);
+	if (evaderPos->x == pos->x && evaderPos->y == pos->y) {
+		return vector2d(evaderVelocity->dx * -1, evaderVelocity->dy * -1);
+	}
 	vector2d DesiredVelocity = normalize(vector2d(pos->x, pos->y) - vector2d(evaderPos->x, evaderPos->y))
 		* evaderVelocity->maxSpeed;
 	return (DesiredVelocity - vector2d(evaderVelocity->dx, evaderVelocity->dy));

@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "VelocityComponent.h"
 #include "CollisionHandlers.h"
+#include "Audio.h"
 #include "AnimationComponent.h"
 
 ShootSystem::ShootSystem(Engine::EntityManager<Component>* manager) : BaseSystem(manager) {
@@ -63,6 +64,7 @@ void ShootSystem::createBullet(int xV, int yV, int x, int y, double dt) {
 
 	Uint32 ticks = Engine::get_ticks();
 	if (ticks - shoot->last_shot >= shoot->fire_rate / dt) {
+		Engine::play_audio("shoot.wav");
 		auto position = manager_->get_component<PositionComponent>(entity);
 		auto collision = manager_->get_component<CollisionComponent>(entity);
 

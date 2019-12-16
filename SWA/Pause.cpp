@@ -42,8 +42,10 @@ void Pause::input() {
 		
 		if (keycode == SDLK_BACKSPACE && save_text_.length() > 0)
 			save_text_.pop_back();
-		if (keycode == SDLK_RETURN)
+		if (keycode == SDLK_RETURN){
 			core_->save_game(save_text_);
+			save_text_.clear();
+		}
 		
 		save_text_.append(text);
 		if (keycode == SDLK_TAB)
