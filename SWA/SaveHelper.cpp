@@ -62,7 +62,7 @@ bool SaveHelper::LoadGameFromFile(Engine::EntityManager<Component>* manager_, st
 		{
 			auto current_room_number = it.value().find("current_room_number").value();
 			auto level_path = it.value().find("level_path").value();
-			if (!DungeonSingleton::get_instance()->skip_until_dungeon(level_path))
+			if (!DungeonSingleton::get_instance()->skip_until_dungeon(level_path, manager_))
 			{
 				return false;
 			}
