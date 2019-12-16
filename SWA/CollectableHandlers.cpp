@@ -1,6 +1,7 @@
 #include "CollectableHandlers.h"
 #include "HealthComponent.h"
 #include "InventoryComponent.h"
+#include "Audio.h"
 
 void RemoveCollectable(uint32_t collector, uint32_t collectable, Engine::EntityManager<Component>* manager) {
 	// Remove collectable from items list in inventory
@@ -19,7 +20,7 @@ void BlueFlaskCollectableHandler(uint32_t collector, uint32_t collectable, Engin
 	// Set health to max health
 	const auto health = manager->get_component<HealthComponent>(collector);
 	health->current_health = health->max_health;
-
+	Engine::play_audio("potion_use.wav");
 	// Cleanup collectable
 	RemoveCollectable(collector, collectable, manager);
 }
