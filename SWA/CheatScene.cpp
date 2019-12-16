@@ -20,7 +20,9 @@ void CheatScene::render()
 	Engine::render_texture(regain_health_.get(), 425, 475, nullptr);
 	Engine::render_texture(teleport_.get(), 425, 525, nullptr);
 	Engine::render_texture(next_room_.get(), 425, 575, nullptr);
-	Engine::render_texture(kill_all_.get(), 425, 600, nullptr);
+	Engine::render_texture(kill_all_.get(), 425, 625, nullptr);
+	Engine::render_texture(speed_up_.get(), 425, 675, nullptr);
+	Engine::render_texture(speed_down_.get(), 425, 725, nullptr);
 	Engine::render_texture(return_.get(), 370, 850, nullptr);
 	Engine::render(timer);
 }
@@ -40,6 +42,8 @@ bool CheatScene::init()
 	teleport_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, (     "Teleport:                 " + KeyBindingSingleton::get_instance()->get_teleport_key()).c_str()));
 	next_room_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, (    "Go into the next room:    " + KeyBindingSingleton::get_instance()->get_next_room_key()).c_str()));
 	kill_all_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, (     "Kill all enemies:         " + KeyBindingSingleton::get_instance()->get_kill_all_key()).c_str()));
+	speed_up_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, (     "Increase game speed:      " + KeyBindingSingleton::get_instance()->get_gamespeed_increase()).c_str()));
+	speed_down_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255,196,0,255 }, ("   Decrease game speed:      " + KeyBindingSingleton::get_instance()->get_gamespeed_decrease()).c_str()));
 	return_ = std::unique_ptr<Texture>(Engine::load_text("manaspc.ttf", 24, { 255, 255, 255, 255 }, "Press ENTER to go back to the Help menu"));
 	return true;
 }

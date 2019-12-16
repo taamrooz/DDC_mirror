@@ -44,7 +44,8 @@ bool Texture::load_from_file(std::string path)
 	SDL_Texture* newTexture = nullptr;
 
 	//Load image at specified path
-	SDL_Surface* loadedSurface = IMG_Load(("./assets/" + path).c_str());
+	SDL_Surface* loadedSurface;
+	loadedSurface = IMG_Load(("./assets/" + path).c_str());
 	if (loadedSurface == nullptr)
 	{
 		printf("Unable to load image %s! SDL_image Error: %s\n", ("./assets/" + path).c_str(), IMG_GetError());

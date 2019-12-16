@@ -3,6 +3,8 @@
 #include "UserInput.h"
 #include "Core.h"
 #include "KeyBindingSingleton.h"
+#include <Audio.h>
+#include <thread>
 
 EndGameWin::~EndGameWin() = default;
 
@@ -29,7 +31,13 @@ void EndGameWin::input() {
 	{
 		if (keycode == SDLK_RETURN)
 		{
-			scene_manager_->set_scene("mainmenu");
+			Engine::stop_music();
+			Engine::play_music("low.wav");
+			std::this_thread::sleep_for(std::chrono::milliseconds(112));
+
+			Engine::stop_music();
+			scene_manager_->set_scene("advertisement");
+			Engine::play_music("advertisement.wav");
 			break;
 		}
 	}

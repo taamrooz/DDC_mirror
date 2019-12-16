@@ -2,7 +2,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "EntityManager.h"
 #include "BaseSystem.h"
-#include "AnimationComponent.h"
 #include "BaseScene.h"
 #include "SceneManager.h"
 #include "Timer.h"
@@ -24,19 +23,23 @@ private:
 	bool is_paused_ = false;
 	bool is_winner_ = false;
 	bool is_loser_ = false;
+	bool new_game_{};
+	double last_tick_{ 0 };
+	double game_speed{ 1 };
 	double elapsed_secs_ = 0;
 	Engine::Timer timer_{};
 	/*
 	 * Loops through all systems and calls their respective update function.
 	 */
-	void update();
+   void update(double dt);
 	/**
 	*\Check if highscore achieved and write it to file
 	*/
 	void check_for_highscore();
 	
+	
 public:
-	Core(Engine::SceneManager* manager);
+	Core(Engine::SceneManager* manager, bool new_game);
 	~Core();
 	/*
 	 * Initializes the core by creating the entity manager, systems and components.
@@ -75,6 +78,13 @@ public:
 	* \Unpauzes the timer which counts your highscore
 	*/
 	void unpause_timer();
+	 * \brief Increases the gamespeed by 0.1
+	 */
+	void gamespeed_increase();
+	/**
+	 * \brief Decreases the gamespeed by 0.1
+	 */
+	void gamespeed_decrease();
 	/**
 	 * \brief Saves the game
 	 * @params path path to save to

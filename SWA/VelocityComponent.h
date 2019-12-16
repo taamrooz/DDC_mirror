@@ -5,10 +5,11 @@
 struct VelocityComponent : Component
 {
 	VelocityComponent() = default;
-	VelocityComponent(double dx, double dy, double dropOff = 0.0) : dx{ dx }, dy{ dy }, dropOff{ dropOff } {}
+	VelocityComponent(double dx, double dy, double dropOff = 0.0) : dx{ dx }, dy{ dy }, dropOff{ dropOff } {};
+	VelocityComponent(float maxSpeed) : maxSpeed{ maxSpeed } {};
 	vector2d steer_force = vector2d(0,0);
-	double dx{4};
-	double dy{8};
+	double dx{0};
+	double dy{0};
 	float deceleration = 3;
 	double dropOff{};
 	float maxSpeed = 10;
