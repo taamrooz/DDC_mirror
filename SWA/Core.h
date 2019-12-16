@@ -1,9 +1,19 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include "EntityManager.h"
 #include "BaseSystem.h"
 #include "BaseScene.h"
 #include "SceneManager.h"
 #include "Timer.h"
+#include "Pause.h"
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <iostream>
+#include <stdio.h>
+#include <time.h>
+
 
 class Core : virtual public Engine::BaseScene
 {
@@ -21,7 +31,12 @@ private:
 	/*
 	 * Loops through all systems and calls their respective update function.
 	 */
-	void update(double dt);
+   void update(double dt);
+	/**
+	*\Check if highscore achieved and write it to file
+	*/
+	void check_for_highscore();
+	
 	
 public:
 	Core(Engine::SceneManager* manager, bool new_game);
@@ -60,6 +75,9 @@ public:
 	 */
 	void toggle_game_lost();
 	/**
+	* \Unpauzes the timer which counts your highscore
+	*/
+	void unpause_timer();
 	 * \brief Increases the gamespeed by 0.1
 	 */
 	void gamespeed_increase();
@@ -76,9 +94,6 @@ public:
 	 * \brief Returns entity manager pointer
 	 */
 	Engine::EntityManager<Component>* get_entity_manager();
-	/**
-	* \Unpauzes the timer which counts your highscore
-	*/
-	void unpauzeTimer();
+
 };
 

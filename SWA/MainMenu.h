@@ -8,6 +8,7 @@
 #include "LevelEditor.h"
 #include "Credits.h"
 #include "Help.h"
+#include "Highscores.h"
 
 class MainMenu :
 	virtual public Engine::BaseScene
