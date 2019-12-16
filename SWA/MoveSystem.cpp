@@ -24,8 +24,8 @@ void MoveSystem::update(double dt)
 		auto playerPosition = manager_->get_component<PositionComponent>(entity);
 
 			auto velocity = manager_->get_component<VelocityComponent>(entity);
-			playerPosition->x = playerPosition->x + velocity->dx;
-			playerPosition->y = playerPosition->y + velocity->dy;
+			playerPosition->x = playerPosition->x + velocity->dx * dt;
+			playerPosition->y = playerPosition->y + velocity->dy * dt;
 			if (velocity->dropOff != 0) {
 				if (velocity->dx < 0) {
 					velocity->dx = velocity->dx + velocity->dropOff > 0 ? 0 : velocity->dx + velocity->dropOff;

@@ -23,7 +23,7 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 
 	//The tile offsets
 	int x = 0, y = 0;
-
+	bool left_bar{ false }, up_bar{ false }, right_bar{ false }, down_bar{ false };
 	//Open the map
 	std::ifstream map("./assets/Levels/" + path);
 
@@ -34,8 +34,9 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 	}
 	else
 	{
+		int barrier_tiles{0};
 		//Initialize the tiles
-		for (int i = 0; i < Constants::k_total_tiles; ++i)
+		for (int i = 0; i < Constants::k_total_tiles + barrier_tiles; ++i)
 		{
 			//Determines what kind of tile will be made
 			int tileType = -1;
@@ -82,7 +83,25 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 								tiles[i][2] = tileType;
 							}
 						}
-
+						if(!up_bar)
+						{
+							up_bar = true;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = 8 * Constants::k_tile_width;
+							tiles[i][1] = -Constants::k_tile_height;
+							tiles[i][2] = 2;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = 9 * Constants::k_tile_width;
+							tiles[i][1] = -Constants::k_tile_height;
+							tiles[i][2] = 2;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = 10 * Constants::k_tile_width;
+							tiles[i][1] = -Constants::k_tile_height;
+							tiles[i][2] = 2;
+						}
 					}
 					//left
 					else if (x == 0 && y >= 4 * Constants::k_tile_height && y <= 9 * Constants::k_tile_height && room->left != nullptr)
@@ -91,11 +110,11 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 						{
 							tiles[i][2] = 45;
 						}
-						else if(y == 5 * Constants::k_tile_height)
+						else if (y == 5 * Constants::k_tile_height)
 						{
 							tiles[i][2] = 12;
 						}
-						else if(y == 9 * Constants::k_tile_height)
+						else if (y == 9 * Constants::k_tile_height)
 						{
 							tiles[i][2] = 3;
 						}
@@ -103,11 +122,30 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 						{
 							tiles[i][2] = 0;
 						}
+						if (!left_bar)
+						{
+							left_bar = true;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = -Constants::k_tile_width;
+							tiles[i][1] = 6 * Constants::k_tile_height;
+							tiles[i][2] = 2;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = -Constants::k_tile_width;
+							tiles[i][1] = 7 * Constants::k_tile_height;
+							tiles[i][2] = 2;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = -Constants::k_tile_width;
+							tiles[i][1] = 8 * Constants::k_tile_height;
+							tiles[i][2] = 2;
+						}
 					}
 					//right
 					else if (x == Constants::k_tile_width * 19 && y >= 4 * Constants::k_tile_height && y <= 9 * Constants::k_tile_height && room->right != nullptr)
 					{
-						if(y == 4 * Constants::k_tile_height)
+						if (y == 4 * Constants::k_tile_height)
 						{
 							tiles[i][2] = 38;
 						}
@@ -123,6 +161,25 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 						{
 							tiles[i][2] = 0;
 						}
+						if (!right_bar)
+						{
+							right_bar = true;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = Constants::k_tile_width * 20;
+							tiles[i][1] = 6 * Constants::k_tile_height;
+							tiles[i][2] = 2;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = Constants::k_tile_width * 20;
+							tiles[i][1] = 7 * Constants::k_tile_height;
+							tiles[i][2] = 2;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = Constants::k_tile_width * 20;
+							tiles[i][1] = 8 * Constants::k_tile_height;
+							tiles[i][2] = 2;
+						}
 					}
 					//down
 					else if (y == Constants::k_tile_height * 14 && x >= 7 * Constants::k_tile_width && x <= 11 * Constants::k_tile_width && room->down != nullptr) {
@@ -137,6 +194,25 @@ void RoomSingleton::load_map(Engine::EntityManager<Component>* manager, RoomComp
 						else
 						{
 							tiles[i][2] = 0;
+						}
+						if (!down_bar)
+						{
+							down_bar = true;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = 8 * Constants::k_tile_width;
+							tiles[i][1] = Constants::k_tile_height * 15;
+							tiles[i][2] = 2;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = 9 * Constants::k_tile_width;
+							tiles[i][1] = Constants::k_tile_height * 15;
+							tiles[i][2] = 2;
+							++i; ++barrier_tiles;
+							tiles.emplace_back(3);
+							tiles[i][0] = 10 * Constants::k_tile_width;
+							tiles[i][1] = Constants::k_tile_height * 15;
+							tiles[i][2] = 2;
 						}
 					}
 					else
@@ -215,15 +291,12 @@ void RoomSingleton::load_objects(Engine::EntityManager<Component>* manager, Room
 
 		while (buffer.peek() >= 0) {
 			if (!(buffer >> name)) {
-				std::cout << "Error!! First value is not a string" << std::endl;
 				return;
 			}
 			if (!(buffer >> x)) {
-				std::cout << "Error!! Second value is not an int" << std::endl;
 				return;
 			}
 			if (!(buffer >> y)) {
-				std::cout << "Error!! Third value is not an int" << std::endl;
 				return;
 			}
 
