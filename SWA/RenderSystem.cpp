@@ -5,7 +5,6 @@
 #include "CharacterComponent.h"
 #include "PositionComponent.h"
 #include "TileSetSingleton.h"
-#include "RoomComponent.h"
 #include "HealthComponent.h"
 #include "InventoryComponent.h"
 #include "TextureComponent.h"
@@ -26,7 +25,6 @@ void RenderSystem::update(double dt)
 	//Render all tiles
 	for (auto entityid : manager_->get_all_entities_from_current_room<TileComponent>()) {
 		auto tile_component = manager_->get_component<TileComponent>(entityid);
-		auto room_component = manager_->get_component<RoomComponent>(entityid);
 		auto rect = Engine::rect2d(TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][0],
 			TileSetSingleton::get_instance()->tiletypes[tile_component->tiletype][1],
 			tile_component->width, tile_component->height);

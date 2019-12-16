@@ -25,7 +25,7 @@
 #include "TileSetSingleton.h"
 #include <ctime>
 
-Core::Core(Engine::SceneManager* manager, bool new_game) : BaseScene(manager), new_game{ new_game } {}
+Core::Core(Engine::SceneManager* manager, bool new_game) : BaseScene(manager), new_game_{ new_game } {}
 Core::~Core() = default;
 
 
@@ -42,7 +42,7 @@ bool Core::init()
 	scene_manager_->add_scene(endgamelose, true, "lose");
 	scene_manager_->add_scene(advertisement, true, "advertisement");
 
-	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get(), new_game);
+	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get(), new_game_);
 	
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
@@ -62,13 +62,13 @@ bool Core::init()
 	return true;
 }
 
-void Core::update()
+void Core::update(double dt)
 {
 	for (auto& system : systems_)
 	{
 		if(is_running_)
 		{
-			system->update(1);
+			system->update(dt);
 
 			if (is_paused_) {
 				Engine::pause_music();
@@ -102,9 +102,16 @@ void Core::update()
 
 void Core::render()
 {
-	auto timer = Engine::pre_update();
-	update();
+	double timer = Engine::pre_update();
+	if(timer - last_tick_ > 20)
+	{
+		update(1);
+	} else
+	{
+		update(((timer - last_tick_) / 16) * game_speed);
+	}
 	Engine::render(timer);
+	last_tick_ = timer;
 }
 
 void Core::cleanup()
@@ -146,6 +153,22 @@ void Core::toggle_game_lost()
 {
 	is_loser_ = !is_loser_;
 	KeyBindingSingleton::get_instance()->reset_properties();
+}
+
+void Core::gamespeed_increase()
+{
+	if(game_speed < 2)
+	{
+		game_speed += 0.1;
+	}
+}
+
+void Core::gamespeed_decrease()
+{
+	if(game_speed > 0.25)
+	{
+		game_speed -= 0.1;
+	}
 }
 
 void Core::save_game(std::string path)

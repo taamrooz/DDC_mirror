@@ -15,6 +15,8 @@ private:
 	std::unique_ptr<Texture> teleport_ = nullptr;
 	std::unique_ptr<Texture> next_room_ = nullptr;
 	std::unique_ptr<Texture> kill_all_ = nullptr;
+	std::unique_ptr<Texture> speed_up_ = nullptr;
+	std::unique_ptr<Texture> speed_down_ = nullptr;
 	std::unique_ptr<Texture> return_ = nullptr;
 public:
 	CheatScene(Engine::SceneManager* manager);
