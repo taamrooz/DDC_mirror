@@ -13,6 +13,7 @@
 #include "SceneManager.h"
 #include "InventorySystem.h"
 #include "Audio.h"
+#include "Advertisement.h"
 #include "KeyBindingSingleton.h"
 #include "EndGameLose.h"
 #include "EndGameWin.h"
@@ -24,7 +25,7 @@
 #include "TileSetSingleton.h"
 #include <ctime>
 
-Core::Core(Engine::SceneManager* manager) : BaseScene(manager) {}
+Core::Core(Engine::SceneManager* manager, bool new_game) : BaseScene(manager), new_game{ new_game } {}
 Core::~Core() = default;
 
 
@@ -32,13 +33,14 @@ bool Core::init()
 {
 	manager_ = std::make_unique<Engine::EntityManager<Component>>();
 
-
 	auto endgamewin = new EndGameWin(scene_manager_);
 	auto endgamelose = new EndGameLose(scene_manager_);
+	auto advertisement = new Advertisement(scene_manager_);
 	scene_manager_->add_scene(endgamewin, true, "win");
 	scene_manager_->add_scene(endgamelose, true, "lose");
+	scene_manager_->add_scene(advertisement, true, "advertisement");
 
-	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get());
+	DungeonSingleton::get_instance()->load_all_dungeons(manager_.get(), new_game);
 	
 	systems_.push_back(std::make_unique<RoomSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InputSystem>(manager_.get(), *this));
@@ -49,7 +51,7 @@ bool Core::init()
 	systems_.push_back(std::make_unique<CollisionSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<AudioSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<ShootSystem>(manager_.get()));
-	systems_.push_back(std::make_unique<CheatSystem>(manager_.get()));
+	systems_.push_back(std::make_unique<CheatSystem>(manager_.get(), *this));
 	systems_.push_back(std::make_unique<MoveSystem>(manager_.get()));
 	systems_.push_back(std::make_unique<InventorySystem>(manager_.get()));
 	auto pause = new Pause(scene_manager_,this);
@@ -81,6 +83,7 @@ void Core::update()
 				Engine::stop_music();
 				is_winner_ = false;				
 				elapsed_secs_ += (timer_.GetTicks() / (double) CLOCKS_PER_SEC);
+				scene_manager_->set_scene("win");
 				timer_.Stop();
 			}
 
@@ -110,6 +113,7 @@ void Core::cleanup()
 	KeyBindingSingleton::get_instance()->reset_properties();
 	TileSetSingleton::get_instance()->delete_instance();
 	RoomSingleton::get_instance()->delete_instance();
+	DungeonSingleton::get_instance()->delete_instance();
 }
 
 void Core::StopGameLoop() {

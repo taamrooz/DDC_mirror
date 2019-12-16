@@ -17,7 +17,7 @@ private:
 	std::vector<std::string> levels_;
 public:
 	void load_dungeon(const std::string& path, Engine::EntityManager<Component>* manager);
-	void load_all_dungeons(Engine::EntityManager<Component>* manager);
+	void load_all_dungeons(Engine::EntityManager<Component>* manager, bool new_game);
 	void move_room(Direction dir);
 	void move_room_up();
 	void move_room_right();
@@ -35,4 +35,5 @@ public:
 	uint8_t get_starting_room();
 	uint8_t get_current_room_number() const;
 	bool is_last_dungeon() const;
+	void delete_instance();
 };

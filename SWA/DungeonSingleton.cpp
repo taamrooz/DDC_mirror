@@ -66,7 +66,7 @@ void DungeonSingleton::load_dungeon(const std::string& path, Engine::EntityManag
 			}
 			//RoomSingleton::get_instance()->load_objects(manager, new_room.get());
 			level_rooms_.push_back(std::move(new_room));
-			
+
 		}
 		else
 		{
@@ -77,7 +77,7 @@ void DungeonSingleton::load_dungeon(const std::string& path, Engine::EntityManag
 	map.close();
 }
 
-void DungeonSingleton::load_all_dungeons(Engine::EntityManager<Component>* manager)
+void DungeonSingleton::load_all_dungeons(Engine::EntityManager<Component>* manager, bool new_game)
 {
 	for (const auto& entry : std::filesystem::directory_iterator("./assets/Levels/Dungeons/"))
 	{
@@ -88,9 +88,9 @@ void DungeonSingleton::load_all_dungeons(Engine::EntityManager<Component>* manag
 	}
 	load_dungeon(levels_.front(), manager);
 	get_starting_room();
-	load_all_objects(manager);
+	if (new_game)
+		load_all_objects(manager);
 	RoomSingleton::get_instance()->reload_room = true;
-	
 }
 
 void DungeonSingleton::move_room(Direction dir)
@@ -153,9 +153,9 @@ void DungeonSingleton::load_room(Engine::EntityManager<Component>* manager)
 
 void DungeonSingleton::load_all_objects(Engine::EntityManager<Component>* manager)
 {
-	for(auto& obj : level_rooms_)
+	for (auto& obj : level_rooms_)
 	{
-		if(obj != nullptr)
+		if (obj != nullptr)
 		{
 			RoomSingleton::get_instance()->load_objects(manager, obj.get());
 		}
@@ -164,7 +164,7 @@ void DungeonSingleton::load_all_objects(Engine::EntityManager<Component>* manage
 
 void DungeonSingleton::move_dungeon_down(Engine::EntityManager<Component>* manager)
 {
-	
+
 	if (levels_.size() - 1 > current_level_)
 	{
 		for (auto& room : manager->get_all_entities<RoomComponent>())
@@ -189,10 +189,10 @@ bool DungeonSingleton::skip_until_dungeon(const std::string& path)
 {
 	while (levels_.size() - 1 > current_level_ && get_current_level_path() != path)
 		current_level_++;
-	
-	if(is_last_dungeon() && get_current_level_path() != path)
+
+	if (is_last_dungeon() && get_current_level_path() != path)
 		return false;
-	
+
 	return true;
 }
 
@@ -241,4 +241,10 @@ uint8_t DungeonSingleton::get_current_room_number() const {
 bool DungeonSingleton::is_last_dungeon() const
 {
 	return levels_.size() - 1 == current_level_;
+}
+
+void DungeonSingleton::delete_instance()
+{
+	delete instance;
+	instance = nullptr;
 }
